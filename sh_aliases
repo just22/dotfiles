@@ -1,0 +1,418 @@
+# $Id$
+
+# ----------------------------------------------------------------------
+# Enable color support for ls
+#
+#
+if [ "${COLOR_SUPPORT}" = 1 ]; then
+    if ls --color > /dev/null 2>&1; then
+        alias l='ls --color=always'
+    elif colorls > /dev/null 2>&1; then
+        LSCOLORS="exfxcxdxbxgxDxBxGxCbCx"; export LSCOLORS
+        alias l='colorls -G'
+    else
+        alias l='ls -F'
+    fi
+else
+    alias l='ls -F'
+fi
+
+# ----------------------------------------------------------------------
+# File listing
+#
+#
+alias la='l -A'
+
+alias ll='l -lh'
+llm() { ll "$@" | less; }
+alias llt='ll -tr'
+lltm() { llt "$@" | less; }
+alias lltc='llt -c'
+lltcm() { lltc "$@" | less; }
+
+alias lla='ll -A'
+llam() { lla "$@" | less; }
+alias llat='lla -tr'
+llatm() { llat "$@" | less; }
+alias llatc='llat -c'
+llatcm() { llatc "$@" | less; }
+
+# ----------------------------------------------------------------------
+# Safe file operations
+#
+#
+alias rmf='/bin/rm -rf'
+alias rm='/bin/rm -i'
+alias cp='/bin/cp -ip'
+alias mv='/bin/mv -i'
+
+# ----------------------------------------------------------------------
+# Safe remove
+#
+#
+del() {
+    if [ $# == 0 ]; then
+	echo "usage: del source ..."
+        return
+    fi
+    for f in $(ls $*); do
+        ff=$(readlink -f $f | tr "/" "%")
+	mv -f $f ~/.#trash#/"$ff"
+	touch ~/.#trash#/"$ff"
+    done
+}
+
+# ----------------------------------------------------------------------
+# Dir stack commands
+#
+#
+pd() { pushd "$@" > /dev/null; }
+alias lpd='dirs -v'
+alias cpd='dirs -c'
+mkpd() { mkdir "$1"; pd "$1"; }
+
+# ----------------------------------------------------------------------
+# History
+#
+#
+alias h='history 25'
+alias hgrep='history | egrep'
+alias v='fc -e vim'
+
+# ----------------------------------------------------------------------
+# It is a good idea to always specify the full path name for the
+# passwd(1), su(1) and sudo(8) commands as this inhibits the
+# possibility of rogue files placed in your PATH being executed
+# for most shells
+#
+alias passwd='/usr/bin/passwd'
+alias su='/usr/bin/su'
+alias sudo='/usr/local/bin/sudo'
+
+# ----------------------------------------------------------------------
+# Calendar
+#
+#
+if cal -3 > /dev/null 2>&1; then
+    # GNU version
+    alias cal='cal -m3'
+else
+    # BSD version
+    alias cal='cal -mw | sed -E "2,\$s/(^|[^0-9])($(date +%e))( |$)/\1$(tput rev)$(echo "\2")$(tput sgr0)\3/g"'
+fi
+alias now='date "+%a %d %b %Y %Z (WK%g%V) - %H:%M"'
+
+# ----------------------------------------------------------------------
+# Colorize grep
+#
+#
+if echo "x" | grep --color "x" > /dev/null 2>&1; then
+    alias grepc='grep --color'
+    alias egrepc='egrep --color'
+    alias fgrepc='fgrep --color'
+    alias zgrepc='zgrep --color'
+elif [ -e /usr/local/bin/ggrep ]; then
+    # GNU grep certainly has color support
+    alias grepc='ggrep --color'
+    alias egrepc='gegrep --color'
+    alias fgrepc='gfgrep --color'
+    alias zgrepc='gzgrep --color'
+fi
+
+# ----------------------------------------------------------------------
+# Dir statistics
+#
+#
+alias usage='du -chs ./* | sort -rh | head -10'
+#usage() { du -chs "$1"./* | sort -rh | head -10; }
+#nfa() { find "${1-.}" -maxdepth 1 -type f -print | wc -l; }
+#nf()  { find "${1-.}" -maxdepth 1 -type f ! -name ".*" -print | wc -l; }
+#nfh() { find "${1-.}" -maxdepth 1 -type f -name ".*" -print | wc -l; }
+#nda() { find "${1-.}" -maxdepth 1 -type d -print | wc -l; }
+#ndh() { find "${1-.}" -maxdepth 1 -type d -name ".*" -print | wc -l; }
+#nda() { find "${1-.}" -maxdepth 1 -type d ! -name ".*" -print | wc -l; }
+#nla() { find "${1-.}" -maxdepth 1 -type l -print | wc -l; }
+nf()  { ls -l  $1 | egrep "^-" | wc -l; }
+nfa() { ls -lA $1 | egrep "^-" | wc -l; }
+nfh() { ls -lA $1 | egrep "^-" | awk '{print $9}' | egrep "^\." | wc -l; }
+nd()  { ls -l  $1 | egrep "^d" | wc -l; }
+nda() { ls -lA $1 | egrep "^d" | wc -l; }
+ndh() { ls -lA $1 | egrep "^d" | awk '{print $9}' | egrep "^\." | wc -l; }
+nl()  { ls -l  $1 | egrep "^l" | wc -l; }
+nla() { ls -lA $1 | egrep "^l" | wc -l; }
+nlh() { ls -lA $1 | egrep "^l" | awk '{print $9}' | egrep "^\." | wc -l; }
+
+# Report file type in dir/tree
+ft() {
+    # Based on the original code by Bruce Barnet, modified by Yunliang Yu
+    # This version adds a help message, uses file(1) "brief mode"
+    # (simplifying the awk(1) body) and hides error in case no file is
+    # found in the specified dir, and makes the recursive search optional
+    # through the "-r" switch
+    if [ "$1" == "-h" ]; then
+        echo "usage: ft [-r] [<pathName> ...]"
+	return
+    elif [ "$1" == "-r" ]; then
+        shift
+    else
+        local FIND_OPT="-maxdepth 1"
+    fi
+    find ${*-.} $FIND_OPT -type f -print | xargs file -b 2>/dev/null |
+        awk '
+	    {tcnt[$0]++}
+	    END{for (type in tcnt) printf("%d\t%s\n", tcnt[type], type)}
+	' | sort -nr
+}
+
+# ----------------------------------------------------------------------
+# Calculator
+#
+#
+calc() { echo "scale=3; $@" | bc; }
+d2h() { echo "obase=16; ibase=10; $1" | bc; }
+d2o() { echo "obase=8;  ibase=10; $1" | bc; }
+d2b() { echo "obase=2;  ibase=10; $1" | bc; }
+o2h() { echo "obase=16; ibase=8;  $1" | bc; }
+o2d() { echo "obase=10; ibase=8;  $1" | bc; }
+o2b() { echo "obase=2;  ibase=8;  $1" | bc; }
+b2h() { echo "obase=16; ibase=2;  $1" | bc; }
+b2o() { echo "obase=8;  ibase=2;  $1" | bc; }
+b2d() { echo "obase=10; ibase=2;  $1" | bc; }
+h2b() { echo "obase=2;  ibase=16; $1" | bc; }
+h2o() { echo "obase=8;  ibase=16; $1" | bc; }
+h2d() { echo "obase=10; ibase=16; $1" | bc; }
+
+# ----------------------------------------------------------------------
+# User space (u)mount
+# Note: TEMPORARY - To be improved asap
+#
+#alias mount_datavol01='sudo mount -t nfs -o rw,nodev,nosuid,noexec argo:/var/nfs/datavol01 ~/media/datavol01'
+#alias umount_datavol01='sudo umount ~/media/datavol01'
+mrh () { sudo sshfs $USER@$1:/home/$USER $2; }
+
+# ----------------------------------------------------------------------
+# Reinforce cache policy for mplayer
+#
+#
+alias mplayer-hm='mplayer -cache 1572864 -cache-min 80'
+
+# ----------------------------------------------------------------------
+# Various
+#
+#
+alias c='clear'
+alias r='fc -s'
+alias v='fc -e vim'
+alias cutf='tr -s "\t" " " | sed "s/^ //" | cut -d" " -f'
+alias rs='rsync -ah --progress'
+alias pid='ps axwwwww | grep -v grep | egrep --'
+alias catn='cat -n'
+alias showpath='echo $PATH | tr ":" "\n"'
+alias touchall='ls -tr | xargs touch'
+alias se='env sudoedit'
+alias svim='sudo vim'
+vimall() { find ${1-.} -maxdepth 1 -type f -a ! -name ".*" -print | xargs sh -c '</dev/tty vim "$@"' ignoreme; }
+vimalldot() { find ${1-.} -maxdepth 1 -type f -a -name ".*" -print | xargs sh -c '</dev/tty vim "$@"' ignoreme; }
+
+runl() { head -n "+$1" "$2" | tail -n 1; }
+
+# Find files by name
+ff() {
+    if [ "$1" == "-h" ]; then
+        echo "usage: ff [-r] pattern"
+	return
+    elif [ "$1" == "-r" ]; then
+        shift
+    else
+        local FIND_OPT="-maxdepth 1"
+    fi
+    find . $FIND_OPT -name "*${1}*" -ls
+}
+
+# List broken links
+bl() {
+    find -L ${1-.} -maxdepth 1 -type l -ls |
+        awk '{printf "%s %s %s\n", $11, $12, $13}'
+}
+
+# ----------------------------------------------------------------------
+# Vim notes
+#
+#
+nn() { vim -c ":Note $*"; }
+sp() { vim -c ":Note Scratchpad"; }
+wp() { vim -c ":Note Planning for WK $(date --date=next-monday +%y%V)"; }
+todo() { vim -c ":Note todo"; }
+
+# ----------------------------------------------------------------------
+# Vimwiki
+#
+#
+#alias wiki='vim -c "call vimwiki#base#goto_index(v:count1)"'
+#alias gwiki='gvim -c "call vimwiki#base#goto_index(v:count1)"'
+#alias diary='vim -c "call vimwiki#diary#make_note(v:count1)"'
+#alias gdiary='gvim -c "call vimwiki#diary#make_note(v:count1)"'
+
+
+# ----------------------------------------------------------------------
+# Various Operating systems specific stuff
+#
+#
+if [ "$(uname -s)" == "OpenBSD" ]; then
+    # ------------------------------------------------------------------
+    # Power management
+    # (sudo not needed when user is part of the operator group)
+    #
+    alias reboot='/sbin/shutdown -r now'
+    alias halt='/sbin/shutdown -h now'
+    alias poweroff='/sbin/shutdown -hp now'
+    alias suspend='apm -z'
+    alias hibernate='apm -Z'
+
+    # ------------------------------------------------------------------
+    # Package management
+    #
+    #
+    alias pkgs='ftp ftp://openbsd.mirror.garr.it/pub/OpenBSD/snapshots/packages/`machine -a`/'
+    alias pkga='/usr/local/bin/sudo pkg_add -iv'
+    alias pkgas='pkg_add -ivs'
+    alias pkgar='/usr/local/bin/sudo pkg_add -ivr'
+    alias pkgau='/usr/local/bin/sudo pkg_add -vu'
+    alias pkgaus='/usr/local/bin/sudo pkg_add -vus'
+    alias pkgd='/usr/local/bin/sudo pkg_delete -v'
+    alias pkgds='pkg_delete -vs'
+    alias pkgda='/usr/local/bin/sudo pkg_delete -a'
+    alias pkgdas='pkg_delete -as'
+
+    # ------------------------------------------------------------------
+    # Various
+    #
+    #
+    blkid() { disklabel ${1-sd0} | egrep "/dev/|duid"; }
+    alias xcdroast='xcdroast -n -f /dev/rcd0c'
+    alias lk='clear; lock -pn'
+
+    # ------------------------------------------------------------------
+    # Temporary WAs
+    #
+    #
+    alias surf='LD_PRELOAD=/usr/local/lib/gio/modules/libgiognutls.so surf'
+fi
+
+
+# ----------------------------------------------------------------------
+# STMicroelectronics specific stuff
+#
+#
+if ping -c 1 Safex1mail3.st.com > /dev/null 2>&1; then
+
+	# --------------------------------------------------------------
+	# Tmux
+	#
+	#
+	alias tmux='~/bin/tmux -S ${HOME}/tmp/tmux_socket.$(hostname)'
+
+	# --------------------------------------------------------------
+	# Computer farm
+	#
+	#
+	bs()     { bsub -Is -q "$1" -R "select [x64 && rh60 && cpuf>31 && ncpus>=8 && maxmem>8000]" "${@:2}"; }
+	bs5()    { bsub -Is -q "$1" -R "select [x64 && rh50 && cpuf>31 && ncpus>=8 && maxmem>8000]" "${@:2}"; }
+	bsedi()  { bsub -Is -q "$1" -R "select [x64 && rh60 && cpuf>31 && ncpus>=8 && maxmem>12000] rusage [edi=1:mem=12000:tmp=12000]" "${@:2}"; }
+	bsedi5() { bsub -Is -q "$1" -R "select [x64 && rh50 && cpuf>31 && ncpus>=8 && maxmem>12000] rusage [edi=1:mem=12000:tmp=12000]" "${@:2}"; }
+	bspt ()  { bsub -Is -q "$1" -R "select [x64 && rh50 && cpuf>31 && ncpus>=8 && maxmem>12000] rusage [pt=1:mem=12000:tmp=12000]" "${@:2}"; }
+	alias bj='bjobs -w'
+	alias bjc='echo -e "Queue\tRUN\tPEND"; echo -e "=====\t===\t===="; echo -e "login\t`bjobs | egrep login | egrep RUN | wc -l`\t`bjobs | egrep login | egrep PEND | wc -l`"; echo -e "gui\t`bjobs | egrep gui | egrep RUN | wc -l`\t`bjobs | egrep gui | egrep PEND | wc -l`"; echo -e "short\t`bjobs | egrep short | egrep RUN | wc -l`\t`bjobs | egrep short | egrep PEND | wc -l`"; echo -e "long\t`bjobs | egrep long | egrep RUN | wc -l`\t`bjobs | egrep long | egrep PEND | wc -l`"; echo -e "bigmem\t`bjobs | egrep bigmem | egrep RUN | wc -l`\t`bjobs | egrep bigmem | egrep PEND | wc -l`"; echo -e "reg\t`bjobs | egrep reg | egrep RUN | wc -l`\t`bjobs | egrep reg | egrep PEND | wc -l`"'
+	bjgrep() { bj | grep -i "$1"; }
+
+        # --------------------------------------------------------------
+        # Project specific
+        #
+        #
+        alias cg='newgrp newip-pv1'
+        cdr() { [ -n $G_WORKSPACE ] && cd $G_WORKSPACE || echo "No prj configured"; }
+        cpn() { [ "$PRJ_REF" != "" ] && vim -c ":Note $PRJ_REF" || echo "No prj configured"; }
+
+	# --------------------------------------------------------------
+	# Implementation flow
+	#
+	#
+	alias soclsdb='ll -d ./DBS*'
+	alias socrun='ls -latr ./LOGS/*running*'
+	soclscells()    { ll "$1"/*.enc; }
+	ediview()       { TERM="xterm-256color"; bsedi gui socMake -wait 60 -version "${1##*DBS}" load; }
+	ediload()       { TERM="xterm-256color"; bsedi long socMake -wait 60 -version "${1##*DBS}" load; }
+	ediloadbm()     { TERM="xterm-256color"; bsedi bigmem socMake -wait 60 -version "${1##*DBS}" load; }
+	ediimport()     { TERM="xterm-256color"; bsedi long socMake -wait 60 -version "${1##*DBS}" importDesign; }
+	editask()       { TERM="xterm-256color"; bsedi long socMake -wait 60 -version "${1##*DBS}" "$2"; }
+	editask()       { TERM="xterm-256color"; bsedi long socMake -wait 60 -version "${1##*DBS}" "$2"; }
+	editask5()      { TERM="xterm-256color"; bsedi5 long socMake -wait 60 -version "${1##*DBS}" "$2"; }
+	editaskbm()     { TERM="xterm-256color"; bsedi bigmem socMake -wait 60 -version "${1##*DBS}" "$2"; }
+	edicelltask()   { TERM="xterm-256color"; bsedi long socMake -wait 60 -version "${1##*DBS}" -cell "$2" "$3"; }
+	edicelltaskbm() { TERM="xterm-256color"; bsedi bigmem socMake -wait 60 -version "${1##*DBS}" -cell "$2" "$3"; }
+	socview()       { TERM="xterm-256color"; bs gui socMake -wait 60 -version "${1##*DBS}" load; }
+	socload()       { TERM="xterm-256color"; bs long socMake -wait 60 -version "${1##*DBS}" load; }
+	socimport()     { TERM="xterm-256color"; bs long socMake -wait 60 -version "${1##*DBS}" importDesign; }
+	soctask()       { TERM="xterm-256color"; bs long socMake -wait 60 -version "${1##*DBS}" "$2"; }
+	soccelltask()   { TERM="xterm-256color"; bs long socMake -wait 60 -version "${1##*DBS}" -cell "$2" "$3"; }
+	soctd()         { ls -latrd "$1"/*timeDesign*; }
+	soctrep()       { vim "$1"/{*.summary,*_all.tarpt,*_all_hold.tarpt}; }
+	#cdrv()         { TERM="xterm"; COLORTERM="xterm"; bs gui calibredrv -l ${DKITROOT}/DATA/CALIBRE/calibre_tools/CalibreDrv.layerprops "$@"; }
+	cdrv()          { bs gui calibredrv -l ${DKITROOT}/DATA/CALIBRE/calibre_tools/CalibreDrv.layerprops "$@"; }
+
+        # --------------------------------------------------------------
+	# Libraries
+	#
+	#
+	cgrep()  { egrep "$1" ${G_WORKSPACE}/LIBRARIES/*/CADENCE/LEF/*.lef | egrep MACRO | sed "s/^.*\/LIBRARIES\/\(.*\)\/CADENCE.* \(.*\)/\1: \2/" | sort -tX -k1,1 -k2,2n; }
+	lcgrep() { egrep "$1" "$2"/CADENCE/LEF/*.lef | egrep MACRO | cut -d" " -f2 | sort -tX -k1,1 -k2,2n; }
+
+	# --------------------------------------------------------------
+	# License check
+	#
+	#
+	edilic() { /sw/cadence/license/bin/lmutil lmstat -a -c /sw/cadence/license/license.dat -f Encounter_Adv_Node_GXL; \
+		   /sw/cadence/license/bin/lmutil lmstat -a -c /sw/cadence/license/license.dat -f Encounter_Digital_Impl_Sys_XL; \
+		   /sw/cadence/license/bin/lmutil lmstat -a -c /sw/cadence/license/license.dat -f Encounter_Low_Power_GXL; \
+	}
+	alias cdslic='lmstat -a -c $CDS_LIC_FILE'
+	alias mentorlic='lmstat -a -c $MGLS_LICENSE_FILE'
+	alias snpslic='lmstat -a -c $LM_LICENSE_FILE'
+	#alias mentorlic='/sw/mentor/license/bin/lmutil lmstat -a -c /sw/mentor/license/license.dat'
+
+	# --------------------------------------------------------------
+	# Docs
+	#
+	#
+	alias ediUG='evince $EDI_ROOT/lnx86/doc/soceUG/soceUG.pdf &'
+	alias ediRefCmd='evince $EDI_ROOT/lnx86/doc/fetxtcmdref/fetxtcmdref.pdf &'
+
+	# --------------------------------------------------------------
+	# Local vim installation works only for RHEL6
+	#
+	#
+        case "$(uname -r)" in
+            *el6*)
+	        # Local files already selected by PATH
+	        ;;
+	    *)
+	        alias evim='/usr/bin/evim'
+	        alias gview='/usr/bin/gview'
+	        alias gvim='/usr/bin/gvim'
+	        alias gvimdiff='/usr/bin/gvimdiff'
+	        alias gvimtutor='/usr/bin/gvimtutor'
+	        alias rvim='/usr/bin/rvim'
+	        alias vim='/usr/bin/vimx'
+	        alias vimdiff='/usr/bin/vimdiff'
+	        alias vimtutor='/usr/bin/vimtutor'
+	        ;;
+        esac
+	
+	# --------------------------------------------------------------
+	# External ssh servers
+	#
+	#
+	alias argo='ssh just22@atlantide.t28.net'
+	alias cvs_env='cvs -d :ext:just22@atlantide.t28.net:/var/lib/cvs/env_repo'
+	alias cvs_prj='cvs -d :ext:just22@atlantide.t28.net:/var/lib/cvs/prj_repo'
+fi
