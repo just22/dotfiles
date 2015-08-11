@@ -1,0 +1,160 @@
+" $Id$
+"
+" vi config file
+" Based on exrc by Dave W. CAPELLA
+"
+"
+" Allow reading any .exrc files found in the current directory
+set exrc
+"
+"
+set autoindent
+"
+"
+set edcompatible
+"
+"
+set errorbells
+"
+"
+"set modeline
+"
+"
+"set nomore
+"
+"
+set number
+"
+"
+set remap
+"
+"
+set report=1
+"
+"
+set ruler
+"
+"
+set scroll=15
+"
+"
+set shiftwidth=2
+"
+"
+"set showcmd
+"
+"
+set showmatch
+"
+"
+set showmode
+"
+"
+set tabstop=2
+"
+"
+set ts=2
+"
+"
+set terse
+"
+"
+set nowrapscan
+"
+"
+set directory=/tmp
+"
+abbr _me <a href="mailto://just22.adl@gmail.com">just22.adl@gmail.com</a>
+abbr _AdL Alessandro DE LAURENZIS
+"
+map OP 60i#
+map OQ 0i#
+map ‹ O# dwc0
+map Š 0i#
+map ‰ :r !dateJ
+map ˆ :!less /home/dave/.exrc
+"
+" attribution line: author,date
+map ,a o# dave@foo.bar.net - :r !datekJ
+"
+" insert shell comment line
+map ,c o60i#
+"
+" insert AdL comment line
+map ,d O# AdL
+"
+" edit .exrc
+map ,e :e $HOME/.exrc
+"
+" source .exrc
+map ,s :so $HOME/.exrc
+"
+" read in shell script template
+map \s 1G:0 r /home/dave/src/skel/skel.sh
+"
+" dupe line, comment original
+map ,n YPi#
+"
+" Dave Puliti let me know that the map above doesn't work on hpux 11iv3.
+" He got around it with the following. Thanks, Dave!
+" :map ,t P
+" :map ,n Y,ti#<ctrl-v>ESC<ctrl-v>RETURN
+"
+" open line above
+map ,O O
+" open line below
+map ,o o
+"
+" new script (sh)
+map ,t 1GO#/bin/sh# :r!ls %kJA - # # dave@foo.edu - :r !datekJo# 60a#Ypo# EOF: :r!ls %kJ1G$
+"
+" shebang line
+map ,1 1Gi#/bin/sh# k
+"
+" copyright line
+map ,2  o# copyright (c) 2001,2002   A. De Laurenzis    All Rights Reserved
+"
+" warranty line
+map ,w  o## May be freely distributed and used as long as this header is retained.# All modifications must be clearly indicated.## The author makes no promise of technical support. However, bug reports,# suggestions, questions, and comments are welcome. All will be answered# via electronic mail as time allows.## NO WARRANTY OF ANY KIND EXPRESSED OR IMPLIED. USE AT YOUR OWN RISK.#
+"
+" comment out this line
+map ,x I#
+"
+" comment, uncomment out a section (uses marks 'a and 'b)
+map ,z :'a,'b s/^/#/
+map ,y :'a,'b s/#//
+"
+"
+" shell function
+map \f ofuntion mja () {}`ja
+"
+" shell if;then;fi construct
+map \i oif [ mja ] ; thenfi`ja
+"
+" here document
+map \< ocat <<EOFEOFkka
+"
+" html macros
+"
+" comment
+map -c o<!-- --------------------  ------------------- -->k2f a
+"
+" return to exact position, not start of line
+"map ' `
+"
+" for email
+map ,. o....................<snip>....................
+"
+"
+ab ppp #####################################
+ab sif  if  [  $# -lt 1 ]^Mthen^M  echo "filename must be provided"^Mexit 1^Mfi
+ab vsl ^[:set list
+ab vsn ^[:set number
+ab vnn ^[:set nonumber
+ab vsl ^[:set list
+ab vnl ^[:set nolist
+ab chm ^[:!chmod 755 %
+ab  fna  date +'%y %d %m %M'^V| read YY DN MN MM ^Mprog=`basename $0`;
+logfile=${HOME}/logs/${prog}.${YY}${MN}
+"
+" eof: .exrc
