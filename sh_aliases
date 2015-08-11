@@ -214,6 +214,7 @@ alias showpath='echo $PATH | tr ":" "\n"'
 alias touchall='ls -tr | xargs touch'
 alias se='env sudoedit'
 alias svim='sudo vim'
+alias cvse='cvs -d :ext:just22@atlantide.t28.net:/var/lib/cvs/env_repo'
 vimall() { find ${1-.} -maxdepth 1 -type f -a ! -name ".*" -print | xargs sh -c '</dev/tty vim "$@"' ignoreme; }
 vimalldot() { find ${1-.} -maxdepth 1 -type f -a -name ".*" -print | xargs sh -c '</dev/tty vim "$@"' ignoreme; }
 
