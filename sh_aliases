@@ -410,12 +410,17 @@ if ping -c 1 Safex1mail3.st.com > /dev/null 2>&1; then
 	        alias vimtutor='/usr/bin/vimtutor'
 	        ;;
         esac
-	
+
 	# --------------------------------------------------------------
 	# External ssh servers
 	#
 	#
 	alias argo='ssh just22@atlantide.t28.net'
 	alias cvs_env='cvs -d :ext:just22@atlantide.t28.net:/var/lib/cvs/env_repo'
-	alias cvs_prj='cvs -d :ext:just22@atlantide.t28.net:/var/lib/cvs/prj_repo'
+	
+	# --------------------------------------------------------------
+	# Various
+	#
+	#
+	alias cvs_prj='cvs -d ~/cvs/prj_repo'
 fi
