@@ -271,6 +271,14 @@ bind '\C-w:unix-filename-rubout'
 stty werase undef
 
 # ----------------------------------------------------------------------
+# Addenda to ~/.bashrc specific for machine/site
+#
+#
+if [ -f ~/.bashrc_local ]; then
+    source ~/.bashrc_local
+fi
+
+# ----------------------------------------------------------------------
 # Debug
 #
 #
