@@ -37,6 +37,9 @@ llatm() { llat "$@" | less; }
 alias llatc='llat -c'
 llatcm() { llatc "$@" | less; }
 
+lsl()  { find ${1-.} -maxdepth 1 -type l -a ! -name ".*" -ls; }
+lsla() { find ${1-.} -maxdepth 1 -type l -ls; }
+
 # ----------------------------------------------------------------------
 # Safe file operations
 #
