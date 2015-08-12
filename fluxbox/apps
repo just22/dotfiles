@@ -1,0 +1,49 @@
+# $Id$
+
+[app] (name=fbrun)
+    [Position]    (CENTER)    {0 0}
+    [Layer]   {2}
+[end]
+
+[app] (name=xconsole) (class=XConsole)
+    #[Deco]  {BORDER}
+    [Workspace]   {5}
+    [Dimensions]  {100% 34%}
+    [Position]    (UPPERLEFT) {0% 0%}
+[end]
+
+[app] (name=xterm) (class=XTerm) (title=Process monitor) {1}
+    #[Deco]  {BORDER}
+    [Workspace]   {5}
+    [Dimensions]  {100% 66%}
+    [Position]    (UPPERLEFT) {0% 34%}
+[end]
+
+[app] (name=Navigator) (class=Seamonkey) (role=browser)
+    #[Deco]  {BORDER}
+    [Maximized]   {yes}
+[end]
+
+[app] (name=Chrome) (class=Chrome) (role=browser)
+    [Deco]  {NONE}
+    [Maximized]   {yes}
+[end]
+
+[app] (name=xombrero) (class=Xombrero)
+    #[Deco]  {BORDER}
+    [Maximized]   {yes}
+[end]
+
+[app] (name=xfe) (class=Xfe)
+    #[Deco]  {BORDER}
+    [Maximized]   {yes}
+[end]
+
+[group] (workspace)
+    #[app] (name=surf) (class=Surf)
+    [Maximized]   {yes}
+[end]
+
+#[app] (.*)
+#    [Deco]  {BORDER}
+#[end]
