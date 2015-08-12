@@ -40,6 +40,9 @@ llatcm() { llatc "$@" | less; }
 lsl()  { find ${1-.} -maxdepth 1 -type l -a ! -name ".*" -ls; }
 lsla() { find ${1-.} -maxdepth 1 -type l -ls; }
 
+lsf()  { find ${1-.} -maxdepth 1 -type f -a ! -name ".*" -print; }
+lsfa() { find ${1-.} -maxdepth 1 -type f -print; }
+
 # ----------------------------------------------------------------------
 # Safe file operations
 #
@@ -219,18 +222,9 @@ vimalldot() { find ${1-.} -maxdepth 1 -type f -a -name ".*" -print | xargs sh -c
 
 runl() { head -n "+$1" "$2" | tail -n 1; }
 
-# Find files by name
-ff() {
-    if [ "$1" == "-h" ]; then
-        echo "usage: ff [-r] pattern"
-	return
-    elif [ "$1" == "-r" ]; then
-        shift
-    else
-        local FIND_OPT="-maxdepth 1"
-    fi
-    find . $FIND_OPT -name "*${1}*" -ls
-}
+# Find files by (part of) name
+ff() { find . -name "*${1}*" -ls; }
+ff.() { find . -maxdepth 1 -name "*${1}*" -ls; }
 
 # List broken links
 bl() {
