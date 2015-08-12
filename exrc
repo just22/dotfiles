@@ -7,143 +7,95 @@
 " Allow reading any .exrc files found in the current directory
 set exrc
 "
-"
+" Handy for email and programming
 set autoindent
 "
-"
-set edcompatible
-"
-"
-set errorbells
-"
-"
+" Reduce the confusion
 "set modeline
 "
-"
-"set nomore
-"
-"
+" Precede each line with its ordinal number
 set number
 "
-"
+" Accept macros within macros
 set remap
 "
-"
+" *Always* show changes that commands make
 set report=1
 "
-"
+" What line/column cursor is on
 set ruler
 "
-"
+" Set n lines for CTRL-d and z
 set scroll=15
 "
+" Number of spaces to use for each step of (auto)indent
+set shiftwidth=4
 "
-set shiftwidth=2
-"
-"
+" Show (partial) command in the last line of the screen
 "set showcmd
 "
-"
+" When a bracket is inserted, briefly jump to the matching one
 set showmatch
 "
-"
+" If in Insert or Replace mode put a message on the last line
 set showmode
 "
+" Number of spaces that a <Tab> in the file counts for
+set tabstop=4
 "
-set tabstop=2
-"
-"
-set ts=2
-"
-"
-set terse
-"
-"
-set nowrapscan
-"
-"
+" Dir name for the swap file
 set directory=/tmp
 "
 abbr _me <a href="mailto://just22.adl@gmail.com">just22.adl@gmail.com</a>
 abbr _AdL Alessandro DE LAURENZIS
 "
-map OP 60i#
-map OQ 0i#
-map ‹ O# dwc0
-map Š 0i#
-map ‰ :r !dateJ
-map ˆ :!less /home/dave/.exrc
+" Attribution line: author,date
+map \a o# justt2.adl@gmail.com - :r !datekJ
 "
-" attribution line: author,date
-map ,a o# dave@foo.bar.net - :r !datekJ
+" Insert shell comment line
+map \c o60i#
 "
-" insert shell comment line
-map ,c o60i#
+" Insert AdL comment line
+map \d O# AdL
 "
-" insert AdL comment line
-map ,d O# AdL
+" Edit .exrc
+map \e :e $HOME/.exrc
 "
-" edit .exrc
-map ,e :e $HOME/.exrc
+" Source .exrc
+map \r :so $HOME/.exrc
 "
-" source .exrc
-map ,s :so $HOME/.exrc
+" Dupe line, comment original
+map \n YPi#
 "
-" read in shell script template
-map \s 1G:0 r /home/dave/src/skel/skel.sh
+" Open line above current one
+map \O O
 "
-" dupe line, comment original
-map ,n YPi#
+" Open line below current one
+map \o o
 "
-" Dave Puliti let me know that the map above doesn't work on hpux 11iv3.
-" He got around it with the following. Thanks, Dave!
-" :map ,t P
-" :map ,n Y,ti#<ctrl-v>ESC<ctrl-v>RETURN
+" New script (sh)
+map \t 1GO#/bin/sh# :r!ls %kJA - # # dave@foo.edu - :r !datekJo# 60a#Ypo# EOF: :r!ls %kJ1G$
 "
-" open line above
-map ,O O
-" open line below
-map ,o o
+" Shebang line
+map \1 1Gi#/bin/sh# k
 "
-" new script (sh)
-map ,t 1GO#/bin/sh# :r!ls %kJA - # # dave@foo.edu - :r !datekJo# 60a#Ypo# EOF: :r!ls %kJ1G$
+" Copyright line
+map \2  o# copyright (c) 2001,2002   A. De Laurenzis    All Rights Reserved
 "
-" shebang line
-map ,1 1Gi#/bin/sh# k
+" Warranty line
+map \w  o## May be freely distributed and used as long as this header is retained.# All modifications must be clearly indicated.## The author makes no promise of technical support. However, bug reports,# suggestions, questions, and comments are welcome. All will be answered# via electronic mail as time allows.## NO WARRANTY OF ANY KIND EXPRESSED OR IMPLIED. USE AT YOUR OWN RISK.#
 "
-" copyright line
-map ,2  o# copyright (c) 2001,2002   A. De Laurenzis    All Rights Reserved
+" Comment out current line
+map \x I#
 "
-" warranty line
-map ,w  o## May be freely distributed and used as long as this header is retained.# All modifications must be clearly indicated.## The author makes no promise of technical support. However, bug reports,# suggestions, questions, and comments are welcome. All will be answered# via electronic mail as time allows.## NO WARRANTY OF ANY KIND EXPRESSED OR IMPLIED. USE AT YOUR OWN RISK.#
-"
-" comment out this line
-map ,x I#
-"
-" comment, uncomment out a section (uses marks 'a and 'b)
-map ,z :'a,'b s/^/#/
-map ,y :'a,'b s/#//
-"
-"
-" shell function
+" Shell function
 map \f ofuntion mja () {}`ja
 "
-" shell if;then;fi construct
-map \i oif [ mja ] ; thenfi`ja
+" Shell if;then;fi construct
+map \i oif [ mja ]; thenfi`ja
 "
-" here document
-map \< ocat <<EOFEOFkka
-"
-" html macros
-"
-" comment
-map -c o<!-- --------------------  ------------------- -->k2f a
-"
-" return to exact position, not start of line
-"map ' `
-"
-" for email
-map ,. o....................<snip>....................
+" For email
+map \. o....................<snip>....................
 "
 "
 ab ppp #####################################
@@ -155,6 +107,5 @@ ab vsl ^[:set list
 ab vnl ^[:set nolist
 ab chm ^[:!chmod 755 %
 ab  fna  date +'%y %d %m %M'^V| read YY DN MN MM ^Mprog=`basename $0`;
-logfile=${HOME}/logs/${prog}.${YY}${MN}
 "
 " eof: .exrc
