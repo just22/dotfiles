@@ -1,0 +1,32 @@
+# $Id$
+
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#  just22.adl@gmail.com account settings
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+set folder = "$HOME/mail/just22.adl@gmail.com"
+set status_format = "───%>─[ just22.adl@gmail.com ]───[ %f %r ]───[ %m msg ]%?n?───[ %n new ]?%?d?───[ %d deleted ]?%?t?───[ %t tagged ]?%?p?───[ %p postponed ]?───"
+
+# Mailboxes to monitor for new mail (and listed in the sidebar)
+unmailboxes *
+mailboxes +INBOX  \
+          +drafts \
+          +sent   \
+          +trash  \
+          +gentoo-user  \
+          +gentoo-dev   \
+          +OpenBSD-misc \
+          +OpenBSD-tech
+
+set spoolfile  = +INBOX     # Go there when started
+set postponed  = +drafts    # Save postponed messages in Gmail's "system" draft folder
+set record     = +sent      # Append outgoing messages to "sent" folder
+set trash      = +trash     # This is the Gmail's "system" trash, messages are automatically removed after 30 days
+set mail_check = 60
+
+set realname = "Alessandro DE LAURENZIS"
+set from = "just22.adl@gmail.com"
+alternates ""
+
+# Signature
+set signature=~/.mutt/just22.adl@gmail.com.signature
