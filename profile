@@ -1,0 +1,78 @@
+# $Id$
+
+# sh/ksh initialization
+
+# ~/.profile: executed by the command interpreter for login shells.
+#
+# User profile settings. This file is sourced from .xsession (which is in
+# turn sourced by XDM and login shells) and should contain stuff that
+# applies to your whole session, such as (non-graphycal) programs that must
+# be executed after login and environment variable definitions
+
+# Clear screen on logout
+trap "clear" 0
+
+# R/X permissions to group members, none to others
+# Note: too problematic... Temporarely switching to default
+#umask 027
+umask 022
+
+# Set PATH so it includes user's private bin if it exists
+PATH=/bin:/sbin:/usr/bin:/usr/sbin:/usr/X11R6/bin:/usr/games:/usr/local/bin:/usr/local/sbin:/usr/local/jre-1.7.0/bin
+if [ -d "$HOME/bin" ] ; then
+    PATH="$HOME/bin:$PATH"
+fi
+if [ "${USER}" != root ]; then
+    PATH="${PATH}:."
+fi
+
+# Maximum number of processes that make may have running
+MAKEFLAGS=-j3
+
+# Default pager and options
+PAGER=less
+#LESS="--no-init --quit-if-one-screen --RAW-CONTROL-CHARS"
+LESS="--no-init --RAW-CONTROL-CHARS"
+
+# Default editor
+VISUAL=vim
+EDITOR=vi
+
+# Default browser
+BROWSER="xombrero"
+
+# Locale settings
+#LC_CTYPE=en_GB.ISO8859-15
+#LC_CTYPE=en_GB.UTF-8
+
+# In console, activate colors, auto-logout and ISO encoding
+# (UTF-8 in all the other cases)
+if [ "${TERM}" == "vt220" ]; then
+    export TERM=wsvt25
+    console-logout &
+    LC_CTYPE=en_GB.ISO8859-15
+else
+    LC_CTYPE=en_GB.UTF-8
+fi
+
+# Interactive shells startup file
+case $SHELL in
+    *ksh*)  [[ -e $HOME/.kshrc ]] && ENV=$HOME/.kshrc ;;
+    *bash*) [[ -e $HOME/.bashrc ]] && source $HOME/.bashrc ;;
+    *)      ;;
+esac
+
+# CPAN local modules config
+PERL_MB_OPT="--install_base \"/home/just22/perl5\""; export PERL_MB_OPT
+PERL_MM_OPT="INSTALL_BASE=/home/just22/perl5"; export PERL_MM_OPT
+PERL5LIB="${HOME}/perl5/lib/perl5:${HOME}/.fvwm/perllib:${PERL5LIB}"; export PERL5LIB
+
+# Autotools version env variables
+AUTOMAKE_VERSION=1.14
+AUTOCONF_VERSION=2.69
+
+# Custom libraries
+PKG_CONFIG_PATH=${HOME}/lib/pkgconfig
+
+# Export environmental variables
+export ENV PATH MAKEFLAGS PAGER LESS EDITOR VISUAL BROWSER LC_CTYPE PERL5LIB AUTOMAKE_VERSION AUTOCONF_VERSION PKG_CONFIG_PATH
