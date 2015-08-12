@@ -55,13 +55,12 @@ alias mv='/bin/mv -i'
 #
 del() {
     if [ $# == 0 ]; then
-	echo "usage: del source ..."
+        echo "usage: del source ..."
         return
     fi
-    for f in $(ls $*); do
+    for f in $(ls -d $*); do
         ff=$(readlink -f $f | tr "/" "%")
-	mv -f $f ~/.#trash#/"$ff"
-	touch ~/.#trash#/"$ff"
+        /bin/mv -f $f ~/.#trash#/"$ff"
     done
 }
 
