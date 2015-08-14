@@ -1,4 +1,4 @@
-# $Id$
+# $Id: bashrc,v 1.2 2015/08/11 11:57:51 just22 Exp $
 
 # ~/.bashrc: executed by bash(1) for non-login shells
 
@@ -108,9 +108,13 @@ export VISUAL=vim
 export FCEDIT=vim
 
 # ----------------------------------------------------------------------
-# Colored prompt, if the terminal has the capability
+# Prompt look
+# (colored when the terminal has the capability)
 #
-#
+
+# Note: Color support can be forced off setting NO_COLORS (to any values)
+#       This will influence file listing aliases' behavior too
+#NO_COLORS=""
 
 # Count stopped jobs
 sj() { jobs -s | wc -l | tr -d " "; }
@@ -119,25 +123,23 @@ set_prompt() {
     local LAST_EXIT="$?"
 
     if [ "$COLOR_SUPPORT" == 1 ]; then
-        HIGHLIGHTED=$YELLOW_FG
-        NORMAL=$BLUE_FG
-        [[ $USER == root ]] && USER_COLOR="${RED_FG}" || USER_COLOR="$HIGHLIGHTED"
+        PS_HI_COLOR=$YELLOW_FG
+        PS_NORM_COLOR=$BLUE_FG
+        [[ $USER == root ]] && PS_USER_COLOR="${RED_FG}" || PS_USER_COLOR="$PS_HI_COLOR"
     fi
 
-    #PS1="\[${COLOR}\]\u\[${DEFAULT}\]@\h:[\W]> "
-
-    PS1="\[${NORMAL}\]${UTF8_PS_1STLINE_HEADER-"+--"}"					# Cosmetic
-    PS1=${PS1}"[\[${USER_COLOR}\]\u\[${NORMAL}\]@\h]-"					# user@hostname
-    #PS1=${PS1}"$([ -n "$TMUX" ] && echo "[tmux]-")"					# tmux session?
-    #PS1=${PS1}"[\s]-"									# Shell
-    PS1=${PS1}"$([ -n "$PRJ_REF" ] && echo "[${HIGHLIGHTED}$PRJ_REF${NORMAL}]-")"	# Is the shell configured for a project?
-    #PS1=${PS1}"[\j]-"									# No. of managed jobs
-    PS1=${PS1}"[$(sj)]-"								# No. of stopped jobs
+    PS1="\[${PS_NORM_COLOR}\]${UTF8_PS_1STLINE_HEADER-"+--"}"					# Cosmetic
+    PS1=${PS1}"[\[${PS_USER_COLOR}\]\u\[${PS_NORM_COLOR}\]@\h]-"				# user@hostname
+    #PS1=${PS1}"$([ -n "$TMUX" ] && echo "[tmux]-")"						# tmux session?
+    #PS1=${PS1}"[\s]-"										# Shell
+    PS1=${PS1}"$([ -n "$PRJ_REF" ] && echo "[${PS_HI_COLOR}$PRJ_REF${PS_NORM_COLOR}]-")"	# Is the shell configured for a project?
+    #PS1=${PS1}"[\j]-"										# No. of managed jobs
+    PS1=${PS1}"[$(sj)]-"									# No. of stopped jobs
     PS1=${PS1}"[$([ "$LAST_EXIT" != 0 ] &&
-        echo "${HIGHLIGHTED}${UTF8_LAST_FAILED-x}${NORMAL}" ||
-	echo "${UTF8_LAST_OK-v}")]-"							# Last command exit status
-    PS1=${PS1}"[\W]"									# Basename of current directory
-    PS1=${PS1}"\n${UTF8_PS_2NDLINE_HEADER-"+----->"} \[${DEFAULT}\]"			# Cosmetic
+        echo "${PS_HI_COLOR}${UTF8_LAST_FAILED-x}${PS_NORM_COLOR}" ||
+	echo "${UTF8_LAST_OK-v}")]-"								# Last command exit status
+    PS1=${PS1}"[\W]"										# Basename of current directory
+    PS1=${PS1}"\n\[${PS_NORM_COLOR}\]${UTF8_PS_2NDLINE_HEADER-"+----->"} \[${DEFAULT_COLOR}\]"	# Cosmetic
 
     # If this is an xterm, then set the title
     case "$TERM" in
@@ -150,8 +152,6 @@ set_prompt() {
     esac
 }
 
-# Note: Color support can be forced (on or off) setting
-# the variable NO_COLORS (value doesn't matter)
 if [ -z ${NO_COLORS+x} ] && tput setaf 1 >/dev/null 2>&1; then
     # Assume that color support is compliant with Ecma-48
     # (ISO/IEC-6429); Lack of such support is extremely rare, and such
@@ -186,7 +186,7 @@ if [ -z ${NO_COLORS+x} ] && tput setaf 1 >/dev/null 2>&1; then
 
     REVERSE='$(tput rev)'
     BRIGHT='$(tput bold)'
-    DEFAULT='$(tput sgr0)'
+    DEFAULT_COLOR='$(tput sgr0)'
 else
     COLOR_SUPPORT=0
 fi
