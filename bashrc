@@ -132,12 +132,14 @@ set_prompt() {
     PS1=${PS1}"[\[${PS_USER_COLOR}\]\u\[${PS_NORM_COLOR}\]@\h]-"				# user@hostname
     #PS1=${PS1}"$([ -n "$TMUX" ] && echo "[tmux]-")"						# tmux session?
     #PS1=${PS1}"[\s]-"										# Shell
-    PS1=${PS1}"$([ -n "$PRJ_REF" ] && echo "[${PS_HI_COLOR}$PRJ_REF${PS_NORM_COLOR}]-")"	# Is the shell configured for a project?
+    [ -n "$PRJ_REF" ] && PS1=${PS1}"$([${PS_HI_COLOR}$PRJ_REF${PS_NORM_COLOR}]-)"		# Is the shell configured for a project?
     #PS1=${PS1}"[\j]-"										# No. of managed jobs
     PS1=${PS1}"[$(sj)]-"									# No. of stopped jobs
-    PS1=${PS1}"[$([ "$LAST_EXIT" != 0 ] &&
-        echo "${PS_HI_COLOR}${UTF8_LAST_FAILED-x}${PS_NORM_COLOR}" ||
-	echo "${UTF8_LAST_OK-v}")]-"								# Last command exit status
+    [ "$LAST_EXIT" != 0 ] &&
+        PS1=${PS1}"[${PS_HI_COLOR}${UTF8_LAST_FAILED-x}${PS_NORM_COLOR}]-" ||
+        PS1=${PS1}"[${UTF8_LAST_OK-v}]-"							# Last command exit status
+    git rev-parse --git-dir > /dev/null 2>&1 &&
+        PS1=${PS1}"[${PS_HI_COLOR}git${PS_NORM_COLOR}]-"					# In a git tree?
     PS1=${PS1}"[\W]"										# Basename of current directory
     PS1=${PS1}"\n\[${PS_NORM_COLOR}\]${UTF8_PS_2NDLINE_HEADER-"+----->"} \[${DEFAULT_COLOR}\]"	# Cosmetic
 
