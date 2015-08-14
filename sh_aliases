@@ -249,3 +249,20 @@ todo() { vim -c ":Note todo"; }
 #alias gwiki='gvim -c "call vimwiki#base#goto_index(v:count1)"'
 #alias diary='vim -c "call vimwiki#diary#make_note(v:count1)"'
 #alias gdiary='gvim -c "call vimwiki#diary#make_note(v:count1)"'
+
+# ----------------------------------------------------------------------
+# git
+#
+#
+pp_gh() {
+    if GIT_DIR="$(git rev-parse --git-dir 2>/dev/null)"; then
+        [ "$GIT_DIR" == .git ] &&
+	    REPO_NAME="$(basename $PWD)" ||
+	    REPO_NAME="$(basename "$(dirname "$GIT_DIR")")"
+        git "$1" https://just22@github.com/just22/"${REPO_NAME}".git
+    else
+	echo "This isn't a git tree"
+    fi
+}
+alias push_gh='pp_gh push'
+alias pull_gh='pp_gh pull'
