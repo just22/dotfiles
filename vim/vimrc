@@ -119,7 +119,7 @@ set scrolloff=5                     " Minimal number of screen lines to keep abo
 set nowrap                          " Wrap long lines
 nnoremap <silent> <leader>n
     \ :set number!<CR>
-nnoremap <silent> <leader>s
+nnoremap <silent> <leader>S
     \ :let &scrolloff=5-&scrolloff<CR>
 nnoremap <silent> <leader>r
     \ :set relativenumber!<CR>
@@ -427,8 +427,8 @@ noremap <silent> <leader>c :<C-B>silent <C-E>s/^/<C-R>=escape(b:cchar,'\/')<CR>/
 noremap <silent> <leader>cc :<C-B>silent <C-E>s/^\V<C-R>=escape(b:cchar,'\/')<CR>//e<CR>:nohlsearch<CR>
 
 " E-mails/notes
-nnoremap <leader>S O[...]<Esc>j0
-nnoremap <leader>SS O[....................snip....................]<Esc>j0
+nnoremap <leader>s O[...]<Esc>j0
+nnoremap <leader>ss O[....................snip....................]<Esc>j0
 iab _h Hello
 iab _br Best regards
 iab _all All the best
