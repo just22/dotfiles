@@ -254,15 +254,17 @@ todo() { vim -c ":Note todo"; }
 # git
 #
 #
-pp_gh() {
+pushpull() {
     if GIT_DIR="$(git rev-parse --git-dir 2>/dev/null)"; then
         [ "$GIT_DIR" == .git ] &&
 	    REPO_NAME="$(basename $PWD)" ||
 	    REPO_NAME="$(basename "$(dirname "$GIT_DIR")")"
-        git "$1" https://just22@github.com/just22/"${REPO_NAME}".git
+        git "$1" "$2"/"$REPO_NAME".git
     else
 	echo "This isn't a git tree"
     fi
 }
-alias push_gh='pp_gh push'
-alias pull_gh='pp_gh pull'
+alias push='pushpull push https://just22@atlantide.t28.net/git'
+alias pull='pushpull pull https://just22@atlantide.t28.net/git'
+alias push_gh='pushpull push https://just22@github.com/just22'
+alias pull_gh='pushpull pull https://just22@github.com/just22'
