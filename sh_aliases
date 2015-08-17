@@ -254,7 +254,7 @@ todo() { vim -c ":Note todo"; }
 # git
 #
 #
-pushpull() {
+git_remote_repo() {
     if GIT_DIR="$(git rev-parse --git-dir 2>/dev/null)"; then
         [ "$GIT_DIR" == .git ] &&
 	    REPO_NAME="$(basename $PWD)" ||
@@ -264,7 +264,9 @@ pushpull() {
 	echo "This isn't a git tree"
     fi
 }
-alias push='pushpull push https://just22@atlantide.t28.net/git'
-alias pull='pushpull pull https://just22@atlantide.t28.net/git'
-alias push_gh='pushpull push https://just22@github.com/just22'
-alias pull_gh='pushpull pull https://just22@github.com/just22'
+alias push='git_remote_repo push https://just22@atlantide.t28.net/git'
+alias pull='git_remote_repo pull https://just22@atlantide.t28.net/git'
+alias fetch='git_remote_repo fetch https://just22@atlantide.t28.net/git'
+alias push_gh='git_remote_repo push https://just22@github.com/just22'
+alias pull_gh='git_remote_repo pull https://just22@github.com/just22'
+alias fetch_gh='git_remote_repo fetch https://just22@github.com/just22'
