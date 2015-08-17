@@ -200,6 +200,15 @@ mrh () { sudo sshfs $USER@$1:/home/$USER $2; }
 alias mplayer-hm='mplayer -cache 1572864 -cache-min 80'
 
 # ----------------------------------------------------------------------
+# Some vim commands I'm accustomed to...
+#
+#
+alias :e='vim'
+alias :b#='r vim'
+alias :q='exit'
+
+
+# ----------------------------------------------------------------------
 # Various
 #
 #
@@ -262,6 +271,8 @@ git_remote_repo() {
 	echo "Not in a git tree"
     fi
 }
-alias push='git_remote_repo push'
-alias pull='git_remote_repo pull'
-alias fetch='git_remote_repo fetch'
+alias gpush='git_remote_repo push'
+alias gpull='git_remote_repo pull'
+alias gfetch='git_remote_repo fetch'
+alias gst='git status'
+alias gdf='git diff'
