@@ -312,7 +312,7 @@ nnoremap <silent> <leader>yf :let @*=expand("%:p")<CR>
 "nnoremap <silent> <leader>w :set wrap!<CR>
 
 " Swap cursorline mode
-nnoremap <silent> <leader>c :set cursorline!<CR>
+nnoremap <silent> <leader>C :set cursorline!<CR>
 
 " Always go to the beginning of a line before doing a 'gF' operation
 nnoremap gF 0gF
@@ -408,10 +408,31 @@ nnoremap <silent> <C-t>q :tabclose<CR>
 "nnoremap <C-k> <C-w><C-k>
 "nnoremap <C-l> <C-w><C-l>
 
-" Text files common patterns
-nnoremap  <leader>u yypVr=
-iab #-- # ---------------------------------------------------------------------
-iab "-- " ---------------------------------------------------------------------
+" Underline
+nnoremap <leader>u yypVr=
+
+" Comment header definition
+autocmd FileType c,cpp,java,scala let b:cchar = '//'
+autocmd FileType sh,ruby,python   let b:cchar = '#'
+autocmd FileType conf,fstab       let b:cchar = '#'
+autocmd FileType tex              let b:cchar = '%'
+autocmd FileType mail             let b:cchar = '>'
+autocmd FileType vim              let b:cchar = '"'
+
+" Rulers
+nnoremap <leader>- o<C-R>=escape(b:cchar,'\/')<CR> ----------------------------------------------------------------------<Esc>
+
+" Comments
+noremap <silent> <leader>c :<C-B>silent <C-E>s/^/<C-R>=escape(b:cchar,'\/')<CR>/<CR>:nohlsearch<CR>
+noremap <silent> <leader>cc :<C-B>silent <C-E>s/^\V<C-R>=escape(b:cchar,'\/')<CR>//e<CR>:nohlsearch<CR>
+
+" E-mails/notes
+nnoremap <leader>S O[...]<Esc>j0
+nnoremap <leader>SS O[....................snip....................]<Esc>j0
+iab _h Hello
+iab _br Best regards
+iab _all All the best
+iab _t Thanks in advance
 
 " Common refuses
 """ cnoremap Q  q
@@ -437,7 +458,7 @@ let g:netrw_liststyle=0     " Thin view (change to 3 for tree)
 let g:netrw_banner=0        " No banner
 let g:netrw_altv=1          " Open files shown on the right
 let g:netrw_browse_split=4  " Open files in previous window
-""" let g:netrw_preview=1       " Preview window shown in a vertically split
+"let g:netrw_preview=1       " Preview window shown in a vertically split
 
 function! VexToggle(dir)
     if exists("t:vex_buf_nr")
@@ -527,6 +548,9 @@ augroup END
 "nnoremap <silent> <Enter> ciW<CR><Esc>:if match(@", "^\\s*$") < 0<Bar>exec "norm P-$diw+"<Bar>endif<CR>
 "nnoremap <silent> <C-j> :setpaste<CR>m`O<Esc>``:setnopaste<CR>
 "nnoremap <silent> <C-k> m`:silent -g/\m^\s*$/d<CR>``:nohlsearch<CR>
+nnoremap <leader>o o<Esc>
+nnoremap <leader>O O<Esc>
+nnoremap <leader><CR> i<CR><Esc>
 " ----------------------------------------------------------------------
 
 " ----------------------------------------------------------------------
