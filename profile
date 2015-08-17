@@ -1,5 +1,3 @@
-# $Id$
-
 # sh/ksh initialization
 
 # ~/.profile: executed by the command interpreter for login shells.

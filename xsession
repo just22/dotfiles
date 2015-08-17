@@ -1,5 +1,3 @@
-# $Id$
-
 # X apps default settings
 xrdb -load  ~/.Xresources
 xrdb -merge ~/.Xresources.defaultColorScheme

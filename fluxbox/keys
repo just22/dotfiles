@@ -1,5 +1,3 @@
-# $Id$
-
 # Click on the desktop to get menus
 OnDesktop Mouse1 :HideMenus
 OnDesktop Mouse2 :WorkspaceMenu

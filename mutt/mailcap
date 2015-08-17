@@ -1,5 +1,3 @@
-# $Id$
-
 text/html; ${HOME}/.mutt/view_attachment.sh xombrero %s & sleep 1 || ${HOME}/.mutt/view_attachment.sh xombrero %s & sleep 1; test=test -n "$DISPLAY";
 text/html; lynx -dump %s; copiousoutput;
 text/plain; vim %s;

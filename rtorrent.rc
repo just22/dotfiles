@@ -1,5 +1,3 @@
-# $Id$
-
 # Resource file for rTorrent
 
 # Maximum and minimum number of peers to connect to per torrent.

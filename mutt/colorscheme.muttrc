@@ -1,5 +1,3 @@
-# $Id$
-
 # Make sure that you are using mutt linked against slang, not ncurses, or
 # suffer the consequences of weird color issues. "mutt -v" to check.
 

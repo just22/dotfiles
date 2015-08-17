@@ -1,5 +1,3 @@
-" $Id$
-"
 " vi config file
 " Based on exrc by Dave W. CAPELLA
 "

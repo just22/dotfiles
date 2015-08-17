@@ -1,7 +1,4 @@
-# $Id$
-
 # Offlineimap config file
-
 
 [general]
 accounts = sandro.delaurenzis@gmail.com, just22.adl@gmail.com

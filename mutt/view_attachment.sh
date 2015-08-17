@@ -1,5 +1,3 @@
-# $Id$
-
 #!/bin/sh
 #
 # Author:   A. DE LAURENZIS (adapted from Eric Gebhart's original code)

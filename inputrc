@@ -1,5 +1,3 @@
-# $Id$
-
 # Switch off visual bell
 set bell-style none
 

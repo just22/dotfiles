@@ -1,5 +1,3 @@
-# $Id$
-
 # ----------------------------------------------------------------------
 # Enable color support for ls
 #
@@ -261,7 +259,7 @@ git_remote_repo() {
 	    REPO_NAME="$(basename "$(dirname "$GIT_DIR")")"
         git "$1" "$2"/"$REPO_NAME".git
     else
-	echo "This isn't a git tree"
+	echo "Not in a git tree"
     fi
 }
 alias push='git_remote_repo push https://just22@atlantide.t28.net/git'

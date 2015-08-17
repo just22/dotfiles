@@ -1,5 +1,3 @@
-# $Id: bashrc,v 1.2 2015/08/11 11:57:51 just22 Exp $
-
 # ~/.bashrc: executed by bash(1) for non-login shells
 
 # This file is sourced by all *interactive* bash shells on startup,
