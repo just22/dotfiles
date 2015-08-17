@@ -257,14 +257,11 @@ git_remote_repo() {
         [ "$GIT_DIR" == .git ] &&
 	    REPO_NAME="$(basename $PWD)" ||
 	    REPO_NAME="$(basename "$(dirname "$GIT_DIR")")"
-        git "$1" "$2"/"$REPO_NAME".git
+        git "$1"
     else
 	echo "Not in a git tree"
     fi
 }
-alias push='git_remote_repo push https://just22@atlantide.t28.net/git'
-alias pull='git_remote_repo pull https://just22@atlantide.t28.net/git'
-alias fetch='git_remote_repo fetch https://just22@atlantide.t28.net/git'
-alias push_gh='git_remote_repo push https://just22@github.com/just22'
-alias pull_gh='git_remote_repo pull https://just22@github.com/just22'
-alias fetch_gh='git_remote_repo fetch https://just22@github.com/just22'
+alias push='git_remote_repo push'
+alias pull='git_remote_repo pull'
+alias fetch='git_remote_repo fetch'
