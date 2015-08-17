@@ -20,26 +20,11 @@ call vundle#rc("~/.vim/bundles")
     Bundle "gmarik/vundle"
 " }
 
-"Bundle "https://github.com/tpope/vim-fugitive"
+Bundle "https://github.com/altercation/vim-colors-solarized.git"
 
-"Bundle "https://github.com/scrooloose/nerdcommenter.git"
-
-"" vim-snipmate {
-"    Bundle "https://github.com/MarcWeber/vim-addon-mw-utils"
-"    Bundle "https://github.com/tomtom/tlib_vim"
-"    Bundle "https://github.com/garbas/vim-snipmate"
-"    Bundle "https://github.com/honza/vim-snippets.git"
-"" }
-
-"Bundle "https://github.com/jeetsukumaran/vim-buffersaurus"
-
-"" vimwiki {
-"    Bundle "https://github.com/vimwiki/vimwiki"
-"" }
+Bundle "https://github.com/tpope/vim-fugitive"
 
 Bundle "https://github.com/tpope/vim-tbone.git"
-
-Bundle "git://repo.or.cz/vcscommand"
 
 Bundle "https://github.com/sk1418/QFGrep"
 
@@ -54,7 +39,22 @@ Bundle "https://github.com/chrisbra/csv.vim.git"
 
 Bundle "https://github.com/godlygeek/tabular.git"
 
-"Bundle 'https://github.com/chriskempson/base16-vim'
+" No more used bundles
+"Bundle "https://github.com/chriskempson/base16-vim"
+"Bundle "git://repo.or.cz/vcscommand"
+"Bundle "https://github.com/scrooloose/nerdcommenter.git"
+"Bundle "https://github.com/jeetsukumaran/vim-buffersaurus"
+"Bundle "https://github.com/vim-latex/vim-latex.git"
+" vim-snipmate {
+"    Bundle "https://github.com/MarcWeber/vim-addon-mw-utils"
+"    Bundle "https://github.com/tomtom/tlib_vim"
+"    Bundle "https://github.com/garbas/vim-snipmate"
+"    Bundle "https://github.com/honza/vim-snippets.git"
+" }
+" vimwiki {
+"    Bundle "https://github.com/vimwiki/vimwiki"
+" }
+
 " ----------------------------------------------------------------------
 
 " Reload automatically config file when it is rewritten
@@ -73,7 +73,7 @@ set cmdwinheight=5                  " Number of screen lines to use for the comm
 set encoding=utf-8                  " Character encoding
 set hidden                          " When on a buffer becomes hidden when it is |abandon|ed (instead to be unloaded)
 set history=100                     " Keep 100 lines of command line history
-"set lazyredraw                      " Do not redraw the screen while executing macros, registers and other not typed commands
+set lazyredraw                      " Do not redraw the screen while executing macros, registers and other not typed commands
 set mouse=a                         " Enable mouse use in all modes (in console too)
 set noerrorbells visualbell t_vb=   " Disable beeping (aka bell) and window flashing
 set nomodeline                      " Switch off automatically setting options by means of modelines (to prevent some security exploits) 
