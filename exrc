@@ -96,14 +96,4 @@ map \i oif [ mja ]; thenfi`ja
 map \. o....................<snip>....................
 "
 "
-ab ppp #####################################
-ab sif  if  [  $# -lt 1 ]^Mthen^M  echo "filename must be provided"^Mexit 1^Mfi
-ab vsl ^[:set list
-ab vsn ^[:set number
-ab vnn ^[:set nonumber
-ab vsl ^[:set list
-ab vnl ^[:set nolist
-ab chm ^[:!chmod 755 %
-ab  fna  date +'%y %d %m %M'^V| read YY DN MN MM ^Mprog=`basename $0`;
-"
 " eof: .exrc
