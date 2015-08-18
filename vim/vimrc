@@ -414,7 +414,7 @@ nnoremap <leader>u yypVr=
 " Comment header definition
 autocmd FileType c,cpp,java,scala let b:cchar = '//'
 autocmd FileType sh,ruby,python   let b:cchar = '#'
-autocmd FileType conf,fstab       let b:cchar = '#'
+autocmd FileType tcl,conf,fstab   let b:cchar = '#'
 autocmd FileType tex              let b:cchar = '%'
 autocmd FileType mail             let b:cchar = '>'
 autocmd FileType vim              let b:cchar = '"'
@@ -550,7 +550,8 @@ augroup END
 "nnoremap <silent> <C-k> m`:silent -g/\m^\s*$/d<CR>``:nohlsearch<CR>
 nnoremap <leader>o o<Esc>
 nnoremap <leader>O O<Esc>
-nnoremap <leader><CR> i<CR><Esc>
+nnoremap <leader>n i<CR><Esc>
+nnoremap <leader>\ i\<CR><Esc>^
 " ----------------------------------------------------------------------
 
 " ----------------------------------------------------------------------
@@ -583,4 +584,5 @@ vmap <silent> <leader>a<Bar> :Tabularize /\|/l1<CR>
 "  Tbone plugin config
 " ----------------------------------------------------------------------
 vnoremap <silent> <leader><CR> :Twrite Top<CR>
+nnoremap <silent> <leader><CR> :.Twrite Top<CR>
 " ----------------------------------------------------------------------
