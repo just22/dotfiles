@@ -59,7 +59,7 @@ Bundle "https://github.com/godlygeek/tabular.git"
 
 " Reload automatically config file when it is rewritten
 autocmd! BufWritePost .vimrc source %
-autocmd! BufWritePost .vim/vimrc source %
+autocmd! BufWritePost ~/.vim/vimrc source %
 
 " Switch syntax highlighting on, when the terminal has colors
 if &t_Co > 2 || has("gui_running")
@@ -147,14 +147,6 @@ else
 endif
 nnoremap <silent> <leader>l
     \ :set list!<CR>
-
-" VCScommand plugin settings
-let VCSCommandDeleteOnHide=1        " If set to a non-zero value, causes the temporary result buffers
-                                    " to automatically delete themselves when
-augroup VCSCommand
-  """  au User VCSBufferCreated nnoremap <silent> <unique> <buffer> q :bwipeout<CR>
-  au User VCSVimDiffFinish :execute "normal \<C-w>\<S-h>"
-augroup END
 
 " ----------------------------------------------------------------------
 "  Statusline config section
@@ -349,7 +341,7 @@ nnoremap <silent> <leader>q :bdel<CR>
 " delay before pressing "p" would accidentally paste).
 " \ls      : list buffers
 " \b \f \g : go back/forward/last-used
-" \1 \2 \3 : go to buffer 1/2/3 etc
+" \1 \2 \3 : go to buffer 1/2/3 etc.
 nnoremap <leader>ls :ls<CR>
 nnoremap <leader>b  :bp<CR>
 nnoremap <leader>f  :bn<CR>
@@ -426,6 +418,9 @@ nnoremap <leader>- o<C-R>=escape(b:cchar,'\/')<CR> -----------------------------
 noremap <silent> <leader>c :<C-B>silent <C-E>s/^/<C-R>=escape(b:cchar,'\/')<CR>/<CR>:nohlsearch<CR>
 noremap <silent> <leader>cc :<C-B>silent <C-E>s/^\V<C-R>=escape(b:cchar,'\/')<CR>//e<CR>:nohlsearch<CR>
 
+" Do not remove indentation for comments when smartindex is set
+inoremap # X#
+
 " E-mails/notes
 nnoremap <leader>s O[...]<Esc>j0
 nnoremap <leader>ss O[....................snip....................]<Esc>j0
@@ -438,6 +433,9 @@ iab _t Thanks in advance
 """ cnoremap Q  q
 cnoremap Qa qa
 cnoremap QA qa
+
+" Paste mode
+nnoremap <silent> <leader>p :set paste!<CR>
 
 " ----------------------------------------------------------------------
 "  diff mode config section
@@ -546,7 +544,7 @@ augroup END
 "  Empty lines insertion
 " ----------------------------------------------------------------------
 "nnoremap <silent> <Enter> ciW<CR><Esc>:if match(@", "^\\s*$") < 0<Bar>exec "norm P-$diw+"<Bar>endif<CR>
-"nnoremap <silent> <C-j> :setpaste<CR>m`O<Esc>``:setnopaste<CR>
+"nnoremap <silent> <C-j> :set paste<CR>m`O<Esc>``:set nopaste<CR>
 "nnoremap <silent> <C-k> m`:silent -g/\m^\s*$/d<CR>``:nohlsearch<CR>
 nnoremap <leader>o o<Esc>
 nnoremap <leader>O O<Esc>
