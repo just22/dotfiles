@@ -211,5 +211,5 @@ alias pkgdas='pkg_delete -as'
 alias mount_datavol01='mount -t nfs -o rw,nodev,nosuid,noexec argo:/srv/nfs4/datavol01 ~/media/datavol01'
 
 # Adding local man pages to default search path
-alias man='man -m ${HOME}/share/man/'
+[ -d ${HOME}/share/man ] && alias man='man -m ${HOME}/share/man'
 
