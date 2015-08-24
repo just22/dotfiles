@@ -227,7 +227,7 @@ alias cvse='cvs -d :ext:just22@atlantide.t28.net:/var/lib/cvs/env_repo'
 vimall() { find ${1-.} -maxdepth 1 -type f -a ! -name ".*" -print | xargs sh -c '</dev/tty vim "$@"' ignoreme; }
 vimalldot() { find ${1-.} -maxdepth 1 -type f -a -name ".*" -print | xargs sh -c '</dev/tty vim "$@"' ignoreme; }
 
-runl() { head -n "+$1" "$2" | tail -n 1; }
+runl() { $(head -n "+$1" "$2" | tail -n 1); }
 
 # Find files by (part of) name
 ff() { find . -name "*${1}*" -ls; }
