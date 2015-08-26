@@ -584,3 +584,8 @@ vmap <silent> <leader>a<Bar> :Tabularize /\|/l1<CR>
 vnoremap <silent> <leader><CR> :Twrite Top<CR>
 nnoremap <silent> <leader><CR> :.Twrite Top<CR>
 " ----------------------------------------------------------------------
+
+" ----------------------------------------------------------------------
+"  csv plugin config
+nnoremap <silent> <leader>A :%CSVArrangeColumn<CR>
+" ----------------------------------------------------------------------
