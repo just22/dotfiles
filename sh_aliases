@@ -107,19 +107,21 @@ alias now='date "+%a %d %b %Y %Z (WK%g%V) - %H:%M"'
 
 # ----------------------------------------------------------------------
 # Colorize grep
-#
+# Note: --color=always (instead of the default --color=auto) activates
+# colors even when the output is not a terminal, as e.g. when there is
+# a pipe with a pager; this could break things sometimes...
 #
 if echo "x" | grep --color "x" > /dev/null 2>&1; then
-    alias grepc='grep --color'
-    alias egrepc='egrep --color'
-    alias fgrepc='fgrep --color'
-    alias zgrepc='zgrep --color'
+    alias grepc='grep --color=always'
+    alias egrepc='egrep --color=always'
+    alias fgrepc='fgrep --color=always'
+    alias zgrepc='zgrep --color=always'
 elif [ -e /usr/local/bin/ggrep ]; then
-    # GNU grep certainly has color support
-    alias grepc='ggrep --color'
-    alias egrepc='gegrep --color'
-    alias fgrepc='gfgrep --color'
-    alias zgrepc='gzgrep --color'
+    # GNU grep certainly has color=always support
+    alias grepc='ggrep --color=always'
+    alias egrepc='gegrep --color=always'
+    alias fgrepc='gfgrep --color=always'
+    alias zgrepc='gzgrep --color=always'
 fi
 
 # ----------------------------------------------------------------------
