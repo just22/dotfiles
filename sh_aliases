@@ -55,7 +55,7 @@ alias mv='/bin/mv -i'
 #
 #
 del() {
-    if [ $# == 0 ]; then
+    if [ $# -eq 0 ]; then
         echo "usage: del source ..."
         return
     fi
@@ -123,7 +123,7 @@ elif [ -e /usr/local/bin/ggrep ]; then
 fi
 
 # ----------------------------------------------------------------------
-# Dir statistics
+# File/dir statistics
 #
 #
 alias usage='du -chs ./* | sort -rh | head -10'
@@ -165,6 +165,50 @@ ft() {
 	    {tcnt[$0]++}
 	    END{for (type in tcnt) printf("%d\t%s\n", tcnt[type], type)}
 	' | sort -nr
+}
+
+# File "age"
+tfmt() {
+	if [ $# -ne 1 ]; then
+		echo "usage: tfmt <seconds>"
+		return
+	fi
+	if [ $1 -lt 60 ]; then
+		echo "${1}s"
+	else
+		DAYS=$(expr \( $1 / 86400 \) % 30)
+		if [ $1 -lt 2592000 ]; then
+			HOURS=$(expr \( $1 / 3600 \) % 24)
+			MINUTES=$(expr \( $1 / 60 \) % 60)
+			[ $DAYS -ne 0 ] && echo -n "${DAYS}d "
+			([ $HOURS -ne 0 ] || ([ $DAYS -ne 0 ] && [ $MINUTES -ne 0 ])) && echo -n "${HOURS}h "
+			[ $MINUTES -ne 0 ] && echo "${MINUTES}min" || echo
+		else
+			YEARS=$(expr $1 / 31104000)
+			MONTHS=$(expr \( $1 / 2592000 \) % 12)
+			[ $YEARS -ne 0 ] && echo -n "${YEARS}y "
+			([ $MONTHS -ne 0 ] || ([ $YEARS -ne 0 ] && [ $DAYS -ne 0 ])) && echo -n "${MONTHS}m "
+			[ $DAYS -ne 0 ] && echo "${DAYS}d" || echo
+		fi
+	fi
+}
+age() {
+	if [ $# -ne 1 ]; then
+		echo "usage: age <fileName>"
+		return
+	fi
+	FILE_NAME="$1"
+	if ! [ -f "$FILE_NAME" ]; then
+		echo "age: cannot open $FILE_NAME: No such file"
+		return
+	fi
+	# BSD and GNU stat versions have different options
+	if stat --version > /dev/null 2>&1; then
+		STAT_MTIME_OPT="-c %Y"
+	else
+		STAT_MTIME_OPT="-t %s -f %m"
+	fi
+	echo "$(tfmt $(expr $(date +%s) - $(stat "$STAT_MTIME_OPT" "$FILE_NAME")))"
 }
 
 # ----------------------------------------------------------------------
