@@ -94,7 +94,7 @@ HISTTIMEFORMAT="%d/%m %R${UTF8_HISTSEPARATOR-" -> "}"
 # and more friendly for non-text input files
 #
 export PAGER=less
-export LESS="--no-init --quit-if-one-screen --RAW-CONTROL-CHARS"
+export LESS="-N --no-init --quit-if-one-screen --RAW-CONTROL-CHARS"
 [ -x /usr/bin/lesspipe ] && export LESSOPEN="|lesspipe.sh %s"
 
 # ----------------------------------------------------------------------
