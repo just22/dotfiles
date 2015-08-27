@@ -25,6 +25,24 @@ fi
 set -o notify
 
 # ----------------------------------------------------------------------
+# Check the window size after each command and, if necessary,
+# update the values of LINES and COLUMNS.
+#
+shopt -s checkwinsize
+
+# ----------------------------------------------------------------------
+# If set, the pattern "**" used in a pathname expansion context will
+# match all files and zero or more directories and subdirectories.
+#
+shopt -s globstar
+
+# ----------------------------------------------------------------------
+# Enable extended pattern matching features
+#
+#
+#shopt -s extglob
+
+# ----------------------------------------------------------------------
 # Don't exit the shell when EOF (Ctrl-d) is received as line first input
 #
 #
@@ -58,7 +76,6 @@ case "$TERM" in
         ;;
 esac
 
-
 # ----------------------------------------------------------------------
 # Set history
 #
@@ -66,23 +83,11 @@ esac
 shopt -s histappend
 #HISTCONTROL=ignoreboth
 HISTCONTROL=ignorespace:erasedups
-HISTIGNORE="exit"
+HISTIGNORE="exit:?q"
 HISTFILE=~/.bash_history
 HISTSIZE=500
 HISTFILESIZE=2000
 HISTTIMEFORMAT="%d/%m %R${UTF8_HISTSEPARATOR-" -> "}"
-
-# ----------------------------------------------------------------------
-# Check the window size after each command and, if necessary,
-# update the values of LINES and COLUMNS.
-#
-shopt -s checkwinsize
-
-# ----------------------------------------------------------------------
-# If set, the pattern "**" used in a pathname expansion context will
-# match all files and zero or more directories and subdirectories.
-#
-#shopt -s globstar
 
 # ----------------------------------------------------------------------
 # Make less the default pager
@@ -145,7 +150,7 @@ set_prompt() {
     case "$TERM" in
         xterm*|screen*)
 	    #[${TERM%%-*}]
-            PS1="\[\033]0; [\s] [\w] [Last cmd: \"$(history 1 | awk -v HS="${UTF8_HISTSEPARATOR-" -> "}" 'BEGIN{FS=HS} {print $2}')\"]\007\]"$PS1
+            PS1="\[\033]0;[\s] [\w] [Last cmd: \"$(history 1 | awk -v HS="${UTF8_HISTSEPARATOR-" -> "}" 'BEGIN{FS=HS} {print $2}')\"]\007\]"$PS1
             ;;
         *)
             ;;

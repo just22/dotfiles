@@ -117,11 +117,11 @@ set norelativenumber                " Show the line number relative to the line 
 set noruler                         " Show the cursor position all the time
 set scrolloff=5                     " Minimal number of screen lines to keep above and below the cursor
 set nowrap                          " Wrap long lines
-nnoremap <silent> <leader>n
+nnoremap <silent> <leader>N
     \ :set number!<CR>
 nnoremap <silent> <leader>S
     \ :let &scrolloff=5-&scrolloff<CR>
-nnoremap <silent> <leader>r
+nnoremap <silent> <leader>R
     \ :set relativenumber!<CR>
 
 " Windows and tabs
@@ -583,4 +583,9 @@ vmap <silent> <leader>a<Bar> :Tabularize /\|/l1<CR>
 " ----------------------------------------------------------------------
 vnoremap <silent> <leader><CR> :Twrite Top<CR>
 nnoremap <silent> <leader><CR> :.Twrite Top<CR>
+" ----------------------------------------------------------------------
+
+" ----------------------------------------------------------------------
+"  csv plugin config
+nnoremap <silent> <leader>A :%CSVArrangeColumn<CR>
 " ----------------------------------------------------------------------
