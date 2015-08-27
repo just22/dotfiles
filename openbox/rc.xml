@@ -717,17 +717,17 @@
     </keybind>
     <keybind key="W-S-Return">
       <action name="Execute">
-        <command>uxterm</command>
+        <command>xterm</command>
       </action>
     </keybind>
     <keybind key="W-S-t">
       <action name="Execute">
-        <command>uxterm -e "tmux attach-session -d || tmux new-session"</command>
+        <command>xterm -e "tmux attach-session -d || tmux new-session"</command>
       </action>
     </keybind>
     <keybind key="W-S-m">
       <action name="Execute">
-        <command>uxterm -title "Mail client" -e mutt</command>
+        <command>xterm -title "Mail client" -e mutt</command>
       </action>
     </keybind>
     <keybind key="W-d">
@@ -747,21 +747,16 @@
     </keybind>
     <keybind key="W-S-b">
       <action name="Execute">
-        <command>firefox</command>
-      </action>
-    </keybind>
-    <keybind key="W-S-w">
-      <action name="Execute">
-        <command>java -XX:MaxHeapSize=256m -jar /home/delauren/java-apps/rachota_24.jar</command>
+        <command>xombrero</command>
       </action>
     </keybind>
     <!-- keybinds for various "actions" -->
     <keybind key="W-F1">
       <action name="Execute">
-        <command>uxterm -e "man openbox"</command>
+        <command>xterm -e "man openbox"</command>
       </action>
     </keybind>
-    <keybind key="W-C-w">
+    <keybind key="W-l">
       <action name="ShowMenu">
         <menu>client-list-combined-menu</menu>
       </action>
@@ -1282,6 +1277,20 @@
 
   # end of the example
   -->
+    <!--
+    <application class="XConsole" name="xconsole">
+      <desktop>6</desktop>
+      <maximized>Vertical</maximized>
+      <position>
+        <x>0</x>
+        <y>0</y>
+        <monitor>1</monitor>
+      </position>
+      <size>
+        <width>50%</width>
+      </size>
+    </application>
+    -->
     <application class="XTerm" name="xterm" title="System log">
       <desktop>6</desktop>
       <maximized>Vertical</maximized>
@@ -1341,6 +1350,13 @@
         <monitor>mouse</monitor>
       </position>
       <skip_taskbar>yes</skip_taskbar>
+      <skip_pager>yes</skip_pager>
+    </application>
+    <application class="dzen" name="dzen2">
+      <skip_pager>yes</skip_pager>
+    </application>
+    <application class="netwmpager" name="netwmpager">
+      <desktop>all</desktop>
       <skip_pager>yes</skip_pager>
     </application>
     <!--
