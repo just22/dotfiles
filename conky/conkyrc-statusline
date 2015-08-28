@@ -1,0 +1,79 @@
+# Conky "status line style" configuration file
+
+# This is the number of times Conky will update before quitting. Set to zero to run forever.
+total_run_times 0
+
+# Set to yes if you want Conky to be forked in the background
+background no
+
+# Print everything to stdout? To X11?
+out_to_console no
+out_to_x yes
+
+# Window properties
+own_window yes
+own_window_type dock
+own_window_title Conky statusline
+own_window_colour 073642
+minimum_size 1277 15
+
+# Borders, shades and outline
+border_width 0
+border_inner_margin 0
+border_outer_margin 0
+#stippled_borders 8
+draw_shades no
+draw_outline no
+draw_borders no
+
+# Use the Xdbe extension? (eliminates flicker)
+double_buffer yes
+
+# Xft font to use
+use_xft yes
+xftfont DejaVu\ Sans\ Mono-8
+
+# Make sure that lines don't get broken
+max_text_width 0
+
+# Update interval in seconds
+update_interval 1
+
+# The number of samples to average for CPU monitoring
+cpu_avg_samples 4
+
+# How strict should if_up be when testing an interface for being up?
+if_up_strictness address
+
+# Desired output unit of all objects displaying a temperature
+temperature_unit celsius
+
+# Adds spaces around certain objects to stop them from moving other things around
+use_spacer left
+
+# Percentages padding (0 = no padding)
+pad_percents 2
+
+# Colors
+default_color EAEBEC
+
+#${execi 2 sysctl -n hw.perfpolicy | cut -c -1 | tr [a-z] [A-Z]}
+#[IPaddr I:${execi 300 ifconfig trunk0 | grep inet | awk '{print $2}'} E:${texeci 300 curl curlmyip.com}] \
+#[${execi 86400 uname -sr}] \
+#[${execi 300 ifconfig trunk0 | grep inet | awk '{print $2}'}/${texeci 300 curl ifconfig.me/ip}] \
+# Formatted text
+TEXT
+${goto 186}\
+[P ${cpu}% ${execi 60 sysctl -n hw.sensors.acpitz0.temp0 | awk '{printf "%2.0d", $1}'}°C \
+${execi 5 sysctl -n hw.perfpolicy | cut -c -1 | tr [a-z] [A-Z]}] \
+[M ${memperc}%] \
+[I/O ${exec iostat -c2 -d sd0 | tail -n1 | awk '{printf "%4.1f\n", $3}'}MB/s] \
+[${exec ifstat -n -i trunk0 0.25 2 | tail -n1 | awk '{printf "▼%5.2fMB/s  ▲%5.2fMB/s", $1/1000, $2/1000}'}] \
+[${if_match "$apm_adapter" == "on-line"}C${else}D${endif} ${apm_battery_life}\
+${if_match "$apm_battery_time" == "unknown"} -:--${else}${apm_battery_time}${endif}] \
+[/home ${fs_free /home} ${fs_used_perc /home}%] \
+[Mail ${new_mails /home/just22/mail/sandro.delaurenzis@gmail.com/INBOX}/\
+${new_mails /home/just22/mail/just22.adl@gmail.com/INBOX}/\
+${new_mails /home/just22/mail/local/INBOX}] \
+[IP I:${execi 60 ifconfig trunk0 | grep inet | awk '{print $2}'} E:${execi 60 curl curlmyip.com}] \
+[T ${execi 300 wget --no-cache -q "http://weather.yahooapis.com/forecastrss?w=718345&u=c" -O - | grep "yweather:condition" | egrep -o "temp=\"[0-9]+\"" | tr -dC [0-9]}°C]

@@ -1,0 +1,64 @@
+# Panel-style Conky configuration file - Weather cond
+
+# This is the number of times Conky will update before quitting. Set to zero to run forever.
+total_run_times 0
+
+# Set to yes if you want Conky to be forked in the background
+background yes
+
+# Print everything to stdout? To X11?
+out_to_console no
+out_to_x yes
+
+# Window properties
+own_window yes
+own_window_type normal
+own_window_title Conky statusline WEATHER
+#own_window_colour 073642
+own_window_colour 586E75
+alignment top_left
+
+# Borders, shades and outline
+border_width 0
+border_inner_margin 0
+border_outer_margin 0
+#stippled_borders 8
+draw_shades no
+draw_outline no
+draw_borders no
+
+# Use the Xdbe extension? (eliminates flicker)
+double_buffer yes
+
+# Xft font to use
+use_xft yes
+xftfont DejaVu\ Sans\ Mono-8
+
+# Make sure that lines don't get broken
+max_text_width 0
+
+# Update interval in seconds
+update_interval 1
+
+# The number of samples to average for CPU monitoring
+cpu_avg_samples 4
+
+# How strict should if_up be when testing an interface for being up?
+if_up_strictness address
+
+# Desired output unit of all objects displaying a temperature
+temperature_unit celsius
+
+# Adds spaces around certain objects to stop them from moving other things around
+use_spacer left
+
+# Pad percentages to this many decimals (0 = no padding)
+pad_percents 3
+
+# Colors
+#own_window_colour 111111
+default_color eaebec
+
+# Formatted text
+TEXT
+${alignc}${execi 300 ~/bin/parse-weather-cond temp}°C

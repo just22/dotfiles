@@ -1,0 +1,6 @@
+#---------------------------------------------
+# TINT2CONF CONFIG FILE
+default_theme = /home/just22/.config/tint2/default.tint2rc
+width = 972
+height = 498
+

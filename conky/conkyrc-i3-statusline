@@ -1,0 +1,48 @@
+# Fluxbox panel-style Conky configuration file
+
+# This is the number of times Conky will update before quitting. Set to zero to run forever.
+total_run_times 0
+
+# Set to yes if you want Conky to be forked in the background
+background no
+
+# Print everything to stdout? To X11?
+out_to_console yes
+out_to_x no
+
+# Update interval in seconds
+update_interval 1
+
+# The number of samples to average for CPU monitoring
+cpu_avg_samples 4
+
+# How strict should if_up be when testing an interface for being up?
+if_up_strictness address
+
+# Desired output unit of all objects displaying a temperature
+temperature_unit celsius
+
+# Adds spaces around certain objects to stop them from moving other things around
+use_spacer left
+
+# Percentages padding (0 = no padding)
+pad_percents 2
+
+# Alignment
+alignment tr
+
+#[IP ${execi 300 ifconfig trunk0 | grep inet | awk '{print $2}'}/${texeci 300 curl curlmyip.com}] \
+# Formatted text
+TEXT
+[P ${cpu}% ${execi 60 sysctl -n hw.sensors.acpitz0.temp0 | awk '{printf "%2.0d", $1}'}°C \
+${execi 5 sysctl -n hw.perfpolicy | cut -c -1 | tr [a-z] [A-Z]}] \
+[M ${memperc}%] \
+[I/O ${exec iostat -c2 -d sd0 | tail -n1 | awk '{printf "%4.1f\n", $3}'}MB/s] \
+[${exec ifstat -n -i trunk0 0.25 2 | tail -n1 | awk '{printf "▼%5.2fMB/s  ▲%5.2fMB/s", $1/1000, $2/1000}'}] \
+[${fs_free /home} ${fs_used_perc /home}%] \
+[B ${apm_battery_life} ${if_match "$apm_adapter" == "on-line"}+${else}-${endif}] \
+[${new_mails /home/just22/mail/sandro.delaurenzis@gmail.com/INBOX}/\
+${new_mails /home/just22/mail/just22.adl@gmail.com/INBOX}/\
+${new_mails /home/just22/mail/local/INBOX}] \
+[T ${texeci 300 wget --no-cache -q "http://weather.yahooapis.com/forecastrss?w=718345&u=c" -O - | grep "yweather:condition" | egrep -o "temp=\"[0-9]+\"" | tr -dC [0-9]}°C] \
+${time %a %d/%m (%V) %R}

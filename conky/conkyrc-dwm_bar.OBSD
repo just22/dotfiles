@@ -1,0 +1,59 @@
+# Conky configuration file for i3bar usage
+
+# This is the number of times Conky will update before quitting. Set to zero to run forever.
+total_run_times 0
+
+# Set to yes if you want Conky to be forked in the background
+background no
+
+# Print everything to stdout? To X11?
+### out_to_x no
+out_to_console yes
+
+# Make sure that lines don't get broken
+max_text_width 0
+
+# Update interval in seconds
+update_interval 1
+
+# The number of samples to average for CPU monitoring
+cpu_avg_samples 10
+
+# How strict should if_up be when testing an interface for being up?
+if_up_strictness address
+
+# Desired output unit of all objects displaying a temperature
+temperature_unit celsius
+
+# Adds spaces around certain objects to stop them from moving other things around
+### use_spacer left
+
+# Pad percentages to this many decimals (0 = no padding)
+### pad_percents 3
+
+# Loads the Lua scripts
+lua_load ~/.config/conky/functions.lua
+
+### ${execi 100000 echo -e "\\x06 \\uE032"} ${execi 100000 echo -e "\\x01"}${lua_parse printf %-4s ${battery_short C245}} \
+### ${execi 100000 echo -e "\\x06 \\uE01D"} ${execi 100000 echo -e "\\x01"}${lua_parse printf %-5s ${weather http://weather.noaa.gov/pub/data/observations/metar/stations/ LIML temperature}°C}\
+# Formatted text
+#${execi 100000 echo -e "\\x06 \\uE026\\x01"} ${acpitemp}°C ${lua_parse printf %-4s ${cpu CPU0}%}\
+#${execi 100000 echo -e "\\x06 \\uE028\\x01"} ${lua_parse printf %-4s ${memperc}%}\
+#${execi 100000 echo -e "\\x06 \\uE061\\x01"} ${if_up enp48s0}${lua_parse printf %-3d ${downspeedf enp48s0}}${else}${if_up wlp16s0}${lua_parse printf %-3d ${downspeedf wlp16s0}}${else}N/A${endif}${endif}\
+#${execi 100000 echo -e "\\x06 \\uE060\\x01"} ${if_up enp48s0}${lua_parse printf %-3d ${upspeedf enp48s0}}${else}${if_up wlp16s0}${lua_parse printf %-3d ${upspeedf wlp16s0}}${else}N/A${endif}${endif}\
+#${execi 100000 echo -e "\\x06 \\uE032\\x01"} ${battery_short C245}\
+#${execi 100000 echo -e "\\x06 \\uE05D\\x01"} ${lua_parse printf %-4s ${mixer Vol}%}\
+#${execi 100000 echo -e "\\x06 \\uE01D\\x01"} ${weather http://weather.noaa.gov/pub/data/observations/metar/stations/ LIML temperature}°C\
+#${execi 100000 echo -e "\\x06 \\uE015\\x01"} ${time %a %d %b %H:%M} 
+#
+#[D:${if_up bge0}${lua_parse printf %-3d ${downspeedf bge0}}${else}${if_up iwi0}${lua_parse printf %-3d ${downspeedf iwi0}}${else}N/A${endif}${endif}\
+# U:${if_up bge0}${lua_parse printf %-3d ${upspeedf bge0}}${else}${if_up iwi0}${lua_parse printf %-3d ${upspeedf iwi0}} kbs${else}N/A${endif}${endif}] \
+#
+TEXT
+[P:${lua_parse printf %-4s ${cpu CPU0}%}(${execi 15 sysctl -n hw.sensors.acpitz0.temp0 | awk '{print int($1)}'}°C)]\
+[M:${lua_parse printf %-4s ${memperc}%}]\
+[D:${if_up trunk0}${lua_parse printf %-3d ${downspeedf trunk0}}${else}N/A${endif}\
+ U:${if_up trunk0}${lua_parse printf %-3d ${upspeedf trunk0}}${else}N/A${endif}]\
+[B:${lua_parse printf %-4s ${apm_battery_life}}(${if_match "${apm_adapter}"=="on-line"}C${else}D${endif})]\
+[V:${lua_parse printf %-4s ${mixer Vol}%}] \
+${time %a %d/%m %H:%M}

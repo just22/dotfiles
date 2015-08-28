@@ -1,0 +1,69 @@
+# Conky configuration file for i3bar usage
+
+# This is the number of times Conky will update before quitting. Set to zero to run forever.
+total_run_times 0
+
+# Set to yes if you want Conky to be forked in the background
+background no
+
+# Print everything to stdout? To X11?
+out_to_x no
+out_to_console yes
+
+# Make sure that lines don't get broken
+max_text_width 0
+
+# Update interval in seconds
+update_interval 1
+
+# The number of samples to average for CPU monitoring
+cpu_avg_samples 4
+
+# How strict should if_up be when testing an interface for being up?
+if_up_strictness address
+
+# Desired output unit of all objects displaying a temperature
+temperature_unit celsius
+
+# Adds spaces around certain objects to stop them from moving other things around
+### use_spacer left
+
+# Pad percentages to this many decimals (0 = no padding)
+### pad_percents 3
+
+# Loads the Lua scripts
+lua_load ~/.config/conky/functions.lua
+
+#${execi 100000 echo -e "\\x06 \\uE026\\x01"} ${acpitemp}°C ${lua_parse printf %-4s ${cpu CPU0}%}\
+#${execi 100000 echo -e "\\x06 \\uE028\\x01"} ${lua_parse printf %-4s ${memperc}%}\
+#${execi 100000 echo -e "\\x06 \\uE061\\x01"} ${if_up enp48s0}${lua_parse printf %-3d ${downspeedf enp48s0}}${else}${if_up wlp16s0}${lua_parse printf %-3d ${downspeedf wlp16s0}}${else}N/A${endif}${endif}\
+#${execi 100000 echo -e "\\x06 \\uE060\\x01"} ${if_up enp48s0}${lua_parse printf %-3d ${upspeedf enp48s0}}${else}${if_up wlp16s0}${lua_parse printf %-3d ${upspeedf wlp16s0}}${else}N/A${endif}${endif}\
+#${execi 100000 echo -e "\\x06 \\uE032\\x01"} ${battery_short C245}\
+#${execi 100000 echo -e "\\x06 \\uE05D\\x01"} ${lua_parse printf %-4s ${mixer Vol}%}\
+#${execi 100000 echo -e "\\x06 \\uE015\\x01"} ${time %a %d %b %H:%M} 
+#
+#[D:${if_up bge0}${lua_parse printf %-3d ${downspeedf bge0}}${else}${if_up iwi0}${lua_parse printf %-3d ${downspeedf iwi0}}${else}N/A${endif}${endif}\
+# U:${if_up bge0}${lua_parse printf %-3d ${upspeedf bge0}}${else}${if_up iwi0}${lua_parse printf %-3d ${upspeedf iwi0}} kbs${else}N/A${endif}${endif}] \
+#
+#[T ${acpitemp}°C] \
+#${execi 86400 echo -e "\\uE061"} ${lua_parse printf %-3d ${downspeedf bond0}}\
+# ${execi 86400 echo -e "\\uE060"} ${lua_parse printf %-3d ${upspeedf bond0}} |\
+#${execi 86400 echo -e "\\uE061"} ${lua_parse printf %-7s ${downspeed bond0}}\
+# ${execi 86400 echo -e "\\uE060"} ${lua_parse printf %-7s ${upspeed bond0}} |\
+
+# Formatted text
+TEXT
+${execi 86400 printf "\\xEE\\x80\\xA6"} ${lua_parse printf %-4s ${cpu}%} \
+${execi 86400 printf "\\xEE\\x80\\xA8"} ${lua_parse printf %-4s ${memperc}%} \
+${if_up trunk0}\
+${execi 86400 printf "\\xEE\\x81\\xA1"} ${lua_parse printf %-7s ${downspeed trunk0}} \
+${execi 86400 printf "\\xEE\\x81\\xA0"} ${lua_parse printf %-7s ${upspeed trunk0}} \
+${else}\
+[No network] \
+${endif}\
+${execi 86400 printf "\\xEE\\x80\\xB2"} ${lua_parse printf %-4s ${apm_battery_life}} \
+${execi 86400 printf "\\xEE\\x81\\x9D"} ${lua_parse printf %-4s ${mixer Vol}%} \
+${execi 86400 printf "\\xEE\\x81\\xB2"} ${new_mails /home/just22/mail/gmail-just22/INBOX}/${new_mails /home/just22/mail/local/INBOX} \
+${execi 86400 printf "\\xEE\\x82\\xA4"} ${execi 60 sysctl hw.sensors.acpitz0.temp0 | awk 'BEGIN{FS="="}{print $2}' | awk 'BEGIN{FS="."}{print $1}'}/${weather http://weather.noaa.gov/pub/data/observations/metar/stations/ LIML temperature}°C \
+${execi 86400 printf "\\xEE\\x80\\x95"} ${time %a %d/%m %H:%M} \
+»
