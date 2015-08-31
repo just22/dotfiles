@@ -13,14 +13,14 @@ menu.items.disabled.text.color: #93A1A1
 
 !! Menu headers
 menu.title.bg: flat solid
-menu.title.bg.color: #657B83
-menu.title.text.color: #073642
+menu.title.bg.color: #839496
+menu.title.text.color: #FDF6E3
 menu.title.text.justify: center
 
 !! Selected menu item
 menu.items.active.bg: flat solid
-menu.items.active.bg.color: #839496
-menu.items.active.text.color: #FDF6E3
+menu.items.active.bg.color: #657B83
+menu.items.active.text.color: #073642
 
 !! Titlebar
 window.active.title.bg: flat solid
