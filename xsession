@@ -95,7 +95,6 @@ REMIND_PID=$!
 
 # Start some useful tray apps
 /usr/local/libexec/tray-app/sound -i &
-sudo /usr/local/libexec/tray-app/eject -i &
 
 # Start the compositor manager
 xcompmgr &
