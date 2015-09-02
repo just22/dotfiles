@@ -337,9 +337,9 @@ git_remote_repo() {
     fi
 }
 gclone() { git clone https://just22@atlantide.t28.net/git/$1; }
-alias gpush='git_remote_repo push'
-alias gpull='git_remote_repo pull'
-alias gfetch='git_remote_repo fetch'
-alias gstatus='git status'
-alias gdiff='git diff'
-alias glog='git log'
+alias Gpush='git_remote_repo push'
+alias Gpull='git_remote_repo pull'
+alias Gfetch='git_remote_repo fetch'
+alias Gstatus='git status'
+alias Gdiff='git diff'
+alias Glog='git log'
