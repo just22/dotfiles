@@ -60,10 +60,29 @@ del() {
         return
     fi
     for f in $(ls -d $*); do
-        ff=$(readlink -f $f | tr "/" "%")
-        /bin/mv -f $f ~/.#trash#/"$ff"
+	if [ "$1" != "-f" ]; then
+		case "$(/bin/ls -dl "$f")" in
+		-*) ft="regular file" ;;
+		b*) ft="block special file" ;;
+		c*) ft="character special file" ;;
+		d*) ft="directory" ;;
+		l*) ft="symbolic link" ;;
+		p*) ft="FIFO" ;;
+		s*) ft="socket link" ;;
+		esac
+		echo -n "Move $ft $f to trash [y/N]? "
+		read r
+		if [ "$r" != y ] && [ "$r" != "Y" ]; then
+			continue
+		fi
+	fi
+	dn="${HOME}/.#trash#$(dirname $(readlink -f "$f"))"
+	bn="$(basename $(readlink -f "$f"))"
+	mkdir -p "$dn" 2>/dev/null
+        /bin/mv -f "$f" "${dn}/${bn}"
     done
 }
+alias delf='del -f'
 
 # ----------------------------------------------------------------------
 # Dir stack commands
@@ -200,7 +219,7 @@ age() {
 		return
 	fi
 	FILE_NAME="$1"
-	if ! [ -f "$FILE_NAME" ]; then
+	if ! [ -a "$FILE_NAME" ]; then
 		echo "age: cannot open $FILE_NAME: No such file"
 		return
 	fi
