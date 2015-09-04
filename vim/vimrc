@@ -16,7 +16,7 @@ set nocompatible
 "
 "
 if v:progname =~? "evim"
-	finish
+        finish
 endif
 
 " ----------------------------------------------------------------------
@@ -28,7 +28,7 @@ set rtp+=~/.vim/bundles/vundle/
 call vundle#rc("~/.vim/bundles")
 
 " Required {
-	Bundle "gmarik/vundle"
+        Bundle "gmarik/vundle"
 " }
 
 Bundle "https://github.com/altercation/vim-colors-solarized.git"
@@ -44,8 +44,8 @@ Bundle "https://github.com/AndrewRadev/linediff.vim.git"
 Bundle "https://github.com/chrisbra/csv.vim.git"
 
 " vim-notes {
-	Bundle "https://github.com/xolox/vim-misc.git"
-	Bundle "https://github.com/xolox/vim-notes.git"
+        Bundle "https://github.com/xolox/vim-misc.git"
+        Bundle "https://github.com/xolox/vim-notes.git"
 " }
 
 Bundle "https://github.com/godlygeek/tabular.git"
@@ -57,13 +57,13 @@ Bundle "https://github.com/godlygeek/tabular.git"
 "Bundle "https://github.com/jeetsukumaran/vim-buffersaurus"
 "Bundle "https://github.com/vim-latex/vim-latex.git"
 " vim-snipmate {
-"	Bundle "https://github.com/MarcWeber/vim-addon-mw-utils"
-"	Bundle "https://github.com/tomtom/tlib_vim"
-"	Bundle "https://github.com/garbas/vim-snipmate"
-"	Bundle "https://github.com/honza/vim-snippets.git"
+"       Bundle "https://github.com/MarcWeber/vim-addon-mw-utils"
+"       Bundle "https://github.com/tomtom/tlib_vim"
+"       Bundle "https://github.com/garbas/vim-snipmate"
+"       Bundle "https://github.com/honza/vim-snippets.git"
 " }
 " vimwiki {
-"	Bundle "https://github.com/vimwiki/vimwiki"
+"       Bundle "https://github.com/vimwiki/vimwiki"
 " }
 
 " Enable file type detection. Use the default filetype settings, so that mail
@@ -84,7 +84,7 @@ autocmd! BufWritePost ~/.vim/vimrc source %
 "
 "
 if &t_Co > 2 || has("gui_running")
-	syntax on
+        syntax on
 endif
 
 " ----------------------------------------------------------------------
@@ -143,10 +143,6 @@ set ttyfast
 " matches are shown
 set wildmenu
 
-" When more than one match, list all matches and complete till longest common
-" string
-"set wildmode=list:longest
-
 " When more than one match, complete till longest common string
 set wildmode=longest,list
 
@@ -160,8 +156,8 @@ set autoindent
 " Do smart autoindenting when starting a new line
 set smartindent
 
-" Always use tabs while editing (but don't save them on file, see below)
-set noexpandtab
+" Use spaces instead of tabs by default
+set expandtab
 
 " Number of spaces that a <Tab> in the file counts for
 set tabstop=8
@@ -243,11 +239,9 @@ set list
 nnoremap <silent> <leader>l :set list!<CR>
 
 if (&term != "vt220") && (&term != "wsvt25")
-    "set listchars=tab:»·,trail:·,extends:»,precedes:«,nbsp:·
-    set listchars=tab:\ \ ,trail:·,extends:»,precedes:«,nbsp:·
+        set listchars=tab:→\ ,trail:·,extends:»,precedes:«,nbsp:·
 else
-    "set listchars=tab:>-,trail:.,extends:>,precedes:<,nbsp:.
-    set listchars=tab:\ \ ,trail:.,extends:>,precedes:<,nbsp:.
+        set listchars=tab:>\ ,trail:.,extends:>,precedes:<,nbsp:.
 endif
 
 " ----------------------------------------------------------------------
@@ -263,16 +257,16 @@ set showmode
 " Always show a status line for the last window
 set laststatus=2
 
-set statusline=%*				" Reset statusline format
-set statusline+=[%t]\				" Name (tail) of file in the buffer
-set statusline+=[#%n]\				" Buffer number
-set statusline+=[%Y%W%R%M%W]\			" Filetype
-set statusline+=%{'['.&ff.']'}\			" File format
-set statusline+=%{'['.&fenc.']'}\		" File encoding
-set statusline+=%=				" Move to right
-set statusline+=[0x%B]\				" Current char
-set statusline+=[%l/%L\ %c]\			" Cursor line / total lines
-set statusline+=%P				" Percent through file
+set statusline=%*                               " Reset statusline format
+set statusline+=[%t]\                           " Name (tail) of file in the buffer
+set statusline+=[#%n]\                          " Buffer number
+set statusline+=[%Y%W%R%M%W]\                   " Filetype
+set statusline+=%{'['.&ff.']'}\                 " File format
+set statusline+=%{'['.&fenc.']'}\               " File encoding
+set statusline+=%=                              " Move to right
+set statusline+=[0x%B]\                         " Current char
+set statusline+=[%l/%L\ %c]\                    " Cursor line / total lines
+set statusline+=%P                              " Percent through file
 
 " ----------------------------------------------------------------------
 " Store swap files in fixed location, not current directory
@@ -286,27 +280,27 @@ set dir=~/.vim/swap//,/var/tmp//,/tmp//,.
 "
 "
 "if exists("$DISPLAY")
-"	" 0 -> blinking block
-"	" 1 -> blinking block
-"	" 2 -> solid block
-"	" 3 -> blinking underscore
-"	" 4 -> solid underscore
-"	" 5 -> blinking vertical bar
-"	" 6 -> solid vertical bar
-"	if &term =~ "^xterm.*"
-"		let &t_SI .= "\<Esc>[3 q"
-"		let &t_EI .= "\<Esc>[0 q"
-"	elseif &term =~ "^screen.*"
-"		let &t_SI .= "\033Ptmux;\033\033[3 q\007\033\\"
-"		let &t_EI .= "\033Ptmux;\033\033[0 q\007\033\\"
-"	endif
+"       " 0 -> blinking block
+"       " 1 -> blinking block
+"       " 2 -> solid block
+"       " 3 -> blinking underscore
+"       " 4 -> solid underscore
+"       " 5 -> blinking vertical bar
+"       " 6 -> solid vertical bar
+"       if &term =~ "^xterm.*"
+"               let &t_SI .= "\<Esc>[3 q"
+"               let &t_EI .= "\<Esc>[0 q"
+"       elseif &term =~ "^screen.*"
+"               let &t_SI .= "\033Ptmux;\033\033[3 q\007\033\\"
+"               let &t_EI .= "\033Ptmux;\033\033[0 q\007\033\\"
+"       endif
 "else
-"	if &term == "linux"	 " Virtual console, not in tmux
-"		let &t_ve = substitute(&t_ve, '\e[?\zs0c', '6c', 'g')
-"		au InsertEnter * let &t_ve = substitute(&t_ve, '\e[?\zs6c', '2c', 'g')
-"		au InsertLeave * let &t_ve = substitute(&t_ve, '\e[?\zs2c', '6c', 'g')
-"	elseif &term =~ "^screen.*"   " tmux in virtual console
-"	endif
+"       if &term == "linux"      " Virtual console, not in tmux
+"               let &t_ve = substitute(&t_ve, '\e[?\zs0c', '6c', 'g')
+"               au InsertEnter * let &t_ve = substitute(&t_ve, '\e[?\zs6c', '2c', 'g')
+"               au InsertLeave * let &t_ve = substitute(&t_ve, '\e[?\zs2c', '6c', 'g')
+"       elseif &term =~ "^screen.*"   " tmux in virtual console
+"       endif
 "endif
 au InsertEnter * set cursorcolumn
 au InsertLeave * set nocursorcolumn
@@ -316,35 +310,35 @@ au InsertLeave * set nocursorcolumn
 "
 "
 if exists("$DISPLAY")
-	set background=dark
-	if exists("$DISPLAY")
-		set t_Co=256
-	endif
-	
-	syntax enable
-	
-	let g:solarized_contrast="high"  "default value is normal
-	let g:solarized_visibility="normal"  "default value is normal
-	let g:solarized_diffmode="high"  "default value is normal
-	" The following items are available options, but
-	" they are currently set to their defaults.
-	" let g:solarized_termtrans=0
-	" let g:solarized_degrade=0
-	" let g:solarized_bold=1
-	" let g:solarized_underline=1
-	" let g:solarized_italic=1
-	" let g:solarized_termcolors=16
-	" let g:solarized_hitrail=0
-	" let g:solarized_menu=1
-	"colorscheme solarized
-	colorscheme solarized_mod
-	
-	"colorscheme base16-chalk-custom
-	"
-	"let g:mirodark_disable_color_approximation=1
-	"colorscheme mirodark
+        set background=dark
+        if exists("$DISPLAY")
+                set t_Co=256
+        endif
+
+        syntax enable
+
+        let g:solarized_contrast="high"  "default value is normal
+        let g:solarized_visibility="normal"  "default value is normal
+        let g:solarized_diffmode="high"  "default value is normal
+        " The following items are available options, but
+        " they are currently set to their defaults.
+        " let g:solarized_termtrans=0
+        " let g:solarized_degrade=0
+        " let g:solarized_bold=1
+        " let g:solarized_underline=1
+        " let g:solarized_italic=1
+        " let g:solarized_termcolors=16
+        " let g:solarized_hitrail=0
+        " let g:solarized_menu=1
+        "colorscheme solarized
+        colorscheme solarized_mod
+
+        "colorscheme base16-chalk-custom
+        "
+        "let g:mirodark_disable_color_approximation=1
+        "colorscheme mirodark
 "else
-"	colorscheme miro8
+"       colorscheme miro8
 endif
 
 " ----------------------------------------------------------------------
@@ -392,9 +386,9 @@ nnoremap <silent> <leader>ns :setlocal nospell<CR>
 "
 set grepprg=egrep\ -n\ -i\ $*\ /dev/null
 command! -nargs=+ Occur
-	\ execute 'silent grep! <args>' |
-	\ copen 20 |
-	\ redraw!
+        \ execute 'silent grep! <args>' |
+        \ copen 20 |
+        \ redraw!
 nnoremap <silent> <leader>w :Occur warn %<CR>
 nnoremap <silent> <leader>e :Occur error %<CR>
 
@@ -403,32 +397,32 @@ nnoremap <silent> <leader>e :Occur error %<CR>
 "
 "
 nnoremap <silent> <leader>dw
-	\ :let cl=line(".")<CR>:g/<C-R><C-A>/d<CR>:call cursor(cl, 1)<CR>
+        \ :let cl=line(".")<CR>:g/<C-R><C-A>/d<CR>:call cursor(cl, 1)<CR>
 
 " ----------------------------------------------------------------------
 " Delete all the "well known" (and "not dangerous") warnings
 "
 "
 nnoremap <leader>kw
-	\ :g/ENCLF-200\\|
-	\ENCSYC-881\\|
-	\obsolete\\|
-	\ENCLF-200\\|
-	\EMS-27\\|
-	\TCLCMD-1142\\|
-	\EMS-42\\|
-	\ENCOPT-3058\\|
-	\NRIF-47\\|
-	\ENCEXT-3509/d<CR>
+        \ :g/ENCLF-200\\|
+        \ENCSYC-881\\|
+        \obsolete\\|
+        \ENCLF-200\\|
+        \EMS-27\\|
+        \TCLCMD-1142\\|
+        \EMS-42\\|
+        \ENCOPT-3058\\|
+        \NRIF-47\\|
+        \ENCEXT-3509/d<CR>
 
 " ----------------------------------------------------------------------
 " Paste the visual selection to the scratchpad (along with
 " the current file name)
 "
 vnoremap <silent> <leader>ps
-	\ :<C-U>silent! '<,'>w >> ~/vimwiki/Scratchpad.wiki<CR>
-	\ :call system("echo File: " . shellescape(expand("%:p")) . "
-	\ >> ~/vimwiki/Scratchpad.wiki")<CR>
+        \ :<C-U>silent! '<,'>w >> ~/vimwiki/Scratchpad.wiki<CR>
+        \ :call system("echo File: " . shellescape(expand("%:p")) . "
+        \ >> ~/vimwiki/Scratchpad.wiki")<CR>
 
 " ----------------------------------------------------------------------
 " Search for visual selection
@@ -504,7 +498,7 @@ nnoremap <silent> <leader>q :bdel<CR>
 " ----------------------------------------------------------------------
 " Mappings to access buffers (don't use "\p" because a delay before
 " pressing "p" would accidentally paste).
-" \ls	   : list buffers
+" \ls      : list buffers
 " \b \f \g : go back/forward/last-used
 " \1 \2 \3 : go to buffer 1/2/3 etc.
 "
@@ -535,8 +529,8 @@ nnoremap <leader>0  :10b<CR>
 " Remove expandtab for Makefile and Python
 "
 "
-"au BufEnter [mM]akefile*,GNUmakefile,*.mk,*.mak,*.py set noexpandtab
-"au BufLeave [mM]akefile*,GNUmakefile,*.mk,*.mak,*.py set expandtab
+au BufEnter [mM]akefile*,GNUmakefile,*.mk,*.mak,*.py set noexpandtab
+au BufLeave [mM]akefile*,GNUmakefile,*.mk,*.mak,*.py set expandtab
 
 " ----------------------------------------------------------------------
 " Use right movement keys!
@@ -544,14 +538,14 @@ nnoremap <leader>0  :10b<CR>
 "
 nnoremap j  gj
 nnoremap k  gk
-"nnoremap <up>	  <nop>
-"nnoremap <down>  <nop>
-"nnoremap <left>  <nop>
-"nnoremap <right> <nop>
-"inoremap <up>	  <nop>
-"inoremap <down>  <nop>
-"inoremap <left>  <nop>
-"inoremap <right> <nop>
+"nnoremap <up>          <nop>
+"nnoremap <down>        <nop>
+"nnoremap <left>        <nop>
+"nnoremap <right>       <nop>
+"inoremap <up>          <nop>
+"inoremap <down>        <nop>
+"inoremap <left>        <nop>
+"inoremap <right>       <nop>
 
 " ----------------------------------------------------------------------
 " In insert mode, mimic some normal mode keys
@@ -595,11 +589,11 @@ nnoremap <leader>u yypVr=
 "
 "
 autocmd FileType c,cpp,java,scala let b:cchar = '//'
-autocmd FileType sh,ruby,python   let b:cchar = '#'
+autocmd FileType sh,csh,tcsh      let b:cchar = '#'
 autocmd FileType tcl,conf,fstab   let b:cchar = '#'
-autocmd FileType tex		  let b:cchar = '%'
-autocmd FileType mail		  let b:cchar = '>'
-autocmd FileType vim		  let b:cchar = '"'
+autocmd FileType tex              let b:cchar = '%'
+autocmd FileType mail             let b:cchar = '>'
+autocmd FileType vim              let b:cchar = '"'
 
 " ----------------------------------------------------------------------
 " Rulers
@@ -651,7 +645,7 @@ nnoremap <silent> <leader>p :set paste!<CR>
 " diff mode
 "
 "
-set diffopt+=iwhite	" Ignore white speces
+set diffopt+=iwhite     " Ignore white speces
 au FilterWritePre * if &diff | execute "nnoremap <C-p> [cz." | execute "nnoremap <C-n> ]cz." | endif
 
 " ----------------------------------------------------------------------
@@ -664,64 +658,64 @@ autocmd filetype svn,*commit* setlocal spell spelllang=en
 " netrw config section
 " (see http://ivanbrennan.nyc/blog/2014/01/16/rigging-vims-netrw)
 "
-let g:netrw_liststyle=0		" Thin view (change to 3 for tree)
-let g:netrw_banner=0		" No banner
-let g:netrw_altv=1		" Open files shown on the right
-let g:netrw_browse_split=4	" Open files in previous window
-"let g:netrw_preview=1		" Preview window shown in a vertically split
+let g:netrw_liststyle=0         " Thin view (change to 3 for tree)
+let g:netrw_banner=0            " No banner
+let g:netrw_altv=1              " Open files shown on the right
+let g:netrw_browse_split=4      " Open files in previous window
+"let g:netrw_preview=1          " Preview window shown in a vertically split
 
 function! VexToggle(dir)
-	if exists("t:vex_buf_nr")
-		call VexClose()
-	else
-		call VexOpen(a:dir)
-	endif
+        if exists("t:vex_buf_nr")
+                call VexClose()
+        else
+                call VexOpen(a:dir)
+        endif
 endf
 
 function! VexOpen(dir)
-	let vex_width=90
-	execute "Vexplore " . a:dir
-	let t:vex_buf_nr=bufnr("%")
-	wincmd H
-	call VexSize(vex_width)
+        let vex_width=90
+        execute "Vexplore " . a:dir
+        let t:vex_buf_nr=bufnr("%")
+        wincmd H
+        call VexSize(vex_width)
 endf
 
 function! VexClose()
-	let curr_win_nr=winnr()
-	let target_win_nr=(curr_win_nr==1 ? winnr("#") : curr_win_nr)
-	1wincmd w
-	close
-	unlet t:vex_buf_nr
-	execute (target_win_nr-1) . "wincmd w"
-	call NormalizeWidths()
+        let curr_win_nr=winnr()
+        let target_win_nr=(curr_win_nr==1 ? winnr("#") : curr_win_nr)
+        1wincmd w
+        close
+        unlet t:vex_buf_nr
+        execute (target_win_nr-1) . "wincmd w"
+        call NormalizeWidths()
 endf
 
 function! VexSize(vex_width)
-	execute "vertical resize" . a:vex_width
-	set winfixwidth
-	call NormalizeWidths()
+        execute "vertical resize" . a:vex_width
+        set winfixwidth
+        call NormalizeWidths()
 endf
 
 function! NormalizeWidths()
-	let eadirection_backup=&eadirection
-	set eadirection=hor
-	set equalalways! equalalways!
-	let &eadirection=eadirection_backup
-	unlet eadirection_backup
+        let eadirection_backup=&eadirection
+        set eadirection=hor
+        set equalalways! equalalways!
+        let &eadirection=eadirection_backup
+        unlet eadirection_backup
 endf
 
 noremap <silent> <leader>, :call VexToggle(getcwd())<CR>
 noremap <silent> <leader>. :call VexToggle("")<CR>
 
 augroup NetrwGroup
-	autocmd! BufEnter * call NormalizeWidths()
+        autocmd! BufEnter * call NormalizeWidths()
 augroup END
 
 " ----------------------------------------------------------------------
 " In mutt: 72-char per line max, set en spell checker
 "
 "
-au BufRead ~/.mutt/tmp/mutt-* set tw=72 
+au BufRead ~/.mutt/tmp/mutt-* set tw=72
 au BufRead ~/.mutt/tmp/mutt-* setlocal spell spelllang=en
 
 " ----------------------------------------------------------------------
@@ -731,9 +725,10 @@ au BufRead ~/.mutt/tmp/mutt-* setlocal spell spelllang=en
 au BufRead /tmp/* nnoremap <silent> <leader>k :1,$d<CR>ZZ
 
 " ----------------------------------------------------------------------
-" When open a buffer, unexpand tabs; when write a file, expand them
+" Switch b/w spaces and tabs
 "
 "
+nnoremap <silent> <leader><TAB> :set expandtab!<CR>:retab!<CR>
 "au BufReadPost * retab! | silent earlier 1 | 0
 "au BufWritePre * set noexpandtab | retab!
 "au BufWritePost * set expandtab | retab!
@@ -751,8 +746,7 @@ nnoremap <silent> <leader>v :loadview<CR>
 "
 " Large files are > 100MB
 " Set options:
-" eventignore+=FileType (no syntax highlighting etc,
-"			 assumes FileType always on)
+" eventignore+=FileType (no syntax hilight etc, assumes FileType always on)
 " noswapfile (save copy of file)
 " bufhidden=unload (save memory when other file is viewed)
 " buftype=nowritefile (is read-only)
@@ -760,7 +754,7 @@ nnoremap <silent> <leader>v :loadview<CR>
 "
 let g:LargeFile = 1024 * 1024 * 100
 augroup LargeFile
-	autocmd BufReadPre * let f=expand("<afile>") | if getfsize(f) > g:LargeFile | set eventignore+=FileType | setlocal noswapfile bufhidden=unload buftype=nowrite undolevels=-1 | else | set eventignore-=FileType | endif
+        autocmd BufReadPre * let f=expand("<afile>") | if getfsize(f) > g:LargeFile | set eventignore+=FileType | setlocal noswapfile bufhidden=unload buftype=nowrite undolevels=-1 | else | set eventignore-=FileType | endif
 augroup END
 
 " ----------------------------------------------------------------------
@@ -774,6 +768,18 @@ nnoremap <leader>o o<Esc>
 nnoremap <leader>O O<Esc>
 nnoremap <leader>n i<CR><Esc>
 nnoremap <leader>\ i\<CR><Esc>^
+
+" ----------------------------------------------------------------------
+" Remove trailing spaces
+"
+"
+function! RemoveLeadingSpaces()
+        let _cpos = getpos(".")
+        execute '%s/\s\+$//'
+        execute 'nohlsearch'
+        call setpos(".", _cpos)
+endf
+nnoremap <silent> <leader><space> :call RemoveLeadingSpaces()<CR>
 
 " ----------------------------------------------------------------------
 " vim-notes plugin
