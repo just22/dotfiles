@@ -109,7 +109,11 @@ alias v='fc -e vim'
 #
 alias passwd='/usr/bin/passwd'
 alias su='/usr/bin/su'
-alias sudo='/usr/local/bin/sudo'
+if [ -f /usr/bin/sudo ]; then
+	alias sudo='/usr/bin/sudo'
+elif [ -f /usr/local/bin/sudo ]; then
+	alias sudo='/usr/local/bin/sudo'
+fi
 
 # ----------------------------------------------------------------------
 # Calendar
