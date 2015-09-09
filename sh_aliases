@@ -60,25 +60,25 @@ del() {
         return
     fi
     for f in $(ls -d $*); do
-	if [ "$1" != "-f" ]; then
-		case "$(/bin/ls -dl "$f")" in
-		-*) ft="regular file" ;;
-		b*) ft="block special file" ;;
-		c*) ft="character special file" ;;
-		d*) ft="directory" ;;
-		l*) ft="symbolic link" ;;
-		p*) ft="FIFO" ;;
-		s*) ft="socket link" ;;
-		esac
-		echo -n "Move $ft $f to trash [y/N]? "
-		read r
-		if [ "$r" != y ] && [ "$r" != "Y" ]; then
-			continue
-		fi
-	fi
-	dn="${HOME}/.#trash#$(dirname $(readlink -f "$f"))"
-	bn="$(basename $(readlink -f "$f"))"
-	mkdir -p "$dn" 2>/dev/null
+        if [ "$1" != "-f" ]; then
+                case "$(/bin/ls -dl "$f")" in
+                -*) ft="regular file" ;;
+                b*) ft="block special file" ;;
+                c*) ft="character special file" ;;
+                d*) ft="directory" ;;
+                l*) ft="symbolic link" ;;
+                p*) ft="FIFO" ;;
+                s*) ft="socket link" ;;
+                esac
+                echo -n "Move $ft $f to trash [y/N]? "
+                read r
+                if [ "$r" != y ] && [ "$r" != "Y" ]; then
+                        continue
+                fi
+        fi
+        dn="${HOME}/.trash$(dirname $(readlink -f "$f"))"
+        bn="$(basename $(readlink -f "$f"))"
+        mkdir -p "$dn" 2>/dev/null
         /bin/mv -f "$f" "${dn}/${bn}"
     done
 }
@@ -110,9 +110,9 @@ alias v='fc -e vim'
 alias passwd='/usr/bin/passwd'
 alias su='/usr/bin/su'
 if [ -f /usr/bin/sudo ]; then
-	alias sudo='/usr/bin/sudo'
+        alias sudo='/usr/bin/sudo'
 elif [ -f /usr/local/bin/sudo ]; then
-	alias sudo='/usr/local/bin/sudo'
+        alias sudo='/usr/local/bin/sudo'
 fi
 
 # ----------------------------------------------------------------------
@@ -179,7 +179,7 @@ ft() {
     # through the "-r" switch
     if [ "$1" == "-h" ]; then
         echo "usage: ft [-r] [<pathName> ...]"
-	return
+        return
     elif [ "$1" == "-r" ]; then
         shift
     else
@@ -187,53 +187,53 @@ ft() {
     fi
     find ${*-.} $FIND_OPT -type f -print | xargs file -b 2>/dev/null |
         awk '
-	    {tcnt[$0]++}
-	    END{for (type in tcnt) printf("%d\t%s\n", tcnt[type], type)}
-	' | sort -nr
+            {tcnt[$0]++}
+            END{for (type in tcnt) printf("%d\t%s\n", tcnt[type], type)}
+        ' | sort -nr
 }
 
 # File "age"
 tfmt() {
-	if [ $# -ne 1 ]; then
-		echo "usage: tfmt <seconds>"
-		return
-	fi
-	if [ $1 -lt 60 ]; then
-		echo "${1}s"
-	else
-		DAYS=$(expr \( $1 / 86400 \) % 30)
-		if [ $1 -lt 2592000 ]; then
-			HOURS=$(expr \( $1 / 3600 \) % 24)
-			MINUTES=$(expr \( $1 / 60 \) % 60)
-			[ $DAYS -ne 0 ] && echo -n "${DAYS}d "
-			([ $HOURS -ne 0 ] || ([ $DAYS -ne 0 ] && [ $MINUTES -ne 0 ])) && echo -n "${HOURS}h "
-			[ $MINUTES -ne 0 ] && echo "${MINUTES}min" || echo
-		else
-			YEARS=$(expr $1 / 31104000)
-			MONTHS=$(expr \( $1 / 2592000 \) % 12)
-			[ $YEARS -ne 0 ] && echo -n "${YEARS}y "
-			([ $MONTHS -ne 0 ] || ([ $YEARS -ne 0 ] && [ $DAYS -ne 0 ])) && echo -n "${MONTHS}m "
-			[ $DAYS -ne 0 ] && echo "${DAYS}d" || echo
-		fi
-	fi
+        if [ $# -ne 1 ]; then
+                echo "usage: tfmt <seconds>"
+                return
+        fi
+        if [ $1 -lt 60 ]; then
+                echo "${1}s"
+        else
+                DAYS=$(expr \( $1 / 86400 \) % 30)
+                if [ $1 -lt 2592000 ]; then
+                        HOURS=$(expr \( $1 / 3600 \) % 24)
+                        MINUTES=$(expr \( $1 / 60 \) % 60)
+                        [ $DAYS -ne 0 ] && echo -n "${DAYS}d "
+                        ([ $HOURS -ne 0 ] || ([ $DAYS -ne 0 ] && [ $MINUTES -ne 0 ])) && echo -n "${HOURS}h "
+                        [ $MINUTES -ne 0 ] && echo "${MINUTES}min" || echo
+                else
+                        YEARS=$(expr $1 / 31104000)
+                        MONTHS=$(expr \( $1 / 2592000 \) % 12)
+                        [ $YEARS -ne 0 ] && echo -n "${YEARS}y "
+                        ([ $MONTHS -ne 0 ] || ([ $YEARS -ne 0 ] && [ $DAYS -ne 0 ])) && echo -n "${MONTHS}m "
+                        [ $DAYS -ne 0 ] && echo "${DAYS}d" || echo
+                fi
+        fi
 }
 age() {
-	if [ $# -ne 1 ]; then
-		echo "usage: age <fileName>"
-		return
-	fi
-	FILE_NAME="$1"
-	if ! [ -a "$FILE_NAME" ]; then
-		echo "age: cannot open $FILE_NAME: No such file"
-		return
-	fi
-	# BSD and GNU stat versions have different options
-	if stat --version > /dev/null 2>&1; then
-		STAT_MTIME_OPT="-c %Y"
-	else
-		STAT_MTIME_OPT="-t %s -f %m"
-	fi
-	echo "$(tfmt $(expr $(date +%s) - $(stat "$STAT_MTIME_OPT" "$FILE_NAME")))"
+        if [ $# -ne 1 ]; then
+                echo "usage: age <fileName>"
+                return
+        fi
+        FILE_NAME="$1"
+        if ! [ -a "$FILE_NAME" ]; then
+                echo "age: cannot open $FILE_NAME: No such file"
+                return
+        fi
+        # BSD and GNU stat versions have different options
+        if stat --version > /dev/null 2>&1; then
+                STAT_MTIME_OPT="-c %Y"
+        else
+                STAT_MTIME_OPT="-t %s -f %m"
+        fi
+        echo "$(tfmt $(expr $(date +%s) - $(stat "$STAT_MTIME_OPT" "$FILE_NAME")))"
 }
 
 # ----------------------------------------------------------------------
@@ -333,11 +333,11 @@ todo() { vim -c ":Note todo"; }
 git_remote_repo() {
     if GIT_DIR="$(git rev-parse --git-dir 2>/dev/null)"; then
         [ "$GIT_DIR" == .git ] &&
-	    REPO_NAME="$(basename $PWD)" ||
-	    REPO_NAME="$(basename "$(dirname "$GIT_DIR")")"
+            REPO_NAME="$(basename $PWD)" ||
+            REPO_NAME="$(basename "$(dirname "$GIT_DIR")")"
         git "$1"
     else
-	echo "Not in a git tree"
+        echo "Not in a git tree"
     fi
 }
 gclone() { git clone https://just22@atlantide.t28.net/git/$1; }
