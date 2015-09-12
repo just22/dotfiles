@@ -21,8 +21,8 @@ XTerm*faceSize:            10
 !XTerm*faceSize:            11
 
 ! No bold fonts and colors
-XTerm*allowBoldFonts:	   false
-XTerm*boldColors:	   false
+XTerm*allowBoldFonts:      false
+XTerm*boldColors:          false
 
 ! Scrolling
 XTerm*scrollBar:           false
@@ -168,4 +168,4 @@ tkremind*font: -xos4-terminus-medium-*-*-*-12-*-*-*-*-*-iso10646-*
 !
 ! xfig section
 !
-xfig*inches:	false
+xfig*inches:    false
