@@ -3,16 +3,16 @@
 #
 #
 if [ "${COLOR_SUPPORT}" = 1 ]; then
-    if ls --color > /dev/null 2>&1; then
-        alias l='ls --color=always'
-    elif colorls > /dev/null 2>&1; then
-        LSCOLORS="exfxcxdxbxgxDxBxGxCbCx"; export LSCOLORS
-        alias l='colorls -G'
-    else
-        alias l='ls -F'
-    fi
+        if ls --color > /dev/null 2>&1; then
+                alias l='ls --color=always'
+        elif colorls > /dev/null 2>&1; then
+                LSCOLORS="exfxcxdxbxgxDxBxGxCbCx"; export LSCOLORS
+                alias l='colorls -G'
+        else
+                alias l='ls -F'
+        fi
 else
-    alias l='ls -F'
+        alias l='ls -F'
 fi
 
 # ----------------------------------------------------------------------
@@ -55,32 +55,32 @@ alias mv='/bin/mv -i'
 #
 #
 del() {
-    if [ $# -eq 0 ]; then
-        echo "usage: del source ..."
-        return
-    fi
-    for f in $(ls -d $*); do
-        if [ "$1" != "-f" ]; then
-                case "$(/bin/ls -dl "$f")" in
-                -*) ft="regular file" ;;
-                b*) ft="block special file" ;;
-                c*) ft="character special file" ;;
-                d*) ft="directory" ;;
-                l*) ft="symbolic link" ;;
-                p*) ft="FIFO" ;;
-                s*) ft="socket link" ;;
-                esac
-                echo -n "Move $ft $f to trash [y/N]? "
-                read r
-                if [ "$r" != y ] && [ "$r" != "Y" ]; then
-                        continue
-                fi
+        if [ $# -eq 0 ]; then
+                echo "usage: del source ..."
+                return
         fi
-        dn="${HOME}/.trash$(dirname $(readlink -f "$f"))"
-        bn="$(basename $(readlink -f "$f"))"
-        mkdir -p "$dn" 2>/dev/null
-        /bin/mv -f "$f" "${dn}/${bn}"
-    done
+        for f in $(ls -d $*); do
+                if [ "$1" != "-f" ]; then
+                        case "$(/bin/ls -dl "$f")" in
+                        -*) ft="regular file" ;;
+                        b*) ft="block special file" ;;
+                        c*) ft="character special file" ;;
+                        d*) ft="directory" ;;
+                        l*) ft="symbolic link" ;;
+                        p*) ft="FIFO" ;;
+                        s*) ft="socket link" ;;
+                        esac
+                        echo -n "Move $ft $f to trash [y/N]? "
+                        read r
+                        if [ "$r" != y ] && [ "$r" != "Y" ]; then
+                                        continue
+                        fi
+                fi
+                dn="${HOME}/.trash$(dirname $(readlink -f "$f"))"
+                bn="$(basename $(readlink -f "$f"))"
+                mkdir -p "$dn" 2>/dev/null
+                /bin/mv -f "$f" "${dn}/${bn}"
+        done
 }
 alias delf='del -f'
 
@@ -108,7 +108,13 @@ alias v='fc -e vim'
 # for most shells
 #
 alias passwd='/usr/bin/passwd'
-alias su='/usr/bin/su'
+
+if [ -f /usr/bin/su ]; then
+        alias su='/usr/bin/su'
+elif [ -f /bin/su ]; then
+        alias su='/bin/su'
+fi
+
 if [ -f /usr/bin/sudo ]; then
         alias sudo='/usr/bin/sudo'
 elif [ -f /usr/local/bin/sudo ]; then
@@ -120,11 +126,11 @@ fi
 #
 #
 if cal -3 > /dev/null 2>&1; then
-    # GNU version
-    alias cal='cal -m3'
+        # GNU version
+        alias cal='cal -m3'
 else
-    # BSD version
-    alias cal='cal -mw | sed -E "2,\$s/(^|[^0-9])($(date +%e))( |$)/\1$(tput rev)$(echo "\2")$(tput sgr0)\3/g"'
+        # BSD version
+        alias cal='cal -mw | sed -E "2,\$s/(^|[^0-9])($(date +%e))( |$)/\1$(tput rev)$(echo "\2")$(tput sgr0)\3/g"'
 fi
 alias now='date "+%a %d %b %Y %Z (WK%g%V) - %H:%M"'
 
@@ -135,16 +141,16 @@ alias now='date "+%a %d %b %Y %Z (WK%g%V) - %H:%M"'
 # a pipe with a pager; this could break things sometimes...
 #
 if echo "x" | grep --color "x" > /dev/null 2>&1; then
-    alias grepc='grep --color=always'
-    alias egrepc='egrep --color=always'
-    alias fgrepc='fgrep --color=always'
-    alias zgrepc='zgrep --color=always'
+        alias grepc='grep --color=always'
+        alias egrepc='egrep --color=always'
+        alias fgrepc='fgrep --color=always'
+        alias zgrepc='zgrep --color=always'
 elif [ -e /usr/local/bin/ggrep ]; then
-    # GNU grep certainly has color=always support
-    alias grepc='ggrep --color=always'
-    alias egrepc='gegrep --color=always'
-    alias fgrepc='gfgrep --color=always'
-    alias zgrepc='gzgrep --color=always'
+        # GNU grep certainly has color=always support
+        alias grepc='ggrep --color=always'
+        alias egrepc='gegrep --color=always'
+        alias fgrepc='gfgrep --color=always'
+        alias zgrepc='gzgrep --color=always'
 fi
 
 # ----------------------------------------------------------------------
@@ -172,24 +178,24 @@ nlh() { ls -lA $1 | egrep "^l" | awk '{print $9}' | egrep "^\." | wc -l; }
 
 # Report file type in dir/tree
 ft() {
-    # Based on the original code by Bruce Barnet, modified by Yunliang Yu
-    # This version adds a help message, uses file(1) "brief mode"
-    # (simplifying the awk(1) body) and hides error in case no file is
-    # found in the specified dir, and makes the recursive search optional
-    # through the "-r" switch
-    if [ "$1" == "-h" ]; then
-        echo "usage: ft [-r] [<pathName> ...]"
-        return
-    elif [ "$1" == "-r" ]; then
-        shift
-    else
-        local FIND_OPT="-maxdepth 1"
-    fi
-    find ${*-.} $FIND_OPT -type f -print | xargs file -b 2>/dev/null |
-        awk '
-            {tcnt[$0]++}
-            END{for (type in tcnt) printf("%d\t%s\n", tcnt[type], type)}
-        ' | sort -nr
+        # Based on the original code by Bruce Barnet, modified by Yunliang Yu
+        # This version adds a help message, uses file(1) "brief mode"
+        # (simplifying the awk(1) body) and hides error in case no file is
+        # found in the specified dir, and makes the recursive search optional
+        # through the "-r" switch
+        if [ "$1" == "-h" ]; then
+                echo "usage: ft [-r] [<pathName> ...]"
+                return
+        elif [ "$1" == "-r" ]; then
+                shift
+        else
+                local FIND_OPT="-maxdepth 1"
+        fi
+        find ${*-.} $FIND_OPT -type f -print | xargs file -b 2>/dev/null |
+                awk '
+                {tcnt[$0]++}
+                END{for (type in tcnt) printf("%d\t%s\n", tcnt[type], type)}
+                ' | sort -nr
 }
 
 # File "age"
@@ -304,8 +310,8 @@ ff.() { find . -maxdepth 1 -name "*${1}*" -ls; }
 
 # List broken links
 bl() {
-    find -L ${1-.} -maxdepth 1 -type l -ls |
-        awk '{printf "%s %s %s\n", $11, $12, $13}'
+        find -L ${1-.} -maxdepth 1 -type l -ls |
+                awk '{printf "%s %s %s\n", $11, $12, $13}'
 }
 
 # ----------------------------------------------------------------------
@@ -331,14 +337,14 @@ todo() { vim -c ":Note todo"; }
 #
 #
 git_remote_repo() {
-    if GIT_DIR="$(git rev-parse --git-dir 2>/dev/null)"; then
-        [ "$GIT_DIR" == .git ] &&
-            REPO_NAME="$(basename $PWD)" ||
-            REPO_NAME="$(basename "$(dirname "$GIT_DIR")")"
-        git "$1"
-    else
-        echo "Not in a git tree"
-    fi
+        if GIT_DIR="$(git rev-parse --git-dir 2>/dev/null)"; then
+                [ "$GIT_DIR" == .git ] &&
+                        REPO_NAME="$(basename $PWD)" ||
+                        REPO_NAME="$(basename "$(dirname "$GIT_DIR")")"
+                git "$1"
+        else
+                echo "Not in a git tree"
+        fi
 }
 gclone() { git clone https://just22@atlantide.t28.net/git/$1; }
 alias Gpush='git_remote_repo push'
