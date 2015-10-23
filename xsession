@@ -76,9 +76,12 @@ pkill xconsole
 #xterm -title "System log" -e tail -f /var/log/messages &
 
 # Start xlock through xidle
-xidle -delay 2 -nw -program "/usr/X11R6/bin/xlock -mousemotion" &
+#xidle -delay 2 -nw -timeout 600 -program "xlock -mousemotion" &
 
-# X screen reset daemon (activated by SIGUSR1)
+# Xscreensaver daemon
+xscreensaver &
+
+# X screen reset and lock daemon (activated by SIGUSR1)
 xscreen-reset &
 XSCREEN_RESET_PID=$!
 
@@ -98,6 +101,7 @@ REMIND_PID=$!
 
 # Start the compositor manager
 xcompmgr &
+#compton &
 
 # Start the selected X session
 case "$XSESSION" in
