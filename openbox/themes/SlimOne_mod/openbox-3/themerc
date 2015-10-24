@@ -48,8 +48,10 @@ window.active.button.*.image.color: #FDF6E3
 window.inactive.button.*.image.color: #586E75
 
 !! Borders
-window.active.border.color: #657B83
-window.inactive.border.color: #93A1A1
+!!window.active.border.color: #657B83
+window.active.border.color: #586e75
+!!window.inactive.border.color: #93A1A1
+window.inactive.border.color: #586e75
 window.active.title.separator.color: #002B36
 window.inactive.title.separator.color: #002B36
 border.width: 1
