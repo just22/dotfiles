@@ -47,7 +47,7 @@ if [ -x /usr/local/bin/dbus-launch -a -z "${DBUS_SESSION_BUS_ADDRESS}" ]; then
     eval `dbus-launch --sh-syntax --exit-with-session`
 fi
 
-# Console log
+# Console log (relaunched to match colorscheme)
 xconsole -geometry 480x130-0-0 -daemon -notify -verbose -exitOnFail &
 
 
@@ -97,7 +97,7 @@ REMIND_PID=$!
 #btpd --bw-in 400 --bw-out 50  --max-peers 25 --max-uploads 5 --port 6881
 
 # Start some useful tray apps
-/usr/local/libexec/tray-app/sound -i &
+#/usr/local/libexec/tray-app/sound -i &
 
 # Start the compositor manager
 #xcompmgr &
