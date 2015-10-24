@@ -98,7 +98,7 @@ systray_icon_size = 16
 systray_icon_asb = 100 0 0
 
 #--------------------------------
-# Launcher
+# Launchers
 launcher_padding = 3 1 12
 launcher_background_id = 4
 launcher_icon_size = 16
@@ -107,6 +107,7 @@ launcher_item_app = ~/.config/tint2/launchers/wm_root_menu.desktop
 launcher_item_app = ~/.config/tint2/launchers/removables.desktop
 launcher_item_app = ~/.config/tint2/launchers/play_link.desktop
 launcher_item_app = ~/.config/tint2/launchers/wm_clients_menu.desktop
+launcher_item_app = ~/.config/tint2/launchers/vol.desktop
 
 #--------------------------------
 # Clock
