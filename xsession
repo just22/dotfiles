@@ -15,7 +15,8 @@ xhost +si:localuser:root
 
 # Root window background color (solarized theme)
 #xsetroot -solid rgb:07/36/42
-hsetroot -add '#073642' -add '#586E75' -gradient 0
+xsetroot -solid rgb:58/6E/75
+#hsetroot -add '#073642' -add '#586E75' -gradient 0
 
 
 # Local fonts path
@@ -61,10 +62,9 @@ if [ -e /usr/local/bin/Xdialog ]; then
                 --stdout \
                 --menubox \
                     "Select the X session" \
-                    190x120 \
-                    3 \
+                    190x105 \
+                    2 \
                     "openbox"  "Openbox" \
-                    "i3"       "i3" \
                     "cwm"      "cwm"`
 fi
 
@@ -100,7 +100,7 @@ REMIND_PID=$!
 /usr/local/libexec/tray-app/sound -i &
 
 # Start the compositor manager
-xcompmgr &
+#xcompmgr &
 #compton &
 
 # Start the selected X session
@@ -108,13 +108,11 @@ case "$XSESSION" in
     openbox)
         openbox-session
         ;;
-    i3)
-        i3
-        ;;
     cwm)
         cwm
         ;;
     *)
+        twm
         ;;
 esac
 
