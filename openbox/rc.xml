@@ -750,6 +750,11 @@
         <command>xombrero</command>
       </action>
     </keybind>
+    <keybind key="W-S-f">
+      <action name="Execute">
+        <command>xfe</command>
+      </action>
+    </keybind>
     <!-- keybinds for various "actions" -->
     <keybind key="W-F1">
       <action name="Execute">
@@ -809,7 +814,8 @@
     </keybind>
     <keybind key="A-C-Delete">
       <action name="Execute">
-        <command>xlock -mousemotion</command>
+        <!-- <command>xlock -mousemotion</command> -->
+        <command>xscreensaver-command -lock</command>
       </action>
     </keybind>
   </keyboard>
@@ -1211,7 +1217,7 @@
   # order that they appear in this list
 
 
-    # each rule element can be left out or set to 'default' to specify to not 
+    # each rule element can be left out or set to 'default' to specify to not
     # change that attribute of the window
 
     <decor>yes</decor>
@@ -1358,6 +1364,18 @@
     <application class="netwmpager" name="netwmpager">
       <desktop>all</desktop>
       <skip_pager>yes</skip_pager>
+    </application>
+    <application title="Volume level">
+      <decor>no</decor>
+      <layer>above</layer>
+      <focus>yes</focus>
+      <skip_taskbar>yes</skip_taskbar>
+      <skip_pager>yes</skip_pager>
+      <position>
+        <x>0</x>
+        <y>-0</y>
+        <monitor>mouse</monitor>
+      </position>
     </application>
     <!--
     <application class="Xmessage" name="xmessage" title="Reminders for*">
