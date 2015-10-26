@@ -62,8 +62,9 @@ if [ -e /usr/local/bin/Xdialog ]; then
                 --stdout \
                 --menubox \
                     "Select the X session" \
-                    190x105 \
-                    2 \
+                    190x115 \
+                    3 \
+                    "xfce"     "Xfce" \
                     "openbox"  "Openbox" \
                     "cwm"      "cwm"`
 fi
@@ -105,6 +106,9 @@ REMIND_PID=$!
 
 # Start the selected X session
 case "$XSESSION" in
+    xfce)
+        startxfce4
+        ;;
     openbox)
         openbox-session
         ;;
