@@ -22,6 +22,7 @@ xsetroot -solid rgb:58/6E/75
 # Local fonts path
 xset fp+ /usr/local/share/fonts/terminus
 xset fp+ /usr/local/share/fonts/cantarell
+xset fp+ /usr/local/share/fonts/Droid
 xset fp+ /usr/local/share/ghostscript/fonts
 xset fp+ ~/.fonts
 xset fp rehash
@@ -38,9 +39,12 @@ xset s off
 # Turn off the bell
 xset b off
 
-
 # Source custom profile
 . ~/.profile
+
+# Clean-up user's tmp directory
+rm -rf ${HOME}/tmp
+mkdir -m 1777 ${HOME}/tmp
 
 # Start a session bus instance of dbus-daemon
 if [ -x /usr/local/bin/dbus-launch -a -z "${DBUS_SESSION_BUS_ADDRESS}" ]; then
@@ -48,7 +52,7 @@ if [ -x /usr/local/bin/dbus-launch -a -z "${DBUS_SESSION_BUS_ADDRESS}" ]; then
 fi
 
 # Console log (relaunched to match colorscheme)
-xconsole -geometry 480x130-0-0 -daemon -notify -verbose -exitOnFail &
+#xconsole -geometry 480x130-0-0 -daemon -notify -verbose -exitOnFail &
 
 
 # Select the X session to start
@@ -73,7 +77,7 @@ fi
 #xterm -title "Process monitor" -e top &
 
 # System log
-pkill xconsole
+#pkill xconsole
 #xterm -title "System log" -e tail -f /var/log/messages &
 
 # Start xlock through xidle
@@ -85,10 +89,6 @@ xscreensaver &
 # X screen reset and lock daemon (activated by SIGUSR1)
 xscreen-reset &
 XSCREEN_RESET_PID=$!
-
-# Battery status check daemon
-~/bin/check-bat-status &
-CHECK_BAT_STATUS_PID=$!
 
 # Pop-up reminders daemon
 remind -z -k'xmessage -title "Reminder" -buttons "Ok" %s &' ~/.reminders &
@@ -110,10 +110,18 @@ case "$XSESSION" in
         startxfce4
         ;;
     openbox)
+        # Battery status check daemon
+        ~/bin/check-batt-status &
+        CHECK_BATT_STATUS_PID=$!
         openbox-session
+        kill -KILL $CHECK_BATT_STATUS_PID
         ;;
     cwm)
+        # Battery status check daemon
+        ~/bin/check-batt-status &
+        CHECK_BATT_STATUS_PID=$!
         cwm
+        kill -KILL $CHECK_BATT_STATUS_PID
         ;;
     *)
         twm
@@ -122,5 +130,4 @@ esac
 
 # Kill all background precesses
 kill -KILL $XSCREEN_RESET_PID
-kill -KILL $CHECK_BAT_STATUS_PID
 kill -KILL $REMIND_PID
