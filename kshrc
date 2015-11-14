@@ -25,21 +25,47 @@ if [[ $- != *i* ]]; then
 fi
 
 
-# ---------------------------------------------------------------------
+# ----------------------------------------------------------------------
+# Default pager
+#
+#
+export PAGER=less
+#LESS="--no-init --quit-if-one-screen --RAW-CONTROL-CHARS"
+#LESS="--no-init --RAW-CONTROL-CHARS"
+export LESS="-M -i -X -F -R"
+[ -x /usr/bin/lesspipe ] && export LESSOPEN="|lesspipe.sh %s"
+
+
+# ----------------------------------------------------------------------
+# Default editor
+#
+#
+export EDITOR=vim
+export VISUAL=vim
+
+
+# ----------------------------------------------------------------------
+# Default browser
+#
+#
+export BROWSER=xombrero
+
+
+# ----------------------------------------------------------------------
 # Enable a subset of csh-style history editing using the `!' character
 #
 #
 set -o csh-history
 
 
-# ---------------------------------------------------------------------
+# ----------------------------------------------------------------------
 # Make history permanent
 #
 #
 HISTFILE=${HOME}/.sh_history
 
 
-# ---------------------------------------------------------------------
+# ----------------------------------------------------------------------
 # Colored prompt, if the terminal has the capability
 #
 #
@@ -83,7 +109,7 @@ else
 fi
 
 
-# ---------------------------------------------------------------------
+# ----------------------------------------------------------------------
 # If this is an xterm, set the title to user@host:dir
 #
 #
@@ -96,20 +122,21 @@ xterm*|screen*)
 esac
 
 
-# ---------------------------------------------------------------------
-# The editor used by the fc command
+# ----------------------------------------------------------------------
+# The editor used by fc
 #
 #
 export FCEDIT="vim"
 
-# ---------------------------------------------------------------------
+
+# ----------------------------------------------------------------------
 # Aliases/functions definition
 #
 #
 
 # Enable color support
 if [ "$COLOR_SUPPORT" == 1 ] && [ -x /usr/local/bin/colorls ]; then
-    LSCOLORS="exfxcxdxbxgxDxBxGxCbCx"; export LSCOLORS
+    export LSCOLORS="exfxcxdxbxgxDxBxGxCbCx"
     alias l='colorls -Gh'
 else
     alias l='ls -Fh'

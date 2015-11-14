@@ -23,54 +23,41 @@ fi
 if [ "${USER}" != root ]; then
     PATH="${PATH}:."
 fi
+export PATH
 
 # Maximum number of processes that make may have running
-MAKEFLAGS=-j3
-
-# Default pager and options
-PAGER=less
-#LESS="--no-init --quit-if-one-screen --RAW-CONTROL-CHARS"
-LESS="--no-init --RAW-CONTROL-CHARS"
-
-# Default editor
-VISUAL=vim
-EDITOR=vi
-
-# Default browser
-BROWSER="xombrero"
-
-# Locale settings
-#LC_CTYPE=en_GB.ISO8859-15
-#LC_CTYPE=en_GB.UTF-8
+export MAKEFLAGS=-j3
 
 # In console, activate colors, auto-logout and ISO encoding
 # (UTF-8 in all the other cases)
 if [ "${TERM}" == "vt220" ]; then
     export TERM=wsvt25
     console-logout &
-    LC_CTYPE=en_GB.ISO8859-15
+    export LC_CTYPE=en_GB.ISO8859-15
 else
-    LC_CTYPE=en_GB.UTF-8
+    export LC_CTYPE=en_GB.UTF-8
 fi
 
 # Interactive shells startup file
 case $SHELL in
-    *ksh*)  [[ -e $HOME/.kshrc ]] && ENV=$HOME/.kshrc ;;
-    *bash*) [[ -e $HOME/.bashrc ]] && source $HOME/.bashrc ;;
-    *)      ;;
+*ksh*)
+        [ -e $HOME/.kshrc ] && export ENV=$HOME/.kshrc
+        ;;
+*bash*)
+        [ -e $HOME/.bashrc ] && source $HOME/.bashrc
+        ;;
+*)
+        ;;
 esac
 
 # CPAN local modules config
-PERL_MB_OPT="--install_base \"/home/just22/perl5\""; export PERL_MB_OPT
-PERL_MM_OPT="INSTALL_BASE=/home/just22/perl5"; export PERL_MM_OPT
-PERL5LIB="${HOME}/perl5/lib/perl5:${HOME}/.fvwm/perllib:${PERL5LIB}"; export PERL5LIB
+export PERL_MB_OPT="--install_base \"/home/just22/perl5\""
+export PERL_MM_OPT="INSTALL_BASE=/home/just22/perl5"
+export PERL5LIB="${HOME}/perl5/lib/perl5:${HOME}/.fvwm/perllib:${PERL5LIB}"
 
 # Autotools version env variables
-AUTOMAKE_VERSION=1.14
-AUTOCONF_VERSION=2.69
+export AUTOMAKE_VERSION=1.14
+export AUTOCONF_VERSION=2.69
 
 # Custom libraries
-PKG_CONFIG_PATH=${HOME}/lib/pkgconfig
-
-# Export environmental variables
-export ENV PATH MAKEFLAGS PAGER LESS EDITOR VISUAL BROWSER LC_CTYPE PERL5LIB AUTOMAKE_VERSION AUTOCONF_VERSION PKG_CONFIG_PATH
+export PKG_CONFIG_PATH=${HOME}/lib/pkgconfig
