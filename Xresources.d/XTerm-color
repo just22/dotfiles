@@ -1,0 +1,10 @@
+! Use color for underline attribute
+*VT100*colorULMode: on
+*VT100*colorUL: #b58900
+
+! Disable underlining, because colorULMode is set
+*VT100*underLine: off
+
+! Use color for the bold attribute
+*VT100*colorBDMode: on
+*VT100*colorBD: #dc322f
