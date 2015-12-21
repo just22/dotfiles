@@ -35,6 +35,8 @@
     blkid() { disklabel ${1-sd0} | egrep "/dev/|duid"; }
     alias xcdroast='xcdroast -n -f /dev/rcd0c'
     alias lk='clear; lock -pn'
+    alias mc='TERM=xterm-256color mc'
+    alias tmux='tmux -2'
 
     # ------------------------------------------------------------------
     # Temporary WAs
