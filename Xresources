@@ -4,7 +4,7 @@
 !
 
 ! Term name
-XTerm*termName:            xterm-color
+!XTerm*termName:            xterm-256color
 
 ! Fonts
 !XTerm*font:                -xos4-terminus-medium-r-normal-*-14-*-*-*-*-*-iso10646-1
@@ -15,8 +15,10 @@ XTerm*termName:            xterm-color
 !XTerm*font4:               -xos4-terminus-medium-r-normal-*-18-*-*-*-*-*-iso10646-1
 !XTerm*font5:               -xos4-terminus-medium-r-normal-*-20-*-*-*-*-*-iso10646-1
 !XTerm*font6:               -xos4-terminus-medium-r-normal-*-22-*-*-*-*-*-iso10646-1
+
 XTerm*faceName:            DejaVu Sans Mono:style=Book
 XTerm*faceSize:            10
+
 !XTerm*faceName:            Terminus
 !XTerm*faceSize:            11
 
@@ -77,6 +79,9 @@ XTerm*utmpInhibit:         true
 
 ! No login shell
 XTerm*loginShell:false
+
+! Enable colors for underline and bold
+#include ".Xresources.d/XTerm-color"
 
 
 ! ----------------------------------------------------------------------
@@ -158,14 +163,23 @@ Xmessage*Font:                      -xos4-terminus-medium-*-*-*-14-*-*-*-*-*-iso
 Xmessage*Command.shapeStyle:        rectangle
 !Xmessage*Text.?.cursorColor:        white
 
+
 ! ----------------------------------------------------------------------
 !
 ! tkremind section
 !
 tkremind*font: -xos4-terminus-medium-*-*-*-12-*-*-*-*-*-iso10646-*
 
+
 ! ----------------------------------------------------------------------
 !
 ! xfig section
 !
 xfig*inches:    false
+
+
+! ----------------------------------------------------------------------
+!
+! Default colorscheme
+!
+#include ".Xresources.d/solarized_dark"
