@@ -28,15 +28,15 @@ export PATH
 # Maximum number of processes that make may have running
 export MAKEFLAGS=-j3
 
-# In console, activate colors, auto-logout and ISO encoding
-# (UTF-8 in all the other cases)
+# In console, colors and auto-logout
 if [ "${TERM}" == "vt220" ]; then
     export TERM=wsvt25
     console-logout &
-    export LC_CTYPE=en_GB.ISO8859-15
-else
-    export LC_CTYPE=en_GB.UTF-8
 fi
+
+# Locale settings
+export LANG=en_GB.UTF-8
+export LC_CTYPE=en_GB.UTF-8
 
 # Interactive shells startup file
 case $SHELL in
