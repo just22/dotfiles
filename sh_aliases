@@ -246,7 +246,7 @@ age() {
 # Calculator
 #
 #
-calc() { echo "scale=3; $@" | bc; }
+c() { echo "scale=3; $@" | bc; }
 d2h() { echo "obase=16; ibase=10; $1" | bc; }
 d2o() { echo "obase=8;  ibase=10; $1" | bc; }
 d2b() { echo "obase=2;  ibase=10; $1" | bc; }
@@ -287,7 +287,7 @@ alias :q='exit'
 # Various
 #
 #
-alias c='clear'
+alias cl='clear'
 alias r='fc -s'
 alias v='fc -e vim'
 alias cutf='tr -s "\t" " " | sed "s/^ //" | cut -d" " -f'
@@ -313,6 +313,26 @@ bl() {
         find -L ${1-.} -maxdepth 1 -type l -ls |
                 awk '{printf "%s %s %s\n", $11, $12, $13}'
 }
+
+# Colorized mc
+mc() {
+        TERM=${TERM/screen/xterm}
+        TERM_COLORS="$(tput colors 2>/dev/null)"
+        if [ "$TERM_COLORS" -ge 256 ]; then
+                [ "$USER" == root ] &&
+                        /usr/bin/env mc -S modarin256root-defbg ||
+                        /usr/bin/env mc -S modarin256-defbg
+        elif [ "$TERM_COLORS" -ge 16 ]; then
+                [ "$USER" == root ] &&
+                        /usr/bin/env mc -S modarcon16root-defbg ||
+                        /usr/bin/env mc -S modarcon16-defbg
+        elif [ "$TERM_COLORS" -ge 8 ]; then
+                /usr/bin/env mc -S gotar
+        else
+                /usr/bin/env mc -b
+        fi
+}
+alias smc='sudo mc'
 
 # ----------------------------------------------------------------------
 # Vim notes
