@@ -1,6 +1,5 @@
 # X apps default settings
-xrdb -load  ~/.Xresources
-xrdb -merge ~/.Xresources.defaultColorScheme
+xrdb -load -I${HOME} ~/.Xresources
 
 # Set keyboard layout
 setxkbmap it
