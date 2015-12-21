@@ -296,14 +296,17 @@ set dir=~/.vim/swap//,/var/tmp//,/tmp//,.
 "       endif
 "endif
 
-" In insert/replace mode, highlight the cursor line number, the cursor
-" column and the edge of text area
+" In insert/replace mode, highlight the cursor column and the edge of
+" text area and unset cursorline visibility
 "
-au InsertEnter * highlight! CursorLineNR ctermfg=0 ctermbg=7
+"au InsertEnter * highlight! CursorLineNR ctermfg=0 ctermbg=7
+"au InsertLeave * highlight! clear CursorLineNR ctermfg ctermbg
+"
+au InsertEnter * setlocal nocursorline
 au InsertEnter * setlocal cursorcolumn
 au InsertEnter * setlocal colorcolumn=78
 
-au InsertLeave * highlight! clear CursorLineNR ctermfg ctermbg
+au InsertLeave * setlocal cursorline
 au InsertLeave * setlocal nocursorcolumn
 au InsertLeave * setlocal colorcolumn=0
 
