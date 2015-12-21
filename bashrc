@@ -67,10 +67,10 @@ TMOUT=0
 case "$TERM" in
     xterm*|screen*|linux)
         UTF8_HISTSEPARATOR=" ─› "
-	UTF8_PS_1STLINE_HEADER="┌──"
-	UTF8_PS_2NDLINE_HEADER="└─────›"
-	UTF8_LAST_OK="✓"
-	UTF8_LAST_FAILED="✗"
+        UTF8_PS_1STLINE_HEADER="┌──"
+        UTF8_PS_2NDLINE_HEADER="└─────›"
+        UTF8_LAST_OK="✓"
+        UTF8_LAST_FAILED="✗"
         ;;
     *)
         ;;
@@ -134,28 +134,28 @@ set_prompt() {
     if [ "$COLOR_SUPPORT" == 1 ]; then
         PS_HI_COLOR=$YELLOW_FG
         PS_NORM_COLOR=$BLUE_FG
-        [[ $USER == root ]] && PS_USER_COLOR="${RED_FG}" || PS_USER_COLOR="$PS_HI_COLOR"
+        [ $USER == root ] && PS_USER_COLOR="${RED_FG}" || PS_USER_COLOR="$PS_HI_COLOR"
     fi
 
-    PS1="\[${PS_NORM_COLOR}\]${UTF8_PS_1STLINE_HEADER-"+--"}"					# Cosmetic
-    PS1=${PS1}"[\[${PS_USER_COLOR}\]\u\[${PS_NORM_COLOR}\]@\h]-"				# user@hostname
-    #PS1=${PS1}"$([ -n "$TMUX" ] && echo "[tmux]-")"						# tmux session?
-    #PS1=${PS1}"[\s]-"										# Shell
-    [ -n "$PRJ_REF" ] && PS1=${PS1}"[${PS_HI_COLOR}$PRJ_REF${PS_NORM_COLOR}]-"			# Is the shell configured for a project?
-    #PS1=${PS1}"[\j]-"										# No. of managed jobs
-    PS1=${PS1}"[$(sj)]-"									# No. of stopped jobs
+    PS1="\[${PS_NORM_COLOR}\]${UTF8_PS_1STLINE_HEADER-"+--"}"                                   # Cosmetic
+    PS1=${PS1}"[\[${PS_USER_COLOR}\]\u\[${PS_NORM_COLOR}\]@\h]-"                                # user@hostname
+    #PS1=${PS1}"$([ -n "$TMUX" ] && echo "[tmux]-")"                                            # tmux session?
+    #PS1=${PS1}"[\s]-"                                                                          # Shell
+    [ -n "$PRJ_REF" ] && PS1=${PS1}"[${PS_HI_COLOR}$PRJ_REF${PS_NORM_COLOR}]-"                  # Is the shell configured for a project?
+    #PS1=${PS1}"[\j]-"                                                                          # No. of managed jobs
+    PS1=${PS1}"[$(sj)]-"                                                                        # No. of stopped jobs
     [ "$LAST_EXIT" != 0 ] &&
         PS1=${PS1}"[${PS_HI_COLOR}${UTF8_LAST_FAILED-x}${PS_NORM_COLOR}]-" ||
-        PS1=${PS1}"[${UTF8_LAST_OK-v}]-"							# Last command exit status
+        PS1=${PS1}"[${UTF8_LAST_OK-v}]-"                                                        # Last command exit status
     git rev-parse --git-dir > /dev/null 2>&1 &&
-        PS1=${PS1}"[${PS_HI_COLOR}git${PS_NORM_COLOR}]-"					# In a git tree?
-    PS1=${PS1}"[\W]"										# Basename of current directory
-    PS1=${PS1}"\n\[${PS_NORM_COLOR}\]${UTF8_PS_2NDLINE_HEADER-"+----->"} \[${DEFAULT_COLOR}\]"	# Cosmetic
+        PS1=${PS1}"[${PS_HI_COLOR}git${PS_NORM_COLOR}]-"                                        # In a git tree?
+    PS1=${PS1}"[\W]"                                                                            # Basename of current directory
+    PS1=${PS1}"\n\[${PS_NORM_COLOR}\]${UTF8_PS_2NDLINE_HEADER-"+----->"} \[${DEFAULT_COLOR}\]"  # Cosmetic
 
     # If this is an xterm, then set the title
     case "$TERM" in
         xterm*|screen*)
-	    #[${TERM%%-*}]
+            #[${TERM%%-*}]
             PS1="\[\033]0;[\s] [\w] [Last cmd: \"$(history 1 | awk -v HS="${UTF8_HISTSEPARATOR-" -> "}" 'BEGIN{FS=HS} {print $2}')\"]\007\]"$PS1
             ;;
         *)
@@ -165,7 +165,7 @@ set_prompt() {
 
 if [ -z ${NO_COLORS+x} ] && tput setaf 1 >/dev/null 2>&1; then
     # Assume that color support is compliant with Ecma-48
-    # (ISO/IEC-6429); Lack of such support is extremely rare, and such
+    # (ISO/IEC-6429); lack of such support is extremely rare, and such
     # a case would tend to support setf rather than setaf
     COLOR_SUPPORT=1
 
@@ -241,15 +241,15 @@ show_command_in_title_bar()
         fg|set_prompt|exit)
             ;;
         *)
-	    case "$TERM" in
-	        xterm*)
+            case "$TERM" in
+                xterm*)
                     printf "\033]0;[%s] [%s] [%s] [Running: \"%s\"]\007" "${TERM%%-*}" "${0##*/}" "$PWD" "$BASH_COMMAND"
-		    ;;
-	        screen*)
+                    ;;
+                screen*)
                     printf "\033]0;[%s] [%s] [Running: \"%s\"]\007" "${0##*/}" "$PWD" "$BASH_COMMAND"
-		    ;;
+                    ;;
                 *)
-		    ;;
+                    ;;
             esac
             ;;
     esac
