@@ -108,7 +108,7 @@ export VISUAL=vim
 # Default browser
 #
 #
-export BROWSER=xombrero
+export BROWSER=surf-launcher
 
 # ----------------------------------------------------------------------
 # The editor used by the fc command
