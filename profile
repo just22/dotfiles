@@ -61,3 +61,7 @@ export AUTOCONF_VERSION=2.69
 
 # Custom libraries
 export PKG_CONFIG_PATH=${HOME}/lib/pkgconfig
+
+# Proxy settings
+export http_proxy="http://argo.atlantide.net:8118"
+export no_proxy="atlantide.net"
