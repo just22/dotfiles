@@ -38,7 +38,7 @@ Plugin 'https://github.com/sk1418/QFGrep'
 
 Plugin 'https://github.com/AndrewRadev/linediff.vim.git'
 
-Plugin 'https://github.com/chrisbra/csv.vim.git'
+Plugin 'https://github.com/chrisbra/csv.vim'
 
 " vim-notes {
         Plugin 'https://github.com/xolox/vim-misc.git'
@@ -324,16 +324,18 @@ if exists("$DISPLAY")
         let g:solarized_contrast="high"  "default value is normal
         let g:solarized_visibility="normal"  "default value is normal
         let g:solarized_diffmode="high"  "default value is normal
+
         " The following items are available options, but
         " they are currently set to their defaults.
-        " let g:solarized_termtrans=0
-        " let g:solarized_degrade=0
-        " let g:solarized_bold=1
-        " let g:solarized_underline=1
-        " let g:solarized_italic=1
-        " let g:solarized_termcolors=16
-        " let g:solarized_hitrail=0
-        " let g:solarized_menu=1
+        "let g:solarized_termtrans=0
+        "let g:solarized_degrade=0
+        "let g:solarized_bold=1
+        "let g:solarized_underline=1
+        "let g:solarized_italic=1
+        "let g:solarized_termcolors=16
+        "let g:solarized_hitrail=0
+        "let g:solarized_menu=1
+
         "colorscheme solarized
         colorscheme solarized_mod
 
