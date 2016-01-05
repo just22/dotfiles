@@ -379,20 +379,26 @@ cnoremap <silent> <C-l> :redraw!<CR>
 " Turn on English/Italian spell checking
 "
 nnoremap <silent> <leader>se :setlocal spell spelllang=en<CR>
+        \:echo "Spell check (EN) switched on"<CR>
 nnoremap <silent> <leader>si :setlocal spell spelllang=it<CR>
-nnoremap <silent> <leader>ns :setlocal nospell<CR>
+        \:echo "Spell check (IT) switched on"<CR>
+nnoremap <silent> <leader>so :setlocal nospell<CR>
+        \:echo "Spell check switched off"<CR>
 
 " ----------------------------------------------------------------------
 " Occur: report all the lines containing a keyword (or the last search
 " regexp) in a scratch buffer
 "
-set grepprg=egrep\ -n\ -i\ $*\ /dev/null
+" Note: External grep doesn't work when filenames contain unusual
+"       characters (e.g., ":")
+"set grepprg=egrep\ -n\ -i\ $*\ /dev/null
+"        \ execute 'silent grep! <args>' |
 command! -nargs=+ Occur
-        \ execute 'silent grep! <args>' |
+        \ execute 'silent vimgrep! <args>' |
         \ copen 20 |
         \ redraw!
-nnoremap <silent> <leader>w :Occur warn %<CR>
-nnoremap <silent> <leader>e :Occur error %<CR>
+nnoremap <silent> <leader>w :Occur /warn/ %<CR>
+nnoremap <silent> <leader>e :Occur /error/ %<CR>
 
 " ----------------------------------------------------------------------
 " Delete all lines containing the WORD under the cursor
@@ -587,6 +593,7 @@ nnoremap <leader>u yypVr=
 autocmd FileType c,cpp,java,scala let b:cchar = '//'
 autocmd FileType sh,csh,tcsh      let b:cchar = '#'
 autocmd FileType tcl,conf,fstab   let b:cchar = '#'
+autocmd FileType make             let b:cchar = '#'
 autocmd FileType tex,sty          let b:cchar = '%'
 autocmd FileType mail             let b:cchar = '>'
 autocmd FileType vim              let b:cchar = '"'
