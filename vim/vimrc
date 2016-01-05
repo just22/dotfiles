@@ -768,6 +768,8 @@ nnoremap <F3> :m -2<CR>
 "
 nnoremap + <C-a>
 nnoremap - <C-x>
+vnoremap <silent> + :norm <CR>
+vnoremap <silent> - :norm <CR>
 vnoremap <leader>+ :II 1 ''<CR>
 vnoremap <leader>- :II -1 ''<CR>
 
@@ -842,6 +844,7 @@ nnoremap <silent> <leader>A :%CSVArrangeColumn<CR>
 " latex-box plugin
 "
 let g:tex_flavor='latex'
+let g:LatexBox_quickfix=2
 
 
 " ----------------------------------------------------------------------
