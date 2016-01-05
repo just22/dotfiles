@@ -18,7 +18,7 @@ nmap <leader>i ggi
         \\usepackage{graphicx}<CR>
         \<CR>
         \\newdateformat{monthyeardate}{%<CR>
-        \       \monthname[\THEMONTH] \THEYEAR}<CR>
+        \        \monthname[\THEMONTH] \THEYEAR}<CR>
         \<CR><Esc>i
         \\title[Short title]{Long title}<CR>
         \<CR>
@@ -38,19 +38,19 @@ nmap <leader>i ggi
         \\begin{document}<CR>
         \<CR>
         \\begin{frame}<CR>
-        \       \titlepage<CR><Esc>i
+        \        \titlepage<CR><Esc>i
         \\end{frame}<CR>
         \<CR>
         \\begin{frame}<CR>
-        \       \frametitle{Outline}<CR><Esc>i
-        \       \tableofcontents[pausesections]<CR><Esc>i
+        \        \frametitle{Outline}<CR><Esc>i
+        \        \tableofcontents[pausesections]<CR><Esc>i
         \\end{frame}<CR>
         \<CR>
         \\AtBeginSubsection{<CR><Esc>i
-        \       \begin{frame}<CR><Esc>i
-        \               \frametitle{Next Topic}<CR><Esc>i
-        \               \tableofcontents[currentsubsection]<CR><Esc>i
-        \       \end{frame}<CR><Esc>i
+        \        \begin{frame}<CR><Esc>i
+        \                \frametitle{Next Topic}<CR><Esc>i
+        \                \tableofcontents[currentsubsection]<CR><Esc>i
+        \        \end{frame}<CR><Esc>i
         \}<CR>
         \<CR>
         \% ----------------------------------------------------------------------<CR>
@@ -60,22 +60,22 @@ nmap <leader>i ggi
         \\subsection{Subsection 1.1}<CR>
         \<CR>
         \\begin{frame}<CR>
-        \       \frametitle{Frame 1.1.1}<CR><Esc>i
+        \        \frametitle{Frame 1.1.1}<CR><Esc>i
         \\end{frame}<CR>
         \<CR>
         \\begin{frame}<CR>
-        \       \frametitle{Frame 1.1.2}<CR><Esc>i
+        \        \frametitle{Frame 1.1.2}<CR><Esc>i
         \\end{frame}<CR>
         \<CR>
         \% ----------------------------------<CR>
         \\subsection{Subsection 1.2}<CR>
         \<CR>
         \\begin{frame}<CR>
-        \       \frametitle{Frame 1.2.1}<CR><Esc>i
+        \        \frametitle{Frame 1.2.1}<CR><Esc>i
         \\end{frame}<CR>
         \<CR>
         \\begin{frame}<CR>
-        \       \frametitle{Frame 1.2.2}<CR><Esc>i
+        \        \frametitle{Frame 1.2.2}<CR><Esc>i
         \\end{frame}<CR>
         \<CR>
         \% ----------------------------------------------------------------------<CR>
@@ -85,22 +85,22 @@ nmap <leader>i ggi
         \\subsection{Subsection 2.1}<CR>
         \<CR>
         \\begin{frame}<CR>
-        \       \frametitle{Frame 2.1.1}<CR><Esc>i
+        \        \frametitle{Frame 2.1.1}<CR><Esc>i
         \\end{frame}<CR>
         \<CR>
         \\begin{frame}<CR>
-        \       \frametitle{Frame 2.1.2}<CR><Esc>i
+        \        \frametitle{Frame 2.1.2}<CR><Esc>i
         \\end{frame}<CR>
         \<CR>
         \% ----------------------------------<CR>
         \\subsection{Subsection 2.2}<CR>
         \<CR>
         \\begin{frame}<CR>
-        \       \frametitle{Frame 2.2.1}<CR><Esc>i
+        \        \frametitle{Frame 2.2.1}<CR><Esc>i
         \\end{frame}<CR>
         \<CR>
         \\begin{frame}<CR>
-        \       \frametitle{Frame 2.2.2}<CR><Esc>i
+        \        \frametitle{Frame 2.2.2}<CR><Esc>i
         \\end{frame}<CR>
         \<CR>
         \\end{document}<CR>
@@ -113,22 +113,22 @@ nmap <leader>S o
         \\subsection{Subsection X.1}<CR>
         \<CR>
         \\begin{frame}<CR>
-        \       \frametitle{Frame X.1.1}<CR><Esc>i
+        \        \frametitle{Frame X.1.1}<CR><Esc>i
         \\end{frame}<CR>
         \<CR>
         \\begin{frame}<CR>
-        \       \frametitle{Frame X.1.2}<CR><Esc>i
+        \        \frametitle{Frame X.1.2}<CR><Esc>i
         \\end{frame}<CR>
         \<CR>
         \% ----------------------------------<CR>
         \\subsection{Subsection X.2}<CR>
         \<CR>
         \\begin{frame}<CR>
-        \       \frametitle{Frame X.2.1}<CR><Esc>i
+        \        \frametitle{Frame X.2.1}<CR><Esc>i
         \\end{frame}<CR>
         \<CR>
         \\begin{frame}<CR>
-        \       \frametitle{Frame X.2.2}<CR><Esc>i
+        \        \frametitle{Frame X.2.2}<CR><Esc>i
         \\end{frame}<CR><Esc>
 
 nmap <leader>s o
@@ -136,23 +136,23 @@ nmap <leader>s o
         \\subsection{Subsection X.Y}<CR>
         \<CR>
         \\begin{frame}<CR>
-        \       \frametitle{Frame X.Y.1}<CR><Esc>i
+        \        \frametitle{Frame X.Y.1}<CR><Esc>i
         \\end{frame}<CR>
         \<CR>
         \\begin{frame}<CR>
-        \       \frametitle{Frame X.Y.2}<CR><Esc>i
+        \        \frametitle{Frame X.Y.2}<CR><Esc>i
         \\end{frame}<CR><Esc>
 
 nmap <leader>f o
         \\begin{frame}<CR>
-        \       \frametitle{Frame X.Y.Z}<CR><Esc>i
+        \        \frametitle{Frame X.Y.Z}<CR><Esc>i
         \\end{frame}<CR><Esc>
 
 nmap <leader>ff o
         \\begin{frame}[fragile]<CR>
-        \       \frametitle{Frame X.Y.Z}<CR><Esc>i
-        \       \begin{verbatim}
-        \       \end{verbatim}
+        \        \frametitle{Frame X.Y.Z}<CR><Esc>i
+        \        \begin{verbatim}
+        \        \end{verbatim}
         \\end{frame}<CR><Esc>
 
 imap <buffer> [[ \begin{
