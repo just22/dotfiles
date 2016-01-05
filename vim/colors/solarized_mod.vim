@@ -650,7 +650,7 @@ endif
 exe "hi! Directory"      .s:fmt_none   .s:fg_blue   .s:bg_none
 exe "hi! ErrorMsg"       .s:fmt_revr   .s:fg_red    .s:bg_none
 exe "hi! IncSearch"      .s:fmt_stnd   .s:fg_yellow .s:bg_none
-exe "hi! Search"         .s:fmt_revr   .s:fg_orange .s:bg_none
+exe "hi! Search"         .s:fmt_revr   .s:fg_violet .s:bg_none
 exe "hi! MoreMsg"        .s:fmt_none   .s:fg_blue   .s:bg_none
 exe "hi! ModeMsg"        .s:fmt_none   .s:fg_blue   .s:bg_none
 exe "hi! LineNr"         .s:fmt_none   .s:fg_base01 .s:bg_base02
@@ -668,10 +668,10 @@ exe "hi! DiffDelete"     .s:fmt_revr   .s:fg_red    .s:bg_none
 exe "hi! DiffText"       .s:fmt_revr   .s:fg_blue   .s:bg_none
 exe "hi! SignColumn"     .s:fmt_none   .s:fg_base0  .s:bg_base02
 exe "hi! Conceal"        .s:fmt_none   .s:fg_blue   .s:bg_none
-exe "hi! SpellBad"       .s:fmt_curl   .s:fg_red    .s:bg_none    .s:sp_red
-exe "hi! SpellCap"       .s:fmt_curl   .s:fg_violet .s:bg_none    .s:sp_violet
-exe "hi! SpellRare"      .s:fmt_curl   .s:fg_cyan   .s:bg_none    .s:sp_cyan
-exe "hi! SpellLocal"     .s:fmt_curl   .s:fg_yellow .s:bg_none    .s:sp_yellow
+exe "hi! SpellBad"       .s:fmt_revr   .s:fg_red    .s:bg_none
+exe "hi! SpellCap"       .s:fmt_revr   .s:fg_violet .s:bg_none
+exe "hi! SpellRare"      .s:fmt_revr   .s:fg_cyan   .s:bg_none
+exe "hi! SpellLocal"     .s:fmt_revr   .s:fg_yellow .s:bg_none
 exe "hi! Pmenu"          .s:fmt_none   .s:fg_base0  .s:bg_base02
 exe "hi! PmenuSel"       .s:fmt_none   .s:fg_base2  .s:bg_base01
 exe "hi! PmenuSbar"      .s:fmt_none   .s:fg_base0  .s:bg_base2
