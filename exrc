@@ -7,7 +7,7 @@ set exrc
 set autoindent
 "
 " Use ESC to edit the colon command-line history
-set cedit=
+"set cedit=
 "
 " Dir name for the swap file
 set directory=/tmp
@@ -40,7 +40,7 @@ set scroll=15
 set searchincr
 "
 " Number of spaces to use for each step of (auto)indent
-set shiftwidth=4
+set shiftwidth=8
 "
 " Show (partial) command in the last line of the screen
 "set showcmd
@@ -52,7 +52,7 @@ set showmatch
 set showmode
 "
 " Number of spaces that a <Tab> in the file counts for
-set tabstop=4
+set tabstop=8
 "
 " Display an error message for every error
 set verbose
