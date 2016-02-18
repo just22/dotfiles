@@ -2,7 +2,7 @@
 <JWM>
 
     <!-- The root menu. -->
-    <RootMenu onroot="12">
+    <RootMenu onroot="13">
         <Program icon="terminal.png" label="Terminal">xterm</Program>
         <Menu icon="folder.png" label="Applications">
             <Program icon="music.png" label="Audacious">audacious</Program>
@@ -45,18 +45,20 @@
     <Tray x="0" y="-1" height="22" autohide="off">
 
         <TrayButton icon="/usr/share/void-artwork/void-logo.png">root:1</TrayButton>
-        <Spacer width="2"/>
-        <TrayButton label="_">showdesktop</TrayButton>
-        <Spacer width="2"/>
-
+        <Spacer width="5"/>
         <Pager labeled="true"/>
-
+        <Spacer width="15"/>
         <TaskList maxwidth="256"/>
-
+        <Spacer width="5"/>
         <Dock/>
+        <Spacer width="5"/>
         <!-- <Clock><Button mask="123">exec:xclock</Button></Clock> -->
         <Clock format="%a %d %b (%V) - %R"/>
+    </Tray>
 
+    <!-- Tray at the top -->
+    <Tray x="0" y="0" height="16" autohide="off">
+	<Spacer/>
     </Tray>
 
     <!-- Visual Styles -->
@@ -67,53 +69,55 @@
         <Corner>0</Corner>
         <Foreground>#586e75</Foreground>
         <Background>#93a1a1</Background>
-        <Outline>#93a1a1</Outline>
+        <Outline>#586e75</Outline>
         <Opacity>1</Opacity>
         <Active>
             <Foreground>#fdf6e3</Foreground>
             <Background>#657b83</Background>
-            <Outline>#657b83</Outline>
+            <Outline>#586e75</Outline>
             <Opacity>1.0</Opacity>
         </Active>
     </WindowStyle>
     <TrayStyle group="false" list="desktop">
         <Font>DejaVuSans-8</Font>
-        <Background>#fdf6e3</Background>
-        <Foreground>#002b36</Foreground>
-        <Outline>#fdf6e3</Outline>
+        <Foreground>#073642</Foreground>
+        <Background>#eee8d5</Background>
+        <Outline>#eee8d5</Outline>
         <Opacity>1</Opacity>
+        <Active>
+            <Foreground>#fdf6e3</Foreground>
+            <Background>#657b83</Background>
+        </Active>
     </TrayStyle>
     <PagerStyle>
-        <Outline>#000000</Outline>
-        <Foreground>#555555</Foreground>
-        <Background>#333333</Background>
-        <Text>#FFFFFF</Text>
+        <Outline>#002b36</Outline>
+        <Foreground>#839496</Foreground>
+        <Background>#586e75</Background>
+        <Text>#eee8d5</Text>
         <Active>
-            <Foreground>#0077CC</Foreground>
-            <Background>#555555</Background>
+            <Foreground>#268bd2</Foreground>
+            <Background>#073642</Background>
         </Active>
     </PagerStyle>
     <MenuStyle>
         <Font>DejaVuSans-8</Font>
-        <Foreground>#FFFFFF</Foreground>
-        <Background>#333333</Background>
-        <Outline>#000000</Outline>
+        <Foreground>#073642</Foreground>
+        <Background>#839496</Background>
+        <Outline>#073642</Outline>
         <Active>
-            <Foreground>#FFFFFF</Foreground>
-            <Background>#0077CC</Background>
+            <Foreground>#073642</Foreground>
+            <Background>#657b83</Background>
         </Active>
         <Opacity>1</Opacity>
     </MenuStyle>
-    <PopupStyle>
+    <PopupStyle enabled="button,menu,task">
         <Font>DejaVuSans-8</Font>
-        <Foreground>#000000</Foreground>
-        <Background>#999999</Background>
+        <Foreground>#073642</Foreground>
+        <Background>#657b83</Background>
+        <Outline>#073642</Outline>
     </PopupStyle>
 
-    <!-- Path where icons can be found.
-         IconPath can be listed multiple times to allow searching
-         for icons in multiple paths.
-      -->
+    <!-- Path where icons can be found -->
     <IconPath>
         /usr/share/icons/gnome/22x22/actions
     </IconPath>
@@ -168,13 +172,13 @@
     <FocusModel>sloppy</FocusModel>
 
     <!-- The snap mode (none, screen, or border) -->
-    <SnapMode distance="10">border</SnapMode>
+    <SnapMode distance="5">border</SnapMode>
 
     <!-- The move mode (outline or opaque) -->
-    <MoveMode>opaque</MoveMode>
+    <MoveMode>outline</MoveMode>
 
     <!-- The resize mode (outline or opaque) -->
-    <ResizeMode>opaque</ResizeMode>
+    <ResizeMode>outline</ResizeMode>
 
     <!-- Key bindings -->
     <Key key="Up">up</Key>
