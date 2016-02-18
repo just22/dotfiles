@@ -81,8 +81,8 @@
     <TrayStyle group="false" list="desktop">
         <Font>DejaVuSans-8</Font>
         <Foreground>#073642</Foreground>
-        <Background>#eee8d5</Background>
-        <Outline>#eee8d5</Outline>
+        <Background>#93a1a1</Background>
+        <Outline>#93a1a1</Outline>
         <Opacity>1</Opacity>
         <Active>
             <Foreground>#fdf6e3</Foreground>
