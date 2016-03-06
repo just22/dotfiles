@@ -1,3 +1,2 @@
 REGEXP (((http|https|ftp|gopher)|mailto)[.:][^ >"\t]*|www\.[-a-z0-9.]+)[^ .,;\t>">\):]
-#COMMAND xombrero %s &
-COMMAND surf-launcher %s
+COMMAND exo-open --launch WebBrowser %s
