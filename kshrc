@@ -26,31 +26,6 @@ fi
 
 
 # ----------------------------------------------------------------------
-# Default pager
-#
-#
-export PAGER=less
-#LESS="--no-init --quit-if-one-screen --RAW-CONTROL-CHARS"
-#LESS="--no-init --RAW-CONTROL-CHARS"
-export LESS="-M -i -X -F -R"
-[ -x /usr/bin/lesspipe ] && export LESSOPEN="|lesspipe.sh %s"
-
-
-# ----------------------------------------------------------------------
-# Default editor
-#
-#
-export EDITOR=vim
-export VISUAL=vim
-
-
-# ----------------------------------------------------------------------
-# Default browser
-#
-#
-export BROWSER=xombrero
-
-
 # ----------------------------------------------------------------------
 # Enable a subset of csh-style history editing using the `!' character
 #
