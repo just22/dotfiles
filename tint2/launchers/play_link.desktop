@@ -2,5 +2,5 @@
 Name=play_link
 Comment=Play link in clipboard
 Icon=/usr/local/share/icons/gnome/16x16/actions/media-playback-start.png
-Exec=ytdl-smplayer $(xclip -o -selection clipboard)
+Exec=play_link
 Type=Application
