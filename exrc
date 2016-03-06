@@ -7,7 +7,7 @@ set exrc
 set autoindent
 "
 " Use ESC to edit the colon command-line history
-set cedit=
+"set cedit=
 "
 " Dir name for the swap file
 set directory=/tmp
