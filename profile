@@ -38,6 +38,24 @@ fi
 export LANG=en_GB.UTF-8
 export LC_CTYPE=en_GB.UTF-8
 
+
+# Note: Default pager/editor/browser definitions moved here because
+#       there are applications launched from X using them
+
+# Default pager
+export PAGER=less
+#LESS="--no-init --quit-if-one-screen --RAW-CONTROL-CHARS"
+#LESS="--no-init --RAW-CONTROL-CHARS"
+export LESS="-M -i -X -F -R"
+[ -x /usr/bin/lesspipe ] && export LESSOPEN="|lesspipe.sh %s"
+
+# Default editor
+export EDITOR=vim
+export VISUAL=vim
+
+# Default browser
+export BROWSER=surf-launcher
+
 # Interactive shells startup file
 case $SHELL in
 *ksh*)
@@ -64,4 +82,3 @@ export PKG_CONFIG_PATH=${HOME}/lib/pkgconfig
 
 # Proxy settings
 export http_proxy="http://argo.atlantide.net:8118"
-export no_proxy="atlantide.net"
