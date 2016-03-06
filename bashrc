@@ -90,27 +90,6 @@ HISTFILESIZE=2000
 HISTTIMEFORMAT="%d/%m %R${UTF8_HISTSEPARATOR-" -> "}"
 
 # ----------------------------------------------------------------------
-# Make less the default pager
-# and more friendly for non-text input files
-#
-export PAGER=less
-export LESS="-M -i -X -F -R"
-[ -x /usr/bin/lesspipe ] && export LESSOPEN="|lesspipe.sh %s"
-
-# ----------------------------------------------------------------------
-# Default editor
-#
-#
-export EDITOR=vim
-export VISUAL=vim
-
-# ----------------------------------------------------------------------
-# Default browser
-#
-#
-export BROWSER=surf-launcher
-
-# ----------------------------------------------------------------------
 # The editor used by the fc command
 #
 #
