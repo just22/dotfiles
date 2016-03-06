@@ -732,7 +732,7 @@
     </keybind>
     <keybind key="W-d">
       <action name="Execute">
-        <command>dmenu_run -fn "-xos4-terminus-medium-*-*-*-14-*-*-*-*-*-iso10646-1" -nb '#073642' -nf '#eaebec' -sb '#657b83' -sf '#eaebec'</command>
+        <command>dmenu_run -fn "DejaVu Sans:size=10" -nb '#073642' -nf '#eaebec' -sb '#657b83' -sf '#eaebec'</command>
       </action>
     </keybind>
     <keybind key="W-w">
@@ -747,12 +747,12 @@
     </keybind>
     <keybind key="W-S-b">
       <action name="Execute">
-        <command>xombrero</command>
+        <command>dmenu-browser</command>
       </action>
     </keybind>
     <keybind key="W-S-f">
       <action name="Execute">
-        <command>xfe</command>
+        <command>emelfm2</command>
       </action>
     </keybind>
     <!-- keybinds for various "actions" -->
@@ -773,7 +773,7 @@
     </keybind>
     <keybind key="W-c">
       <action name="Execute">
-        <command>restart-statusline</command>
+        <command>dmenu-calc</command>
       </action>
     </keybind>
     <keybind key="W-C-c">
@@ -786,15 +786,17 @@
     </keybind>
     <keybind key="W-r">
       <action name="Reconfigure"/>
-      <!--
-      <action name="Execute">
-        <command>netwmpager</command>
-      </action>
-      -->
     </keybind>
+    <!--
     <keybind key="W-S-q">
       <action name="Exit">
         <prompt>yes</prompt>
+      </action>
+    </keybind>
+    -->
+    <keybind key="W-S-q">
+      <action name="Execute">
+        <command>dmenu-session-logout</command>
       </action>
     </keybind>
     <keybind key="W-S-s">
@@ -807,9 +809,14 @@
         <command>apm -Z</command>
       </action>
     </keybind>
-    <keybind key="W-S-p">
+    <keybind key="W-S-c">
       <action name="Execute">
         <command>change-perfpolicy</command>
+      </action>
+    </keybind>
+    <keybind key="W-S-p">
+      <action name="Execute">
+        <command>xrandr --auto</command>
       </action>
     </keybind>
     <keybind key="A-C-Delete">
@@ -1299,26 +1306,26 @@
     -->
     <application class="XTerm" name="xterm" title="System log">
       <desktop>6</desktop>
-      <maximized>Vertical</maximized>
+      <maximized>Horizontal</maximized>
       <position>
         <x>0</x>
         <y>0</y>
         <monitor>1</monitor>
       </position>
       <size>
-        <width>50%</width>
+        <height>47%</height>
       </size>
     </application>
     <application class="XTerm" name="xterm" title="Process monitor">
       <desktop>6</desktop>
-      <maximized>Vertical</maximized>
+      <maximized>Horizontal</maximized>
       <position>
-        <x>-0</x>
-        <y>0</y>
+        <x>0</x>
+        <y>-0</y>
         <monitor>1</monitor>
       </position>
       <size>
-        <width>50%</width>
+        <height>47%</height>
       </size>
     </application>
     <application class="XTerm" name="xterm" title="Take screenshot">
