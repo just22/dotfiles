@@ -17,10 +17,9 @@
 # wmsmixer -w &
 # idesk &
 # gkrellm -w &
-conky -c ~/.config/conky/conkyrc-statusline &
+(sleep 1; bbpager)&
+(sleep 1; conky -c ~/.config/conky/conkyrc-statusline)&
 
-sleep 5
-bbpager &
 
 #conky -c ~/.config/conky/conkyrc-rwin &
 /usr/local/libexec/tray-app/eject -i &
