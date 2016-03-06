@@ -9,6 +9,7 @@ set menu_scroll = yes                                       # Just scroll one li
 set menu_context = 15                                       # Lines of context that are given when scrolling through menus
 set pager_index_lines = 15                                  # Lines of a mini-index which is shown in the pager
 set forward_format = "Fw:[%s]"                              # Default subject when forwarding a message
+set mime_forward = ask-no                                   # By default, forward messages inline
 set folder_format = "%2C %t %N [Last mod: %d] %f"           # File browser display
 
 # ~~~~~~~~~~~~~~~~~~
@@ -63,7 +64,7 @@ hdr_order from: to: cc: date: subject:
 #  Index View Options
 # ~~~~~~~~~~~~~~~~~~~~
 set date_format = "%a %d/%m/%Y %R"
-set index_format = "%3C %?M?[%2M msg]&        ? [%Z] %?X?[%2X att]&        ?  %D  %-25.25F  %s"
+set index_format = "%4C %?M?[%2M msg]&        ? [%Z] %?X?[%2X att]&        ?  %D  %-25.25F  %s"
 set sort = "threads"                    # Order messages per thread, last date received first
 set sort_browser="reverse-date"
 set sort_aux = "last-date-received"
