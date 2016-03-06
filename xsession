@@ -23,7 +23,7 @@ xset fp+ /usr/local/share/fonts/terminus
 xset fp+ /usr/local/share/fonts/cantarell
 xset fp+ /usr/local/share/fonts/Droid
 xset fp+ /usr/local/share/ghostscript/fonts
-xset fp+ ~/.fonts
+xset fp+ ~/.fonts/stlarch
 xset fp rehash
 
 # Reduce kbd repeat rate to 10 repeat/s (default: 25)
@@ -56,7 +56,7 @@ fi
 
 # Select the X session to start
 if [ -e /usr/local/bin/Xdialog ]; then
-    XSESSION=`Xdialog \
+    XSESSION_CMD=`Xdialog \
                 --buttons-style text \
                 --no-close \
                 --no-cancel \
@@ -67,9 +67,9 @@ if [ -e /usr/local/bin/Xdialog ]; then
                     "Select the X session" \
                     190x115 \
                     3 \
-                    "xfce"     "Xfce" \
-                    "openbox"  "Openbox" \
-                    "cwm"      "cwm"`
+                    "openbox-session" "Openbox" \
+                    "startxfce4"      "Xfce" \
+                    "cwm"             "cwm"`
 fi
 
 # Process monitor
@@ -90,7 +90,8 @@ xscreen-reset &
 XSCREEN_RESET_PID=$!
 
 # Pop-up reminders daemon
-remind -z -k'xmessage -title "Reminder" -buttons "Ok" %s &' ~/.reminders &
+remind -z -k'xmessage -title "Remind" -buttons "Ok" %s &' ~/.reminders &
+#remind -z -k'remind-warn %s &' ~/.reminders &
 REMIND_PID=$!
 
 # Bittorrent protocol daemon
@@ -103,30 +104,21 @@ REMIND_PID=$!
 #xcompmgr &
 #compton &
 
-# Start the selected X session
-case "$XSESSION" in
-    xfce)
-        startxfce4
-        ;;
-    openbox)
+# Start any other required daemons, then the selected X session
+case "$XSESSION_CMD" in
+openbox-session|cwm)
         # Battery status check daemon
         ~/bin/check-batt-status &
         CHECK_BATT_STATUS_PID=$!
-        openbox-session
-        kill -KILL $CHECK_BATT_STATUS_PID
         ;;
-    cwm)
-        # Battery status check daemon
-        ~/bin/check-batt-status &
-        CHECK_BATT_STATUS_PID=$!
-        cwm
-        kill -KILL $CHECK_BATT_STATUS_PID
-        ;;
-    *)
-        twm
+"")
+        XSESSION_CMD=twm
         ;;
 esac
 
+$XSESSION_CMD
+
 # Kill all background precesses
+kill -KILL $CHECK_BATT_STATUS_PID
 kill -KILL $XSCREEN_RESET_PID
 kill -KILL $REMIND_PID
