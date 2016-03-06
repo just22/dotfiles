@@ -42,8 +42,8 @@ debug_file=${tmpdir}/view_attachment.debug
 debug="no"
 #debug="yes"
 
-open_with=$1
-file=$2
+open_with="$1"
+file="$2"
 
 # Make sure the tmpdir
 mkdir -p ${tmpdir}
