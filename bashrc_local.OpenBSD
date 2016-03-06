@@ -17,7 +17,8 @@
     # Package management
     #
     #
-    alias pkgs='ftp ftp://openbsd.mirror.garr.it/pub/OpenBSD/snapshots/packages/`machine -a`/'
+    #alias pkgs='ftp ftp://openbsd.mirror.garr.it/pub/OpenBSD/snapshots/packages/`machine -a`/'
+    alias pkgs='pkg_info -Q'
     alias pkga='/usr/local/bin/sudo pkg_add -iv'
     alias pkgas='pkg_add -ivs'
     alias pkgar='/usr/local/bin/sudo pkg_add -ivr'
@@ -27,6 +28,31 @@
     alias pkgds='pkg_delete -vs'
     alias pkgda='/usr/local/bin/sudo pkg_delete -a'
     alias pkgdas='pkg_delete -as'
+    alias pkgrdep='pkg_info -R'
+
+    # ------------------------------------------------------------------
+    # Port management
+    #
+    #
+    mks() {
+            CWD="$(pwd)"
+            cd /usr/ports
+            make search name="$1" | egrep "Port:|Path:|Info:|^$"
+            cd "$CWD"
+    }
+    alias mkc='make clean'
+    alias mkca='make clean=all'
+    alias mkf='make fetch'
+    alias mkcksum='make makesum checksum'
+    alias mke='make extract'
+    alias mkp='make patch'
+    alias mkup='make update-patches'
+    alias mkb='make build'
+    alias mkp='make package'
+    alias mka='make install clean'
+    alias mki='make install'
+    alias mkr='make reinstall'
+    alias mku='make uninstall'
 
     # ------------------------------------------------------------------
     # Various
