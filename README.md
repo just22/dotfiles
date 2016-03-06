@@ -3,8 +3,8 @@
 This is my dotfiles repository, a collection of configuration files I use on a
 daily basis.
 
-Main concern here is portability; I use different Unix-like OSs: RedHat
-Enterprise Linux at work, some Linux flavours and mostly OpenBSD at home and,
+My main concern here is portability; I use different Unix-like OSs: RedHat
+Enterprise Linux at work, mostly OpenBSD and some Linux flavors at home;
 of course, I like my apps behaving coherently wherever I run them.
 
 
@@ -17,5 +17,6 @@ a directory in your executable path).
 
 
 # License
-All files released under the BSD 2-clause “Simplified” License
-See LICENSE for details
+All files released under the BSD 2-clause “Simplified” License.
+
+See LICENSE for details.
