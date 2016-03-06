@@ -4,7 +4,7 @@
 !
 
 ! Term name
-XTerm*termName:            xterm-256color
+!XTerm*termName:            xterm-256color
 
 ! Fonts
 !XTerm*font:                -xos4-terminus-medium-r-normal-*-14-*-*-*-*-*-iso10646-1
@@ -158,8 +158,8 @@ Xmessage.form.okay.shapeStyle:      rectangle
 !Xmessage.Scrollbar:                 WhenNeeded
 Xmessage.form.message.Scroll:       WhenNeeded
 Xmessage*Font:                      -xos4-terminus-medium-*-*-*-14-*-*-*-*-*-iso10646-1
-!Xmessage*borderWidth:               0
-!Xmessage*Text.borderWidth:          0
+Xmessage*borderWidth:               2
+Xmessage*Text.borderWidth:          0
 Xmessage*Command.shapeStyle:        rectangle
 !Xmessage*Text.?.cursorColor:        white
 
