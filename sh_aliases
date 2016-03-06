@@ -315,23 +315,24 @@ bl() {
 }
 
 # Colorized mc
-mc() {
+mc-color() {
         TERM=${TERM/screen/xterm}
         TERM_COLORS="$(tput colors 2>/dev/null)"
         if [ "$TERM_COLORS" -ge 256 ]; then
                 [ "$USER" == root ] &&
-                        /usr/bin/env mc -S modarin256root-defbg ||
-                        /usr/bin/env mc -S modarin256-defbg
+                        TERM=${TERM/screen/xterm} /usr/bin/env mc -S modarin256root-defbg ||
+                        TERM=${TERM/screen/xterm} /usr/bin/env mc -S modarin256-defbg
         elif [ "$TERM_COLORS" -ge 16 ]; then
                 [ "$USER" == root ] &&
-                        /usr/bin/env mc -S modarcon16root-defbg ||
-                        /usr/bin/env mc -S modarcon16-defbg
+                        TERM=${TERM/screen/xterm} /usr/bin/env mc -S modarcon16root-defbg ||
+                        TERM=${TERM/screen/xterm} /usr/bin/env mc -S modarcon16-defbg
         elif [ "$TERM_COLORS" -ge 8 ]; then
-                /usr/bin/env mc -S gotar
+                TERM=${TERM/screen/xterm} /usr/bin/env mc -S gotar
         else
-                /usr/bin/env mc -b
+                TERM=${TERM/screen/xterm} /usr/bin/env mc -b
         fi
 }
+alias mc='mc-color'
 alias smc='sudo mc'
 
 # ----------------------------------------------------------------------
