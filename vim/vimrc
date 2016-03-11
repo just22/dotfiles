@@ -302,11 +302,9 @@ set dir=~/.vim/swap//,/var/tmp//,/tmp//,.
 "au InsertEnter * highlight! CursorLineNR ctermfg=0 ctermbg=7
 "au InsertLeave * highlight! clear CursorLineNR ctermfg ctermbg
 "
-au InsertEnter * setlocal nocursorline
 au InsertEnter * setlocal cursorcolumn
 au InsertEnter * setlocal colorcolumn=78
 
-au InsertLeave * setlocal cursorline
 au InsertLeave * setlocal nocursorcolumn
 au InsertLeave * setlocal colorcolumn=0
 
@@ -597,6 +595,7 @@ autocmd FileType make             let b:cchar = '#'
 autocmd FileType tex,sty          let b:cchar = '%'
 autocmd FileType mail             let b:cchar = '>'
 autocmd FileType vim              let b:cchar = '"'
+autocmd FileType xdefaults        let b:cchar = '!'
 
 " ----------------------------------------------------------------------
 " Rulers
