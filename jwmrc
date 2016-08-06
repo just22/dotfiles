@@ -1,0 +1,206 @@
+<?xml version="1.0"?>
+<JWM>
+
+    <!-- The root menu. -->
+    <RootMenu onroot="13">
+        <Program icon="terminal.png" label="Terminal">xterm</Program>
+        <Menu icon="folder.png" label="Applications">
+            <Program icon="music.png" label="Audacious">audacious</Program>
+            <Program icon="calculator.png" label="Calculator">xcalc</Program>
+            <Program icon="gimp.png" label="Gimp">gimp</Program>
+            <Program icon="chat.png" label="Pidgin">pidgin</Program>
+            <Program icon="firefox.png" label="Firefox">firefox</Program>
+            <Program icon="editor.png" label="XEdit">xedit</Program>
+        </Menu>
+        <Menu icon="folder.png" label="Utilities">
+            <Program icon="font.png" label="Fonts">xfontsel</Program>
+            <Program icon="window.png" label="Window Properties">
+                xprop | xmessage -file -
+            </Program>
+            <Program icon="window.png" label="Window Information">
+                xwininfo | xmessage -file -
+            </Program>
+        </Menu>
+        <Separator/>
+        <Program icon="lock.png" label="Lock">
+            xlock -mode blank
+        </Program>
+        <Separator/>
+        <Restart label="Restart" icon="restart.png"/>
+        <Exit label="Exit" confirm="true" icon="quit.png"/>
+    </RootMenu>
+
+    <!-- Options for program groups. -->
+    <Group>
+        <Class>Pidgin</Class>
+        <Option>sticky</Option>
+    </Group>
+    <Group>
+        <Name>xclock</Name>
+        <Option>drag</Option>
+        <Option>notitle</Option>
+    </Group>
+
+    <!-- Tray at the bottom. -->
+    <Tray x="0" y="-1" height="22" autohide="off">
+
+        <TrayButton icon="/usr/share/void-artwork/void-logo.png">root:1</TrayButton>
+        <Spacer width="5"/>
+        <Pager labeled="true"/>
+        <Spacer width="15"/>
+        <TaskList maxwidth="256"/>
+        <Spacer width="5"/>
+        <Dock/>
+        <Spacer width="5"/>
+        <!-- <Clock><Button mask="123">exec:xclock</Button></Clock> -->
+        <Clock format="%a %d %b (%V) - %R"/>
+    </Tray>
+
+    <!-- Tray at the top -->
+    <Tray x="0" y="0" height="16" autohide="off">
+	<Spacer/>
+    </Tray>
+
+    <!-- Visual Styles -->
+    <WindowStyle>
+        <Font>DejaVuSans-8</Font>
+        <Width>1</Width>
+        <Height>16</Height>
+        <Corner>0</Corner>
+        <Foreground>#586e75</Foreground>
+        <Background>#93a1a1</Background>
+        <Outline>#586e75</Outline>
+        <Opacity>1</Opacity>
+        <Active>
+            <Foreground>#fdf6e3</Foreground>
+            <Background>#657b83</Background>
+            <Outline>#586e75</Outline>
+            <Opacity>1.0</Opacity>
+        </Active>
+    </WindowStyle>
+    <TrayStyle group="false" list="desktop">
+        <Font>DejaVuSans-8</Font>
+        <Foreground>#073642</Foreground>
+        <Background>#93a1a1</Background>
+        <Outline>#93a1a1</Outline>
+        <Opacity>1</Opacity>
+        <Active>
+            <Foreground>#fdf6e3</Foreground>
+            <Background>#657b83</Background>
+        </Active>
+    </TrayStyle>
+    <PagerStyle>
+        <Outline>#002b36</Outline>
+        <Foreground>#839496</Foreground>
+        <Background>#586e75</Background>
+        <Text>#eee8d5</Text>
+        <Active>
+            <Foreground>#268bd2</Foreground>
+            <Background>#073642</Background>
+        </Active>
+    </PagerStyle>
+    <MenuStyle>
+        <Font>DejaVuSans-8</Font>
+        <Foreground>#073642</Foreground>
+        <Background>#839496</Background>
+        <Outline>#073642</Outline>
+        <Active>
+            <Foreground>#073642</Foreground>
+            <Background>#657b83</Background>
+        </Active>
+        <Opacity>1</Opacity>
+    </MenuStyle>
+    <PopupStyle enabled="button,menu,task">
+        <Font>DejaVuSans-8</Font>
+        <Foreground>#073642</Foreground>
+        <Background>#657b83</Background>
+        <Outline>#073642</Outline>
+    </PopupStyle>
+
+    <!-- Path where icons can be found -->
+    <IconPath>
+        /usr/share/icons/gnome/22x22/actions
+    </IconPath>
+    <IconPath>
+        /usr/share/icons/gnome/22x22/animations
+    </IconPath>
+    <IconPath>
+        /usr/share/icons/gnome/22x22/apps
+    </IconPath>
+    <IconPath>
+        /usr/share/icons/gnome/22x22/categories
+    </IconPath>
+    <IconPath>
+        /usr/share/icons/gnome/22x22/devices
+    </IconPath>
+    <IconPath>
+        /usr/share/icons/gnome/22x22/emblems
+    </IconPath>
+    <IconPath>
+        /usr/share/icons/gnome/22x22/emotes
+    </IconPath>
+    <IconPath>
+        /usr/share/icons/gnome/22x22/mimetypes
+    </IconPath>
+    <IconPath>
+        /usr/share/icons/gnome/22x22/places
+    </IconPath>
+    <IconPath>
+        /usr/share/icons/gnome/22x22/status
+    </IconPath>
+    <IconPath>
+        /usr/share/icons/hicolor/22x22/apps
+    </IconPath>
+
+    <!-- Virtual Desktops -->
+    <!-- Desktop tags can be contained within Desktops for desktop names. -->
+    <Desktops width="6" height="1">
+        <!-- Default background. Note that a Background tag can be
+              contained within a Desktop tag to give a specific background
+              for that desktop.
+         -->
+        <Background type="gradient">#073642:#586e75</Background>
+    </Desktops>
+
+    <!-- Double click speed (in milliseconds) -->
+    <DoubleClickSpeed>400</DoubleClickSpeed>
+
+    <!-- Double click delta (in pixels) -->
+    <DoubleClickDelta>2</DoubleClickDelta>
+
+    <!-- The focus model (sloppy or click) -->
+    <FocusModel>sloppy</FocusModel>
+
+    <!-- The snap mode (none, screen, or border) -->
+    <SnapMode distance="5">border</SnapMode>
+
+    <!-- The move mode (outline or opaque) -->
+    <MoveMode>outline</MoveMode>
+
+    <!-- The resize mode (outline or opaque) -->
+    <ResizeMode>outline</ResizeMode>
+
+    <!-- Key bindings -->
+    <Key key="Up">up</Key>
+    <Key key="Down">down</Key>
+    <Key key="Right">right</Key>
+    <Key key="Left">left</Key>
+    <Key key="h">left</Key>
+    <Key key="j">down</Key>
+    <Key key="k">up</Key>
+    <Key key="l">right</Key>
+    <Key key="Return">select</Key>
+    <Key key="Escape">escape</Key>
+
+    <Key mask="A" key="Tab">nextstacked</Key>
+    <Key mask="A" key="F4">close</Key>
+    <Key mask="A" key="#">desktop#</Key>
+    <Key mask="A" key="F1">root:1</Key>
+    <Key mask="A" key="F2">window</Key>
+    <Key mask="A" key="F10">maximize</Key>
+    <Key mask="A" key="Right">rdesktop</Key>
+    <Key mask="A" key="Left">ldesktop</Key>
+    <Key mask="A" key="Up">udesktop</Key>
+    <Key mask="A" key="Down">ddesktop</Key>
+
+</JWM>

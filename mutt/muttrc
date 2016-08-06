@@ -1,0 +1,172 @@
+# ~~~~~~~~~~~~~~~~~~
+#  General settings
+# ~~~~~~~~~~~~~~~~~~
+set mbox_type=Maildir
+set send_charset = "utf-8"                                  # Character set on sent messages
+set assumed_charset = "iso-8859-1"                          # If there is no character set given on incoming messages, windows is assumed
+set editor = "vim -c 'set syntax=mail ft=mail enc=utf-8'"   # Make sure Vim knows mutt is a mail client and that we compose UTF-8 encoded messages
+set menu_scroll = yes                                       # Just scroll one line instead of full page
+set menu_context = 15                                       # Lines of context that are given when scrolling through menus
+set pager_index_lines = 15                                  # Lines of a mini-index which is shown in the pager
+set forward_format = "Fw:[%s]"                              # Default subject when forwarding a message
+set mime_forward = ask-no                                   # By default, forward messages inline
+set folder_format = "%2C %t %N [Last mod: %d] %f"           # File browser display
+
+# ~~~~~~~~~~~~~~~~~~
+#  Paths
+# ~~~~~~~~~~~~~~~~~~
+set header_cache     = ~/.mutt/cache/headers
+set message_cachedir = ~/.mutt/cache/messages
+set certificate_file = ~/.mutt/certificates
+set mailcap_path     = ~/.mutt/mailcap
+set tmpdir           = ~/.mutt/tmp
+
+# ~~~~~~~~~~~~~~~~~~
+#  Basic Options
+# ~~~~~~~~~~~~~~~~~~
+set wait_key = no           # Shut up...
+set timeout = 3             # Idle time before scanning
+set mail_check = 0          # Minimum time between scans
+set delete                  # Don't ask, just do
+set quit = ask-yes          # Ask for confirmation before exiting
+set mark_old = no           # Read/New is good enough...
+set pipe_decode             # Strip headers and eval mimes when piping
+set thorough_search         # Strip headers and eval mimes before searching
+unset move                  # Gmail does that
+unset confirmappend         # Don't ask, just do!
+
+# ~~~~~~~~~~~~~~~~~~
+#  Sidebar
+# ~~~~~~~~~~~~~~~~~~
+#set sidebar_visible = no
+#set sidebar_width   = 30
+#set sidebar_delim   = '  │'
+#bind index,pager \Cn sidebar-next
+#bind index,pager \Cp sidebar-prev
+#bind index,pager \Ce sidebar-open
+#macro index,pager b '<enter-command>toggle sidebar_visible<enter>'
+
+# ~~~~~~~~~~~~~~~~~~
+#  Status Bar
+# ~~~~~~~~~~~~~~~~~~
+set status_chars  = "-*%A"
+set status_format = "───%>─[ $my_folderName Mbox: %f %r ]───[ %m msg ]%?n?───[ %n new ]?%?d?───[ %d deleted ]?%?t?───[ %t tagged ]?%?p?───[ %p postponed ]?───"
+
+# ~~~~~~~~~~~~~~~~~~
+#  Header Options
+# ~~~~~~~~~~~~~~~~~~
+ignore *                                # Ignore all headers
+unignore from: to: cc: date: subject:   # Show only these
+unhdr_order *
+hdr_order from: to: cc: date: subject:
+
+# ~~~~~~~~~~~~~~~~~~~~
+#  Index View Options
+# ~~~~~~~~~~~~~~~~~~~~
+set date_format = "%a %d/%m/%Y %R"
+set index_format = "%4C %?M?[%2M msg]&        ? [%Z] %?X?[%2X att]&        ?  %D  %-25.25F  %s"
+set sort = "threads"                    # Order messages per thread, last date received first
+set sort_browser="reverse-date"
+set sort_aux = "last-date-received"
+set strict_threads = "yes"              # Threading will only make use of the “In-Reply-To” and
+                                        # “References:” fields
+#set sort_re                            # Threading based on regex (less "drastic" way wrt
+                                        # "strict_threads"
+set uncollapse_jump                     # Don't collapse on an unread message
+set reply_regexp = "^(([Rr][Ee]?(\[[0-9]+\])?: *)?(\[[^]]+\] *)?)*"
+
+
+# Show some MIME types inline
+auto_view text/html
+auto_view application/pdf
+auto_view application/msword
+
+alternative_order text/plain text/enriched text/html
+
+# Make default search pattern to search in To, Cc and Subject
+set simple_search="~f %s | ~C %s | ~s %s"
+
+# Show spam score (from SpamAssassin only) when reading a message
+spam "X-Spam-Score: ([0-9\\.]+).*" "SA: %1"
+set pager_format = " %C - %[%H:%M] %.20v, %s%* %?H? [%H] ?"
+
+# Show only most significant headers
+ignore          *
+unignore        From To Cc Bcc Date Subject
+unhdr_order     *
+hdr_order       From: To: Cc: Bcc: Date: Subject:
+
+# Color scheme
+#source ~/.mutt/mutt-colors-solarized-master/mutt-colors-solarized-dark-16.muttrc
+source ~/.mutt/colorscheme.muttrc
+
+# Collapse all threads by default
+folder-hook . "exec collapse-all"
+
+# Return to folder index after deleting a message
+#macro pager d '<delete-message><exit>'
+
+# Follow links with urlview
+macro pager \Cb "|urlview<enter>" "Call urlview to follow links"
+
+
+# ~~~~~~~~~~~~~~~~~~~~~~~~
+#  Aliases (address book)
+# ~~~~~~~~~~~~~~~~~~~~~~~~
+set alias_file = ~/.mutt/aliases
+set sort_alias = alias
+set reverse_alias = yes
+source $alias_file
+
+
+# ~~~~~~~~~~~~~~~~~~
+#  Account settings
+# ~~~~~~~~~~~~~~~~~~
+macro index,pager g1 "<change-folder>~/mail/sandro-gmail/INBOX<enter>"
+macro index,pager g2 "<change-folder>~/mail/just22-gmail/INBOX<enter>"
+macro index,pager g3 "<change-folder>~/mail/just22-local/INBOX<enter>"
+
+folder-hook '~/mail/sandro-gmail/INBOX' 'source ~/.mutt/sandro.delaurenzis@gmail.com.muttrc'
+folder-hook '~/mail/just22-gmail/INBOX' 'source ~/.mutt/just22.adl@gmail.com.muttrc'
+folder-hook '~/mail/just22-local/INBOX' 'source ~/.mutt/local.muttrc'
+
+# Switch to default account on startup
+source ~/.mutt/sandro.delaurenzis@gmail.com.muttrc
+
+
+# ~~~~~~~~~~~~~~~~~~~~
+#  Keybindings
+# ~~~~~~~~~~~~~~~~~~~~
+bind attach <return> view-mailcap   # View attachments properly.
+
+bind index gg      first-entry
+bind index G       last-entry
+bind index R       group-reply
+bind index <tab>   sync-mailbox
+bind index <space> collapse-thread
+bind index k       previous-entry
+bind index j       next-entry
+bind index -       collapse-thread
+bind index _       collapse-all
+
+macro index \Cr    "T~U<enter><tag-prefix><clear-flag>N<untag-pattern>.<enter>" "mark all messages as read"
+macro index C      "<copy-message>?<toggle-mailboxes>" "copy a message to a mailbox"
+macro index M      "<save-message>?<toggle-mailboxes>" "move a message to a mailbox"
+
+bind pager gg top
+bind pager G  bottom
+bind pager R  group-reply
+bind pager <up>  previous-line
+bind pager <down>  next-line
+
+macro index,pager c "<change-folder>?<toggle-mailboxes>" "open a different folder"
+macro index,pager <f1> "<shell-escape>man mutt<enter>" "Mutt manual page"
+macro index,pager <f2> "<shell-escape>/usr/local/bin/offlineimap -1 -q<enter>" "update IMAP folders"
+
+
+# ~~~~~~~~~~~~~~~~~~~~
+#  abook integration
+# ~~~~~~~~~~~~~~~~~~~~
+set query_command = "abook --mutt-query '%s'"
+macro generic,index,pager \ca "<shell-escape>abook<return>" "launch abook"
+macro index,pager A "<pipe-message>abook --add-email<return>" "add the sender address to abook"

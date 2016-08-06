@@ -1,0 +1,84 @@
+!! SlimOne by Oliver Kraitschy - http://www.okraits.de/
+!! Buttons from the iGoogle and quietNight themes by auldor and dimaka
+!! Colors modified by AdL according to Solarized dark scheme
+
+!! Menu background
+menu.items.bg: flat solid
+menu.items.bg.color: #839496
+
+!! Menu text
+menu.items.text.color: #073642
+menu.items.justify: left
+menu.items.disabled.text.color: #93A1A1
+
+!! Menu headers
+menu.title.bg: flat solid
+menu.title.bg.color: #839496
+menu.title.text.color: #FDF6E3
+menu.title.text.justify: center
+
+!! Selected menu item
+menu.items.active.bg: flat solid
+menu.items.active.bg.color: #657B83
+menu.items.active.text.color: #073642
+
+!! Titlebar background
+window.active.title.bg: flat solid
+window.active.title.bg.color: #839496
+window.inactive.title.bg: flat solid
+window.inactive.title.bg.color: #93A1A1
+
+!! Titlebar text
+window.label.text.justify: left
+window.active.label.bg: parentrelative
+window.active.label.text.color: #EEE8D5
+window.inactive.label.bg: parentrelative
+window.inactive.label.text.color: #586E75
+
+!! Window buttons
+window.*.button.*.bg: parentrelative
+window.active.button.*.hover.bg: parentrelative
+window.inactive.button.*.hover.bg: parentrelative
+window.*.button.*.pressed.bg: parentrelative
+
+window.active.button.*.pressed.image.color: #002B36
+window.inactive.button.*.pressed.image.color: #073642
+
+window.active.button.*.image.color: #FDF6E3
+window.inactive.button.*.image.color: #586E75
+
+!! Borders
+window.active.border.color: #586E75
+window.inactive.border.color: #586E75
+window.active.title.separator.color: #002B36
+window.inactive.title.separator.color: #002B36
+border.width: 1
+padding.width: 1
+padding.height: 1
+window.active.handle.bg: flat solid
+window.active.handle.bg.color: #657B83
+window.active.grip.bg: parentrelative
+window.inactive.handle.bg: flat solid
+window.inactive.handle.bg.color: #839496
+window.inactive.grip.bg: parentrelative
+window.handle.width: 0
+window.active.client.color:  #657B83
+window.inactive.client.color:  #839496
+window.client.padding.width: 0
+window.client.padding.height: 0
+menu.overlap: 0
+
+!! Font shadows
+menu.items.font:shadow=n:shadowtint=30
+
+!! On-screen displays
+osd.bg: flat solid
+osd.bg.color: #EEE8D5
+osd.hilight.bg: flat solid
+osd.hilight.bg.color: #EEE8D5
+osd.label.text.color: #586E75
+osd.border.width: 1
+osd.border.color: #EEE8D5
+osd.button.unpressed.box.color: #586E75
+osd.button.pressed.box.color: #586E75
+osd.button.focused.box.color: #586E75

@@ -1,0 +1,8 @@
+# Switch off visual bell
+set bell-style none
+
+# In bash, list immediately autocompletion matches instead of ringing the bell
+set show-all-if-unmodified on
+
+# No query about viewing the number of possible completions
+set completion-query-items 0

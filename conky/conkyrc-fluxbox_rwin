@@ -1,0 +1,139 @@
+# Fluxbox panel-style Conky configuration file
+
+# This is the number of times Conky will update before quitting. Set to zero to run forever.
+total_run_times 0
+
+# Set to yes if you want Conky to be forked in the background
+background yes
+
+# Print everything to stdout? To X11?
+out_to_console no
+out_to_x yes
+
+# Window properties
+own_window no
+#own_window_type normal
+#own_window_transparent yes
+#own_window_argb_visual yes
+minimum_size 600 600
+alignment top_left
+
+# Default colors
+default_color white
+
+# Use the Xdbe extension? (eliminates flicker)
+double_buffer yes
+
+# Xft font to use
+use_xft yes
+xftfont DejaVu\ Sans\ Mono-8
+
+# Make sure that lines don't get broken
+max_text_width 0
+
+# Update interval in seconds
+update_interval 1
+
+# The number of samples to average for CPU monitoring
+cpu_avg_samples 4
+
+# How strict should if_up be when testing an interface for being up?
+if_up_strictness address
+
+# Desired output unit of all objects displaying a temperature
+temperature_unit celsius
+
+# Borders, shades and outline
+draw_graph_borders yes
+border_margin 4
+border_width 1
+border_inner_margin 0
+border_outer_margin 0
+stippled_borders 8
+draw_shades no
+draw_outline no
+default_bar_size 80 8
+
+# Text colors
+color0 839496
+color1 eee8d5
+
+# Adds spaces around certain objects to stop them from moving other things around
+### use_spacer left
+
+# Pad percentages to this many decimals (0 = no padding)
+### pad_percents 3
+
+# Loads the Lua scripts
+lua_load ~/.config/conky/functions.lua
+
+# Formatted text
+#${color0}Milan, IT ${color1}(Last update: ${weather http://weather.noaa.gov/pub/data/observations/metar/stations/ LIML last_update})
+#${color0}T ${color1}${weather http://weather.noaa.gov/pub/data/observations/metar/stations/ LIML temperature}°C, ${color0}H ${color1}${weather http://weather.noaa.gov/pub/data/observations/metar/stations/ LIML humidity}%, ${weather http://weather.noaa.gov/pub/data/observations/metar/stations/ LIML cloud_cover}
+#${color0}Wind: ${color1}${weather http://weather.noaa.gov/pub/data/observations/metar/stations/ LIML wind_speed}km/h, ${weather http://weather.noaa.gov/pub/data/observations/metar/stations/ LIML wind_dir}
+#${offset 500}${color0}${execi 300 ~/bin/parse-weather-cond temp}°C, ${execi 300 ~/bin/parse-weather-cond cond}, H ${execi 300 ~/bin/parse-weather-cond humidity}%
+TEXT
+${color0}System
+
+${color1}  $nodename - OpenBSD-${kernel}
+
+${color0}  Uptime: ${color1}${uptime}
+
+${color0}  Load:   ${color1}${loadavg 1}(1m) ${loadavg 2}(5m) ${loadavg 3}(15m)
+
+${color1}        ${cpu}%
+${color0}  CPU:  ${color1}${cpubar} (${freq_g}GHz - ${execi 60 sysctl hw.sensors.acpitz0.temp0 | awk 'BEGIN{FS="="}{print $2}' | awk 'BEGIN{FS="."}{print $1}'}°C)
+${color1}  ${cpugraph cpu0 16,307 2aa198 268bd2}
+${color1}        ${memperc}%
+${color0}  RAM:  ${color1}${membar} (${mem}/${memmax})
+
+${color1}        ${swapperc}%
+${color0}  Swap: ${color1}${swapbar} (${swap}/${swapmax})
+
+${color1}        ${apm_battery_life}
+${color0}  Bat:  ${color1}${execibar 30 printf "%.0f\n" $(echo "scale=3; $(sysctl -n hw.sensors.acpibat0.watthour3 | awk '{print $1}')/$(sysctl -n hw.sensors.acpibat0.watthour0 | awk '{print $1}')*100" | bc)} (${apm_battery_time}, ${apm_adapter}, ${execi 30 sysctl -n hw.sensors.acpibat0.power0 | awk '{print $1}'}W)
+${color0}        Vnom/Vcur: ${color1}${execi 30 sysctl -n hw.sensors.acpibat0.volt0 | awk '{print $1}'}Vdc/${color1}${execi 30 sysctl -n hw.sensors.acpibat0.volt1 | awk '{print $1}'}Vdc
+
+${color0}  Processes: ${color1}${processes}
+${color0}    CPU usage            PID   CPU%   MEM%
+${color1}      ${top name 1} ${top pid 1} ${top cpu 1} ${top mem 1}
+${color1}      ${top name 2} ${top pid 2} ${top cpu 2} ${top mem 2}
+${color1}      ${top name 3} ${top pid 3} ${top cpu 3} ${top mem 3}
+${color0}    Mem usage            PID   CPU%   MEM%
+${color1}      ${top_mem name 1} ${top_mem pid 1} ${top_mem cpu 1} ${top_mem mem 1}
+${color1}      ${top_mem name 2} ${top_mem pid 2} ${top_mem cpu 2} ${top_mem mem 2}
+${color1}      ${top_mem name 3} ${top_mem pid 3} ${top_mem cpu 3} ${top_mem mem 3}
+
+${color0}Networking
+${color0}  Rx ${color1}${downspeed trunk0} ${color0}${goto 174}Tx ${color1}${upspeed trunk0}
+${color1}  ${downspeedgraph trunk0 16,150 2aa198 268bd2} ${upspeedgraph trunk0 16,150 2aa198 268bd2}
+${color0}  IP addr: ${color1}${addr trunk0} (${execi 60 wget -O - http://ip.tupeux.com | tail})
+
+${color0}Filesystems
+${color0}  root  ${color1}${fs_bar /} ${lua_parse printf %-4s ${fs_used_perc /}%} ${color0}Used ${color1}${lua_parse printf %-7s ${fs_used /}} ${color0}Free ${color1}${lua_parse printf %-7s ${fs_free /}} ${color0}Total ${color1}${lua_parse printf %-7s ${fs_size /}}
+${color0}  tmp   ${color1}${fs_bar /tmp} ${lua_parse printf %-4s ${fs_used_perc /tmp}%} ${color0}Used ${color1}${lua_parse printf %-7s ${fs_used /tmp}} ${color0}Free ${color1}${lua_parse printf %-7s ${fs_free /tmp}} ${color0}Total ${color1}${lua_parse printf %-7s ${fs_size /tmp}}
+${color0}  var   ${color1}${fs_bar /var} ${lua_parse printf %-4s ${fs_used_perc /var}%} ${color0}Used ${color1}${lua_parse printf %-7s ${fs_used /var}} ${color0}Free ${color1}${lua_parse printf %-7s ${fs_free /var}} ${color0}Total ${color1}${lua_parse printf %-7s ${fs_size /var}}
+${color0}  usr   ${color1}${fs_bar /usr} ${lua_parse printf %-4s ${fs_used_perc /usr}%} ${color0}Used ${color1}${lua_parse printf %-7s ${fs_used /usr}} ${color0}Free ${color1}${lua_parse printf %-7s ${fs_free /usr}} ${color0}Total ${color1}${lua_parse printf %-7s ${fs_size /usr}}
+${color0}  local ${color1}${fs_bar /usr/local} ${lua_parse printf %-4s ${fs_used_perc /usr/local}%} ${color0}Used ${color1}${lua_parse printf %-7s ${fs_used /usr/local}} ${color0}Free ${color1}${lua_parse printf %-7s ${fs_free /usr/local}} ${color0}Total ${color1}${lua_parse printf %-7s ${fs_size /usr/local}}
+${color0}  src   ${color1}${fs_bar /usr/src} ${lua_parse printf %-4s ${fs_used_perc /usr/src}%} ${color0}Used ${color1}${lua_parse printf %-7s ${fs_used /usr/src}} ${color0}Free ${color1}${lua_parse printf %-7s ${fs_free /usr/src}} ${color0}Total ${color1}${lua_parse printf %-7s ${fs_size /usr/src}}
+${color0}  home  ${color1}${fs_bar /home} ${lua_parse printf %-4s ${fs_used_perc /home}%} ${color0}Used ${color1}${lua_parse printf %-7s ${fs_used /home}} ${color0}Free ${color1}${lua_parse printf %-7s ${fs_free /home}} ${color0}Total ${color1}${lua_parse printf %-7s ${fs_size /home}}
+
+${voffset -550}
+${offset 500}${color1}${font DejaVu\ Sans\ Book-12}${time %a, %d %b %Y}
+${offset 500}${color1}${font DejaVu\ Sans\ Book-64}${time %R}
+${voffset -80}${font DejaVu\ Sans\ Book-12}${execi 300 ~/bin/get-weather-cond}
+${offset 500}${color1}${execi 300 ~/bin/parse-weather-cond city}, ${execi 300 ~/bin/parse-weather-cond country} - ${execi 300 ~/bin/parse-weather-cond temp}°C
+${offset 500}${color1}${font DejaVu\ Sans\ Book-10}H ${execi 300 ~/bin/parse-weather-cond humidity}%, W ${execi 300 ~/bin/parse-weather-cond wspeed}km/h ${execi 300 ~/bin/parse-weather-cond wdir}
+${offset 500}${color1}(Last update: ${execi 300 ~/bin/parse-weather-cond update})
+
+${offset 500}${color0}${font}Weather forecasts${execi 300 ~/bin/get-weather-forecast}
+${offset 500}${color1}${execi 300 ~/bin/parse-weather-forecast 1}
+${offset 500}${color1}${execi 300 ~/bin/parse-weather-forecast 2}
+${offset 500}${color1}${execi 300 ~/bin/parse-weather-forecast 3}
+${offset 500}${color1}${execi 300 ~/bin/parse-weather-forecast 4}
+${offset 500}${color1}${execi 300 ~/bin/parse-weather-forecast 5}
+
+${offset 500}${color0}World time
+${offset 500}${color0}London:     ${color1}${tztime Europe/London        %R}  ${color0}Moskow:   ${color1}${tztime Europe/Moscow    %R}
+${offset 500}${color0}Dehli:      ${color1}${tztime Asia/Kolkata         %R}  ${color0}Shanghai: ${color1}${tztime Asia/Shanghai    %R}
+${offset 500}${color0}LosAngeles: ${color1}${tztime America/Los_Angeles  %R}  ${color0}NewYork:  ${color1}${tztime America/New_York %R}

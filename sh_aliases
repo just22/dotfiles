@@ -1,0 +1,377 @@
+# ----------------------------------------------------------------------
+# Enable color support for ls
+#
+#
+if [ "${COLOR_SUPPORT}" = 1 ]; then
+        if ls --color > /dev/null 2>&1; then
+                alias l='ls --color=always'
+        elif colorls > /dev/null 2>&1; then
+                LSCOLORS="exfxcxdxbxgxDxBxGxCbCx"; export LSCOLORS
+                alias l='colorls -G'
+        else
+                alias l='ls -F'
+        fi
+else
+        alias l='ls -F'
+fi
+
+# ----------------------------------------------------------------------
+# File listing
+#
+#
+alias la='l -A'
+
+alias ll='l -lh'
+llm() { ll "$@" | less; }
+alias llt='ll -tr'
+lltm() { llt "$@" | less; }
+alias lltc='llt -c'
+lltcm() { lltc "$@" | less; }
+
+alias lla='ll -A'
+llam() { lla "$@" | less; }
+alias llat='lla -tr'
+llatm() { llat "$@" | less; }
+alias llatc='llat -c'
+llatcm() { llatc "$@" | less; }
+
+lsl()  { find ${1-.} -maxdepth 1 -type l -a ! -name ".*" -ls; }
+lsla() { find ${1-.} -maxdepth 1 -type l -ls; }
+
+lsf()  { find ${1-.} -maxdepth 1 -type f -a ! -name ".*" -print; }
+lsfa() { find ${1-.} -maxdepth 1 -type f -print; }
+
+# ----------------------------------------------------------------------
+# Safe file operations
+#
+#
+alias rmf='/bin/rm -rf'
+alias rm='/bin/rm -i'
+alias cp='/bin/cp -ip'
+alias mv='/bin/mv -i'
+
+# ----------------------------------------------------------------------
+# Safe remove
+#
+#
+del() {
+        if [ $# -eq 0 ]; then
+                echo "usage: del source ..."
+                return
+        fi
+        for f in $(ls -d $*); do
+                if [ "$1" != "-f" ]; then
+                        case "$(/bin/ls -dl "$f")" in
+                        -*) ft="regular file" ;;
+                        b*) ft="block special file" ;;
+                        c*) ft="character special file" ;;
+                        d*) ft="directory" ;;
+                        l*) ft="symbolic link" ;;
+                        p*) ft="FIFO" ;;
+                        s*) ft="socket link" ;;
+                        esac
+                        echo -n "Move $ft $f to trash [y/N]? "
+                        read r
+                        if [ "$r" != y ] && [ "$r" != "Y" ]; then
+                                        continue
+                        fi
+                fi
+                dn="${HOME}/.trash$(dirname $(readlink -f "$f"))"
+                bn="$(basename $(readlink -f "$f"))"
+                mkdir -p "$dn" 2>/dev/null
+                /bin/mv -f "$f" "${dn}/${bn}"
+        done
+}
+alias delf='del -f'
+
+# ----------------------------------------------------------------------
+# Dir stack commands
+#
+#
+pd() { pushd "$@" > /dev/null; }
+alias lpd='dirs -v'
+alias cpd='dirs -c'
+mkpd() { mkdir "$1"; pd "$1"; }
+
+# ----------------------------------------------------------------------
+# History
+#
+#
+alias h='history 25'
+alias hgrep='history | egrep'
+alias v='fc -e vim'
+
+# ----------------------------------------------------------------------
+# It is a good idea to always specify the full path name for the
+# passwd(1), su(1) and sudo(8) commands as this inhibits the
+# possibility of rogue files placed in your PATH being executed
+# for most shells
+#
+alias passwd='/usr/bin/passwd'
+
+if [ -f /usr/bin/su ]; then
+        alias su='/usr/bin/su'
+elif [ -f /bin/su ]; then
+        alias su='/bin/su'
+fi
+
+if [ -f /usr/bin/sudo ]; then
+        alias sudo='/usr/bin/sudo'
+elif [ -f /usr/local/bin/sudo ]; then
+        alias sudo='/usr/local/bin/sudo'
+fi
+
+# ----------------------------------------------------------------------
+# Calendar
+#
+#
+if cal -3 > /dev/null 2>&1; then
+        # GNU version
+        alias cal='cal -m3'
+else
+        # BSD version
+        alias cal='cal -mw | sed -E "2,\$s/(^|[^0-9])($(date +%e))( |$)/\1$(tput rev)$(echo "\2")$(tput sgr0)\3/g"'
+fi
+alias now='date "+%a %d %b %Y %Z (WK%g%V) - %H:%M"'
+
+# ----------------------------------------------------------------------
+# Colorize grep
+# Note: --color=always (instead of the default --color=auto) activates
+# colors even when the output is not a terminal, as e.g. when there is
+# a pipe with a pager; this could break things sometimes...
+#
+if echo "x" | grep --color "x" > /dev/null 2>&1; then
+        alias grepc='grep --color=always'
+        alias egrepc='egrep --color=always'
+        alias fgrepc='fgrep --color=always'
+        alias zgrepc='zgrep --color=always'
+elif [ -e /usr/local/bin/ggrep ]; then
+        # GNU grep certainly has color=always support
+        alias grepc='ggrep --color=always'
+        alias egrepc='gegrep --color=always'
+        alias fgrepc='gfgrep --color=always'
+        alias zgrepc='gzgrep --color=always'
+fi
+
+# ----------------------------------------------------------------------
+# File/dir statistics
+#
+#
+alias usage='du -chs ./* | sort -rh | head -10'
+#usage() { du -chs "$1"./* | sort -rh | head -10; }
+#nfa() { find "${1-.}" -maxdepth 1 -type f -print | wc -l; }
+#nf()  { find "${1-.}" -maxdepth 1 -type f ! -name ".*" -print | wc -l; }
+#nfh() { find "${1-.}" -maxdepth 1 -type f -name ".*" -print | wc -l; }
+#nda() { find "${1-.}" -maxdepth 1 -type d -print | wc -l; }
+#ndh() { find "${1-.}" -maxdepth 1 -type d -name ".*" -print | wc -l; }
+#nda() { find "${1-.}" -maxdepth 1 -type d ! -name ".*" -print | wc -l; }
+#nla() { find "${1-.}" -maxdepth 1 -type l -print | wc -l; }
+nf()  { ls -l  $1 | egrep "^-" | wc -l; }
+nfa() { ls -lA $1 | egrep "^-" | wc -l; }
+nfh() { ls -lA $1 | egrep "^-" | awk '{print $9}' | egrep "^\." | wc -l; }
+nd()  { ls -l  $1 | egrep "^d" | wc -l; }
+nda() { ls -lA $1 | egrep "^d" | wc -l; }
+ndh() { ls -lA $1 | egrep "^d" | awk '{print $9}' | egrep "^\." | wc -l; }
+nl()  { ls -l  $1 | egrep "^l" | wc -l; }
+nla() { ls -lA $1 | egrep "^l" | wc -l; }
+nlh() { ls -lA $1 | egrep "^l" | awk '{print $9}' | egrep "^\." | wc -l; }
+
+# Report file type in dir/tree
+ft() {
+        # Based on the original code by Bruce Barnet, modified by Yunliang Yu
+        # This version adds a help message, uses file(1) "brief mode"
+        # (simplifying the awk(1) body) and hides error in case no file is
+        # found in the specified dir, and makes the recursive search optional
+        # through the "-r" switch
+        if [ "$1" == "-h" ]; then
+                echo "usage: ft [-r] [<pathName> ...]"
+                return
+        elif [ "$1" == "-r" ]; then
+                shift
+        else
+                local FIND_OPT="-maxdepth 1"
+        fi
+        find ${*-.} $FIND_OPT -type f -print | xargs file -b 2>/dev/null |
+                awk '
+                {tcnt[$0]++}
+                END{for (type in tcnt) printf("%d\t%s\n", tcnt[type], type)}
+                ' | sort -nr
+}
+
+# File "age"
+tfmt() {
+        if [ $# -ne 1 ]; then
+                echo "usage: tfmt <seconds>"
+                return
+        fi
+        if [ $1 -lt 60 ]; then
+                echo "${1}s"
+        else
+                DAYS=$(expr \( $1 / 86400 \) % 30)
+                if [ $1 -lt 2592000 ]; then
+                        HOURS=$(expr \( $1 / 3600 \) % 24)
+                        MINUTES=$(expr \( $1 / 60 \) % 60)
+                        [ $DAYS -ne 0 ] && echo -n "${DAYS}d "
+                        ([ $HOURS -ne 0 ] || ([ $DAYS -ne 0 ] && [ $MINUTES -ne 0 ])) && echo -n "${HOURS}h "
+                        [ $MINUTES -ne 0 ] && echo "${MINUTES}min" || echo
+                else
+                        YEARS=$(expr $1 / 31104000)
+                        MONTHS=$(expr \( $1 / 2592000 \) % 12)
+                        [ $YEARS -ne 0 ] && echo -n "${YEARS}y "
+                        ([ $MONTHS -ne 0 ] || ([ $YEARS -ne 0 ] && [ $DAYS -ne 0 ])) && echo -n "${MONTHS}m "
+                        [ $DAYS -ne 0 ] && echo "${DAYS}d" || echo
+                fi
+        fi
+}
+age() {
+        if [ $# -ne 1 ]; then
+                echo "usage: age <fileName>"
+                return
+        fi
+        FILE_NAME="$1"
+        if ! [ -a "$FILE_NAME" ]; then
+                echo "age: cannot open $FILE_NAME: No such file"
+                return
+        fi
+        # BSD and GNU stat versions have different options
+        if stat --version > /dev/null 2>&1; then
+                STAT_MTIME_OPT="-c %Y"
+        else
+                STAT_MTIME_OPT="-t %s -f %m"
+        fi
+        echo "$(tfmt $(expr $(date +%s) - $(stat "$STAT_MTIME_OPT" "$FILE_NAME")))"
+}
+
+# ----------------------------------------------------------------------
+# Calculator
+#
+#
+c() { echo "scale=3; $@" | bc; }
+d2h() { echo "obase=16; ibase=10; $1" | bc; }
+d2o() { echo "obase=8;  ibase=10; $1" | bc; }
+d2b() { echo "obase=2;  ibase=10; $1" | bc; }
+o2h() { echo "obase=16; ibase=8;  $1" | bc; }
+o2d() { echo "obase=10; ibase=8;  $1" | bc; }
+o2b() { echo "obase=2;  ibase=8;  $1" | bc; }
+b2h() { echo "obase=16; ibase=2;  $1" | bc; }
+b2o() { echo "obase=8;  ibase=2;  $1" | bc; }
+b2d() { echo "obase=10; ibase=2;  $1" | bc; }
+h2b() { echo "obase=2;  ibase=16; $1" | bc; }
+h2o() { echo "obase=8;  ibase=16; $1" | bc; }
+h2d() { echo "obase=10; ibase=16; $1" | bc; }
+
+# ----------------------------------------------------------------------
+# User space (u)mount
+# Note: TEMPORARY - To be improved asap
+#
+#alias mount_datavol01='sudo mount -t nfs -o rw,nodev,nosuid,noexec argo:/var/nfs/datavol01 ~/media/datavol01'
+#alias umount_datavol01='sudo umount ~/media/datavol01'
+mrh () { sudo sshfs $USER@$1:/home/$USER $2; }
+
+# ----------------------------------------------------------------------
+# Reinforce cache policy for mplayer
+#
+#
+alias mplayer-hm='mplayer -cache 1572864 -cache-min 80'
+
+# ----------------------------------------------------------------------
+# Some vim commands I'm accustomed to...
+#
+#
+alias :e='vim'
+alias :b#='r vim'
+alias :q='exit'
+
+
+# ----------------------------------------------------------------------
+# Various
+#
+#
+alias cl='clear'
+alias r='fc -s'
+alias v='fc -e vim'
+alias cutf='tr -s "\t" " " | sed "s/^ //" | cut -d" " -f'
+alias rs='rsync -avzhHp --progress'
+alias pid='ps axwwwww | grep -v grep | egrep --'
+alias catn='cat -n'
+alias showpath='echo $PATH | tr ":" "\n"'
+alias touchall='ls -tr | xargs touch'
+alias se='env sudoedit'
+alias svim='sudo vim'
+alias cvs_env='cvs -d :ext:just22@atlantide.t28.net:/var/lib/cvs/env.cvsrepo'
+vimall() { find ${1-.} -maxdepth 1 -type f -a ! -name ".*" -print | xargs sh -c '</dev/tty vim "$@"' ignoreme; }
+vimalldot() { find ${1-.} -maxdepth 1 -type f -a -name ".*" -print | xargs sh -c '</dev/tty vim "$@"' ignoreme; }
+grepopen() { grep -l "$@" | xargs sh -c '</dev/tty vim "$@"' ignoreme; }
+
+runl() { $(head -n "+$1" "$2" | tail -n 1); }
+
+# Find files by (part of) name
+ff() { find . -name "*${1}*" -ls; }
+ff.() { find . -maxdepth 1 -name "*${1}*" -ls; }
+
+# List broken links
+bl() {
+        find -L ${1-.} -maxdepth 1 -type l -ls |
+                awk '{printf "%s %s %s\n", $11, $12, $13}'
+}
+
+# Colorized mc
+mc-color() {
+        TERM=${TERM/screen/xterm}
+        TERM_COLORS="$(tput colors 2>/dev/null)"
+        if [ "$TERM_COLORS" -ge 256 ]; then
+                [ "$USER" == root ] &&
+                        TERM=${TERM/screen/xterm} /usr/bin/env mc -S modarin256root-defbg ||
+                        TERM=${TERM/screen/xterm} /usr/bin/env mc -S modarin256-defbg
+        elif [ "$TERM_COLORS" -ge 16 ]; then
+                [ "$USER" == root ] &&
+                        TERM=${TERM/screen/xterm} /usr/bin/env mc -S modarcon16root-defbg ||
+                        TERM=${TERM/screen/xterm} /usr/bin/env mc -S modarcon16-defbg
+        elif [ "$TERM_COLORS" -ge 8 ]; then
+                TERM=${TERM/screen/xterm} /usr/bin/env mc -S gotar
+        else
+                TERM=${TERM/screen/xterm} /usr/bin/env mc -b
+        fi
+}
+alias mc='mc-color'
+alias smc='sudo mc'
+
+# ----------------------------------------------------------------------
+# Vim notes
+#
+#
+nn() { vim -c ":Note $*"; }
+sp() { vim -c ":Note Scratchpad"; }
+wp() { vim -c ":Note Planning for WK $(date --date=next-monday +%y%V)"; }
+todo() { vim -c ":Note todo"; }
+
+# ----------------------------------------------------------------------
+# Vimwiki
+#
+#
+#alias wiki='vim -c "call vimwiki#base#goto_index(v:count1)"'
+#alias gwiki='gvim -c "call vimwiki#base#goto_index(v:count1)"'
+#alias diary='vim -c "call vimwiki#diary#make_note(v:count1)"'
+#alias gdiary='gvim -c "call vimwiki#diary#make_note(v:count1)"'
+
+# ----------------------------------------------------------------------
+# git
+#
+#
+git_remote_repo() {
+        if GIT_DIR="$(git rev-parse --git-dir 2>/dev/null)"; then
+                [ "$GIT_DIR" == .git ] &&
+                        REPO_NAME="$(basename $PWD)" ||
+                        REPO_NAME="$(basename "$(dirname "$GIT_DIR")")"
+                git "$1"
+        else
+                echo "Not in a git tree"
+        fi
+}
+gclone() { git clone https://just22@atlantide.t28.net/git/$1; }
+alias Gpush='git_remote_repo push'
+alias Gpull='git_remote_repo pull'
+alias Gfetch='git_remote_repo fetch'
+alias Gstatus='git status'
+alias Gdiff='git diff'
+alias Glog='git log'

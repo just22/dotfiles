@@ -1,0 +1,58 @@
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#  sandro.delaurenzis@gmail.com account settings
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+set folder = "$HOME/mail/sandro-gmail"
+set status_format = "───%>─[ sandro.delaurenzis@gmail.com ]───[ %f %r ]───[ %m msg ]%?n?───[ %n new ]?%?d?───[ %d deleted ]?%?t?───[ %t tagged ]?%?p?───[ %p postponed ]?───"
+
+# Mailboxes to monitor for new mail (and listed in the sidebar)
+unmailboxes *
+#mailboxes +INBOX  \
+#          +Drafts \
+#          +Sent   \
+#          +Trash  \
+#          +Agenzia\ Entrate\ -\ INPS \
+#          +Anna \
+#          +Appartamenti\ -\ Acquisto \
+#          +BNP\ Paribas \
+#          +Bari\ -\ Via\ Cancello\ Rotto \
+#          +CT566PM\ -\ DV864MR \
+#          +CartaSi \
+#          +Cassina\ de\ Pecchi\ -\ Via\ Achille\ Grandi \
+#          +DW383TJ \
+#          +Echirolles \
+#          +Esterel\ EDA\ Tech \
+#          +Fastweb \
+#          +France\ -\ Contracts \
+#          +France\ -\ Various \
+#          +Free \
+#          +Friends \
+#          +ING \
+#          +Ida \
+#          +Infostrada \
+#          +Job\ search \
+#          +Maya\ Tech \
+#          +Norway\ 2011 \
+#          +Other\ stuff \
+#          +Pegasus\ MD \
+#          +Raffa \
+#          +STM\ shares \
+#          +Subscriptions \
+#          +Telepass \
+#          +eBay \
+#          +ePrice
+mailboxes `find $HOME/mail/sandro-gmail -mindepth 1 -maxdepth 1 -type d | awk '{gsub(/[\47 ]/, "\\\\&", $0); print $0}' | tr "\n" " "`
+
+
+set spoolfile  = +INBOX     # Go there when started
+set postponed  = +Drafts    # Save postponed messages in Gmail's "system" draft folder
+set record     = +Sent      # Append outgoing messages to "sent" folder
+set trash      = +Trash     # This is the Gmail's "system" trash, messages are automatically removed after 30 days
+set mail_check = 60
+
+set realname = "Alessandro DE LAURENZIS"
+set from = "sandro.delaurenzis@gmail.com"
+alternates ""
+
+# Signature
+set signature= ~/.signatures/sandro.delaurenzis@gmail.com

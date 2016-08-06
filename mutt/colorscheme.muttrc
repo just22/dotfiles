@@ -1,0 +1,48 @@
+# Make sure that you are using mutt linked against slang, not ncurses, or
+# suffer the consequences of weird color issues. "mutt -v" to check.
+
+# Basic colors ---------------------------------------------------------
+color normal        cyan            default
+color error         red             default
+color tilde         default         default
+color message       cyan            default
+color markers       default         default
+color attachment    magenta         default
+color search        black           yellow
+color status        magenta         default
+color indicator     black           yellow
+color tree          yellow          default
+
+# Index ----------------------------------------------------------------
+color index         red             default         "~N"                        # New messages
+color index         yellow          default         "~F"                        # Flagged messages
+color index         blue            default         "~P"                        # Messages from me
+color index         blue            default         "~p!~F"                     # Messages to me
+color index         brightred       default         "~N~p!~F"                   # New messages to me
+color index         red             default         "~v~(~N)"                   # Collapsed thread with some new messages
+color index         default         default         "~D(!~p|~p)"                # Deleted messages
+
+# Headers ------------------------------------------------------
+color hdrdefault    brightblack     default
+color header        red             default         "^(From|To|Cc)"
+color header        default         default         "^(Subject)"
+color header        cyan            default         "^(Date)"
+
+# Body -----------------------------------------------------------------
+color quoted        yellow          default
+color quoted1       magenta         default
+color quoted2       yellow          default
+color quoted3       magenta         default
+color quoted4       yellow          default
+color signature     brightcyan      default
+color bold          red             default
+color underline     red             default
+color body          cyan            default         "[;:][-o][)/(|]"            # Emoticons
+color body          cyan            default         "[;:][)(|]"                 # Emoticons
+color body          cyan            default         "[*]?((N)?ACK|CU|LOL|SCNR|BRB|BTW|CWYL|\
+                                                     |FWIW|vbg|GD&R|HTH|HTHBE|IMHO|IMNSHO|\
+                                                     |IRL|RTFM|ROTFL|ROFL|YMMV)[*]?"
+color body          cyan            default         "[ ][*][^*]*[*][ ]?"        # Emoticon
+color body          cyan            default         "[ ]?[*][^*]*[*][ ]"        # Emoticon
+color body          red             default         "([a-z][a-z0-9+-]*://(((([a-z0-9_.!~*'();:&=+$,-]|%[0-9a-f][0-9a-f])*@)?((([a-z0-9]([a-z0-9-]*[a-z0-9])?)\\.)*([a-z]([a-z0-9-]*[a-z0-9])?)\\.?|[0-9]+\\.[0-9]+\\.[0-9]+\\.[0-9]+)(:[0-9]+)?)|([a-z0-9_.!~*'()$,;:@&=+-]|%[0-9a-f][0-9a-f])+)(/([a-z0-9_.!~*'():@&=+$,-]|%[0-9a-f][0-9a-f])*(;([a-z0-9_.!~*'():@&=+$,-]|%[0-9a-f][0-9a-f])*)*(/([a-z0-9_.!~*'():@&=+$,-]|%[0-9a-f][0-9a-f])*(;([a-z0-9_.!~*'():@&=+$,-]|%[0-9a-f][0-9a-f])*)*)*)?(\\?([a-z0-9_.!~*'();/?:@&=+$,-]|%[0-9a-f][0-9a-f])*)?(#([a-z0-9_.!~*'();/?:@&=+$,-]|%[0-9a-f][0-9a-f])*)?|(www|ftp)\\.(([a-z0-9]([a-z0-9-]*[a-z0-9])?)\\.)*([a-z]([a-z0-9-]*[a-z0-9])?)\\.?(:[0-9]+)?(/([-a-z0-9_.!~*'():@&=+$,]|%[0-9a-f][0-9a-f])*(;([-a-z0-9_.!~*'():@&=+$,]|%[0-9a-f][0-9a-f])*)*(/([-a-z0-9_.!~*'():@&=+$,]|%[0-9a-f][0-9a-f])*(;([-a-z0-9_.!~*'():@&=+$,]|%[0-9a-f][0-9a-f])*)*)*)?(\\?([-a-z0-9_.!~*'();/?:@&=+$,]|%[0-9a-f][0-9a-f])*)?(#([-a-z0-9_.!~*'();/?:@&=+$,]|%[0-9a-f][0-9a-f])*)?)[^].,:;!)? \t\r\n<>\"]"
+                                                                                # URLs

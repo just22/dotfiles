@@ -1,0 +1,65 @@
+# ---------------------------------------------------------------------
+#
+# Stores
+#
+#
+IMAPStore       gmail-just22-server
+Host            imap.gmail.com
+User            just22.adl@gmail.com
+Pass            just4Gmail
+UseIMAPS        yes
+RequireSSL      yes
+CertificateFile /etc/ssl/cert.pem
+
+MaildirStore    gmail-just22-local
+Path            ~/mail/gmail-just22/
+Inbox           ~/mail/gmail-just22/INBOX
+
+# ---------------------------------------------------------------------
+#
+# Channels
+#
+#
+Channel   gmail-just22-inbox
+Master    ":gmail-just22-server:INBOX"
+Slave     ":gmail-just22-local:INBOX"
+Create    Both
+SyncState *
+
+Channel   gmail-just22-drafts
+Master    ":gmail-just22-server:[Gmail]/Drafts"
+Slave     ":gmail-just22-local:drafts"
+Create    Both
+SyncState *
+
+Channel   gmail-just22-sent
+Master    ":gmail-just22-server:[Gmail]/Sent Mail"
+Slave     ":gmail-just22-local:sent"
+Create    Both
+SyncState *
+
+Channel   gmail-just22-trash
+Master    ":gmail-just22-server:[Gmail]/Trash"
+Slave     ":gmail-just22-local:trash"
+Create    Both
+SyncState *
+
+# ---------------------------------------------------------------------
+#
+# Groups
+#
+#
+Group   gmail-just22
+Channel gmail-just22-trash
+Channel gmail-just22-inbox
+Channel gmail-just22-drafts
+Channel gmail-just22-sent
+
+# ---------------------------------------------------------------------
+#
+# Global settings
+#
+#
+Sync All
+Expunge Both
+

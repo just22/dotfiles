@@ -1,0 +1,73 @@
+# ~/.bashrc_local: Addenda to ~/.bashrc specific to machine/site
+# (OpenBSD specific stuff)
+
+#if [ "$(uname -s)" == "OpenBSD" ]; then
+
+    # ------------------------------------------------------------------
+    # Power management
+    # (sudo not needed when user is part of the operator group)
+    #
+    alias reboot='/sbin/shutdown -r now'
+    alias halt='/sbin/shutdown -h now'
+    alias poweroff='/sbin/shutdown -hp now'
+    alias suspend='apm -z'
+    alias hibernate='apm -Z'
+
+    # ------------------------------------------------------------------
+    # Package management
+    #
+    #
+    #alias pkgs='ftp ftp://openbsd.mirror.garr.it/pub/OpenBSD/snapshots/packages/`machine -a`/'
+    alias pkgs='pkg_info -Q'
+    alias pkga='/usr/local/bin/sudo pkg_add -iv'
+    alias pkgas='pkg_add -ivs'
+    alias pkgar='/usr/local/bin/sudo pkg_add -ivr'
+    alias pkgau='/usr/local/bin/sudo pkg_add -vu'
+    alias pkgaus='/usr/local/bin/sudo pkg_add -vus'
+    alias pkgd='/usr/local/bin/sudo pkg_delete -v'
+    alias pkgds='pkg_delete -vs'
+    alias pkgda='/usr/local/bin/sudo pkg_delete -a'
+    alias pkgdas='pkg_delete -as'
+    alias pkgrdep='pkg_info -R'
+
+    # ------------------------------------------------------------------
+    # Port management
+    #
+    #
+    mks() {
+            CWD="$(pwd)"
+            cd /usr/ports
+            make search name="$1" | egrep "Port:|Path:|Info:|^$"
+            cd "$CWD"
+    }
+    alias mkc='make clean'
+    alias mkca='make clean=all'
+    alias mkf='make fetch'
+    alias mkcksum='make makesum checksum'
+    alias mke='make extract'
+    alias mkp='make patch'
+    alias mkup='make update-patches'
+    alias mkb='make build'
+    alias mkp='make package'
+    alias mka='make install clean'
+    alias mki='make install'
+    alias mkr='make reinstall'
+    alias mku='make uninstall'
+
+    # ------------------------------------------------------------------
+    # Various
+    #
+    #
+    blkid() { disklabel ${1-sd0} | egrep "/dev/|duid"; }
+    alias xcdroast='xcdroast -n -f /dev/rcd0c'
+    alias lk='clear; lock -pn'
+    #alias mc='TERM=xterm-256color mc'
+    #alias tmux='tmux -2'
+
+    # ------------------------------------------------------------------
+    # Temporary WAs
+    #
+    #
+    #alias surf='LD_PRELOAD=/usr/local/lib/gio/modules/libgiognutls.so surf'
+
+#fi

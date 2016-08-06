@@ -1,0 +1,6 @@
+[Desktop Entry]
+Name=session-logout
+Comment=Session logout
+Icon=/usr/local/share/icons/gnome/16x16/actions/exit.png
+Exec=session-logout
+Type=Application

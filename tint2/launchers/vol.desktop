@@ -1,0 +1,6 @@
+[Desktop Entry]
+Name=vol
+Comment=Volume level
+Icon=/usr/local/share/icons/gnome/16x16/status/audio-volume-medium.png
+Exec=vol-launcher
+Type=Application

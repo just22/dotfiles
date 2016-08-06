@@ -1,0 +1,185 @@
+! ----------------------------------------------------------------------
+!
+! XTerm section
+!
+
+! Term name
+!XTerm*termName:            xterm-256color
+
+! Fonts
+!XTerm*font:                -xos4-terminus-medium-r-normal-*-14-*-*-*-*-*-iso10646-1
+!XTerm*boldFont:            -xos4-terminus-medium-r-normal-*-14-*-*-*-*-*-iso10646-1
+!XTerm*font1:               -xos4-terminus-medium-r-normal-*-12-*-*-*-*-*-iso10646-1
+!XTerm*font2:               -xos4-terminus-medium-r-normal-*-14-*-*-*-*-*-iso10646-1
+!XTerm*font3:               -xos4-terminus-medium-r-normal-*-16-*-*-*-*-*-iso10646-1
+!XTerm*font4:               -xos4-terminus-medium-r-normal-*-18-*-*-*-*-*-iso10646-1
+!XTerm*font5:               -xos4-terminus-medium-r-normal-*-20-*-*-*-*-*-iso10646-1
+!XTerm*font6:               -xos4-terminus-medium-r-normal-*-22-*-*-*-*-*-iso10646-1
+
+XTerm*faceName:            DejaVu Sans Mono:style=Book
+XTerm*faceSize:            10
+
+!XTerm*faceName:            Terminus
+!XTerm*faceSize:            11
+
+! No bold fonts and colors
+XTerm*allowBoldFonts:      false
+XTerm*boldColors:          false
+
+! Scrolling
+XTerm*scrollBar:           false
+XTerm*rightScrollBar:      true
+XTerm*scrollTtyOutput:     false
+XTerm*scrollLines:         1
+XTerm*saveLines:           4096
+XTerm*scrollKey:           true
+
+! No fullscreen toggling (rely on WM for that)
+XTerm*fullscreen:          never
+
+! UTF8 support by default
+XTerm*locale:              true
+!XTerm*utf8:                2
+
+! Pointer and cursor
+XTerm*pointerShape:        left_ptr
+XTerm*cursorBlink:         true
+
+! Sets of chars treated the same when doing cut and paste
+!XTerm*charClass: 33:48,36-47:48,58-59:48,61:48,63-64:48,95:48,126:48
+
+! Selection behavior in response to multiple mouse clicks
+! 3 clicks: everything separated by whitespace (useful for URLs and filenames)
+! 4 clicks: everything up to the start of the prompt
+! 5 clicks: whole line
+XTerm*on3Clicks:           regex [^ \n]+
+XTerm*on4Clicks:           regex [^#$]+
+XTerm*on5Clicks:           line
+
+! Visual bell
+XTerm*visualBell:          false
+
+! BS/DEL consistent behavior
+! Open URLs directly from xterm (Alt+b after selection)
+XTerm*VT100.translations: #override \
+    <Key>Insert: string(0x1b) string("[2~") \n\
+    <Key>Delete: string(0x1b) string("[3~") \n\
+    Meta <Key>b: exec-formatted("uzbl-browser '%t'", PRIMARY) \n\
+
+! Send unique keycodes for "special" control sequences
+XTerm*vt100.modifyOtherKeys: 1
+
+! Convert Meta characters into a two-character sequence with
+! the character itself preceded by ESC
+XTerm*metaSendsEscape:     true
+XTerm*eightBitInput:       false
+
+! Write (or not) a record into the system log file
+XTerm*utmpInhibit:         true
+
+! No login shell
+XTerm*loginShell:false
+
+! Enable colors for underline and bold
+#include ".Xresources.d/XTerm-color"
+
+
+! ----------------------------------------------------------------------
+!
+! XConsole section
+!
+XConsole*font:          -xos4-terminus-medium-r-normal-*-14-*-*-*-*-*-iso10646-1
+
+
+! ----------------------------------------------------------------------
+!
+! Xft section
+!
+Xft.dpi:                96
+Xft.antialias:          1
+Xft.hinting:            1
+!Xft.hintstyle:          hintslight
+!Xft.hintstyle:          slight
+Xft.hintstyle:          hintfull
+Xft.rgba:               rgb
+Xft.lcdfilter:          lcddefault
+
+
+! ----------------------------------------------------------------------
+!
+! xscreensaver section
+!
+
+xscreensaver.splash: false
+
+! Font settings
+xscreensaver.Dialog.headingFont:        -xos4-terminus-bold-r-normal-*-14-*-*-*-*-*-iso10646-1
+xscreensaver.Dialog.bodyFont:           -xos4-terminus-medium-r-normal-*-14-*-*-*-*-*-iso10646-1
+xscreensaver.Dialog.labelFont:          -xos4-terminus-medium-r-normal-*-14-*-*-*-*-*-iso10646-1
+xscreensaver.Dialog.unameFont:          -xos4-terminus-medium-r-normal-*-14-*-*-*-*-*-iso10646-1
+xscreensaver.Dialog.buttonFont:         -xos4-terminus-bold-r-normal-*-14-*-*-*-*-*-iso10646-1
+xscreensaver.Dialog.dateFont:           -xos4-terminus-medium-r-normal-*-12-*-*-*-*-*-iso10646-1
+xscreensaver.passwd.passwdFont:         -xos4-terminus-bold-r-normal-*-14-*-*-*-*-*-iso10646-1
+
+! General dialog box (affects main hostname, username, password text)
+!xscreensaver.Dialog.foreground:         #ffffff
+!xscreensaver.Dialog.background:         #111111
+!xscreensaver.Dialog.topShadowColor:     #111111
+!xscreensaver.Dialog.bottomShadowColor:  #111111
+!xscreensaver.Dialog.Button.foreground:  #666666
+!xscreensaver.Dialog.Button.background:  #ffffff
+
+! Username/password input box and date text colour
+!xscreensaver.Dialog.text.foreground:    #666666
+!xscreensaver.Dialog.text.background:    #ffffff
+!xscreensaver.Dialog.internalBorderWidth:24
+!xscreensaver.Dialog.borderWidth:        20
+!xscreensaver.Dialog.shadowThickness:    2
+
+! Timeout bar (background is actually determined by Dialog.text.background)
+!xscreensaver.passwd.thermometer.foreground:  #ff0000
+!xscreensaver.passwd.thermometer.background:  #000000
+!xscreensaver.passwd.thermometer.width:       8
+
+!datestamp format--see the strftime(3) manual page for details
+xscreensaver.dateFormat:
+
+
+! ----------------------------------------------------------------------
+!
+! XMessage section
+!
+Xmessage.form.okay.shapeStyle:      rectangle
+!Xmessage.form.okay.background:      #777777
+!Xmessage.form.okay.foreground:      snow
+!Xmessage*message*background:        snow
+!Xmessage*buttons:                   OK
+!Xmessage*defaultButton:             OK
+!Xmessage.Scrollbar:                 WhenNeeded
+Xmessage.form.message.Scroll:       WhenNeeded
+Xmessage*Font:                      -xos4-terminus-medium-*-*-*-14-*-*-*-*-*-iso10646-1
+Xmessage*borderWidth:               1
+Xmessage*Text.borderWidth:          0
+Xmessage*Command.shapeStyle:        rectangle
+!Xmessage*Text.?.cursorColor:        white
+
+
+! ----------------------------------------------------------------------
+!
+! tkremind section
+!
+tkremind*font: -xos4-terminus-medium-*-*-*-12-*-*-*-*-*-iso10646-*
+
+
+! ----------------------------------------------------------------------
+!
+! xfig section
+!
+xfig*inches:    false
+
+
+! ----------------------------------------------------------------------
+!
+! Default colorscheme
+!
+#include ".Xresources.d/solarized_dark"
