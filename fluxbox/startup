@@ -32,18 +32,18 @@ xscreensaver &
 CHECK_BATT_STATUS_PID=$!
 
 # Statusbar
-statusbar &
+(sleep 2; statusbar) &
 #(sleep 1; xdotool search --class "dzen" windowunmap) &
 
 # Reserve space for statusbar
 # (Just a WA, since dzen2 doesn't play well with Fluxbox's slit)
-(sleep 1; space_dapp) &
+(sleep 3; space_dapp) &
 
 # Wallpaper setting
 [ -x ~/.fehbg ] && ~/.fehbg
 
 # Desktop management
-pcmanfm --desktop &
+(sleep 3; pcmanfm --desktop) &
 
 # Tray apps
 hp-systray &
