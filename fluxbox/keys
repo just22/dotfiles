@@ -23,10 +23,6 @@ OnRightGrip Move1 :StartResizing bottomright
 # Cycle through windows in the current workspace
 Mod4 Tab :NextWindow {groups} (workspace=[current]) (Minimized=no)
 
-# Toggle statusbar/pager visibility
-Mod4 a :Exec toggle-statusbar
-Mod4 w :Exec fb-switch-ws
-
 # Application launchers
 Mod4 d              :Exec dmenu_run -p Run:
 Mod4 F1             :Exec xterm -e "man fluxbox"
@@ -50,6 +46,8 @@ Mod1 Control Delete :Exec xlock
 # Other command exec
 Mod4 a              :Exec toggle-statusbar
 Mod4 Control c      :Exec change-perfpolicy
+Mod4 w              :Exec fb-switch-ws
+
 
 # Current window commands
 Mod4 x :Close
@@ -82,7 +80,7 @@ Mod4 t :Exec tmux_pane_search
 
 # Exit, restart or reload config file
 Mod4 Shift q :Exec dmenu-session-logout
-Mod4 Control q :Restart
+Mod4 Control q :Exec fbrestart
 Mod4 r :Reconfigure
 
 # Change to a specific workspace
