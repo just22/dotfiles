@@ -30,6 +30,8 @@ call vundle#begin()
 
 Plugin 'https://github.com/altercation/vim-colors-solarized.git'
 
+Plugin 'git://repo.or.cz/vcscommand'
+
 Plugin 'https://github.com/tpope/vim-fugitive'
 
 Plugin 'https://github.com/tpope/vim-tbone.git'
@@ -55,7 +57,6 @@ Plugin 'https://github.com/ctrlpvim/ctrlp.vim.git'
 
 " No more used bundles
 "Plugin 'https://github.com/chriskempson/base16-vim'
-"Plugin 'git://repo.or.cz/vcscommand'
 "Plugin 'https://github.com/scrooloose/nerdcommenter.git'
 "Plugin 'https://github.com/jeetsukumaran/vim-buffersaurus'
 "Plugin 'https://github.com/vim-latex/vim-latex.git'
