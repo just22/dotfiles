@@ -142,6 +142,8 @@ set_prompt() {
         PS1=${PS1}"[${UTF8_LAST_OK-v}]-"                                                        # Last command exit status
     git rev-parse --git-dir > /dev/null 2>&1 &&
         PS1=${PS1}"[${PS_HI_COLOR}git${PS_NORM_COLOR}]-"                                        # In a git tree?
+    ls ./CVS > /dev/null 2>&1 &&
+        PS1=${PS1}"[${PS_HI_COLOR}cvs${PS_NORM_COLOR}]-"                                        # In a CVS tree?
     PS1=${PS1}"[\W]"                                                                            # Basename of current directory
     PS1=${PS1}"\n${PS_NORM_COLOR}${UTF8_PS_2NDLINE_HEADER-"+----->"} ${RESET_COLOR}"            # Cosmetic
 
