@@ -65,7 +65,7 @@ TMOUT=0
 #
 #
 case "$TERM" in
-    xterm*|screen*|eterm*|linux)
+    xterm*|rxvt-unicode*|screen*|linux)
         UTF8_HISTSEPARATOR=" ─› "
         UTF8_PS_1STLINE_HEADER="┌──"
         UTF8_PS_2NDLINE_HEADER="└─────›"
@@ -149,7 +149,7 @@ set_prompt() {
 
     # If this is an xterm, then set the title
     case "$TERM" in
-        xterm*|screen*)
+        xterm*|rxvt-unicode*|screen*)
             #[${TERM%%-*}]
             PS1="\[\033]0;[\s] [\w] [Last cmd: \"$(history 1 | awk -v HS="${UTF8_HISTSEPARATOR-" -> "}" 'BEGIN{FS=HS} {print $2}')\"]\007\]"$PS1
             ;;
@@ -194,7 +194,7 @@ set_prompt() {
     #DEFAULT_COLOR='$(tput sgr0)'
 
 # Giving up using tput...
-if [ -z ${NO_COLORS+x} ] && [ $(tput color) -ge 8 ]; then
+if [ -z ${NO_COLORS+x} ] && [ $(tput colors) -ge 8 ]; then
     COLOR_SUPPORT=1
 
     # ANSI escape sequences for graphics mode
@@ -271,7 +271,7 @@ show_command_in_title_bar()
             ;;
         *)
             case "$TERM" in
-                xterm*)
+                xterm*|rxvt-unicode*)
                     printf "\033]0;[%s] [%s] [%s] [Running: \"%s\"]\007" "${TERM%%-*}" "${0##*/}" "$PWD" "$BASH_COMMAND"
                     ;;
                 screen*)
