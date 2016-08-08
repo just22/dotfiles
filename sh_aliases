@@ -41,6 +41,8 @@ lsla() { find ${1-.} -maxdepth 1 -type l -ls; }
 lsf()  { find ${1-.} -maxdepth 1 -type f -a ! -name ".*" -print; }
 lsfa() { find ${1-.} -maxdepth 1 -type f -print; }
 
+latest_mod() { find ${1-.} -type d \( -name .cache -o -name .snapshot \) -prune -o -type f -mtime -1 -print; }
+
 # ----------------------------------------------------------------------
 # Safe file operations
 #
@@ -88,7 +90,7 @@ alias delf='del -f'
 # Dir stack commands
 #
 #
-pd() { pushd "$@" > /dev/null; }
+pd() { pushd "$@" > /dev/null; dirs -v; }
 alias lpd='dirs -v'
 alias cpd='dirs -c'
 mkpd() { mkdir "$1"; pd "$1"; }
