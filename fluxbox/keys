@@ -3,14 +3,12 @@ OnDesktop Mouse1 :HideMenus
 OnDesktop Mouse2 :WorkspaceMenu
 OnDesktop Mouse3 :RootMenu
 
-# Mod4 + click on window to move/close/resize, get info/get menu, raise/minimize/lower
+# Mod4 + click on window to raise/move/lower/resize
 OnWindow Mod4 Mouse1 :MacroCmd {Raise} {Focus} {StartMoving}
 OnWindow Mod4 Mouse2 :Lower
 OnWindow Mod4 Mouse3 :MacroCmd {Raise} {Focus} {StartResizing NearestCorner}
-OnWindow Mod4 Shift Mouse1 :Exec xterm -e "xprop -id $(xprop -root _NET_ACTIVE_WINDOW | awk '{print $NF}') | ${PAGER}"
-OnWindow Mod4 Shift Mouse3 :WindowMenu
 
-# Mouse window actions
+# Click on titlebar to move/group/raise/resize
 OnTitlebar  Move1 :StartMoving
 OnTitlebar  Control Mouse1 :StartTabbing
 OnTitlebar  Mouse1 :MacroCmd {Raise} {Focus} {ActivateTab}
@@ -18,17 +16,13 @@ OnLeftGrip  Move1 :StartResizing bottomleft
 OnRightGrip Move1 :StartResizing bottomright
 #OnTitlebar  Double Mouse1 :Shade
 
-# Mod4 + middle click on window for a menu of option
-
 # Cycle through windows in the current workspace
 Mod4 Tab :NextWindow {groups} (workspace=[current]) (Minimized=no)
 
 # Application launchers
 Mod4 d              :Exec dmenu_run -p Run:
-Mod4 F1             :Exec xterm -e "man fluxbox"
-Mod4 Shift F1       :Exec xterm -e "man fluxbox-keys"
-Mod4 Control F1     :Exec xterm -e "man fluxbox-apps"
-Mod4 F2             :Exec fbrun -font "DejaVu Sans Mono-8"
+Mod4 F1             :Exec (fluxbox -v; fluxbox -info | sed 1d) | xmessage -buttons OK:0 -file - -center
+Mod4 F2             :Exec dmenu_run -p Run:
 Mod4 Shift Return   :Exec xterm
 Mod4 Shift t        :Exec xterm -e "tmux attach-session -d || tmux new-session"
 Mod4 Shift b        :Exec firefox-launcher
@@ -38,8 +32,6 @@ Mod4 Shift h        :Exec apm -Z
 #Mod4 Shift m        :Exec xterm -title "Mail client" -e mutt
 Mod4 Shift m        :Exec thunderbird
 Mod4 Shift f        :Exec pcmanfm
-Mod4 Shift p        :Exec transmission-gtk
-Mod4 Shift v        :Exec gnome-mplayer
 Mod4 Shift c        :Exec dmenu-calc
 Mod1 Control Delete :Exec xlock
 
@@ -50,9 +42,10 @@ Mod4 w              :Exec fb-switch-ws
 
 
 # Current window commands
+Mod4 p                  :Exec activewin_xprop
 Mod4 x :Close
 Mod4 Control x :Kill
-Mod4 Shift underscore :Minimize
+Mod4 underscore         :Minimize
 Mod4 s :StickWindow
 Mod4 m :MacroCmd {Raise} {Maximize}
 Mod4 f :Fullscreen
@@ -72,16 +65,16 @@ Mod4 KP_9 :MacroCmd {ResizeTo  50%  67%} {MoveTo 0% 0% UpperRight}
 # Root/Window/Workspace menus
 Mod4 space :RootMenu
 Mod4 l :WindowMenu
-Mod4 Control w :WorkspaceMenu
+Mod4 w                  :WorkspaceMenu
 
 # Window search
-Mod4 Shift w :Exec win_search
-Mod4 t :Exec tmux_pane_search
+Mod4 Control w          :Exec win_search
+Mod4 Control t          :Exec tmux_pane_search
 
 # Exit, restart or reload config file
 Mod4 Shift q :Exec dmenu-session-logout
 Mod4 Control q :Exec fbrestart
-Mod4 r :Reconfigure
+Mod4 Control r :Reconfigure
 
 # Change to a specific workspace
 Mod4 1 :Workspace 1
@@ -121,5 +114,4 @@ Mod4 h :ArrangeWindowsStackBottom (Title!=pcmanfm) (Title!=bbpager)
 #Mod4 Control p :Exec import -window root /tmp/screenshot.$(date +%F_%H:%M:%S).gif
 
 # Play video (address in clipboard)
-Mod4 p :Exec ytdl-mplayer `xclip -o`
-Mod4 Control p :Exec ytdl-smplayer `xclip -o`
+Mod4 Shift p :Exec ytdl-smplayer `xclip -o -selection clipboard`
