@@ -6,7 +6,7 @@
 # ----------------------------------------------------------------------
 
 # Source custom profile
-[ -f ~/.profile] && . ~/.profile
+[ -f ~/.profile ] && . ~/.profile
 
 # Source .xinitrc (or launch twm)
 [ -f ~/.xinitrc ] && . ~/.xinitrc || exec twm
