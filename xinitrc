@@ -1,3 +1,14 @@
+# ----------------------------------------------------------------------
+#  $RCSfile$
+#
+#  ~/.xinitrc is executed by xinit, usually invoked by
+#  startx. It starts the GUI part of the session, typically
+#  some GUI-related settings (key bindings, X resources,
+#  etc.), and launches a window (or session) manager.
+#
+#  $Id$
+#
+
 # X apps default settings
 xrdb -load -I${HOME} ~/.Xresources
 
@@ -35,9 +46,6 @@ xset s off
 
 # Turn off the bell
 xset b off
-
-# Source custom profile
-. ~/.profile
 
 # Clean-up user's tmp directory
 rm -rf ${HOME}/tmp

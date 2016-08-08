@@ -1,14 +1,18 @@
-# ~/.bashrc: executed by bash(1) for non-login shells
-
-# This file is sourced by all *interactive* bash shells on startup,
-# including some apparently interactive shells such as scp and rcp
-# that can't tolerate any output.  So make sure this doesn't display
-# anything or bad things will happen!
-
-# This file should contain stuff that applies only to bash itself, such
-# as alias and function definitions, shell options and prompt settings
 # ----------------------------------------------------------------------
-
+#  $RCSfile$
+#
+#  ~/.bashrc: executed by bash(1) for non-login shells
+#
+#  This file is sourced by all *interactive* bash shells on startup,
+#  including some apparently interactive shells such as scp and rcp
+#  that can't tolerate any output.  So make sure this doesn't display
+#  anything or bad things will happen!
+#
+#  It should contain stuff that applies only to bash itself, such
+#  as alias and function definitions, shell options and prompt settings
+#
+#  $Id$
+#
 
 # Test for an interactive shell.  There is no need to set anything
 # past this point for scp and rcp, and it's important to refrain from

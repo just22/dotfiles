@@ -1,3 +1,11 @@
+# ----------------------------------------------------------------------
+#  $RCSfile$
+#
+#  Readline init file
+#
+#  $Id$
+#
+
 # Switch off visual bell
 set bell-style none
 

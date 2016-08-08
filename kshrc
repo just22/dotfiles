@@ -1,23 +1,20 @@
-# ---------------------------------------------------------------------
+# ----------------------------------------------------------------------
+#  $RCSfile$
 #
-# ~/.kshrc: sourced by ksh(1) for interactive shells
+#  This file is sourced by all *interactive* ksh on startup,
+#  including some apparently interactive shells such as scp and rcp
+#  that can't tolerate any output.  So make sure this doesn't display
+#  anything or bad things will happen!
+#  It should contain stuff that applies only to ksh itself, such
+#  as alias and function definitions, shell options and prompt settings
 #
+#  $Id$
 #
-# This file is sourced by all *interactive* ksh on startup,
-# including some apparently interactive shells such as scp and rcp
-# that can't tolerate any output.  So make sure this doesn't display
-# anything or bad things will happen!
-#
-# It should contain stuff that applies only to ksh itself, such
-# as alias and function definitions, shell options and prompt settings
 
-
-# ---------------------------------------------------------------------
-#
+# ----------------------------------------------------------------------
 # Test for an interactive shell.  There is no need to set anything
 # past this point for scp and rcp, and it's important to refrain from
 # outputting anything in those cases.
-#
 #
 if [[ $- != *i* ]]; then
     # Shell is non-interactive.  Be done now!
@@ -26,9 +23,7 @@ fi
 
 
 # ----------------------------------------------------------------------
-# ----------------------------------------------------------------------
 # Enable a subset of csh-style history editing using the `!' character
-#
 #
 set -o csh-history
 
@@ -36,13 +31,11 @@ set -o csh-history
 # ----------------------------------------------------------------------
 # Make history permanent
 #
-#
 HISTFILE=${HOME}/.sh_history
 
 
 # ----------------------------------------------------------------------
 # Colored prompt, if the terminal has the capability
-#
 #
 if [ -z ${NO_COLORS+x} ]; then
         if tput setaf 1 >/dev/null 2>&1; then
@@ -128,7 +121,6 @@ fi
 # ----------------------------------------------------------------------
 # If this is an xterm, set the title to user@host:dir
 #
-#
 case "$TERM" in
 xterm*|screen*)
     PS1="\[\e]0;\u@\h:[\w]\a\]$PS1"
@@ -141,12 +133,10 @@ esac
 # ----------------------------------------------------------------------
 # The editor used by fc
 #
-#
 export FCEDIT="vim"
 
 
 # ----------------------------------------------------------------------
 # Aliases/functions definition
-#
 #
 [ -e ~/.sh_aliases ] && . ~/.sh_aliases

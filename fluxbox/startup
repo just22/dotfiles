@@ -1,9 +1,12 @@
 #!/bin/sh
 
+# ----------------------------------------------------------------------
+#  $RCSfile$
 #
-# fluxbox startup-script:
+#  fluxbox(1) startup-script
 #
-# Lines starting with a '#' are ignored.
+#  $Id$
+#
 
 # Change your keymap
 #
@@ -52,6 +55,7 @@ hp-systray &
 # Because it is the last app you have to run it with ''exec'' before it.
 #
 #exec fluxbox
-# or, if you want to keep a log:
- mv -f ~/.fluxbox/fluxbox.log{,.old} 2> /dev/null
- exec fluxbox -log ~/.fluxbox/fluxbox.log
+
+# Or, if you want to keep a log:
+mv -f ~/.fluxbox/fluxbox.log{,.old} 2> /dev/null
+exec fluxbox -log ~/.fluxbox/fluxbox.log

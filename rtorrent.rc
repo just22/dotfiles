@@ -1,4 +1,10 @@
-# Resource file for rTorrent
+# ----------------------------------------------------------------------
+#  $RCSfile$
+#
+#  Resource file for rTorrent
+#
+#  $Id$
+#
 
 # Maximum and minimum number of peers to connect to per torrent.
 #min_peers = 40

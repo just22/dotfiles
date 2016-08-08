@@ -1,5 +1,9 @@
 " ----------------------------------------------------------------------
-" Vim settings when called from Mutt
+"  $RCSfile$
+"
+"  Vim settings when called from Mutt
+"
+"  $Id$
 "
 
 " Probably needless, but just to play it safe...

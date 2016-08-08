@@ -1,3 +1,11 @@
+// ---------------------------------------------------------------------
+//  $RCSfile$
+//
+//  surf config file
+//
+//  $Id$
+//
+
 /* modifier 0 means no modifier */
 static char *useragent      = "Mozilla/5.0 (X11; U; Unix; en-US) "
                               "AppleWebKit/537.15 (KHTML, like Gecko) "

@@ -1,4 +1,10 @@
-" vi config file
+" ----------------------------------------------------------------------
+"  $RCSfile$
+"
+"  vi config file
+"
+"  $Id$
+"
 "
 " Allow reading any .exrc files found in the current directory
 set exrc

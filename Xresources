@@ -1,5 +1,12 @@
 ! ----------------------------------------------------------------------
+!  $RCSfile$
 !
+!  X server resource file
+!
+!  $Id$
+!
+
+! ----------------------------------------------------------------------
 ! XTerm section
 !
 
@@ -91,7 +98,6 @@ XTerm*dynamicColors:       true
 
 
 ! ----------------------------------------------------------------------
-!
 ! URxvt section
 !
 URxvt*font:             xft:DejaVu Sans Mono:style=Book:size=10
@@ -104,14 +110,12 @@ URxvt*fading:           0
 
 
 ! ----------------------------------------------------------------------
-!
 ! XConsole section
 !
 XConsole*font:          -xos4-terminus-medium-r-normal-*-14-*-*-*-*-*-iso10646-1
 
 
 ! ----------------------------------------------------------------------
-!
 ! Xft section
 !
 Xft.dpi:                96
@@ -125,7 +129,6 @@ Xft.lcdfilter:          lcddefault
 
 
 ! ----------------------------------------------------------------------
-!
 ! xscreensaver section
 !
 
@@ -165,7 +168,6 @@ xscreensaver.dateFormat:
 
 
 ! ----------------------------------------------------------------------
-!
 ! XMessage section
 !
 Xmessage.form.okay.shapeStyle:      rectangle
@@ -184,21 +186,18 @@ Xmessage*Command.shapeStyle:        rectangle
 
 
 ! ----------------------------------------------------------------------
-!
 ! tkremind section
 !
 tkremind*font: -xos4-terminus-medium-*-*-*-12-*-*-*-*-*-iso10646-*
 
 
 ! ----------------------------------------------------------------------
-!
 ! xfig section
 !
 xfig*inches:    false
 
 
 ! ----------------------------------------------------------------------
-!
 ! Default colorscheme
 !
 #include ".Xresources.d/solarized-dark"

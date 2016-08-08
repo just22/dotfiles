@@ -1,5 +1,9 @@
 " ----------------------------------------------------------------------
+"  $RCSfile$
+"
 "  Vim configuration file
+"
+"  $Id$
 "
 
 " ----------------------------------------------------------------------
@@ -596,7 +600,7 @@ nnoremap <leader>u yypVr=
 autocmd FileType c,cpp,java,scala let b:cchar = '//'
 autocmd FileType sh,csh,tcsh      let b:cchar = '#'
 autocmd FileType tcl,conf,fstab   let b:cchar = '#'
-autocmd FileType make             let b:cchar = '#'
+autocmd FileType make,muttrc      let b:cchar = '#'
 autocmd FileType tex,sty          let b:cchar = '%'
 autocmd FileType mail             let b:cchar = '>'
 autocmd FileType vim              let b:cchar = '"'

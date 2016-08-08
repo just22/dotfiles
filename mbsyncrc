@@ -1,7 +1,13 @@
+# ----------------------------------------------------------------------
+#  $RCSfile$
+#
+#  isync configuration file
+#
+#  $Id$
+#
+
 # ---------------------------------------------------------------------
-#
 # Stores
-#
 #
 IMAPStore       gmail-just22-server
 Host            imap.gmail.com
@@ -16,9 +22,7 @@ Path            ~/mail/gmail-just22/
 Inbox           ~/mail/gmail-just22/INBOX
 
 # ---------------------------------------------------------------------
-#
 # Channels
-#
 #
 Channel   gmail-just22-inbox
 Master    ":gmail-just22-server:INBOX"
@@ -45,9 +49,7 @@ Create    Both
 SyncState *
 
 # ---------------------------------------------------------------------
-#
 # Groups
-#
 #
 Group   gmail-just22
 Channel gmail-just22-trash
@@ -56,10 +58,7 @@ Channel gmail-just22-drafts
 Channel gmail-just22-sent
 
 # ---------------------------------------------------------------------
-#
 # Global settings
-#
 #
 Sync All
 Expunge Both
-

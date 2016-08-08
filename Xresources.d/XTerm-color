@@ -1,3 +1,9 @@
+! ----------------------------------------------------------------------
+!  $RCSfile$
+!
+!  $Id$
+!
+
 ! Use color for underline attribute
 *VT100*colorULMode: on
 *VT100*colorUL: #b58900
