@@ -1,7 +1,6 @@
 # ----------------------------------------------------------------------
 # Enable color support for ls
 #
-#
 if [ "${COLOR_SUPPORT}" = 1 ]; then
         if ls --color > /dev/null 2>&1; then
                 alias l='ls --color=always'
@@ -17,7 +16,6 @@ fi
 
 # ----------------------------------------------------------------------
 # File listing
-#
 #
 alias la='l -A'
 
@@ -46,7 +44,6 @@ latest_mod() { find ${1-.} -type d \( -name .cache -o -name .snapshot \) -prune 
 # ----------------------------------------------------------------------
 # Safe file operations
 #
-#
 alias rmf='/bin/rm -rf'
 alias rm='/bin/rm -i'
 alias cp='/bin/cp -ip'
@@ -54,7 +51,6 @@ alias mv='/bin/mv -i'
 
 # ----------------------------------------------------------------------
 # Safe remove
-#
 #
 del() {
         if [ $# -eq 0 ]; then
@@ -89,7 +85,6 @@ alias delf='del -f'
 # ----------------------------------------------------------------------
 # Dir stack commands
 #
-#
 pd() { pushd "$@" > /dev/null; dirs -v; }
 alias lpd='dirs -v'
 alias cpd='dirs -c'
@@ -97,7 +92,6 @@ mkpd() { mkdir "$1"; pd "$1"; }
 
 # ----------------------------------------------------------------------
 # History
-#
 #
 alias h='history 25'
 alias hgrep='history | egrep'
@@ -125,7 +119,6 @@ fi
 
 # ----------------------------------------------------------------------
 # Calendar
-#
 #
 if cal -3 > /dev/null 2>&1; then
         # GNU version
@@ -157,7 +150,6 @@ fi
 
 # ----------------------------------------------------------------------
 # File/dir statistics
-#
 #
 alias usage='du -chs ./* | sort -rh | head -10'
 #usage() { du -chs "$1"./* | sort -rh | head -10; }
@@ -247,7 +239,6 @@ age() {
 # ----------------------------------------------------------------------
 # Calculator
 #
-#
 c() { echo "scale=3; $@" | bc; }
 d2h() { echo "obase=16; ibase=10; $1" | bc; }
 d2o() { echo "obase=8;  ibase=10; $1" | bc; }
@@ -273,12 +264,10 @@ mrh () { sudo sshfs $USER@$1:/home/$USER $2; }
 # ----------------------------------------------------------------------
 # Reinforce cache policy for mplayer
 #
-#
 alias mplayer-hm='mplayer -cache 1572864 -cache-min 80'
 
 # ----------------------------------------------------------------------
 # Some vim commands I'm accustomed to...
-#
 #
 alias :e='vim'
 alias :b#='r vim'
@@ -287,7 +276,6 @@ alias :q='exit'
 
 # ----------------------------------------------------------------------
 # Various
-#
 #
 alias cl='clear'
 alias r='fc -s'
@@ -341,7 +329,6 @@ alias smc='sudo mc'
 # ----------------------------------------------------------------------
 # Vim notes
 #
-#
 nn() { vim -c ":Note $*"; }
 sp() { vim -c ":Note Scratchpad"; }
 wp() { vim -c ":Note Planning for WK $(date --date=next-monday +%y%V)"; }
@@ -350,7 +337,6 @@ todo() { vim -c ":Note todo"; }
 # ----------------------------------------------------------------------
 # Vimwiki
 #
-#
 #alias wiki='vim -c "call vimwiki#base#goto_index(v:count1)"'
 #alias gwiki='gvim -c "call vimwiki#base#goto_index(v:count1)"'
 #alias diary='vim -c "call vimwiki#diary#make_note(v:count1)"'
@@ -358,7 +344,6 @@ todo() { vim -c ":Note todo"; }
 
 # ----------------------------------------------------------------------
 # git
-#
 #
 git_remote_repo() {
         if GIT_DIR="$(git rev-parse --git-dir 2>/dev/null)"; then
@@ -377,3 +362,11 @@ alias Gfetch='git_remote_repo fetch'
 alias Gstatus='git status'
 alias Gdiff='git diff'
 alias Glog='git log'
+
+# ----------------------------------------------------------------------
+# Change XTerm colorscheme on-the-fly
+#
+alias dark='dynamic-colors switch solarized-dark'
+alias dark-desat='dynamic-colors switch solarized-dark-desaturated'
+alias light='dynamic-colors switch solarized-light'
+alias light-desat='dynamic-colors switch solarized-light-desaturated'
