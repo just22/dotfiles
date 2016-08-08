@@ -1,6 +1,14 @@
-# ~~~~~~~~~~~~~~~~~~
+# ----------------------------------------------------------------------
+#  $RCSfile$
+#
+#  mutt configuration file
+#
+#  $Id$
+#
+
+# ----------------------------------------------------------------------
 #  General settings
-# ~~~~~~~~~~~~~~~~~~
+#
 set mbox_type=Maildir
 set send_charset = "utf-8"                                  # Character set on sent messages
 set assumed_charset = "iso-8859-1"                          # If there is no character set given on incoming messages, windows is assumed
@@ -12,18 +20,18 @@ set forward_format = "Fw:[%s]"                              # Default subject wh
 set mime_forward = ask-no                                   # By default, forward messages inline
 set folder_format = "%2C %t %N [Last mod: %d] %f"           # File browser display
 
-# ~~~~~~~~~~~~~~~~~~
+# ----------------------------------------------------------------------
 #  Paths
-# ~~~~~~~~~~~~~~~~~~
+#
 set header_cache     = ~/.mutt/cache/headers
 set message_cachedir = ~/.mutt/cache/messages
 set certificate_file = ~/.mutt/certificates
 set mailcap_path     = ~/.mutt/mailcap
 set tmpdir           = ~/.mutt/tmp
 
-# ~~~~~~~~~~~~~~~~~~
+# ----------------------------------------------------------------------
 #  Basic Options
-# ~~~~~~~~~~~~~~~~~~
+#
 set wait_key = no           # Shut up...
 set timeout = 3             # Idle time before scanning
 set mail_check = 0          # Minimum time between scans
@@ -35,9 +43,9 @@ set thorough_search         # Strip headers and eval mimes before searching
 unset move                  # Gmail does that
 unset confirmappend         # Don't ask, just do!
 
-# ~~~~~~~~~~~~~~~~~~
+# ----------------------------------------------------------------------
 #  Sidebar
-# ~~~~~~~~~~~~~~~~~~
+#
 #set sidebar_visible = no
 #set sidebar_width   = 30
 #set sidebar_delim   = '  │'
@@ -46,23 +54,23 @@ unset confirmappend         # Don't ask, just do!
 #bind index,pager \Ce sidebar-open
 #macro index,pager b '<enter-command>toggle sidebar_visible<enter>'
 
-# ~~~~~~~~~~~~~~~~~~
+# ----------------------------------------------------------------------
 #  Status Bar
-# ~~~~~~~~~~~~~~~~~~
+#
 set status_chars  = "-*%A"
 set status_format = "───%>─[ $my_folderName Mbox: %f %r ]───[ %m msg ]%?n?───[ %n new ]?%?d?───[ %d deleted ]?%?t?───[ %t tagged ]?%?p?───[ %p postponed ]?───"
 
-# ~~~~~~~~~~~~~~~~~~
+# ----------------------------------------------------------------------
 #  Header Options
-# ~~~~~~~~~~~~~~~~~~
+#
 ignore *                                # Ignore all headers
 unignore from: to: cc: date: subject:   # Show only these
 unhdr_order *
 hdr_order from: to: cc: date: subject:
 
-# ~~~~~~~~~~~~~~~~~~~~
+# ----------------------------------------------------------------------
 #  Index View Options
-# ~~~~~~~~~~~~~~~~~~~~
+#
 set date_format = "%a %d/%m/%Y %R"
 set index_format = "%4C %?M?[%2M msg]&        ? [%Z] %?X?[%2X att]&        ?  %D  %-25.25F  %s"
 set sort = "threads"                    # Order messages per thread, last date received first
@@ -110,18 +118,18 @@ folder-hook . "exec collapse-all"
 macro pager \Cb "|urlview<enter>" "Call urlview to follow links"
 
 
-# ~~~~~~~~~~~~~~~~~~~~~~~~
+# ----------------------------------------------------------------------
 #  Aliases (address book)
-# ~~~~~~~~~~~~~~~~~~~~~~~~
+#
 set alias_file = ~/.mutt/aliases
 set sort_alias = alias
 set reverse_alias = yes
 source $alias_file
 
 
-# ~~~~~~~~~~~~~~~~~~
+# ----------------------------------------------------------------------
 #  Account settings
-# ~~~~~~~~~~~~~~~~~~
+#
 macro index,pager g1 "<change-folder>~/mail/sandro-gmail/INBOX<enter>"
 macro index,pager g2 "<change-folder>~/mail/just22-gmail/INBOX<enter>"
 macro index,pager g3 "<change-folder>~/mail/just22-local/INBOX<enter>"
@@ -134,9 +142,9 @@ folder-hook '~/mail/just22-local/INBOX' 'source ~/.mutt/local.muttrc'
 source ~/.mutt/sandro.delaurenzis@gmail.com.muttrc
 
 
-# ~~~~~~~~~~~~~~~~~~~~
+# ----------------------------------------------------------------------
 #  Keybindings
-# ~~~~~~~~~~~~~~~~~~~~
+#
 bind attach <return> view-mailcap   # View attachments properly.
 
 bind index gg      first-entry
@@ -164,9 +172,9 @@ macro index,pager <f1> "<shell-escape>man mutt<enter>" "Mutt manual page"
 macro index,pager <f2> "<shell-escape>/usr/local/bin/offlineimap -1 -q<enter>" "update IMAP folders"
 
 
-# ~~~~~~~~~~~~~~~~~~~~
+# ----------------------------------------------------------------------
 #  abook integration
-# ~~~~~~~~~~~~~~~~~~~~
+#
 set query_command = "abook --mutt-query '%s'"
 macro generic,index,pager \ca "<shell-escape>abook<return>" "launch abook"
 macro index,pager A "<pipe-message>abook --add-email<return>" "add the sender address to abook"
