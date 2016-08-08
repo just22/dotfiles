@@ -78,10 +78,29 @@ XTerm*eightBitInput:       false
 XTerm*utmpInhibit:         true
 
 ! No login shell
-XTerm*loginShell:false
+XTerm*loginShell:          false
+
+! Use reversed foreground/background colors in selection
+XTerm*highlightColorMode:  false
+
+! Dynamic colors
+XTerm*dynamicColors:       true
 
 ! Enable colors for underline and bold
 #include ".Xresources.d/XTerm-color"
+
+
+! ----------------------------------------------------------------------
+!
+! URxvt section
+!
+URxvt*font:             xft:DejaVu Sans Mono:style=Book:size=10
+URxvt*scrollBar:        false
+URxvt*scrollBar_right:  true
+URxvt*scrollTtyOutput:  false
+URxvt*saveLines:        8192
+URxvt*cursorBlink:      true
+URxvt*fading:           0
 
 
 ! ----------------------------------------------------------------------
@@ -182,4 +201,4 @@ xfig*inches:    false
 !
 ! Default colorscheme
 !
-#include ".Xresources.d/solarized_dark"
+#include ".Xresources.d/solarized-dark"
