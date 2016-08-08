@@ -1,7 +1,7 @@
 # ----------------------------------------------------------------------
 #  File:        $RCSfile$
 #  Purpose:     ~/.xsession is invoked by XDM (and by other display
-                manager when the "custom" session is selected).
+#               manager when the "custom" session is selected).
 #  Revision:    $Id$
 # ----------------------------------------------------------------------
 
