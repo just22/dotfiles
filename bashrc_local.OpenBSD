@@ -1,11 +1,9 @@
 # ----------------------------------------------------------------------
-#  $RCSfile$
+#  $Id$
 #
 #  ~/.bashrc_local: Addenda to ~/.bashrc specific to machine/site
 #  (OpenBSD specific stuff)
-#
-#  $Id$
-#
+# ----------------------------------------------------------------------
 
 #if [ "$(uname -s)" == "OpenBSD" ]; then
 

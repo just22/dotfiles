@@ -1,5 +1,5 @@
 # ----------------------------------------------------------------------
-#  $RCSfile$
+#  $Id$
 #
 #  This file is sourced by all *interactive* ksh on startup,
 #  including some apparently interactive shells such as scp and rcp
@@ -7,9 +7,7 @@
 #  anything or bad things will happen!
 #  It should contain stuff that applies only to ksh itself, such
 #  as alias and function definitions, shell options and prompt settings
-#
-#  $Id$
-#
+# ----------------------------------------------------------------------
 
 # ----------------------------------------------------------------------
 # Test for an interactive shell.  There is no need to set anything

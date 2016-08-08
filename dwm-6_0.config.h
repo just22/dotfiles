@@ -1,11 +1,9 @@
 // ---------------------------------------------------------------------
-//  $RCSfile$
+//  $Id$
 //
 //  dwm configuration file
 //  See LICENSE file for copyright and license details
-//
-//  $Id$
-//
+// ---------------------------------------------------------------------
 
 // XF86 Key symbols
 #include <X11/XF86keysym.h>

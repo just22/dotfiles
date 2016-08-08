@@ -1,11 +1,9 @@
 # ----------------------------------------------------------------------
-#  $RCSfile$
+#  $Id$
 #
 #  ~/.xsession is invoked by XDM (and by other display manager when
 #  "custom" session is selected)
-#
-#  $Id$
-#
+# ----------------------------------------------------------------------
 
 # Source custom profile
 [ -f ~/.profile] && . ~/.profile

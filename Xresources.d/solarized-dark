@@ -1,11 +1,9 @@
 ! ----------------------------------------------------------------------
-!  $RCSfile$
+!  $Id$
 !
 !  Solarized color scheme
 !  http://ethanschoonover.com/solarized
-!
-!  $Id$
-!
+! ----------------------------------------------------------------------
 
 ! Common
 #define S_yellow        #b58900

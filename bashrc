@@ -1,5 +1,5 @@
 # ----------------------------------------------------------------------
-#  $RCSfile$
+#  $Id$
 #
 #  ~/.bashrc: executed by bash(1) for non-login shells
 #
@@ -10,9 +10,7 @@
 #
 #  It should contain stuff that applies only to bash itself, such
 #  as alias and function definitions, shell options and prompt settings
-#
-#  $Id$
-#
+# ----------------------------------------------------------------------
 
 # Test for an interactive shell.  There is no need to set anything
 # past this point for scp and rcp, and it's important to refrain from

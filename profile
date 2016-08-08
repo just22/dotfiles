@@ -1,5 +1,5 @@
 # ----------------------------------------------------------------------
-#  $RCSfile$
+#  $Id$
 #
 #  ~/.profile: sh/ksh initialization
 #  Executed by the command interpreter for login shells.
@@ -8,9 +8,7 @@
 #  turn sourced by XDM and login shells) and should contain stuff that
 #  applies to your whole session, such as (non-graphycal) programs that must
 #  be executed after login and environment variable definitions
-#
-#  $Id$
-#
+# ----------------------------------------------------------------------
 
 # Clear screen on logout
 trap "clear" 0

@@ -1,10 +1,8 @@
 # ----------------------------------------------------------------------
-#  $RCSfile$
-#
-#  Per-window attribute configuration for fluxbox(1)
-#
 #  $Id$
 #
+#  Per-window attribute configuration for fluxbox(1)
+# ----------------------------------------------------------------------
 
 [app] (name=fbrun)
     [Position]    (CENTER)    {0 0}

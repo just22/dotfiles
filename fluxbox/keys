@@ -1,10 +1,8 @@
 # ----------------------------------------------------------------------
-#  $RCSfile$
-#
-#  Keyboard shortcuts configuration for fluxbox(1)
-#
 #  $Id$
 #
+#  Keyboard shortcuts configuration for fluxbox(1)
+# ----------------------------------------------------------------------
 
 # Click on the desktop to get menus
 OnDesktop Mouse1 :HideMenus

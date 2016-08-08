@@ -1,10 +1,8 @@
 " ----------------------------------------------------------------------
-"  $RCSfile$
-"
-"  Vim settings when called from Mutt
-"
 "  $Id$
 "
+"  Vim settings when called from Mutt
+" ----------------------------------------------------------------------
 
 " Probably needless, but just to play it safe...
 set ft=mail

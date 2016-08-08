@@ -1,10 +1,8 @@
 # ----------------------------------------------------------------------
-#  $RCSfile$
-#
-#  Menu configuration file for fluxbox(1)
-#
 #  $Id$
 #
+#  Menu configuration file for fluxbox(1)
+# ----------------------------------------------------------------------
 
 # If you read this it means you want to edit this file manually, so here
 # are some useful tips:
