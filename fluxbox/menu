@@ -23,76 +23,105 @@
     [encoding] {UTF-8}
         [exec] (Terminal Emulator) {xterm} </usr/local/share/icons/gnome/16x16/apps/terminal.png>
         [exec] (tmux Session) {xterm -e "tmux attach-session -d || tmux new-session"} </usr/local/share/icons/gnome/16x16/apps/terminal.png>
-        [exec] (File Manager) {xfe} </usr/local/share/icons/gnome/16x16/apps/file-manager.png>
+        [exec] (File Manager) {pcmanfm} </usr/local/share/icons/gnome/16x16/apps/file-manager.png>
         [exec] (Web Browser) {x-www-browser} </usr/local/share/icons/gnome/16x16/apps/web-browser.png>
         #[exec] (E-Mail Client) {xterm -title "Mail User Agent" -e mutt} </usr/local/share/icons/gnome/16x16/emblems/emblem-mail.png>
         [exec] (E-Mail Client) {thunderbird} </usr/local/share/icons/gnome/16x16/emblems/emblem-mail.png>
+        [exec] (Text Editor) {gvim} </usr/local/share/icons/gnome/16x16/apps/text-editor.png>
         [separator]
         [submenu] (Accessories) </usr/local/share/icons/gnome/16x16/categories/applications-accessories.png>
-                [exec]
+                [exec] (Calculator) {xcalc} </usr/local/share/icons/gnome/16x16/apps/accessories-calculator.png>
+                [exec] (File Archiver) {xarchiver} </usr/local/share/icons/gnome/16x16/mimetypes/gnome-mime-application-x-archive.png>
         [end]
         [submenu] (Graphics) </usr/local/share/icons/gnome/16x16/categories/applications-graphics.png>
+                [exec] (Gimp) {gimp} </usr/local/share/icons/hicolor/16x16/apps/gimp.png>
+                [exec] (Geeqie) {geeqie} </usr/local/share/pixmaps/geeqie.png>
+                [exec] (Inkscape) {inkscape} </usr/local/share/icons/hicolor/16x16/apps/inkscape.png>
+                [exec] (xfig) {xfig} </usr/local/share/doc/xfig/html/images/xfig-logo.png>
+                [exec] (XCircuit) {xcircuit} <~/.local/share/icons/XCircuit.png>
+                [exec] (Dia) {dia} </usr/local/share/icons/hicolor/16x16/apps/dia.png>
         [end]
         [submenu] (Internet) </usr/local/share/icons/gnome/16x16/categories/applications-internet.png>
+                [exec] (Firefox) {firefox} </usr/local/share/pixmaps/firefox.png>
+                [exec] (Thunderbird) {thunderbird} </usr/local/share/pixmaps/thunderbird.png>
+                [exec] (Mutt) {xterm -title "Mail user agent" -e mutt} </usr/local/share/icons/gnome/16x16/emblems/emblem-mail.png>
+                [exec] (Pidgin) {pidgin} </usr/local/share/icons/hicolor/16x16/apps/pidgin.png>
+                [exec] (VNC viewer) {vncviewer} </usr/local/share/icons/gnome/16x16/apps/gnome-remote-desktop.png>
         [end]
         [submenu] (Office) </usr/local/share/icons/gnome/16x16/categories/applications-office.png>
+                [exec] (LibreOffice Base) {soffice -base} </usr/local/share/icons/hicolor/16x16/apps/libreoffice-base.png>
+                [exec] (LibreOffice Calc) {soffice -calc} </usr/local/share/icons/hicolor/16x16/apps/libreoffice-calc.png>
+                [exec] (LibreOffice Draw) {soffice -draw} </usr/local/share/icons/hicolor/16x16/apps/libreoffice-draw.png>
+                [exec] (LibreOffice Impress) {soffice -impress} </usr/local/share/icons/hicolor/16x16/apps/libreoffice-impress.png>
+                [exec] (LibreOffice Math) {soffice -math} </usr/local/share/icons/hicolor/16x16/apps/libreoffice-math.png>
+                [exec] (LibreOffice Writer) {soffice -writer} </usr/local/share/icons/hicolor/16x16/apps/libreoffice-writer.png>
+                [exec] (Lyx) {lyx} </usr/local/share/icons/hicolor/48x48/apps/lyx.png>
         [end]
         [submenu] (Multimedia) </usr/local/share/icons/gnome/16x16/categories/applications-multimedia.png>
+                [exec] (Clementine) {clementine} </usr/local/share/icons/hicolor/64x64/apps/application-x-clementine.png>
+                [exec] (Minitube) {minitube} </usr/local/share/icons/hicolor/16x16/apps/minitube.png>
+                [exec] (TkDVD) {tkdvd} </usr/local/share/icons/gnome/16x16/devices/gnome-dev-disc-dvdr.png>
+                [exec] (SMPlayer) {smplayer} </usr/local/share/icons/hicolor/16x16/apps/smplayer.png>
+                [exec] (xine) {xine} </usr/local/share/icons/hicolor/16x16/apps/xine.png>
+                [exec] (Shotwell) {shotwell} </usr/local/share/icons/hicolor/16x16/apps/shotwell.png>
+                [exec] (gtkam) {gtkam} </usr/local/share/icons/gnome/16x16/devices/camera.png>
         [end]
-        [separator]
-        [submenu] (Colorscheme) </usr/local/share/icons/HighContrast/16x16/apps/preferences-color.png>
-                [exec] (Solarized dark) {xrdb -merge /home/just22/.Xresources.d/solarized_dark}
-                [exec] (Solarized light) {xrdb -merge /home/just22/.Xresources.d/solarized_light}
-        [end]
-        [submenu] (Display Layout) </usr/local/share/icons/gnome/16x16/apps/preferences-desktop-display.png>
-                [exec] (LVDS only)        {set_display --output LVDS1 --auto --primary --output VGA1 --off}
-                [exec] (VGA only)         {set_display --output LVDS1 --off --output VGA1 --auto --primary}
-                [exec] (VGA on the left)  {set_display --output LVDS1 --auto --primary --output VGA1 --auto --left-of  LVDS1}
-                [exec] (VGA on the right) {set_display --output LVDS1 --auto --primary --output VGA1 --auto --right-of LVDS1}
-                [exec] (VGA above)        {set_display --output LVDS1 --auto --primary --output VGA1 --auto --above    LVDS1}
-                [exec] (VGA below)        {set_display --output LVDS1 --auto --primary --output VGA1 --auto --below    LVDS1}
-        [end]
-        [separator]
-        [submenu] (Editors) #</usr/local/share/icons/gnome/16x16/apps/text-editor.png>
-                [exec]   (gvim) {gvim} #</usr/local/share/pixmaps/vim.png>
-                [exec]   (vim) {xterm -e vim} #</usr/local/share/pixmaps/vim.png>
-                [exec]   (vi) {xterm -e vi}
-                [exec]   (mg) {xterm -e mg}
-        [end]
-        [submenu] (File utils) #</usr/local/share/icons/gnome/16x16/apps/file-manager.png>
-                [exec]   (xfe) {xfe}
-                [exec]   (mc)  {xterm -e mc}
-        [end]
-        [submenu] (X-utils)
-                [exec] (xfontsel) {xfontsel}
-                [exec] (xload) {xload}
-                [exec] (xmag) {xmag}
+        [submenu] (Utilities) </usr/local/share/icons/gnome/16x16/categories/applications-utilities.png>
+                [exec] (gvim) {gvim} </usr/local/share/pixmaps/vim.png>
+                [exec] (xfontsel) {xfontsel} </usr/local/share/icons/gnome/16x16/apps/gnome-settings-font.png>
                 [exec] (Reload .Xresources) {xrdb -load $HOME/.Xresources}
         [end]
+        [include] (~/.fluxbox/menu_local)
         [separator]
-        [submenu] (System Tools) #</usr/local/share/icons/gnome/16x16/categories/applications-system.png>
-                [exec]   (top) {xterm -e top}
+        [submenu] (Take a Screenshot) </usr/local/share/icons/gnome/16x16/devices/camera-photo.png>
+                [exec] (Whole Desktop) {screenshot desktop}
+                [exec] (Select Window/Area) {screenshot}
         [end]
         [separator]
-        [submenu] (Fluxbox menu)
+        [workspaces] (Workspaces) </usr/local/share/icons/gnome/16x16/places/desktop.png>
+        [submenu] (Colorscheme) </usr/local/share/icons/HighContrast/16x16/apps/preferences-color.png>
+                [exec] (Solarized Dark) {xrdb -merge ~/.Xresources.d/solarized-dark}
+                [exec] (Solarized Dark Desaturated) {xrdb -merge ~/.Xresources.d/solarized-dark-desaturated}
+                [exec] (Solarized Light) {xrdb -merge ~/.Xresources.d/solarized-light}
+                [exec] (Solarized Light Desaturated) {xrdb -merge ~/.Xresources.d/solarized-light-desaturated}
+        [end]
+        [submenu] (Keyboard Layout) </usr/share/icons/gnome/16x16/apps/preferences-desktop-keyboard.png>
+                [exec] (Italian) {setxkbmap it}
+                [exec] (English-US) {setxkbmap us}
+        [end]
+        [submenu] (Display Layout) </usr/local/share/icons/gnome/16x16/apps/preferences-desktop-display.png>
+                [exec] (LVDS Only)         {set_display --output LVDS1 --auto --primary --output VGA1 --off}
+                [exec] (VGA Only)          {set_display --output LVDS1 --off --output VGA1 --auto --primary}
+                [exec] (VGA on the Left)   {set_display --output LVDS1 --auto --primary --output VGA1 --auto --left-of  LVDS1}
+                [exec] (VGA on the Right)  {set_display --output LVDS1 --auto --primary --output VGA1 --auto --right-of LVDS1}
+                [exec] (VGA on the Top)    {set_display --output LVDS1 --auto --primary --output VGA1 --auto --above    LVDS1}
+                [exec] (VGA on the Bottom) {set_display --output LVDS1 --auto --primary --output VGA1 --auto --below    LVDS1}
+        [end]
+        [submenu] (Window Manager) </usr/local/share/icons/gnome/16x16/apps/preferences-system-windows.png>
                 [config] (Configure)
                 [submenu] (System Styles) {Choose a style...}
-                        [stylesdir] (/home/delauren/share/fluxbox/styles)
+                        [stylesdir] (~/share/fluxbox/styles)
                 [end]
                 [submenu] (User Styles) {Choose a style...}
                         [stylesdir] (~/.fluxbox/styles)
                 [end]
-                [workspaces] (Workspace List)
                 [submenu] (Tools)
                         [exec] (Window name) {xprop WM_CLASS | cut -d \" -f 2 | xmessage -buttons OK:0 -file - -center}
-                        [exec] (Regen Menu) {fluxbox-generate_menu}
                 [end]
                 [commanddialog] (Fluxbox Command)
                 [reconfig] (Reload config)
-                [restart] (Restart)
+                [exec] (Restart) {fbrestart}
                 [exec] (About) {(fluxbox -v; fluxbox -info | sed 1d) | xmessage -buttons OK:0 -file - -center}
                 [separator]
                 [exit] (Exit)
+        [end]
+        [separator]
+        [submenu] (Session Logout) </usr/local/share/icons/gnome/16x16/actions/gnome-logout.png>
+                [exit] (Exit Fluxbox) </usr/local/share/icons/gnome/16x16/actions/gnome-logout.png>
+                [exec] (Suspend) {apm -z} </usr/local/share/icons/hicolor/48x48/apps/system-suspend.png>
+                [exec] (Hibernate) {apm -Z} </usr/local/share/icons/hicolor/48x48/apps/system-hibernate.png>
+                [exec] (Reboot) {/sbin/shutdown -r now} </usr/local/share/icons/hicolor/48x48/apps/system-reboot.png>
+                [exec] (Poweroff) {/sbin/shutdown -hp now} </usr/local/share/icons/gnome/16x16/actions/system-shutdown.png>
         [end]
     [endencoding]
 [end]
