@@ -44,7 +44,7 @@
     [Position]    (UPPERLEFT) {50% 50%}
 [end]
 
-[app] (class=XTerm) (title=Take screenshot)
+[app] (class=XTerm) (title=Screenshot)
     [Deco]        {BORDER}
     [Sticky]      {yes}
     [FocusHidden] {yes}
