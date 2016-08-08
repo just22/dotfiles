@@ -30,7 +30,6 @@ xscreensaver &
 
 # Battery status check daemon
 ~/bin/check-batt-status &
-CHECK_BATT_STATUS_PID=$!
 
 # Statusbar
 (sleep 2; statusbar) &
