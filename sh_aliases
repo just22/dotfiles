@@ -294,7 +294,6 @@ alias showpath='echo $PATH | tr ":" "\n"'
 alias touchall='ls -tr | xargs touch'
 alias se='env sudoedit'
 alias svim='sudo vim'
-alias cvs_env='cvs -d :ext:just22@atlantide.t28.net:/var/lib/cvs/env.cvsrepo'
 vimall() { find ${1-.} -maxdepth 1 -type f -a ! -name ".*" -print | xargs sh -c '</dev/tty vim "$@"' ignoreme; }
 vimalldot() { find ${1-.} -maxdepth 1 -type f -a -name ".*" -print | xargs sh -c '</dev/tty vim "$@"' ignoreme; }
 grepopen() { grep -l "$@" | xargs sh -c '</dev/tty vim "$@"' ignoreme; }
@@ -368,6 +367,17 @@ alias Gfetch='git_remote_repo fetch'
 alias Gstatus='git status'
 alias Gdiff='git diff'
 alias Glog='git log'
+
+# ----------------------------------------------------------------------
+# cvs
+#
+alias cvs-ck='cvs -qn update'
+alias cvs-up='cvs update -dP'
+cvs-adddir() {
+        find ${1-.} -type d -name CVS -prune -o -type d -exec cvs add "{}" \;
+        find ${1-.} -type d -name CVS -prune -o -type f -exec cvs add "{}" \;
+        find ${1-.} -type d -name CVS -prune -o -type f -exec cvs commit -m ${2-Initial commit} "{}" \;
+}
 
 # ----------------------------------------------------------------------
 # Change XTerm colorscheme on-the-fly
