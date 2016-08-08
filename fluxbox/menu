@@ -85,9 +85,9 @@
                 [exec] (Solarized Light) {xrdb -merge ~/.Xresources.d/solarized-light}
                 [exec] (Solarized Light Desaturated) {xrdb -merge ~/.Xresources.d/solarized-light-desaturated}
         [end]
-        [submenu] (Keyboard Layout) </usr/share/icons/gnome/16x16/apps/preferences-desktop-keyboard.png>
-                [exec] (Italian) {setxkbmap it}
-                [exec] (English-US) {setxkbmap us}
+        [submenu] (Keyboard Layout) </usr/local/share/icons/gnome/16x16/devices/keyboard.png>
+                [exec] (Italian) {setxkbmap it} </home/just22/.local/share/icons/cust/16x16/flags/italy.png>
+                [exec] (English-US) {setxkbmap us} </home/just22/.local/share/icons/cust/16x16/flags/usa.png>
         [end]
         [submenu] (Display Layout) </usr/local/share/icons/gnome/16x16/apps/preferences-desktop-display.png>
                 [exec] (LVDS Only)         {set_display --output LVDS1 --auto --primary --output VGA1 --off}
@@ -96,6 +96,10 @@
                 [exec] (VGA on the Right)  {set_display --output LVDS1 --auto --primary --output VGA1 --auto --right-of LVDS1}
                 [exec] (VGA on the Top)    {set_display --output LVDS1 --auto --primary --output VGA1 --auto --above    LVDS1}
                 [exec] (VGA on the Bottom) {set_display --output LVDS1 --auto --primary --output VGA1 --auto --below    LVDS1}
+        [end]
+        [submenu] (xscreensaver) </usr/local/share/icons/gnome/16x16/apps/xscreensaver.png>
+                [exec] (Settings) {xscreensaver-demo}
+                [exec] (Lock Screen) {xscreensaver-command -lock}
         [end]
         [submenu] (Window Manager) </usr/local/share/icons/gnome/16x16/apps/preferences-system-windows.png>
                 [config] (Configure)
