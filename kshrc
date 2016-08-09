@@ -15,106 +15,89 @@
 # outputting anything in those cases.
 #
 if [[ $- != *i* ]]; then
-    # Shell is non-interactive.  Be done now!
-    return
+        # Shell is non-interactive.  Be done now!
+        return
 fi
-
 
 # ----------------------------------------------------------------------
 # Enable a subset of csh-style history editing using the `!' character
 #
 set -o csh-history
 
-
 # ----------------------------------------------------------------------
 # Make history permanent
 #
 HISTFILE=${HOME}/.sh_history
 
-
 # ----------------------------------------------------------------------
 # Colored prompt, if the terminal has the capability
 #
-if [ -z ${NO_COLORS+x} ]; then
-        if tput setaf 1 >/dev/null 2>&1; then
-                # Assume that color support is compliant with Ecma-48
-                # (ISO/IEC-6429); lack of such support is extremely rare, and such
-                # a case would tend to support setf rather than setaf
-                COLOR_SUPPORT=1
 
-                # Color codes:
-                # 0 -> Black
-                # 1 -> Red
-                # 2 -> Green
-                # 3 -> Yellow
-                # 4 -> Blue
-                # 5 -> Magenta
-                # 6 -> Cyan
-                # 7 -> White
-                BLACK_FG='$(tput setaf 0)'
-                RED_FG='$(tput setaf 1)'
-                GREEN_FG='$(tput setaf 2)'
-                YELLOW_FG='$(tput setaf 3)'
-                BLUE_FG='$(tput setaf 4)'
-                MAGENTA_FG='$(tput setaf 5)'
-                CYAN_FG='$(tput setaf 6)'
-                WHITE_FG='$(tput setaf 7)'
-                BLACK_BG='$(tput setab 0)'
-                RED_BG='$(tput setab 1)'
-                GREEN_BG='$(tput setab 2)'
-                YELLOW_BG='$(tput setab 3)'
-                BLUE_BG='$(tput setab 4)'
-                MAGENTA_BG='$(tput setab 5)'
-                CYAN_BG='$(tput setab 6)'
-                WHITE_BG='$(tput setab 7)'
+# Color support can be forced off setting NO_COLORS (to any values)
+# This will influence file listing aliases' behavior too
+#NO_COLORS=""
 
-                REVERSE='$(tput rev)'
-                BRIGHT='$(tput bold)'
-                DEFAULT_COLOR='$(tput sgr0)'
+escseq() {
+          HEAD="\["
+           ESC="\e"
+          CODE="$1"
+         TRAIL="\]"
+         printf "%s%s[%sm%s" $HEAD $ESC $CODE $TRAIL
+}
 
-                [ "$USER" == root ] && PS_USER_COLOR="${RED_FG}" || PS_USER_COLOR="$PS_HI_COLOR"
-                PS1="\[${PS_USER_COLOR}\]\u\[${PS_NORM_COLOR}\]@\h:[\W]> \[${DEFAULT_COLOR}\]"
+if [ -z ${NO_COLORS+x} ] && [ $(tput colors) -ge 8 ]; then
+        COLOR_SUPPORT=1
 
-        elif tput setaf 1 - - >/dev/null 2>&1; then
-                # OpenBSD tput specific requirement?
-                # Meaning of 2^ and 3^ parameters?
-                COLOR_SUPPORT=1
+        # ANSI escape sequences for graphics mode
+        # Color codes:
+        # 0 -> Black
+        # 1 -> Red
+        # 2 -> Green
+        # 3 -> Yellow
+        # 4 -> Blue
+        # 5 -> Magenta
+        # 6 -> Cyan
+        # 7 -> White
 
-                BLACK_FG='$(tput setaf 0 - -)'
-                RED_FG='$(tput setaf 1 - -)'
-                GREEN_FG='$(tput setaf 2 - -)'
-                YELLOW_FG='$(tput setaf 3 - -)'
-                BLUE_FG='$(tput setaf 4 - -)'
-                MAGENTA_FG='$(tput setaf 5 - -)'
-                CYAN_FG='$(tput setaf 6 - -)'
-                WHITE_FG='$(tput setaf 7 - -)'
-                BLACK_BG='$(tput setab 0 - -)'
-                RED_BG='$(tput setab 1 - -)'
-                GREEN_BG='$(tput setab 2 - -)'
-                YELLOW_BG='$(tput setab 3 - -)'
-                BLUE_BG='$(tput setab 4 - -)'
-                MAGENTA_BG='$(tput setab 5 - -)'
-                CYAN_BG='$(tput setab 6 - -)'
-                WHITE_BG='$(tput setab 7 - -)'
+        # Text attributes
+             RSTCOL="$(escseq  0)"
+               BOLD="$(escseq  1)"
+          UNDERLINE="$(escseq  4)"
+              BLINK="$(escseq  5)"
+            REVERSE="$(escseq  7)"
+          CONCEALED="$(escseq  8)"
 
-                REVERSE='$(tput rev)'
-                BRIGHT='$(tput bold)'
-                DEFAULT_COLOR='$(tput sgr0)'
+        # Foreground colors
+           FG_BLACK="$(escseq 30)"
+             FG_RED="$(escseq 31)"
+           FG_GREEN="$(escseq 32)"
+          FG_YELLOW="$(escseq 33)"
+            FG_BLUE="$(escseq 34)"
+         FG_MAGENTA="$(escseq 35)"
+            FG_CYAN="$(escseq 36)"
+           FG_WHITE="$(escseq 37)"
 
-                PS_HI_COLOR=$YELLOW_FG
-                PS_NORM_COLOR=$BLUE_FG
-
-                [ "$USER" == root ] && PS_USER_COLOR="${RED_FG}" || PS_USER_COLOR="$PS_HI_COLOR"
-                PS1="\[${PS_USER_COLOR}\]\u\[${PS_NORM_COLOR}\]@\h:[\W]> \[${DEFAULT_COLOR}\]"
-        else
-                COLOR_SUPPORT=0
-                PS1='\u@\h:[\w]\$ '
-        fi
+        # Background colors
+           BG_BLACK="$(escseq 40)"
+             BG_RED="$(escseq 41)"
+           BG_GREEN="$(escseq 42)"
+          BG_YELLOW="$(escseq 43)"
+            BG_BLUE="$(escseq 44)"
+         BG_MAGENTA="$(escseq 45)"
+            BG_CYAN="$(escseq 46)"
+           BG_WHITE="$(escseq 47)"
 else
         COLOR_SUPPORT=0
-        PS1='\u@\h:[\w]\$ '
 fi
 
+if [ "$COLOR_SUPPORT" == 1 ]; then
+        HICOL="$FG_BLUE"
+        NORMCOL="$FG_WHITE"
+        [ $USER == root ] && USRCOL="$FG_RED" || USRCOL="$HICOL"
+fi
+
+
+PS1="${USRCOL}\u${NORMCOL}@\h:[\W]> ${RSTCOL}"
 
 # ----------------------------------------------------------------------
 # If this is an xterm, set the title to user@host:dir
@@ -127,12 +110,10 @@ xterm*|screen*)
     ;;
 esac
 
-
 # ----------------------------------------------------------------------
 # The editor used by fc
 #
 export FCEDIT="vim"
-
 
 # ----------------------------------------------------------------------
 # Aliases/functions definition
