@@ -16,8 +16,8 @@
 # past this point for scp and rcp, and it's important to refrain from
 # outputting anything in those cases.
 if [[ $- != *i* ]]; then
-    # Shell is non-interactive.  Be done now!
-    return
+        # Shell is non-interactive.  Be done now!
+        return
 fi
 
 # ----------------------------------------------------------------------
@@ -61,14 +61,14 @@ TMOUT=0
 # Set some UTF8 strings if TERM support it
 #
 case "$TERM" in
-    xterm*|rxvt-unicode*|screen*|linux)
+xterm*|rxvt-unicode*|screen*|linux)
         U8_HSEP=" ─› "
         U8_PSHEAD_L1="┌──"
         U8_PSHEAD_L2="└─────›"
         U8_LASTOK="✓"
         U8_LASTFAIL="✗"
         ;;
-    *)
+*)
         ;;
 esac
 
@@ -93,90 +93,89 @@ export FCEDIT=vim
 # (colored when the terminal has the capability)
 #
 
-# Note: Color support can be forced off setting NO_COLORS (to any values)
-#       This will influence file listing aliases' behavior too
+# Color support can be forced off setting NO_COLORS (to any values)
+# This will influence file listing aliases' behavior too
 #NO_COLORS=""
 
 # Count stopped jobs
 sj() { jobs -s | wc -l | tr -d " "; }
 
 set_prompt() {
-    local LAST_EXIT="$?"
+        local LAST_EXIT="$?"
 
-    if [ "$COLOR_SUPPORT" == 1 ]; then
-        HICOL="$FG_YELLOW"
-        NORMCOL="$FG_BLUE"
-        [ $USER == root ] && USRCOL="$FG_RED" || USRCOL="$HICOL"
-    fi
+        if [ "$COLOR_SUPPORT" == 1 ]; then
+                HICOL="$FG_YELLOW"
+                NORMCOL="$FG_BLUE"
+                [ $USER == root ] && USRCOL="$FG_RED" || USRCOL="$HICOL"
+        fi
 
-    PS1="${NORMCOL}${U8_PSHEAD_L1-"+--"}"                               # Cosmetic
-    PS1=${PS1}"[${USRCOL}\u${NORMCOL}@\h]-"                             # user@hostname
-    [ -n "$PRJ_REF" ] && PS1=${PS1}"[${HICOL}$PRJ_REF${NORMCOL}]-"      # Prj-ready shell?
-    PS1=${PS1}"[$(sj)]-"                                                # No. of stopped jobs
-    [ "$LAST_EXIT" != 0 ] &&
-        PS1=${PS1}"[${HICOL}${U8_LASTFAIL-x}${NORMCOL}]-" ||
-        PS1=${PS1}"[${U8_LASTOK-v}]-"                                   # Last command exit status
-    git rev-parse --git-dir > /dev/null 2>&1 &&
-        PS1=${PS1}"[${HICOL}git${NORMCOL}]-"                            # In a git tree?
-    ls ./CVS > /dev/null 2>&1 &&
-        PS1=${PS1}"[${HICOL}cvs${NORMCOL}]-"                            # In a CVS tree?
-    PS1=${PS1}"[\W]"                                                    # CWD basename
-    PS1=${PS1}"\n${NORMCOL}${U8_PSHEAD_L2-"+----->"} ${RSTCOL}"         # Cosmetic
+        PS1="${NORMCOL}${U8_PSHEAD_L1-"+--"}"                               # Cosmetic
+        PS1=${PS1}"[${USRCOL}\u${NORMCOL}@\h]-"                             # user@hostname
+        [ -n "$PRJ_REF" ] && PS1=${PS1}"[${HICOL}$PRJ_REF${NORMCOL}]-"      # Prj-ready shell?
+        PS1=${PS1}"[$(sj)]-"                                                # No. of stopped jobs
+        [ "$LAST_EXIT" != 0 ] &&
+                PS1=${PS1}"[${HICOL}${U8_LASTFAIL-x}${NORMCOL}]-" ||
+                PS1=${PS1}"[${U8_LASTOK-v}]-"                               # Last command exit status
+        git rev-parse --git-dir > /dev/null 2>&1 &&
+                PS1=${PS1}"[${HICOL}git${NORMCOL}]-"                        # In a git tree?
+        ls ./CVS > /dev/null 2>&1 &&
+                PS1=${PS1}"[${HICOL}cvs${NORMCOL}]-"                        # In a CVS tree?
+        PS1=${PS1}"[\W]"                                                    # CWD basename
+        PS1=${PS1}"\n${NORMCOL}${U8_PSHEAD_L2-"+----->"} ${RSTCOL}"         # Cosmetic
 
-    # If this is an xterm, then set the title
-    case "$TERM" in
+        # If this is an xterm, then set the title
+        case "$TERM" in
         xterm*|rxvt-unicode*|screen*)
-            PS1="\[\033]0;[\s] [\w] [Last cmd: \"$(history 1 | awk -v HS="${U8_HSEP-" -> "}" 'BEGIN{FS=HS} {print $2}')\"]\007\]"$PS1
-            ;;
+                PS1="\[\033]0;[\s] [\w] [Last cmd: \"$(history 1 | awk -v HS="${U8_HSEP-" -> "}" 'BEGIN{FS=HS} {print $2}')\"]\007\]"$PS1
+                ;;
         *)
-            ;;
-    esac
+                ;;
+        esac
 }
 
 if [ -z ${NO_COLORS+x} ] && [ $(tput colors) -ge 8 ]; then
-    COLOR_SUPPORT=1
+        COLOR_SUPPORT=1
 
-    # ANSI escape sequences for graphics mode
-    # Color codes:
-    # 0 -> Black
-    # 1 -> Red
-    # 2 -> Green
-    # 3 -> Yellow
-    # 4 -> Blue
-    # 5 -> Magenta
-    # 6 -> Cyan
-    # 7 -> White
+        # ANSI escape sequences for graphics mode
+        # Color codes:
+        # 0 -> Black
+        # 1 -> Red
+        # 2 -> Green
+        # 3 -> Yellow
+        # 4 -> Blue
+        # 5 -> Magenta
+        # 6 -> Cyan
+        # 7 -> White
 
-    #Text attributes
-         RSTCOL="\[$(printf "\e[0m")\]"
-           BOLD="\[$(printf "\e[1m")\]"
-      UNDERLINE="\[$(printf "\e[4m")\]"
-          BLINK="\[$(printf "\e[5m")\]"
-        REVERSE="\[$(printf "\e[7m")\]"
-      CONCEALED="\[$(printf "\e[8m")\]"
+        #Text attributes
+             RSTCOL="\[$(printf "\e[0m")\]"
+               BOLD="\[$(printf "\e[1m")\]"
+          UNDERLINE="\[$(printf "\e[4m")\]"
+              BLINK="\[$(printf "\e[5m")\]"
+            REVERSE="\[$(printf "\e[7m")\]"
+          CONCEALED="\[$(printf "\e[8m")\]"
 
-    #Foreground colors
-      FG_BLACK="\[$(printf "\e[30m")\]"
-        FG_RED="\[$(printf "\e[31m")\]"
-      FG_GREEN="\[$(printf "\e[32m")\]"
-     FG_YELLOW="\[$(printf "\e[33m")\]"
-       FG_BLUE="\[$(printf "\e[34m")\]"
-    FG_MAGENTA="\[$(printf "\e[35m")\]"
-       FG_CYAN="\[$(printf "\e[36m")\]"
-      FG_WHITE="\[$(printf "\e[37m")\]"
+        #Foreground colors
+          FG_BLACK="\[$(printf "\e[30m")\]"
+            FG_RED="\[$(printf "\e[31m")\]"
+          FG_GREEN="\[$(printf "\e[32m")\]"
+         FG_YELLOW="\[$(printf "\e[33m")\]"
+           FG_BLUE="\[$(printf "\e[34m")\]"
+        FG_MAGENTA="\[$(printf "\e[35m")\]"
+           FG_CYAN="\[$(printf "\e[36m")\]"
+          FG_WHITE="\[$(printf "\e[37m")\]"
 
-    #Background colors
-      BG_BLACK="\[$(printf "\e[40m")\]"
-        BG_RED="\[$(printf "\e[41m")\]"
-      BG_GREEN="\[$(printf "\e[42m")\]"
-     BG_YELLOW="\[$(printf "\e[43m")\]"
-       BG_BLUE="\[$(printf "\e[44m")\]"
-    BG_MAGENTA="\[$(printf "\e[45m")\]"
-       BG_CYAN="\[$(printf "\e[46m")\]"
-      BG_WHITE="\[$(printf "\e[47m")\]"
-
+        #Background colors
+          BG_BLACK="\[$(printf "\e[40m")\]"
+            BG_RED="\[$(printf "\e[41m")\]"
+          BG_GREEN="\[$(printf "\e[42m")\]"
+         BG_YELLOW="\[$(printf "\e[43m")\]"
+           BG_BLUE="\[$(printf "\e[44m")\]"
+        BG_MAGENTA="\[$(printf "\e[45m")\]"
+           BG_CYAN="\[$(printf "\e[46m")\]"
+          BG_WHITE="\[$(printf "\e[47m")\]"
 else
-    COLOR_SUPPORT=0
+        COLOR_SUPPORT=0
 fi
 
 PROMPT_COMMAND=set_prompt
@@ -184,20 +183,16 @@ PROMPT_COMMAND=set_prompt
 # ----------------------------------------------------------------------
 # Aliases/functions definition
 #
-if [ -f ~/.sh_aliases ]; then
-    source ~/.sh_aliases
-fi
-if [ -f ~/.bash_aliases ]; then
-    source ~/.bash_aliases
-fi
+[ -f ~/.sh_aliases ]   && source ~/.sh_aliases
+[ -f ~/.bash_aliases ] && source ~/.bash_aliases
 
 # ----------------------------------------------------------------------
 # Enable programmable completion features
 #
 if ! shopt -oq posix; then
-  if [ -f /etc/profile.d/bash-completion.sh ]; then
-    source /etc/profile.d/bash-completion.sh
-  fi
+        if [ -f /etc/profile.d/bash-completion.sh ]; then
+                source /etc/profile.d/bash-completion.sh
+        fi
 fi
 
 # ----------------------------------------------------------------------
@@ -206,28 +201,28 @@ fi
 #
 show_cmd_in_titlebar()
 {
-    case "$BASH_COMMAND" in
+        case "$BASH_COMMAND" in
         *\033]0*|*\033]1*|*\033]2*)
-            # Command is trying to set the title bar/icon name as well;
-            # this is most likely the execution of $PROMPT_COMMAND.
-            # In any case nested escapes confuse the terminal, so don't
-            # output them
-            ;;
+                # Command is trying to set the title bar/icon name as well;
+                # this is most likely the execution of $PROMPT_COMMAND.
+                # In any case nested escapes confuse the terminal, so don't
+                # output them
+                ;;
         fg|set_prompt|exit)
-            ;;
+                ;;
         *)
-            case "$TERM" in
+                case "$TERM" in
                 xterm*|rxvt-unicode*)
-                    printf "\033]0;[%s] [%s] [%s] [Running: \"%s\"]\007" "${TERM%%-*}" "${0##*/}" "$PWD" "$BASH_COMMAND"
-                    ;;
+                        printf "\033]0;[%s] [%s] [%s] [Running: \"%s\"]\007" "${TERM%%-*}" "${0##*/}" "$PWD" "$BASH_COMMAND"
+                        ;;
                 screen*)
-                    printf "\033]0;[%s] [%s] [Running: \"%s\"]\007" "${0##*/}" "$PWD" "$BASH_COMMAND"
-                    ;;
+                        printf "\033]0;[%s] [%s] [Running: \"%s\"]\007" "${0##*/}" "$PWD" "$BASH_COMMAND"
+                        ;;
                 *)
-                    ;;
-            esac
-            ;;
-    esac
+                        ;;
+                esac
+                ;;
+        esac
 }
 trap show_cmd_in_titlebar DEBUG
 
@@ -256,9 +251,7 @@ stty werase undef
 # ----------------------------------------------------------------------
 # Addenda to ~/.bashrc specific for machine/site
 #
-if [ -f ~/.bashrc_local ]; then
-    source ~/.bashrc_local
-fi
+[ -f ~/.bashrc_local ] && source ~/.bashrc_local
 
 # ----------------------------------------------------------------------
 # Debug
