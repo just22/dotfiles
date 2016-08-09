@@ -79,7 +79,7 @@ Mod4 Control t          :Exec tmux_pane_search
 
 # Exit, restart or reload config file
 Mod4 Shift q :Exec dmenu-session-logout
-Mod4 Control q :Exec fbrestart
+Mod4 Control q :Exec wmrestart
 Mod4 Control r :Reconfigure
 
 # Change to a specific workspace
