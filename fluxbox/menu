@@ -28,7 +28,6 @@
         #[exec] (E-Mail Client) {xterm -title "Mail User Agent" -e mutt} </usr/local/share/icons/gnome/16x16/emblems/emblem-mail.png>
         [exec] (E-Mail Client) {thunderbird} </usr/local/share/icons/gnome/16x16/emblems/emblem-mail.png>
         [exec] (Text Editor) {gvim} </usr/local/share/icons/gnome/16x16/apps/text-editor.png>
-        [exec] (Play Link) {play-url} </usr/local/share/icons/gnome/16x16/actions/media-playback-start.png>
         [separator]
         [submenu] (Accessories) </usr/local/share/icons/gnome/16x16/categories/applications-accessories.png>
                 [exec] (Calculator) {xcalc} </usr/local/share/icons/gnome/16x16/apps/accessories-calculator.png>
@@ -70,6 +69,14 @@
         [submenu] (Utilities) </usr/local/share/icons/gnome/16x16/categories/applications-utilities.png>
                 [exec] (gvim) {gvim} </usr/local/share/pixmaps/vim.png>
                 [exec] (xfontsel) {xfontsel} </usr/local/share/icons/gnome/16x16/apps/gnome-settings-font.png>
+                [exec] (Play Link) {play-url} </usr/local/share/icons/gnome/16x16/actions/media-playback-start.png>
+                [submenu] (Timer) </usr/share/icons/gnome/16x16/stock/generic/stock_timer.png>
+                        [exec] ( 5 min) {timer -t "now +  5 min"}
+                        [exec] (10 min) {timer -t "now + 10 min"}
+                        [exec] (15 min) {timer -t "now + 15 min"}
+                        [exec] (30 min) {timer -t "now + 30 min"}
+                        [exec] (45 min) {timer -t "now + 45 min"}
+                [end]
                 [exec] (Reload .Xresources) {xrdb -load $HOME/.Xresources}
         [end]
         [include] (~/.fluxbox/menu_local)
