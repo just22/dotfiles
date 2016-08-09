@@ -133,6 +133,14 @@ set_prompt() {
         esac
 }
 
+escseq() {
+          HEAD="\["
+           ESC="\e"
+          CODE="$1"
+         TRAIL="\]"
+         printf "%s%s[%sm%s" $HEAD $ESC $CODE $TRAIL
+}
+
 if [ -z ${NO_COLORS+x} ] && [ $(tput colors) -ge 8 ]; then
         COLOR_SUPPORT=1
 
@@ -147,33 +155,33 @@ if [ -z ${NO_COLORS+x} ] && [ $(tput colors) -ge 8 ]; then
         # 6 -> Cyan
         # 7 -> White
 
-        #Text attributes
-             RSTCOL="\[$(printf "\e[0m")\]"
-               BOLD="\[$(printf "\e[1m")\]"
-          UNDERLINE="\[$(printf "\e[4m")\]"
-              BLINK="\[$(printf "\e[5m")\]"
-            REVERSE="\[$(printf "\e[7m")\]"
-          CONCEALED="\[$(printf "\e[8m")\]"
+        # Text attributes
+             RSTCOL="$(escseq  0)"
+               BOLD="$(escseq  1)"
+          UNDERLINE="$(escseq  4)"
+              BLINK="$(escseq  5)"
+            REVERSE="$(escseq  7)"
+          CONCEALED="$(escseq  8)"
 
-        #Foreground colors
-          FG_BLACK="\[$(printf "\e[30m")\]"
-            FG_RED="\[$(printf "\e[31m")\]"
-          FG_GREEN="\[$(printf "\e[32m")\]"
-         FG_YELLOW="\[$(printf "\e[33m")\]"
-           FG_BLUE="\[$(printf "\e[34m")\]"
-        FG_MAGENTA="\[$(printf "\e[35m")\]"
-           FG_CYAN="\[$(printf "\e[36m")\]"
-          FG_WHITE="\[$(printf "\e[37m")\]"
+        # Foreground colors
+           FG_BLACK="$(escseq 30)"
+             FG_RED="$(escseq 31)"
+           FG_GREEN="$(escseq 32)"
+          FG_YELLOW="$(escseq 33)"
+            FG_BLUE="$(escseq 34)"
+         FG_MAGENTA="$(escseq 35)"
+            FG_CYAN="$(escseq 36)"
+           FG_WHITE="$(escseq 37)"
 
-        #Background colors
-          BG_BLACK="\[$(printf "\e[40m")\]"
-            BG_RED="\[$(printf "\e[41m")\]"
-          BG_GREEN="\[$(printf "\e[42m")\]"
-         BG_YELLOW="\[$(printf "\e[43m")\]"
-           BG_BLUE="\[$(printf "\e[44m")\]"
-        BG_MAGENTA="\[$(printf "\e[45m")\]"
-           BG_CYAN="\[$(printf "\e[46m")\]"
-          BG_WHITE="\[$(printf "\e[47m")\]"
+        # Background colors
+           BG_BLACK="$(escseq 40)"
+             BG_RED="$(escseq 41)"
+           BG_GREEN="$(escseq 42)"
+          BG_YELLOW="$(escseq 43)"
+            BG_BLUE="$(escseq 44)"
+         BG_MAGENTA="$(escseq 45)"
+            BG_CYAN="$(escseq 46)"
+           BG_WHITE="$(escseq 47)"
 else
         COLOR_SUPPORT=0
 fi
