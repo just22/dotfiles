@@ -62,11 +62,11 @@ TMOUT=0
 #
 case "$TERM" in
     xterm*|rxvt-unicode*|screen*|linux)
-        UTF8_HISTSEPARATOR=" ─› "
-        UTF8_PS_1STLINE_HEADER="┌──"
-        UTF8_PS_2NDLINE_HEADER="└─────›"
-        UTF8_LAST_OK="✓"
-        UTF8_LAST_FAILED="✗"
+        U8_HSEP=" ─› "
+        U8_PSHEAD_L1="┌──"
+        U8_PSHEAD_L2="└─────›"
+        U8_LASTOK="✓"
+        U8_LASTFAIL="✗"
         ;;
     *)
         ;;
@@ -81,7 +81,7 @@ HISTIGNORE="exit:?q"
 HISTFILE=~/.bash_history
 HISTSIZE=500
 HISTFILESIZE=2000
-HISTTIMEFORMAT="%d/%m %R${UTF8_HISTSEPARATOR-" -> "}"
+HISTTIMEFORMAT="%d/%m %R${U8_HSEP-" -> "}"
 
 # ----------------------------------------------------------------------
 # The editor used by the fc command
@@ -104,29 +104,29 @@ set_prompt() {
     local LAST_EXIT="$?"
 
     if [ "$COLOR_SUPPORT" == 1 ]; then
-        PS_HI_COLOR=$FG_YELLOW
-        PS_NORM_COLOR=$FG_BLUE
-        [ $USER == root ] && PS_USER_COLOR="${FG_RED}" || PS_USER_COLOR="$PS_HI_COLOR"
+        HICOL="$FG_YELLOW"
+        NORMCOL="$FG_BLUE"
+        [ $USER == root ] && USRCOL="$FG_RED" || USRCOL="$HICOL"
     fi
 
-    PS1="${PS_NORM_COLOR}${UTF8_PS_1STLINE_HEADER-"+--"}"                                       # Cosmetic
-    PS1=${PS1}"[${PS_USER_COLOR}\u${PS_NORM_COLOR}@\h]-"                                        # user@hostname
-    [ -n "$PRJ_REF" ] && PS1=${PS1}"[${PS_HI_COLOR}$PRJ_REF${PS_NORM_COLOR}]-"                  # Is the shell configured for a project?
-    PS1=${PS1}"[$(sj)]-"                                                                        # No. of stopped jobs
+    PS1="${NORMCOL}${U8_PSHEAD_L1-"+--"}"                               # Cosmetic
+    PS1=${PS1}"[${USRCOL}\u${NORMCOL}@\h]-"                             # user@hostname
+    [ -n "$PRJ_REF" ] && PS1=${PS1}"[${HICOL}$PRJ_REF${NORMCOL}]-"      # Prj-ready shell?
+    PS1=${PS1}"[$(sj)]-"                                                # No. of stopped jobs
     [ "$LAST_EXIT" != 0 ] &&
-        PS1=${PS1}"[${PS_HI_COLOR}${UTF8_LAST_FAILED-x}${PS_NORM_COLOR}]-" ||
-        PS1=${PS1}"[${UTF8_LAST_OK-v}]-"                                                        # Last command exit status
+        PS1=${PS1}"[${HICOL}${U8_LASTFAIL-x}${NORMCOL}]-" ||
+        PS1=${PS1}"[${U8_LASTOK-v}]-"                                   # Last command exit status
     git rev-parse --git-dir > /dev/null 2>&1 &&
-        PS1=${PS1}"[${PS_HI_COLOR}git${PS_NORM_COLOR}]-"                                        # In a git tree?
+        PS1=${PS1}"[${HICOL}git${NORMCOL}]-"                            # In a git tree?
     ls ./CVS > /dev/null 2>&1 &&
-        PS1=${PS1}"[${PS_HI_COLOR}cvs${PS_NORM_COLOR}]-"                                        # In a CVS tree?
-    PS1=${PS1}"[\W]"                                                                            # Basename of current directory
-    PS1=${PS1}"\n${PS_NORM_COLOR}${UTF8_PS_2NDLINE_HEADER-"+----->"} ${RESET_COLOR}"            # Cosmetic
+        PS1=${PS1}"[${HICOL}cvs${NORMCOL}]-"                            # In a CVS tree?
+    PS1=${PS1}"[\W]"                                                    # CWD basename
+    PS1=${PS1}"\n${NORMCOL}${U8_PSHEAD_L2-"+----->"} ${RSTCOL}"         # Cosmetic
 
     # If this is an xterm, then set the title
     case "$TERM" in
         xterm*|rxvt-unicode*|screen*)
-            PS1="\[\033]0;[\s] [\w] [Last cmd: \"$(history 1 | awk -v HS="${UTF8_HISTSEPARATOR-" -> "}" 'BEGIN{FS=HS} {print $2}')\"]\007\]"$PS1
+            PS1="\[\033]0;[\s] [\w] [Last cmd: \"$(history 1 | awk -v HS="${U8_HSEP-" -> "}" 'BEGIN{FS=HS} {print $2}')\"]\007\]"$PS1
             ;;
         *)
             ;;
@@ -137,7 +137,6 @@ if [ -z ${NO_COLORS+x} ] && [ $(tput colors) -ge 8 ]; then
     COLOR_SUPPORT=1
 
     # ANSI escape sequences for graphics mode
-
     # Color codes:
     # 0 -> Black
     # 1 -> Red
@@ -149,32 +148,32 @@ if [ -z ${NO_COLORS+x} ] && [ $(tput colors) -ge 8 ]; then
     # 7 -> White
 
     #Text attributes
-    RESET_COLOR="\[$(printf "\e[0m")\]"
-    BOLD="\[$(printf "\e[1m")\]"
-    UNDERSCORE="\[$(printf "\e[4m")\]"
-    BLINK="\[$(printf "\e[5m")\]"
-    REVERSE="\[$(printf "\e[7m")\]"
-    CONCEALED="\[$(printf "\e[8m")\]"
+         RSTCOL="\[$(printf "\e[0m")\]"
+           BOLD="\[$(printf "\e[1m")\]"
+      UNDERLINE="\[$(printf "\e[4m")\]"
+          BLINK="\[$(printf "\e[5m")\]"
+        REVERSE="\[$(printf "\e[7m")\]"
+      CONCEALED="\[$(printf "\e[8m")\]"
 
     #Foreground colors
-    FG_BLACK="\[$(printf "\e[30m")\]"
-    FG_RED="\[$(printf "\e[31m")\]"
-    FG_GREEN="\[$(printf "\e[32m")\]"
-    FG_YELLOW="\[$(printf "\e[33m")\]"
-    FG_BLUE="\[$(printf "\e[34m")\]"
+      FG_BLACK="\[$(printf "\e[30m")\]"
+        FG_RED="\[$(printf "\e[31m")\]"
+      FG_GREEN="\[$(printf "\e[32m")\]"
+     FG_YELLOW="\[$(printf "\e[33m")\]"
+       FG_BLUE="\[$(printf "\e[34m")\]"
     FG_MAGENTA="\[$(printf "\e[35m")\]"
-    FG_CYAN="\[$(printf "\e[36m")\]"
-    FG_WHITE="\[$(printf "\e[37m")\]"
+       FG_CYAN="\[$(printf "\e[36m")\]"
+      FG_WHITE="\[$(printf "\e[37m")\]"
 
     #Background colors
-    BG_BLACK="\[$(printf "\e[40m")\]"
-    BG_RED="\[$(printf "\e[41m")\]"
-    BG_GREEN="\[$(printf "\e[42m")\]"
-    BG_YELLOW="\[$(printf "\e[43m")\]"
-    BG_BLUE="\[$(printf "\e[44m")\]"
+      BG_BLACK="\[$(printf "\e[40m")\]"
+        BG_RED="\[$(printf "\e[41m")\]"
+      BG_GREEN="\[$(printf "\e[42m")\]"
+     BG_YELLOW="\[$(printf "\e[43m")\]"
+       BG_BLUE="\[$(printf "\e[44m")\]"
     BG_MAGENTA="\[$(printf "\e[45m")\]"
-    BG_CYAN="\[$(printf "\e[46m")\]"
-    BG_WHITE="\[$(printf "\e[47m")\]"
+       BG_CYAN="\[$(printf "\e[46m")\]"
+      BG_WHITE="\[$(printf "\e[47m")\]"
 
 else
     COLOR_SUPPORT=0
@@ -202,10 +201,10 @@ if ! shopt -oq posix; then
 fi
 
 # ----------------------------------------------------------------------
-# Show the running command in the terminal title:
+# Show running command in the terminal title:
 # http://mg.pov.lt/blog/bash-prompt.html
 #
-show_command_in_title_bar()
+show_cmd_in_titlebar()
 {
     case "$BASH_COMMAND" in
         *\033]0*|*\033]1*|*\033]2*)
@@ -230,7 +229,7 @@ show_command_in_title_bar()
             ;;
     esac
 }
-trap show_command_in_title_bar DEBUG
+trap show_cmd_in_titlebar DEBUG
 
 # ----------------------------------------------------------------------
 # Clear screen on exit
