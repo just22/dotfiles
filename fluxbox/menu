@@ -70,7 +70,7 @@
                 [exec] (gvim) {gvim} </usr/local/share/pixmaps/vim.png>
                 [exec] (xfontsel) {xfontsel} </usr/local/share/icons/gnome/16x16/apps/gnome-settings-font.png>
                 [exec] (Play Link) {play-url} </usr/local/share/icons/gnome/16x16/actions/media-playback-start.png>
-                [submenu] (Timer) </usr/share/icons/gnome/16x16/stock/generic/stock_timer.png>
+                [submenu] (Timer) </home/just22/.local/share/icons/timer.png>
                         [exec] ( 5 min) {timer -t "now +  5 min"}
                         [exec] (10 min) {timer -t "now + 10 min"}
                         [exec] (15 min) {timer -t "now + 15 min"}
