@@ -20,7 +20,6 @@ OnTitlebar  Control Mouse1 :StartTabbing
 OnTitlebar  Mouse1 :MacroCmd {Raise} {Focus} {ActivateTab}
 OnLeftGrip  Move1 :StartResizing bottomleft
 OnRightGrip Move1 :StartResizing bottomright
-#OnTitlebar  Double Mouse1 :Shade
 
 # Cycle through windows in the current workspace
 Mod4 Tab :NextWindow {groups} (workspace=[current]) (Minimized=no)
@@ -43,8 +42,8 @@ Mod1 Control Delete :Exec xlock
 
 # Other command exec
 Mod4 a              :Exec toggle-statusbar
-Mod4 Control c      :Exec change-perfpolicy
 Mod4 w              :Exec fb-switch-ws
+Mod4 Control c      :Exec change-perfpolicy
 
 
 # Current window commands
@@ -115,9 +114,5 @@ Mod4 c :ShowDesktop
 Mod4 v :ArrangeWindowsStackRight  (Title!=pcmanfm) (Title!=bbpager)
 Mod4 h :ArrangeWindowsStackBottom (Title!=pcmanfm) (Title!=bbpager)
 
-# Take a screenshot of current window / entire desktop
-#Mod4 p :Exec import -window $(xprop -root | grep "^_NET_ACTIVE_WINDOW(WINDOW)" | awk '{print $NF}') /tmp/screenshot.$(date +%F_%H:%M:%S).gif
-#Mod4 Control p :Exec import -window root /tmp/screenshot.$(date +%F_%H:%M:%S).gif
-
-# Play video (address in clipboard)
-Mod4 Shift p :Exec ytdl-smplayer `xclip -o -selection clipboard`
+# Play video (URL in clipboard)
+Mod4 Shift p            :Exec play-url
