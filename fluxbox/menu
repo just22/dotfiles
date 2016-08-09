@@ -28,6 +28,7 @@
         #[exec] (E-Mail Client) {xterm -title "Mail User Agent" -e mutt} </usr/local/share/icons/gnome/16x16/emblems/emblem-mail.png>
         [exec] (E-Mail Client) {thunderbird} </usr/local/share/icons/gnome/16x16/emblems/emblem-mail.png>
         [exec] (Text Editor) {gvim} </usr/local/share/icons/gnome/16x16/apps/text-editor.png>
+        [exec] (Play Link) {play-url} </usr/local/share/icons/gnome/16x16/actions/media-playback-start.png>
         [separator]
         [submenu] (Accessories) </usr/local/share/icons/gnome/16x16/categories/applications-accessories.png>
                 [exec] (Calculator) {xcalc} </usr/local/share/icons/gnome/16x16/apps/accessories-calculator.png>
@@ -114,7 +115,7 @@
                 [end]
                 [commanddialog] (Fluxbox Command)
                 [reconfig] (Reload config)
-                [exec] (Restart) {fbrestart}
+                [exec] (Restart) {wmrestart}
                 [exec] (About) {(fluxbox -v; fluxbox -info | sed 1d) | xmessage -buttons OK:0 -file - -center}
                 [separator]
                 [exit] (Exit)
