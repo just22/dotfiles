@@ -23,7 +23,6 @@ fi
 # ----------------------------------------------------------------------
 # Immediate notification when jobs change state
 #
-#
 set -o notify
 
 # ----------------------------------------------------------------------
@@ -41,30 +40,25 @@ shopt -s globstar
 # ----------------------------------------------------------------------
 # Enable extended pattern matching features
 #
-#
 #shopt -s extglob
 
 # ----------------------------------------------------------------------
 # Don't exit the shell when EOF (Ctrl-d) is received as line first input
-#
 #
 export IGNOREEOF=1000
 
 # ----------------------------------------------------------------------
 # No core dumps
 #
-#
 ulimit -c 0
 
 # ----------------------------------------------------------------------
 # No autologout
 #
-#
 TMOUT=0
 
 # ----------------------------------------------------------------------
 # Set some UTF8 strings if TERM support it
-#
 #
 case "$TERM" in
     xterm*|rxvt-unicode*|screen*|linux)
@@ -81,9 +75,7 @@ esac
 # ----------------------------------------------------------------------
 # Set history
 #
-#
 shopt -s histappend
-#HISTCONTROL=ignoreboth
 HISTCONTROL=ignorespace:erasedups
 HISTIGNORE="exit:?q"
 HISTFILE=~/.bash_history
@@ -93,7 +85,6 @@ HISTTIMEFORMAT="%d/%m %R${UTF8_HISTSEPARATOR-" -> "}"
 
 # ----------------------------------------------------------------------
 # The editor used by the fc command
-#
 #
 export FCEDIT=vim
 
@@ -118,26 +109,9 @@ set_prompt() {
         [ $USER == root ] && PS_USER_COLOR="${FG_RED}" || PS_USER_COLOR="$PS_HI_COLOR"
     fi
 
-    #PS1="\[${PS_NORM_COLOR}\]${UTF8_PS_1STLINE_HEADER-"+--"}"                                   # Cosmetic
-    #PS1=${PS1}"[\[${PS_USER_COLOR}\]\u\[${PS_NORM_COLOR}\]@\h]-"                                # user@hostname
-    ##PS1=${PS1}"$([ -n "$TMUX" ] && echo "[tmux]-")"                                            # tmux session?
-    ##PS1=${PS1}"[\s]-"                                                                          # Shell
-    #[ -n "$PRJ_REF" ] && PS1=${PS1}"[${PS_HI_COLOR}$PRJ_REF${PS_NORM_COLOR}]-"                  # Is the shell configured for a project?
-    ##PS1=${PS1}"[\j]-"                                                                          # No. of managed jobs
-    #PS1=${PS1}"[$(sj)]-"                                                                        # No. of stopped jobs
-    #[ "$LAST_EXIT" != 0 ] &&
-    #    PS1=${PS1}"[${PS_HI_COLOR}${UTF8_LAST_FAILED-x}${PS_NORM_COLOR}]-" ||
-    #    PS1=${PS1}"[${UTF8_LAST_OK-v}]-"                                                        # Last command exit status
-    #git rev-parse --git-dir > /dev/null 2>&1 &&
-    #    PS1=${PS1}"[${PS_HI_COLOR}git${PS_NORM_COLOR}]-"                                        # In a git tree?
-    #PS1=${PS1}"[\W]"                                                                            # Basename of current directory
-    #PS1=${PS1}"\n\[${PS_NORM_COLOR}\]${UTF8_PS_2NDLINE_HEADER-"+----->"} \[${DEFAULT_COLOR}\]"  # Cosmetic
     PS1="${PS_NORM_COLOR}${UTF8_PS_1STLINE_HEADER-"+--"}"                                       # Cosmetic
     PS1=${PS1}"[${PS_USER_COLOR}\u${PS_NORM_COLOR}@\h]-"                                        # user@hostname
-    #PS1=${PS1}"$([ -n "$TMUX" ] && echo "[tmux]-")"                                            # tmux session?
-    #PS1=${PS1}"[\s]-"                                                                          # Shell
     [ -n "$PRJ_REF" ] && PS1=${PS1}"[${PS_HI_COLOR}$PRJ_REF${PS_NORM_COLOR}]-"                  # Is the shell configured for a project?
-    #PS1=${PS1}"[\j]-"                                                                          # No. of managed jobs
     PS1=${PS1}"[$(sj)]-"                                                                        # No. of stopped jobs
     [ "$LAST_EXIT" != 0 ] &&
         PS1=${PS1}"[${PS_HI_COLOR}${UTF8_LAST_FAILED-x}${PS_NORM_COLOR}]-" ||
@@ -152,7 +126,6 @@ set_prompt() {
     # If this is an xterm, then set the title
     case "$TERM" in
         xterm*|rxvt-unicode*|screen*)
-            #[${TERM%%-*}]
             PS1="\[\033]0;[\s] [\w] [Last cmd: \"$(history 1 | awk -v HS="${UTF8_HISTSEPARATOR-" -> "}" 'BEGIN{FS=HS} {print $2}')\"]\007\]"$PS1
             ;;
         *)
@@ -160,10 +133,10 @@ set_prompt() {
     esac
 }
 
-#if [ -z ${NO_COLORS+x} ] && tput setaf 1 >/dev/null 2>&1; then
-    # Assume that color support is compliant with Ecma-48
-    # (ISO/IEC-6429); lack of such support is extremely rare, and such
-    # a case would tend to support setf rather than setaf
+if [ -z ${NO_COLORS+x} ] && [ $(tput colors) -ge 8 ]; then
+    COLOR_SUPPORT=1
+
+    # ANSI escape sequences for graphics mode
 
     # Color codes:
     # 0 -> Black
@@ -174,33 +147,7 @@ set_prompt() {
     # 5 -> Magenta
     # 6 -> Cyan
     # 7 -> White
-    #BLACK_FG='$(tput setaf 0)'
-    #RED_FG='$(tput setaf 1)'
-    #GREEN_FG='$(tput setaf 2)'
-    #YELLOW_FG='$(tput setaf 3)'
-    #BLUE_FG='$(tput setaf 4)'
-    #MAGENTA_FG='$(tput setaf 5)'
-    #CYAN_FG='$(tput setaf 6)'
-    #WHITE_FG='$(tput setaf 7)'
-    #BLACK_BG='$(tput setab 0)'
-    #RED_BG='$(tput setab 1)'
-    #GREEN_BG='$(tput setab 2)'
-    #YELLOW_BG='$(tput setab 3)'
-    #BLUE_BG='$(tput setab 4)'
-    #MAGENTA_BG='$(tput setab 5)'
-    #CYAN_BG='$(tput setab 6)'
-    #WHITE_BG='$(tput setab 7)'
-    #
-    #REVERSE='$(tput rev)'
-    #BRIGHT='$(tput bold)'
-    #DEFAULT_COLOR='$(tput sgr0)'
 
-# Giving up using tput...
-if [ -z ${NO_COLORS+x} ] && [ $(tput colors) -ge 8 ]; then
-    COLOR_SUPPORT=1
-
-    # ANSI escape sequences for graphics mode
-    #
     #Text attributes
     RESET_COLOR="\[$(printf "\e[0m")\]"
     BOLD="\[$(printf "\e[1m")\]"
@@ -208,7 +155,7 @@ if [ -z ${NO_COLORS+x} ] && [ $(tput colors) -ge 8 ]; then
     BLINK="\[$(printf "\e[5m")\]"
     REVERSE="\[$(printf "\e[7m")\]"
     CONCEALED="\[$(printf "\e[8m")\]"
-    #
+
     #Foreground colors
     FG_BLACK="\[$(printf "\e[30m")\]"
     FG_RED="\[$(printf "\e[31m")\]"
@@ -218,7 +165,7 @@ if [ -z ${NO_COLORS+x} ] && [ $(tput colors) -ge 8 ]; then
     FG_MAGENTA="\[$(printf "\e[35m")\]"
     FG_CYAN="\[$(printf "\e[36m")\]"
     FG_WHITE="\[$(printf "\e[37m")\]"
-    #
+
     #Background colors
     BG_BLACK="\[$(printf "\e[40m")\]"
     BG_RED="\[$(printf "\e[41m")\]"
@@ -238,7 +185,6 @@ PROMPT_COMMAND=set_prompt
 # ----------------------------------------------------------------------
 # Aliases/functions definition
 #
-#
 if [ -f ~/.sh_aliases ]; then
     source ~/.sh_aliases
 fi
@@ -248,7 +194,6 @@ fi
 
 # ----------------------------------------------------------------------
 # Enable programmable completion features
-#
 #
 if ! shopt -oq posix; then
   if [ -f /etc/profile.d/bash-completion.sh ]; then
@@ -296,12 +241,10 @@ trap show_command_in_title_bar DEBUG
 # ----------------------------------------------------------------------
 # Vi mode, please!
 #
-#
 set -o vi
 
 # ----------------------------------------------------------------------
 # Useful keybindings
-#
 #
 bind -m vi-insert "\C-l":clear-screen
 bind '\C-w:unix-filename-rubout'
@@ -309,12 +252,10 @@ bind '\C-w:unix-filename-rubout'
 # ----------------------------------------------------------------------
 # Make C-w to delete back to the last /
 #
-#
 stty werase undef
 
 # ----------------------------------------------------------------------
 # Addenda to ~/.bashrc specific for machine/site
-#
 #
 if [ -f ~/.bashrc_local ]; then
     source ~/.bashrc_local
@@ -322,6 +263,5 @@ fi
 
 # ----------------------------------------------------------------------
 # Debug
-#
 #
 #echo "~/.bashrc sourced"
