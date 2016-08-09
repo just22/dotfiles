@@ -91,8 +91,8 @@ else
 fi
 
 if [ "$COLOR_SUPPORT" == 1 ]; then
-        HICOL="$FG_BLUE"
-        NORMCOL="$FG_WHITE"
+        HICOL="$FG_YELLOW"
+        NORMCOL="$FG_BLUE"
         [ $USER == root ] && USRCOL="$FG_RED" || USRCOL="$HICOL"
 fi
 
