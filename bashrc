@@ -101,7 +101,9 @@ export FCEDIT=vim
 sj() { jobs -s | wc -l | tr -d " "; }
 
 set_prompt() {
-        local LAST_EXIT="$?"
+        [ $? -ne 0 ] &&
+                LAST_EXIT="${HICOL}${U8_LASTFAIL-x}${NORMCOL}" ||
+                LAST_EXIT="${U8_LASTOK-v}"
 
         if [ "$COLOR_SUPPORT" == 1 ]; then
                 HICOL="$FG_YELLOW"
@@ -109,19 +111,26 @@ set_prompt() {
                 [ $USER == root ] && USRCOL="$FG_RED" || USRCOL="$HICOL"
         fi
 
-        PS1="${NORMCOL}${U8_PSHEAD_L1-"+--"}"                               # Cosmetic
-        PS1=${PS1}"[${USRCOL}\u${NORMCOL}@\h]-"                             # user@hostname
-        [ -n "$PRJ_REF" ] && PS1=${PS1}"[${HICOL}$PRJ_REF${NORMCOL}]-"      # Prj-ready shell?
-        PS1=${PS1}"[$(sj)]-"                                                # No. of stopped jobs
-        [ "$LAST_EXIT" != 0 ] &&
-                PS1=${PS1}"[${HICOL}${U8_LASTFAIL-x}${NORMCOL}]-" ||
-                PS1=${PS1}"[${U8_LASTOK-v}]-"                               # Last command exit status
+        PS1="${NORMCOL}${U8_PSHEAD_L1-"+--"}"                           # Cosmetic
+
+        PS1=${PS1}"[${USRCOL}\u${NORMCOL}@\h]-"                         # user@hostname
+
+        [ -n "$PRJ_REF" ] &&
+                PS1=${PS1}"[${HICOL}$PRJ_REF${NORMCOL}]-"               # Prj-ready shell?
+
+        PS1=${PS1}"[$(sj)]-"                                            # No. of stopped jobs
+
+        PS1=${PS1}"[$LAST_EXIT]-"                                       # Last command exit status
+
         git rev-parse --git-dir > /dev/null 2>&1 &&
-                PS1=${PS1}"[${HICOL}git${NORMCOL}]-"                        # In a git tree?
+                PS1=${PS1}"[${HICOL}git${NORMCOL}]-"                    # In a git tree?
+
         ls ./CVS > /dev/null 2>&1 &&
-                PS1=${PS1}"[${HICOL}cvs${NORMCOL}]-"                        # In a CVS tree?
-        PS1=${PS1}"[\W]"                                                    # CWD basename
-        PS1=${PS1}"\n${NORMCOL}${U8_PSHEAD_L2-"+----->"} ${RSTCOL}"         # Cosmetic
+                PS1=${PS1}"[${HICOL}cvs${NORMCOL}]-"                    # In a CVS tree?
+
+        PS1=${PS1}"[\W]"                                                # CWD basename
+
+        PS1=${PS1}"\n${NORMCOL}${U8_PSHEAD_L2-"+----->"} ${RSTCOL}"     # Cosmetic
 
         # If this is an xterm, then set the title
         case "$TERM" in
