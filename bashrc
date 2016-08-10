@@ -145,7 +145,7 @@ set_prompt() {
 escseq() {
           ESC="\e"
          CODE="$1"
-         printf "%s[%sm" $ESC $CODE
+         printf "\[%s[%sm\]" $ESC $CODE
 }
 
 if [ -z ${NO_COLORS+x} ] && [ $(tput colors) -ge 8 ]; then
