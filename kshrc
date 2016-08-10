@@ -38,11 +38,9 @@ HISTFILE=${HOME}/.sh_history
 #NO_COLORS=""
 
 escseq() {
-          HEAD="\["
-           ESC="\e"
-          CODE="$1"
-         TRAIL="\]"
-         printf "%s%s[%sm%s" $HEAD $ESC $CODE $TRAIL
+          ESC="\e"
+         CODE="$1"
+         printf "\[%s[%sm\]" $ESC $CODE
 }
 
 if [ -z ${NO_COLORS+x} ] && [ $(tput colors) -ge 8 ]; then
