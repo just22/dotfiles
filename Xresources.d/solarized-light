@@ -55,6 +55,6 @@ xconsole*background:            S_base03
 xconsole*foreground:            S_base0
 
 ! Xmessage
-Xmessage*background:            S_base03
-Xmessage*foreground:            S_base0
+Xmessage*background:            S_base3
+Xmessage*foreground:            S_base00
 Xmessage*Command.borderColor:   S_base0
