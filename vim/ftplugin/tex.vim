@@ -1,4 +1,4 @@
-nmap <leader>i ggi
+nmap <buffer> <leader>i ggi
         \% ----------------------------------------------------------------------<CR>
         \% Document title and short description<CR>
         \% ----------------------------------------------------------------------<CR>
@@ -105,7 +105,7 @@ nmap <leader>i ggi
         \<CR>
         \\end{document}<CR>
         \% ----------------------------------------------------------------------<Esc>gg
-nmap <leader>S o
+nmap <buffer> <leader>S o
         \% ----------------------------------------------------------------------<CR>
         \\section{Section X}<CR>
         \<CR>
@@ -131,7 +131,7 @@ nmap <leader>S o
         \        \frametitle{Frame X.2.2}<CR><Esc>i
         \\end{frame}<CR><Esc>
 
-nmap <leader>s o
+nmap <buffer> <leader>s o
         \% ----------------------------------<CR>
         \\subsection{Subsection X.Y}<CR>
         \<CR>
@@ -143,12 +143,12 @@ nmap <leader>s o
         \        \frametitle{Frame X.Y.2}<CR><Esc>i
         \\end{frame}<CR><Esc>
 
-nmap <leader>f o
+nmap <buffer> <leader>f o
         \\begin{frame}<CR>
         \        \frametitle{Frame X.Y.Z}<CR><Esc>i
         \\end{frame}<CR><Esc>
 
-nmap <leader>ff o
+nmap <buffer> <leader>ff o
         \\begin{frame}[fragile]<CR>
         \        \frametitle{Frame X.Y.Z}<CR><Esc>i
         \        \begin{verbatim}
