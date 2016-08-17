@@ -32,7 +32,7 @@ call vundle#begin()
 
 Plugin 'https://github.com/altercation/vim-colors-solarized.git'
 
-Plugin 'git://repo.or.cz/vcscommand'
+Plugin 'https://github.com/vim-scripts/vcscommand.vim'
 
 Plugin 'https://github.com/tpope/vim-fugitive'
 
@@ -51,7 +51,7 @@ Plugin 'https://github.com/chrisbra/csv.vim'
 
 Plugin 'https://github.com/godlygeek/tabular.git'
 
-Plugin 'LaTeX-Box-Team/LaTeX-Box'
+Plugin 'https://github.com/LaTeX-Box-Team/LaTeX-Box'
 
 Plugin 'VisIncr'
 
@@ -122,6 +122,7 @@ set lazyredraw
 
 " "Leader" key mapping
 let mapleader="\<Space>"
+let maplocalleader="\<Space>"
 
 " Enable mouse use in all modes (in console too)
 set mouse=a
