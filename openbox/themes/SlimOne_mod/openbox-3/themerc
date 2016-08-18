@@ -77,7 +77,7 @@ osd.bg.color: #EEE8D5
 osd.hilight.bg: flat solid
 osd.hilight.bg.color: #EEE8D5
 osd.label.text.color: #586E75
-osd.border.width: 1
+osd.border.width: 0
 osd.border.color: #EEE8D5
 osd.button.unpressed.box.color: #586E75
 osd.button.pressed.box.color: #586E75
