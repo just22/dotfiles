@@ -31,19 +31,19 @@ xscreensaver &
 # Battery status check daemon
 ~/bin/check-batt-status &
 
-# Statusbar
-(sleep 2; statusbar) &
-#(sleep 1; xdotool search --class "dzen" windowunmap) &
-
-# Reserve space for statusbar
-# (Just a WA, since dzen2 doesn't play well with Fluxbox's slit)
-(sleep 3; space_dapp) &
-
 # Wallpaper setting
 [ -x ~/.fehbg ] && ~/.fehbg
 
 # Desktop management
-(sleep 3; pcmanfm --desktop) &
+(sleep 1; pcmanfm --desktop) &
+
+# Statusbar
+(sleep 4; statusbar) &
+#(sleep 1; xdotool search --class "dzen" windowunmap) &
+
+# Reserve space for statusbar
+# (Just a WA, since dzen2 doesn't play well with Fluxbox's slit)
+(sleep 4; space_dapp) &
 
 # Tray apps
 hp-systray &
