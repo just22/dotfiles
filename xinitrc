@@ -58,10 +58,11 @@ fi
 #xconsole -geometry 480x130-0-0 -daemon -notify -verbose -exitOnFail &
 
 # Select the X session to start
-#DEFAULT_XSESSION_CMD="startxfce4 --with-ck-launch"
-#DEFAULT_XSESSION_CMD="cwm"
 DEFAULT_XSESSION_CMD="startfluxbox"
 #DEFAULT_XSESSION_CMD="openbox-session"
+#DEFAULT_XSESSION_CMD="cwm"
+#DEFAULT_XSESSION_CMD="twm"
+#DEFAULT_XSESSION_CMD="startxfce4 --with-ck-launch"
 #SELECT_XSESSION=1
 [ x$SELECT_XSESSION != "x" ] &&
 if [ -e /usr/local/bin/Xdialog ]; then
@@ -74,9 +75,9 @@ if [ -e /usr/local/bin/Xdialog ]; then
                 --stdout \
                 --menubox \
                     "Select the X session" \
-                    190x115 \
+                    195x120 \
                     3 \
-                    "startxfce4 --with-ck-launch"       "Xfce" \
+                    "startfluxbox"                      "Fluxbox" \
                     "openbox-session"                   "Openbox" \
                     "cwm"                               "cwm"`
 fi ||
