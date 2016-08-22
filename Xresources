@@ -192,7 +192,10 @@ tkremind*font: -xos4-terminus-medium-*-*-*-12-*-*-*-*-*-iso10646-*
 ! ----------------------------------------------------------------------
 ! xfig section
 !
-xfig*inches:    false
+xfig*inches:            false
+xfig*specialtext:       true
+xfig*latexfonts:        true
+xfig*startlatexFont:    Default
 
 
 ! ----------------------------------------------------------------------
