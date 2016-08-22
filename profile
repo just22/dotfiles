@@ -47,9 +47,7 @@ export LC_CTYPE=en_GB.UTF-8
 
 # Default pager
 export PAGER=less
-#LESS="--no-init --quit-if-one-screen --RAW-CONTROL-CHARS"
-#LESS="--no-init --RAW-CONTROL-CHARS"
-export LESS="-M -i -X -F -R"
+export LESS="-M -i -X -R"
 [ -x /usr/bin/lesspipe ] && export LESSOPEN="|lesspipe.sh %s"
 
 # Default editor
