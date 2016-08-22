@@ -19,11 +19,11 @@
 # idesk &
 # gkrellm -w &
 
+# Compositor manager
+xcompmgr &
+
 # Set the root window background
 fbsetroot -gradient Vertical -from rgb:07/36/42 -to rgb:58/6E/75
-
-# Compositor manager
-#xcompmgr &
 
 # Xscreensaver
 xscreensaver &
@@ -31,22 +31,20 @@ xscreensaver &
 # Battery status check daemon
 ~/bin/check-batt-status &
 
-# Wallpaper setting
-[ -x ~/.fehbg ] && ~/.fehbg
-
 # Desktop management
-(sleep 1; pcmanfm --desktop) &
+(sleep 1; dbus-launch pcmanfm --desktop) &
 
 # Statusbar
 (sleep 4; statusbar) &
-#(sleep 1; xdotool search --class "dzen" windowunmap) &
 
 # Reserve space for statusbar
 # (Just a WA, since dzen2 doesn't play well with Fluxbox's slit)
 (sleep 4; space_dapp) &
 
 # Tray apps
+#/usr/local/libexec/tray-app/sound -i &
 hp-systray &
+
 
 # And last but not least we start fluxbox.
 # Because it is the last app you have to run it with ''exec'' before it.
