@@ -5,58 +5,56 @@
 # ----------------------------------------------------------------------
 
 [app] (name=fbrun)
-    [Position]    (CENTER)    {0 0}
-    [Layer]       {2}
+  [Position]	(CENTER)	{0 0}
+  [Layer]	{2}
 [end]
-
 [app] (name=bbpager) (class=bbtools)
-    [Position]    (CENTER)    {0 0}
-    [Layer]       {2}
+  [Position]	(CENTER)	{0 0}
+  [Layer]	{2}
 [end]
-
 [app] (class=Xmessage)
-    [Deco]        {BORDER}
-    [Sticky]      {yes}
-    [FocusHidden] {yes}
-    [Position]    (CENTER)    {0 0}
-    [Layer]       {2}
+  [Position]	(CENTER)	{0 0}
+  [Deco]	{BORDER}
+  [FocusHidden]	{yes}
+  [Sticky]	{yes}
+  [Layer]	{2}
 [end]
-
 [app] (class=XConsole)
-    #[Deco]       {BORDER}
-    [Workspace]   {5}
-    [Dimensions]  {100% 50%}
-    [Position]    (UPPERLEFT) {0% 0%}
+  [Workspace]	{5}
+  [Dimensions]	{100% 50%}
+  [Position]	(UPPERLEFT)	{0% 0%}
 [end]
-
 [app] (class=XTerm) (title=System log) {1}
-    #[Deco]       {BORDER}
-    [Workspace]   {5}
-    [Dimensions]  {100% 50%}
-    [Position]    (UPPERLEFT) {0% 0%}
+  [Workspace]	{5}
+  [Dimensions]	{100% 50%}
+  [Position]	(UPPERLEFT)	{0% 0%}
 [end]
-
 [app] (class=XTerm) (title=Process monitor) {1}
-    #[Deco]       {BORDER}
-    [Workspace]   {5}
-    [Dimensions]  {50% 50%}
-    [Position]    (UPPERLEFT) {0% 50%}
+  [Workspace]	{5}
+  [Dimensions]	{50% 50%}
+  [Position]	(UPPERLEFT)	{0% 50%}
 [end]
-
 [app] (class=XTerm) (title=System stats) {1}
-    #[Deco]       {BORDER}
-    [Workspace]   {5}
-    [Dimensions]  {50% 50%}
-    [Position]    (UPPERLEFT) {50% 50%}
+  [Workspace]	{5}
+  [Dimensions]	{50% 50%}
+  [Position]	(UPPERLEFT)	{50% 50%}
 [end]
-
 [app] (class=XTerm) (title=Screenshot)
-    [Deco]        {BORDER}
-    [Sticky]      {yes}
-    [FocusHidden] {yes}
-    [Position]    (CENTER)    {0 0}
+  [Position]	(CENTER)	{0 0}
+  [Deco]	{BORDER}
+  [FocusHidden]	{yes}
+  [Sticky]	{yes}
 [end]
-
-#[app] (.*)
-#    [Deco]       {BORDER}
-#[end]
+[app] (name=vol) (class=Vol)
+  [Deco]	{BORDER}
+[end]
+[app] (class=Xdialog) (title=Removable volume manager)
+  [Deco]	{BORDER}
+[end]
+[app] (name=win) (class=Xpdf)
+  [Dimensions]	{70% 70%}
+  [Position]	(UPPERLEFT)	{15% 15%}
+[end]
+[app] (name=xfig) (class=Fig)
+  [Maximized]	{yes}
+[end]
