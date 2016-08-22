@@ -59,11 +59,11 @@ fi
 
 # Select the X session to start
 DEFAULT_XSESSION_CMD="startfluxbox"
-#DEFAULT_XSESSION_CMD="openbox-session"
 #DEFAULT_XSESSION_CMD="cwm"
 #DEFAULT_XSESSION_CMD="twm"
 #DEFAULT_XSESSION_CMD="startxfce4 --with-ck-launch"
 #SELECT_XSESSION=1
+
 [ x$SELECT_XSESSION != "x" ] &&
 if [ -e /usr/local/bin/Xdialog ]; then
     XSESSION_CMD=`Xdialog \
@@ -78,8 +78,8 @@ if [ -e /usr/local/bin/Xdialog ]; then
                     195x120 \
                     3 \
                     "startfluxbox"                      "Fluxbox" \
-                    "openbox-session"                   "Openbox" \
-                    "cwm"                               "cwm"`
+                    "cwm"                               "cwm" \
+                    "twm"                               "twm"`
 fi ||
 XSESSION_CMD="$DEFAULT_XSESSION_CMD"
 
@@ -101,12 +101,9 @@ if ! pgrep -x remind; then
         remind -z -k'xmessage -title "Remind" -buttons "Ok" %s &' ~/.reminders &
 fi
 
-# Start some useful tray apps
-#/usr/local/libexec/tray-app/sound -i &
-
 # Start any other required daemons, then the selected X session
 case "$XSESSION_CMD" in
-cwm)
+cwm|twm)
 
         # xlock through xidle
         #xidle -delay 2 -nw -timeout 600 -program "xlock -mousemotion" &
@@ -114,20 +111,14 @@ cwm)
         # Xscreensaver
         xscreensaver &
 
-        # Compositor manager
-        #xcompmgr &
-
         # Battery status check daemon
         check-batt-status &
 
         # Status bar
         statusbar &
 
-        # Systray
-        sleep 1; stalonetray &
-
-        # HPLIP GUI
-        hp-systray &
+        # Wallpaper setting
+        [ -x ~/.fehbg ] && ~/.fehbg
 
         ;;
 
