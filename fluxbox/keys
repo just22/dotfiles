@@ -15,9 +15,12 @@ OnWindow Mod4 Mouse2    :Lower
 OnWindow Mod4 Mouse3    :MacroCmd {Raise} {Focus} {StartResizing NearestCorner}
 
 # Click on titlebar to move/raise/group
-OnTitlebar  Move1       :StartMoving
-OnTitlebar  Mouse1      :MacroCmd {Raise} {Focus} {ActivateTab}
-OnTitlebar  Control Mouse1 :StartTabbing
+OnTitlebar  Move1               :StartMoving
+OnTitlebar  Mouse1              :MacroCmd {Raise} {Focus} {ActivateTab}
+OnTitlebar  Double Mouse1       :MacroCmd {Raise} {Maximize}
+OnTitlebar  Control Mouse1      :StartTabbing
+OnTitlebar  Mouse2              :ArrangeWindowsStackRight (Title!=pcmanfm) (Title!=bbpager)
+OnTitlebar  Mouse3              :WindowMenu
 
 # Click on grip to resize
 OnLeftGrip  Move1       :StartResizing bottomleft
