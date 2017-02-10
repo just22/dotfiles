@@ -58,10 +58,11 @@ fi
 #xconsole -geometry 480x130-0-0 -daemon -notify -verbose -exitOnFail &
 
 # Select the X session to start
-DEFAULT_XSESSION_CMD="startfluxbox"
+DEFAULT_XSESSION_CMD="startxfce4"
+#DEFAULT_XSESSION_CMD="startxfce4 --with-ck-launch"
+#DEFAULT_XSESSION_CMD="startfluxbox"
 #DEFAULT_XSESSION_CMD="cwm"
 #DEFAULT_XSESSION_CMD="twm"
-#DEFAULT_XSESSION_CMD="startxfce4 --with-ck-launch"
 #SELECT_XSESSION=1
 
 [ x$SELECT_XSESSION != "x" ] &&
@@ -75,23 +76,15 @@ if [ -e /usr/local/bin/Xdialog ]; then
                 --stdout \
                 --menubox \
                     "Select the X session" \
-                    195x120 \
-                    3 \
+                    195x155 \
+                    5 \
+                    "startxfce4"                        "Xfce4" \
+                    "startxfce4 --with-ck-launch"       "Xfce4 (with polkit)" \
                     "startfluxbox"                      "Fluxbox" \
                     "cwm"                               "cwm" \
                     "twm"                               "twm"`
 fi ||
 XSESSION_CMD="$DEFAULT_XSESSION_CMD"
-
-# System log
-#pkill xconsole
-xterm -title "System log" -e "tail -f /var/log/messages" &
-
-# Process monitor
-xterm -title "Process monitor" -e top &
-
-# System statistics
-xterm -title "System stats" -e systat &
 
 # X screen reset and lock daemon (activated by SIGUSR1)
 xscreen-reset &
