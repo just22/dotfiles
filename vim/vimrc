@@ -55,23 +55,6 @@ Plugin 'https://github.com/LaTeX-Box-Team/LaTeX-Box'
 
 Plugin 'VisIncr'
 
-Plugin 'https://github.com/ctrlpvim/ctrlp.vim.git'
-
-" No more used bundles
-"Plugin 'https://github.com/chriskempson/base16-vim'
-"Plugin 'https://github.com/scrooloose/nerdcommenter.git'
-"Plugin 'https://github.com/jeetsukumaran/vim-buffersaurus'
-"Plugin 'https://github.com/vim-latex/vim-latex.git'
-" vim-snipmate {
-"       Plugin 'https://github.com/MarcWeber/vim-addon-mw-utils'
-"       Plugin 'https://github.com/tomtom/tlib_vim'
-"       Plugin 'https://github.com/garbas/vim-snipmate'
-"       Plugin 'https://github.com/honza/vim-snippets.git'
-" }
-" vimwiki {
-"       Plugin 'https://github.com/vimwiki/vimwiki'
-" }
-
 call vundle#end()
 
 
@@ -847,22 +830,6 @@ nnoremap <silent> <leader><CR> :.Twrite Top<CR>
 " csv plugin
 "
 nnoremap <silent> <leader>A :%CSVArrangeColumn<CR>
-
-" ----------------------------------------------------------------------
-" latex-box plugin
-"
-let g:tex_flavor='latex'
-let g:LatexBox_quickfix=2
-let g:LatexBox_viewer='xpdf'
-
-" ----------------------------------------------------------------------
-" ctrl-p plugin
-"
-let g:ctrlp_map = '<C-p>'
-let g:ctrlp_working_path_mode = 'ra'
-let g:ctrlp_root_markers = ['.prj_root', '.user_root']
-let g:ctrlp_cache_dir = $HOME . '/.vim/cache/ctrlp'
-let g:ctrlp_clear_cache_on_exit = 0
 
 " ----------------------------------------------------------------------
 " Source local vimrc
