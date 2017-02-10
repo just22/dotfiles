@@ -116,10 +116,6 @@ set hidden
 " Keep 100 lines of command line history
 set history=100
 
-" Do not redraw the screen while executing macros, registers and other not
-" typed commands
-set lazyredraw
-
 " "Leader" key mapping
 let mapleader="\<Space>"
 let maplocalleader="\<Space>"
@@ -658,7 +654,7 @@ autocmd filetype svn,*commit* setlocal spell spelllang=en
 " netrw config section
 " (see http://ivanbrennan.nyc/blog/2014/01/16/rigging-vims-netrw)
 "
-let g:netrw_liststyle=0         " Thin view (change to 3 for tree)
+let g:netrw_liststyle=3         " 0: thin view; 3: tree view
 let g:netrw_banner=0            " No banner
 let g:netrw_altv=1              " Open files shown on the right
 let g:netrw_browse_split=4      " Open files in previous window
@@ -803,11 +799,17 @@ function! ZoomWin()
         endif
 endf
 nnoremap <silent> <C-w>o :call ZoomWin()<CR>
+nnoremap <C-w>u :only<CR>
 
 " ----------------------------------------------------------------------
 " Omni-completion function (when available)
 "
 inoremap @@ <C-x><C-o>
+
+" ----------------------------------------------------------------------
+"  Edit a new file, whose name is under the cursor
+"
+map <leader>gf :e <cfile><CR>
 
 " ----------------------------------------------------------------------
 " vim-notes plugin
@@ -861,6 +863,15 @@ let g:ctrlp_working_path_mode = 'ra'
 let g:ctrlp_root_markers = ['.prj_root', '.user_root']
 let g:ctrlp_cache_dir = $HOME . '/.vim/cache/ctrlp'
 let g:ctrlp_clear_cache_on_exit = 0
+
+" ----------------------------------------------------------------------
+" Source local vimrc
+"
+try
+        source ~/.vim/vimrc.local
+catch
+        " Do not output any error msg in case no local vimrc exists
+endtry
 
 " ----------------------------------------------------------------------
 " TODO list
