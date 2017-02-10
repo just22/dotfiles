@@ -19,6 +19,16 @@
 # idesk &
 # gkrellm -w &
 
+# System log
+#pkill xconsole
+xterm -title "System log" -e "tail -f /var/log/messages" &
+
+# Process monitor
+xterm -title "Process monitor" -e top &
+
+# System statistics
+xterm -title "System stats" -e systat &
+
 # Compositor manager
 xcompmgr &
 
