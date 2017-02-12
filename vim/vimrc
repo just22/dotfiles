@@ -446,7 +446,7 @@ function! ToggleCursorColumnVisibility()
                 setlocal colorcolumn=78
                 "setlocal colorcolumn=+0
         endif
-endf
+endfunction
 nnoremap <silent> <C-\> :call ToggleCursorColumnVisibility()<CR>
 
 " ----------------------------------------------------------------------
@@ -489,7 +489,7 @@ vnoremap <leader>? ?\V
 " ----------------------------------------------------------------------
 " Quickly close current buffer
 "
-nnoremap <silent> <leader>q :bdel<CR>
+nnoremap <silent> <leader>q :bdelete<CR>
 
 " ----------------------------------------------------------------------
 " Mappings to access buffers (don't use "\p" because a delay before
@@ -649,7 +649,7 @@ function! VexToggle(dir)
         else
                 call VexOpen(a:dir)
         endif
-endf
+endfunction
 
 function! VexOpen(dir)
         let vex_width=90
@@ -657,7 +657,7 @@ function! VexOpen(dir)
         let t:vex_buf_nr=bufnr("%")
         wincmd H
         call VexSize(vex_width)
-endf
+endfunction
 
 function! VexClose()
         let curr_win_nr=winnr()
@@ -667,13 +667,13 @@ function! VexClose()
         unlet t:vex_buf_nr
         execute (target_win_nr-1) . "wincmd w"
         call NormalizeWidths()
-endf
+endfunction
 
 function! VexSize(vex_width)
         execute "vertical resize" . a:vex_width
         set winfixwidth
         call NormalizeWidths()
-endf
+endfunction
 
 function! NormalizeWidths()
         let eadirection_backup=&eadirection
@@ -681,7 +681,7 @@ function! NormalizeWidths()
         set equalalways! equalalways!
         let &eadirection=eadirection_backup
         unlet eadirection_backup
-endf
+endfunction
 
 noremap <silent> <leader>, :call VexToggle(getcwd())<CR>
 noremap <silent> <leader>. :call VexToggle("")<CR>
@@ -766,7 +766,7 @@ function! RemoveLeadingSpaces()
         execute '%s/\s\+$//'
         execute 'nohlsearch'
         call setpos(".", _cpos)
-endf
+endfunction
 nnoremap <silent> <leader><Space> :call RemoveLeadingSpaces()<CR>
 
 " ----------------------------------------------------------------------
@@ -780,7 +780,7 @@ function! ZoomWin()
                 let g:zoomOn = 1
                 tab split
         endif
-endf
+endfunction
 nnoremap <silent> <C-w>o :call ZoomWin()<CR>
 nnoremap <C-w>u :only<CR>
 
@@ -830,6 +830,32 @@ nnoremap <silent> <leader><CR> :.Twrite Top<CR>
 " csv plugin
 "
 nnoremap <silent> <leader>A :%CSVArrangeColumn<CR>
+
+" ----------------------------------------------------------------------
+" CVS helpers
+"
+function! Vcsvimdiff(vcscmd, vcsfile)
+        diffthis
+        leftabove vertical new
+        setlocal buftype=nofile
+        setlocal bufhidden=wipe
+        setlocal noswapfile
+        autocmd BufDelete <buffer> diffoff!
+        try
+                execute 'silent r !' . a:vcscmd . ' ' . a:vcsfile
+                silent 1,6d
+                diffthis
+                wincmd l
+        catch
+                bdelete
+        endtry
+endfunction
+
+function! Cvsvimdiff(cvsfile)
+        call Vcsvimdiff('cvs update -p', a:cvsfile)
+endfunction
+
+nnoremap <silent> <leader>d :call Cvsvimdiff(expand("%"))<CR>
 
 " ----------------------------------------------------------------------
 " Source local vimrc
