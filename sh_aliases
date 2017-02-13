@@ -290,9 +290,9 @@ alias cutf='tr -s "\t" " " | sed "s/^ //" | cut -d" " -f'
 alias rs='rsync -avzhHp --progress'
 alias pid='ps axwwwww | grep -v grep | egrep --'
 alias catn='cat -n'
-alias showpath='echo $PATH | tr ":" "\n"'
 alias touchall='ls -tr | xargs touch'
 alias se='env sudoedit'
+showpath() { echo ${1-$PATH} | tr ":" "\n"; }
 vimall() { find ${1-.} -maxdepth 1 -type f -a ! -name ".*" -print | xargs sh -c '</dev/tty vim "$@"' ignoreme; }
 vimalldot() { find ${1-.} -maxdepth 1 -type f -a -name ".*" -print | xargs sh -c '</dev/tty vim "$@"' ignoreme; }
 grepopen() { grep -l "$@" | xargs sh -c '</dev/tty vim "$@"' ignoreme; }
