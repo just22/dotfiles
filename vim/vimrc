@@ -183,7 +183,13 @@ set cursorline
 set number
 
 " Show the line number relative to the line with the cursor
-set norelativenumber
+if exists("+relativenumber")
+        set relativenumber
+        nnoremap <silent> <leader>R :set relativenumber!<CR>
+endif
+nnoremap <silent> <leader>N :set number!<CR>
+
+nnoremap <silent> <leader>S :let &scrolloff=5-&scrolloff<CR>
 
 " Show the cursor position all the time
 set noruler
@@ -193,9 +199,6 @@ set scrolloff=5
 
 " Wrap long lines
 set nowrap
-nnoremap <silent> <leader>N :set number!<CR>
-nnoremap <silent> <leader>S :let &scrolloff=5-&scrolloff<CR>
-nnoremap <silent> <leader>R :set relativenumber!<CR>
 
 " ----------------------------------------------------------------------
 " Windows and tabs
@@ -209,11 +212,12 @@ set splitright
 " ----------------------------------------------------------------------
 " Undo
 "
-" Store undo info so you can undo previous actions even after you close and reopen a file (only in 7.3)
-set undofile
-"
-" Store undo files in a fixed location, not current directory
-set undodir=~/.vim/undo
+if exists("+undofile")
+        " Store undo info so you can undo previous actions even after you close and reopen a file (only in 7.3)
+        set undofile
+        " Store undo files in a fixed location, not current directory
+        set undodir=~/.vim/undo
+endif
 
 " ----------------------------------------------------------------------
 " Unprintable chars highlighting
@@ -291,10 +295,14 @@ set dir=~/.vim/swap//,/var/tmp//,/tmp//,.
 "au InsertLeave * highlight! clear CursorLineNR ctermfg ctermbg
 "
 au InsertEnter * setlocal cursorcolumn
-au InsertEnter * setlocal colorcolumn=78
+if exists("+colorcolumn")
+        au InsertEnter * setlocal colorcolumn=78
+endif
 
 au InsertLeave * setlocal nocursorcolumn
-au InsertLeave * setlocal colorcolumn=0
+if exists("+colorcolumn")
+        au InsertLeave * setlocal colorcolumn=0
+endif
 
 " ----------------------------------------------------------------------
 " Colorscheme
@@ -642,6 +650,7 @@ let g:netrw_banner=0            " No banner
 let g:netrw_altv=1              " Open files shown on the right
 let g:netrw_browse_split=4      " Open files in previous window
 "let g:netrw_preview=1          " Preview window shown in a vertically split
+nnoremap <silent> <leader>d :e .<CR>
 
 function! VexToggle(dir)
         if exists("t:vex_buf_nr")
@@ -866,6 +875,20 @@ try
         source ~/.vim/vimrc.local
 catch
         " Do not output any error msg in case no local vimrc exists
+endtry
+
+" ----------------------------------------------------------------------
+" Some useful abbreviations
+"
+cnoreabbrev f find
+
+" ----------------------------------------------------------------------
+" External configuration files
+"
+try
+        source ~/.vim/vimrc.local
+catch
+        " If file is not found, just ignore it
 endtry
 
 " ----------------------------------------------------------------------
