@@ -851,11 +851,13 @@ function! Vcsvimdiff(vcscmd, vcsfile)
         endtry
 endfunction
 
-function! Cvsvimdiff(cvsfile)
-        call Vcsvimdiff('cvs update -p', a:cvsfile)
+function! Vcsmaps()
+        if isdirectory(expand('%:.:h' . '/' . 'CVS'))
+                nnoremap <buffer> <silent> <leader>d :call Vcsvimdiff('cvs update -p', expand('%'))<CR>
+        endif
 endfunction
 
-nnoremap <silent> <leader>d :call Cvsvimdiff(expand("%"))<CR>
+autocmd BufRead * call Vcsmaps()
 
 " ----------------------------------------------------------------------
 " Source local vimrc
