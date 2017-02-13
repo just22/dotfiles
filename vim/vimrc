@@ -189,6 +189,7 @@ if exists("+relativenumber")
 endif
 nnoremap <silent> <leader>N :set number!<CR>
 
+" Minimal number of screen lines to keep above and below the cursor
 nnoremap <silent> <leader>S :let &scrolloff=5-&scrolloff<CR>
 
 " Show the cursor position all the time
@@ -243,12 +244,22 @@ set showmode
 " Always show a status line for the last window
 set laststatus=2
 
+" Paste status
+function! PasteStatus()
+        if (&paste)
+                return '[paste]'
+        else
+                return ''
+        endif
+endfunction
+
 set statusline=%*                               " Reset statusline format
 set statusline+=[%t]\                           " Name (tail) of file in the buffer
 set statusline+=[#%n]\                          " Buffer number
 set statusline+=[%Y%W%R%M%W]\                   " Filetype
 set statusline+=%{'['.&ff.']'}\                 " File format
 set statusline+=%{'['.&fenc.']'}\               " File encoding
+set statusline+=%{PasteStatus()}\               " Paste mode
 set statusline+=%=                              " Move to right
 set statusline+=[0x%B]\                         " Current char
 set statusline+=[%l/%L\ %c]\                    " Cursor line / total lines
@@ -628,6 +639,7 @@ cnoremap QA qa
 " ----------------------------------------------------------------------
 " Toggle mouse paste mode with F12
 "
+nnoremap <silent> <F12> :set paste!<CR>
 set pastetoggle=<F12>
 
 " ----------------------------------------------------------------------
@@ -852,7 +864,7 @@ function! Vcsvimdiff(vcscmd, vcsfile)
         autocmd BufDelete <buffer> diffoff!
         try
                 execute 'silent r !' . a:vcscmd . ' ' . a:vcsfile
-                silent 1,6d
+                silent 1d
                 diffthis
                 wincmd l
         catch
@@ -861,8 +873,10 @@ function! Vcsvimdiff(vcscmd, vcsfile)
 endfunction
 
 function! Vcsmaps()
-        if isdirectory(expand('%:.:h' . '/' . 'CVS'))
-                nnoremap <buffer> <silent> <leader>d :call Vcsvimdiff('cvs update -p', expand('%'))<CR>
+        if isdirectory(expand('%:.:h') . '/' . 'CVS')
+                nnoremap <buffer> <silent> <leader>d :call Vcsvimdiff('cvs -q update -p', expand('%'))<CR>
+        elseif isdirectory(expand('%:.:h') . '/' . '.SYNC')
+                nnoremap <buffer> <silent> <leader>d :call Vcsvimdiff('~/bin/dss-cat', expand('%'))<CR>
         endif
 endfunction
 
