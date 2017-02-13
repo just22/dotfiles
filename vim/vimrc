@@ -184,7 +184,7 @@ set number
 
 " Show the line number relative to the line with the cursor
 if exists("+relativenumber")
-        set relativenumber
+        set norelativenumber
         nnoremap <silent> <leader>R :set relativenumber!<CR>
 endif
 nnoremap <silent> <leader>N :set number!<CR>
@@ -803,7 +803,7 @@ function! ZoomWin()
         endif
 endfunction
 nnoremap <silent> <C-w>o :call ZoomWin()<CR>
-nnoremap <C-w>u :only<CR>
+nnoremap <silent> <C-w>u :silent only<CR>
 
 " ----------------------------------------------------------------------
 " Omni-completion function (when available)
@@ -872,11 +872,29 @@ function! Vcsvimdiff(vcscmd, vcsfile)
         endtry
 endfunction
 
+function! Vcsgencmd(vcscmd, vcsfile)
+        leftabove vertical new
+        setlocal buftype=nofile
+        setlocal bufhidden=wipe
+        setlocal noswapfile
+        try
+                execute 'silent r !' . a:vcscmd . ' ' . a:vcsfile
+                silent 1d
+                wincmd l
+        catch
+                bdelete
+        endtry
+endfunction
+
 function! Vcsmaps()
         if isdirectory(expand('%:.:h') . '/' . 'CVS')
-                nnoremap <buffer> <silent> <leader>d :call Vcsvimdiff('cvs -q update -p', expand('%'))<CR>
+                nnoremap <buffer> <silent> <leader>vd :call Vcsvimdiff('cvs -q update -p', expand('%'))<CR>
+                nnoremap <buffer> <silent> <leader>vD :call Vcsgencmd('cvs diff', expand('%'))<CR>
+                nnoremap <buffer> <silent> <leader>vh :call Vcsgencmd('cvs log', expand('%'))<CR>
         elseif isdirectory(expand('%:.:h') . '/' . '.SYNC')
-                nnoremap <buffer> <silent> <leader>d :call Vcsvimdiff('~/bin/dss-cat', expand('%'))<CR>
+                nnoremap <buffer> <silent> <leader>vd :call Vcsvimdiff('~/bin/dss-cat', expand('%'))<CR>
+                nnoremap <buffer> <silent> <leader>vD :call Vcsgencmd('dssc diff -kk -unified -version Latest', expand('%'))<CR>
+                nnoremap <buffer> <silent> <leader>vh :call Vcsgencmd('dssc vhist', expand('%'))<CR>
         endif
 endfunction
 
