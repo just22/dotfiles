@@ -32,8 +32,6 @@ call vundle#begin()
 
 Plugin 'https://github.com/altercation/vim-colors-solarized.git'
 
-Plugin 'https://github.com/vim-scripts/vcscommand.vim'
-
 Plugin 'https://github.com/tpope/vim-fugitive'
 
 Plugin 'https://github.com/tpope/vim-tbone.git'
@@ -662,7 +660,6 @@ let g:netrw_banner=0            " No banner
 let g:netrw_altv=1              " Open files shown on the right
 let g:netrw_browse_split=4      " Open files in previous window
 "let g:netrw_preview=1          " Preview window shown in a vertically split
-nnoremap <silent> <leader>d :e .<CR>
 
 function! VexToggle(dir)
         if exists("t:vex_buf_nr")
@@ -853,52 +850,34 @@ nnoremap <silent> <leader><CR> :.Twrite Top<CR>
 nnoremap <silent> <leader>A :%CSVArrangeColumn<CR>
 
 " ----------------------------------------------------------------------
-" CVS helpers
+" VCS helpers
 "
-function! Vcsvimdiff(vcscmd, vcsfile)
-        diffthis
+function! VCScmd(vcscmd, vcsfile, dodiff)
+        "let dodiff = (a:0 > 1) ? a:1 : 0
+        tab split
         leftabove vertical new
-        setlocal buftype=nofile
-        setlocal bufhidden=wipe
-        setlocal noswapfile
-        autocmd BufDelete <buffer> diffoff!
-        try
-                execute 'silent r !' . a:vcscmd . ' ' . a:vcsfile
-                silent 1d
-                diffthis
-                wincmd l
-        catch
-                bdelete
-        endtry
+        setlocal nobuflisted buftype=nofile bufhidden=wipe noswapfile
+        execute 'silent r !' . a:vcscmd . ' ' . a:vcsfile
+        silent 1d
+        if (a:dodiff)
+                windo diffthis
+        endif
+        wincmd l
 endfunction
 
-function! Vcsgencmd(vcscmd, vcsfile)
-        leftabove vertical new
-        setlocal buftype=nofile
-        setlocal bufhidden=wipe
-        setlocal noswapfile
-        try
-                execute 'silent r !' . a:vcscmd . ' ' . a:vcsfile
-                silent 1d
-                wincmd l
-        catch
-                bdelete
-        endtry
-endfunction
-
-function! Vcsmaps()
+function! VCSmaps()
         if isdirectory(expand('%:.:h') . '/' . 'CVS')
-                nnoremap <buffer> <silent> <leader>vd :call Vcsvimdiff('cvs -q update -p', expand('%'))<CR>
-                nnoremap <buffer> <silent> <leader>vD :call Vcsgencmd('cvs diff', expand('%'))<CR>
-                nnoremap <buffer> <silent> <leader>vh :call Vcsgencmd('cvs log', expand('%'))<CR>
+                nnoremap <buffer> <silent> <leader>vd :call VCScmd('cvs -q update -p', expand('%'), 1)<CR>
+                nnoremap <buffer> <silent> <leader>vD :call VCScmd('cvs diff', expand('%'), 0)<CR>
+                nnoremap <buffer> <silent> <leader>vh :call VCScmd('cvs log', expand('%'), 0)<CR>
         elseif isdirectory(expand('%:.:h') . '/' . '.SYNC')
-                nnoremap <buffer> <silent> <leader>vd :call Vcsvimdiff('~/bin/dss-cat', expand('%'))<CR>
-                nnoremap <buffer> <silent> <leader>vD :call Vcsgencmd('dssc diff -kk -unified -version Latest', expand('%'))<CR>
-                nnoremap <buffer> <silent> <leader>vh :call Vcsgencmd('dssc vhist', expand('%'))<CR>
+                nnoremap <buffer> <silent> <leader>vd :call VCScmd('~/bin/dss-cat', expand('%'), 1)<CR>
+                nnoremap <buffer> <silent> <leader>vD :call VCScmd('dssc diff -kk -unified -version Latest', expand('%'), 0)<CR>
+                nnoremap <buffer> <silent> <leader>vh :call VCScmd('dssc vhist', expand('%'), 0)<CR>
         endif
 endfunction
 
-autocmd BufRead * call Vcsmaps()
+autocmd BufRead * call VCSmaps()
 
 " ----------------------------------------------------------------------
 " Source local vimrc
@@ -913,6 +892,8 @@ endtry
 " Some useful abbreviations
 "
 cnoreabbrev f find
+cnoreabbrev sf sfind
+cnoreabbrev vsf vertical sfind
 
 " ----------------------------------------------------------------------
 " External configuration files
