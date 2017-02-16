@@ -852,28 +852,31 @@ nnoremap <silent> <leader>A :%CSVArrangeColumn<CR>
 " ----------------------------------------------------------------------
 " VCS helpers
 "
-function! VCScmd(vcscmd, vcsfile, dodiff)
-        "let dodiff = (a:0 > 1) ? a:1 : 0
+function! VCScmd(...)
+        let vcscmd  = a:1
+        let vcsfile = a:2
+        let dodiff  = (a:0 >= 3) ? a:3 : 0
         tab split
         leftabove vertical new
         setlocal nobuflisted buftype=nofile bufhidden=wipe noswapfile
-        execute 'silent r !' . a:vcscmd . ' ' . a:vcsfile
+        execute 'silent r !' . vcscmd . ' ' . vcsfile
         silent 1d
-        if (a:dodiff)
+        setlocal nomodifiable
+        if (dodiff == 1)
                 windo diffthis
         endif
-        wincmd l
+        normal <C-w>w
 endfunction
 
 function! VCSmaps()
         if isdirectory(expand('%:.:h') . '/' . 'CVS')
                 nnoremap <buffer> <silent> <leader>vd :call VCScmd('cvs -q update -p', expand('%'), 1)<CR>
-                nnoremap <buffer> <silent> <leader>vD :call VCScmd('cvs diff', expand('%'), 0)<CR>
-                nnoremap <buffer> <silent> <leader>vh :call VCScmd('cvs log', expand('%'), 0)<CR>
+                nnoremap <buffer> <silent> <leader>vD :call VCScmd('cvs diff', expand('%'))<CR>
+                nnoremap <buffer> <silent> <leader>vh :call VCScmd('cvs log', expand('%'))<CR>
         elseif isdirectory(expand('%:.:h') . '/' . '.SYNC')
                 nnoremap <buffer> <silent> <leader>vd :call VCScmd('~/bin/dss-cat', expand('%'), 1)<CR>
-                nnoremap <buffer> <silent> <leader>vD :call VCScmd('dssc diff -kk -unified -version Latest', expand('%'), 0)<CR>
-                nnoremap <buffer> <silent> <leader>vh :call VCScmd('dssc vhist', expand('%'), 0)<CR>
+                nnoremap <buffer> <silent> <leader>vD :call VCScmd('dssc diff -kk -unified -version Latest', expand('%'))<CR>
+                nnoremap <buffer> <silent> <leader>vh :call VCScmd('dssc vhist', expand('%'))<CR>
         endif
 endfunction
 
