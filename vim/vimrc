@@ -652,6 +652,17 @@ au FilterWritePre * if &diff | execute "nnoremap <C-p> [cz." | execute "nnoremap
 autocmd filetype svn,*commit* setlocal spell spelllang=en
 
 " ----------------------------------------------------------------------
+" Set completion to the current script (only if a specific plugin does
+" not already exist for that filetype)
+"
+if has("autocmd") && exists("+omnifunc")
+autocmd Filetype *
+        \ if &omnifunc == "" |
+        \       setlocal omnifunc=syntaxcomplete#Complete |
+        \ endif
+endif
+
+" ----------------------------------------------------------------------
 " netrw config section
 " (see http://ivanbrennan.nyc/blog/2014/01/16/rigging-vims-netrw)
 "
