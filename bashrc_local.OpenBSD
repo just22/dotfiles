@@ -20,7 +20,6 @@
     # ------------------------------------------------------------------
     # Package management
     #
-    #
     #alias pkgs='ftp ftp://openbsd.mirror.garr.it/pub/OpenBSD/snapshots/packages/`machine -a`/'
     alias pkgs='pkg_info -Q'
     alias pkga='/usr/local/bin/sudo pkg_add -iv'
@@ -33,10 +32,10 @@
     alias pkgda='/usr/local/bin/sudo pkg_delete -a'
     alias pkgdas='pkg_delete -as'
     alias pkgrdep='pkg_info -R'
+    alias pkgup='/usr/local/bin/sudo pkg_add -u'
 
     # ------------------------------------------------------------------
     # Port management
-    #
     #
     mks() {
             CWD="$(pwd)"
@@ -57,20 +56,21 @@
     alias mki='make install'
     alias mkr='make reinstall'
     alias mku='make uninstall'
+    alias mkdebug='INSTALL_STRIP= DEBUG="-O0 -g" make repackage reinstall'
 
     # ------------------------------------------------------------------
     # Various
     #
-    #
     blkid() { disklabel ${1-sd0} | egrep "/dev/|duid"; }
     alias xcdroast='xcdroast -n -f /dev/rcd0c'
     alias lk='clear; lock -pn'
+    alias mplayer='mplayer -af volnorm'
+    alias mplayer-slow='mplayer -af volnorm -lavdopts threads=4:skiploopfilter=all:fast=1:skipframe=nonref'
     #alias mc='TERM=xterm-256color mc'
     #alias tmux='tmux -2'
 
     # ------------------------------------------------------------------
     # Temporary WAs
-    #
     #
     #alias surf='LD_PRELOAD=/usr/local/lib/gio/modules/libgiognutls.so surf'
 
