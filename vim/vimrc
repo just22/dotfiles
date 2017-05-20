@@ -199,14 +199,17 @@ set scrolloff=5
 " Wrap long lines
 set nowrap
 
+
 " ----------------------------------------------------------------------
 " Windows and tabs
 "
-" Splitting a window will put the new window below the current one
+" Splitting a window will put the new window below/right the current one
 set splitbelow
-
-" Splitting a window will put the new window right of the current one
 set splitright
+
+" Never show tab page labels
+set showtabline=0
+
 
 " ----------------------------------------------------------------------
 " Undo
@@ -810,8 +813,9 @@ function! ZoomWin()
                 tab split
         endif
 endfunction
+nnoremap <C-w><C-u> <C-w>o
+nnoremap <silent> <C-w><C-o> :call ZoomWin()<CR>
 nnoremap <silent> <C-w>o :call ZoomWin()<CR>
-nnoremap <silent> <C-w>u :silent only<CR>
 
 " ----------------------------------------------------------------------
 " Omni-completion function (when available)
@@ -822,6 +826,36 @@ inoremap @@ <C-x><C-o>
 "  Edit a new file, whose name is under the cursor
 "
 map <leader>gf :e <cfile><CR>
+
+" ----------------------------------------------------------------------
+"  Redraw the screen and recenter cursor line
+"
+function! Recenter(...)
+        let w:top    = line('w0')
+        let w:bottom = line('w$')
+        let w:center = (w:top + w:bottom) / 2
+        if line('.') == w:center
+                if a:0
+                        normal H
+                else
+                        normal zt
+                endif
+        elseif line('.') == (w:top + &scrolloff)
+                if a:0
+                        normal L
+                else
+                        normal zb
+                endif
+        else
+                if a:0
+                        normal M
+                else
+                        normal zz
+                endif
+        endif
+endfunction
+nnoremap <silent> <C-l> <C-l>:call Recenter()<CR>
+nnoremap <silent> <leader>m <C-l>:call Recenter("moveCursorLine")<CR>
 
 " ----------------------------------------------------------------------
 " vim-notes plugin
