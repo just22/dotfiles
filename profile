@@ -38,9 +38,15 @@ if [ "${TERM}" == "vt220" ]; then
 fi
 
 # Locale settings
-export LANG=en_GB.UTF-8
-export LC_CTYPE=en_GB.UTF-8
-
+LANG=""
+LC_COLLATE="C"
+LC_CTYPE="en_US.UTF-8"
+LC_MONETARY="C"
+LC_NUMERIC="C"
+LC_TIME="C"
+LC_MESSAGES="C"
+LC_ALL="en_US.UTF-8"
+export LANG LC_COLLATE LC_CTYPE LC_MONETARY LC_NUMERIC LC_TIME LC_MESSAGES LC_ALL
 
 # Note: Default pager/editor/browser definitions moved here because
 #       there are applications launched from X using them
@@ -85,5 +91,5 @@ export AUTOCONF_VERSION=2.69
 export PKG_CONFIG_PATH=${HOME}/lib/pkgconfig
 
 # Proxy settings
-export http_proxy="http://argo.atlantide.priv:8118"
+#export http_proxy="http://argo.atlantide.priv:8118"
 #export no_proxy="http://argo.atlantide.priv:8118"
