@@ -58,17 +58,19 @@ ulimit -c 0
 TMOUT=0
 
 # ----------------------------------------------------------------------
-# Set some UTF8 strings if TERM support it
+# When running in X and if TERM support it, set some UTF-8 strings
 #
-case "$TERM" in
-xterm*|rxvt-unicode*|screen*|linux)
-        U8_HSEP=" ─› "
-        U8_PSHEAD_L1="┌──"
-        U8_PSHEAD_L2="└─────›"
-        U8_LASTOK="✓"
-        U8_LASTFAIL="✗"
+[ -n "$DISPLAY" ] && case "$XTERM_LOCALE" in
+*UTF-8)
+        UTF8_PS1=1
+        UTF8_HSEP=" ─› "
+        UTF8_PSHEAD_L1="┌──"
+        UTF8_PSHEAD_L2="└─────›"
+        UTF8_LASTOK="✓"
+        UTF8_LASTFAIL="✗"
         ;;
 *)
+        UTF8_PS1=0
         ;;
 esac
 
@@ -81,7 +83,7 @@ HISTIGNORE="exit:?q"
 HISTFILE=~/.bash_history
 HISTSIZE=500
 HISTFILESIZE=2000
-HISTTIMEFORMAT="%d/%m %R${U8_HSEP-" -> "}"
+HISTTIMEFORMAT="%d/%m %R${UTF8_HSEP-" -> "}"
 
 # ----------------------------------------------------------------------
 # The editor used by the fc command
@@ -102,8 +104,8 @@ sj() { jobs -s | wc -l | tr -d " "; }
 
 set_prompt() {
         [ $? -ne 0 ] &&
-                LAST_EXIT="${HICOL}${U8_LASTFAIL-x}${NORMCOL}" ||
-                LAST_EXIT="${U8_LASTOK-v}"
+                LAST_EXIT="${HICOL}${UTF8_LASTFAIL-fail}${NORMCOL}" ||
+                LAST_EXIT="${UTF8_LASTOK-ok}"
 
         if [ "$COLOR_SUPPORT" == 1 ]; then
                 HICOL="$FG_YELLOW"
@@ -111,31 +113,42 @@ set_prompt() {
                 [ $USER == root ] && USRCOL="$FG_RED" || USRCOL="$HICOL"
         fi
 
-        PS1="${NORMCOL}${U8_PSHEAD_L1-"+--"}"                           # Cosmetic
+        if [ $UTF8_PS1 ]; then
 
-        PS1=${PS1}"[${USRCOL}\u${NORMCOL}@\h]-"                         # user@hostname
+                PS1="${NORMCOL}${UTF8_PSHEAD_L1}"                       # Cosmetic
 
-        [ -n "$PRJ_REF" ] &&
-                PS1=${PS1}"[${HICOL}$PRJ_REF${NORMCOL}]-"               # Prj-ready shell?
+                PS1=${PS1}"[${USRCOL}\u${NORMCOL}@\h]-"                 # user@hostname
 
-        PS1=${PS1}"[$(sj)]-"                                            # No. of stopped jobs
+                [ -n "$PRJ_REF" ] &&
+                        PS1=${PS1}"[${HICOL}$PRJ_REF${NORMCOL}]-"       # Prj-ready shell?
 
-        PS1=${PS1}"[$LAST_EXIT]-"                                       # Last command exit status
+                PS1=${PS1}"[$(sj)]-"                                    # No. of stopped jobs
 
-        git rev-parse --git-dir > /dev/null 2>&1 &&
-                PS1=${PS1}"[${HICOL}git${NORMCOL}]-"                    # In a git tree?
+                PS1=${PS1}"[$LAST_EXIT]-"                               # Last command exit status
 
-        ls ./CVS > /dev/null 2>&1 &&
-                PS1=${PS1}"[${HICOL}cvs${NORMCOL}]-"                    # In a CVS tree?
+                git rev-parse --git-dir > /dev/null 2>&1 &&
+                        PS1=${PS1}"[${HICOL}git${NORMCOL}]-"            # In a git tree?
 
-        PS1=${PS1}"[\W]"                                                # CWD basename
+                ls ./CVS > /dev/null 2>&1 &&
+                        PS1=${PS1}"[${HICOL}cvs${NORMCOL}]-"            # In a CVS tree?
 
-        PS1=${PS1}"\n${NORMCOL}${U8_PSHEAD_L2-"+----->"} ${RSTCOL}"     # Cosmetic
+                ls ./.SYNC > /dev/null 2>&1 &&
+                        PS1=${PS1}"[${HICOL}dss${NORMCOL}]-"            # In a Synchronicity tree?
+
+                PS1=${PS1}"[\W]"                                        # CWD basename
+
+                PS1=${PS1}"\n${NORMCOL}${UTF8_PSHEAD_L2} ${RSTCOL}"     # Cosmetic
+
+        else
+                PS1="${NORMCOL}[${USRCOL}\u${NORMCOL}@\h]-"             # user@hostname
+                PS1=${PS1}"[$LAST_EXIT]-"                               # Last command exit status
+                PS1=${PS1}"[\W]> ${RSTCOL}"                             # CWD basename
+        fi
 
         # If this is an xterm, then set the title
-        case "$TERM" in
-        xterm*|rxvt-unicode*|screen*)
-                PS1="\[\033]0;[\s] [\w] [Last cmd: \"$(history 1 | awk -v HS="${U8_HSEP-" -> "}" 'BEGIN{FS=HS} {print $2}')\"]\007\]"$PS1
+        [ -n "$DISPLAY" ] && case "$TERM" in
+        xterm*|screen*)
+                PS1="\[\033]0;[\s] [\w] [Last cmd: \"$(history 1 | awk -v HS="${UTF8_HSEP-" -> "}" 'BEGIN{FS=HS} {print $2}')\"]\007\]"$PS1
                 ;;
         *)
                 ;;
