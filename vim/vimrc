@@ -194,7 +194,7 @@ nnoremap <silent> <leader>S :let &scrolloff=5-&scrolloff<CR>
 set noruler
 
 " Minimal number of screen lines to keep above and below the cursor
-set scrolloff=5
+set scrolloff=2
 
 " Wrap long lines
 set nowrap
@@ -693,7 +693,7 @@ endfunction
 
 function! VexClose()
         let curr_win_nr=winnr()
-        let target_win_nr=(curr_win_nr==1 ? winnr("#") : curr_win_nr)
+        let target_win_nr = (curr_win_nr == 1) ? winnr("#") : curr_win_nr
         1wincmd w
         close
         unlet t:vex_buf_nr
@@ -793,13 +793,13 @@ vnoremap <leader>- :II -1 ''<CR>
 " ----------------------------------------------------------------------
 " Remove trailing spaces
 "
-function! RemoveLeadingSpaces()
+function! RemoveTrailingSpaces()
         let _cpos = getpos(".")
         execute '%s/\s\+$//'
         execute 'nohlsearch'
         call setpos(".", _cpos)
 endfunction
-nnoremap <silent> <leader><Space> :call RemoveLeadingSpaces()<CR>
+nnoremap <silent> <leader><Space> :call RemoveTrailingSpaces()<CR>
 
 " ----------------------------------------------------------------------
 " Window zooming
@@ -828,34 +828,24 @@ inoremap @@ <C-x><C-o>
 map <leader>gf :e <cfile><CR>
 
 " ----------------------------------------------------------------------
-"  Redraw the screen and recenter cursor line
+"  Move cursor line to top/middle/bottom, scrolling the edit window when
+"  the function is called with an argument (whatever it is)
 "
-function! Recenter(...)
-        let w:top    = line('w0')
-        let w:bottom = line('w$')
-        let w:center = (w:top + w:bottom) / 2
-        if line('.') == w:center
-                if a:0
-                        normal H
-                else
-                        normal zt
-                endif
-        elseif line('.') == (w:top + &scrolloff)
-                if a:0
-                        normal L
-                else
-                        normal zb
-                endif
+function! MoveCursorLine(...)
+        let l:top    = line('w0')
+        let l:bottom = line('w$')
+        let l:center = (l:top + l:bottom) / 2
+        if line('.') == l:center
+                let l:cmd = a:0 ? "zt" : "H"
+        elseif line('.') <= (l:top + &scrolloff)
+                let l:cmd = a:0 ? "zb" : "L"
         else
-                if a:0
-                        normal M
-                else
-                        normal zz
-                endif
+                let l:cmd = a:0 ? "zz" : "M"
         endif
+        execute "normal " . l:cmd
 endfunction
-nnoremap <silent> <C-l> <C-l>:call Recenter()<CR>
-nnoremap <silent> <leader>m <C-l>:call Recenter("moveCursorLine")<CR>
+nnoremap <silent> <C-l> :call MoveCursorLine("scroll")<CR>
+nnoremap <silent> <leader>m <C-l>:call MoveCursorLine()<CR>
 
 " ----------------------------------------------------------------------
 " vim-notes plugin
