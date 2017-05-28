@@ -948,8 +948,13 @@ nnoremap <silent> <leader>A :%CSVArrangeColumn<CR>
 "
 let g:SuperTabDefaultCompletionType = "context"
 set completeopt=longest,menuone
-inoremap <leader><Tab> <Tab>
 inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+
+" ----------------------------------------------------------------------------
+" Map <Tab> to <C-Tab> to allow inserting a tab character not at the beginning
+" of the line
+"
+inoremap <Esc>[27;5;9~ <Tab>
 
 " ----------------------------------------------------------------------------
 " Some useful abbreviations
