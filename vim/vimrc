@@ -57,12 +57,10 @@ Plugin 'https://github.com/ervandew/supertab.git'
 
 call vundle#end()
 
-
 " ----------------------------------------------------------------------------
 " Enable extended % matching
 "
 runtime macros/matchit.vim
-
 
 " ----------------------------------------------------------------------------
 " Enable file type detection. Use the default filetype settings, so that mail
@@ -71,7 +69,6 @@ runtime macros/matchit.vim
 "
 "filetype plugin indent on
 filetype plugin on
-
 
 " ----------------------------------------------------------------------------
 " Automatically reload config file when it is written
@@ -180,7 +177,6 @@ set incsearch
 set smartcase
 nnoremap <silent> <Tab> :nohlsearch<CR>
 
-
 " ----------------------------------------------------------------------------
 " Visibility and context
 "
@@ -209,7 +205,6 @@ set scrolloff=2
 " Wrap long lines
 set nowrap
 
-
 " ----------------------------------------------------------------------------
 " Windows and tabs
 "
@@ -219,7 +214,6 @@ set splitright
 
 " Never show tab page labels
 set showtabline=0
-
 
 " ----------------------------------------------------------------------------
 " Undo
@@ -258,7 +252,16 @@ set laststatus=2
 " Paste status
 function! PasteStatus()
         if (&paste)
-                return '[paste]'
+                return '[paste] '
+        else
+                return ''
+        endif
+endfunction
+
+" Working with multiple tabs (considered unusual...)
+function! MultiTabs()
+        if (tabpagewinnr(2, '$') > 0)
+                return '[tab+] '
         else
                 return ''
         endif
@@ -270,7 +273,8 @@ set statusline+=[#%n]\                          " Buffer number
 set statusline+=[%Y%W%R%M%W]\                   " Filetype
 set statusline+=%{'['.&ff.']'}\                 " File format
 set statusline+=%{'['.&fenc.']'}\               " File encoding
-set statusline+=%{PasteStatus()}\               " Paste mode
+set statusline+=%{MultiTabs()}                  " Working with multiple tab pages
+set statusline+=%{PasteStatus()}                " Paste mode
 set statusline+=%=                              " Move to right
 set statusline+=[0x%B]\                         " Current char
 set statusline+=[%l/%L\ %c]\                    " Cursor line / total lines
