@@ -1,24 +1,24 @@
-" ----------------------------------------------------------------------
+" ----------------------------------------------------------------------------
 "  $Id$
 "
 "  Vim configuration file
-" ----------------------------------------------------------------------
+" ----------------------------------------------------------------------------
 
-" ----------------------------------------------------------------------
+" ----------------------------------------------------------------------------
 " Use Vim rather than Vi settings (much better!)
 " This must be first, because it changes other options as a side effect
 "
 set nocompatible
 
-" ----------------------------------------------------------------------
+" ----------------------------------------------------------------------------
 " When started as "evim", evim.vim will already have done these settings
 "
 if v:progname =~? "evim"
         finish
 endif
 
-" ----------------------------------------------------------------------
-"  Plugin (VUNDLE) config section
+" ----------------------------------------------------------------------------
+"  Plugins config section (using Vundle)
 "
 filetype off
 set rtp+=~/.vim/bundles/vundle/
@@ -53,30 +53,40 @@ Plugin 'https://github.com/LaTeX-Box-Team/LaTeX-Box'
 
 Plugin 'VisIncr'
 
+Plugin 'https://github.com/ervandew/supertab.git'
+
 call vundle#end()
 
 
+" ----------------------------------------------------------------------------
+" Enable extended % matching
+"
+runtime macros/matchit.vim
+
+
+" ----------------------------------------------------------------------------
 " Enable file type detection. Use the default filetype settings, so that mail
 " gets 'tw' set to 72, 'cindent' is on in C files, etc. Also load indent
 " files, to automatically do language-dependent indenting.
+"
 "filetype plugin indent on
 filetype plugin on
 
 
-" ----------------------------------------------------------------------
+" ----------------------------------------------------------------------------
 " Automatically reload config file when it is written
 "
 autocmd! BufWritePost .vimrc source %
 autocmd! BufWritePost ~/.vim/vimrc source %
 
-" ----------------------------------------------------------------------
+" ----------------------------------------------------------------------------
 " Switch syntax highlighting on, when the terminal has colors
 "
 if &t_Co > 2 || has("gui_running")
         syntax on
 endif
 
-" ----------------------------------------------------------------------
+" ----------------------------------------------------------------------------
 " General settings
 "
 " Automatically read again a file when changed outside of Vim
@@ -133,7 +143,7 @@ set wildmenu
 " When more than one match, complete till longest common string
 set wildmode=longest,list
 
-" ----------------------------------------------------------------------
+" ----------------------------------------------------------------------------
 " Tabs and indentation
 "
 " Copy indent from current line when starting a new line
@@ -154,7 +164,7 @@ set shiftwidth=8
 " Number of spaces that a <Tab> counts for while performing editing operations
 set softtabstop=8
 
-" ----------------------------------------------------------------------
+" ----------------------------------------------------------------------------
 " Search
 "
 " Highlight the last used search pattern
@@ -171,7 +181,7 @@ set smartcase
 nnoremap <silent> <Tab> :nohlsearch<CR>
 
 
-" ----------------------------------------------------------------------
+" ----------------------------------------------------------------------------
 " Visibility and context
 "
 " Highlight the screen line of the cursor
@@ -200,7 +210,7 @@ set scrolloff=2
 set nowrap
 
 
-" ----------------------------------------------------------------------
+" ----------------------------------------------------------------------------
 " Windows and tabs
 "
 " Splitting a window will put the new window below/right the current one
@@ -211,7 +221,7 @@ set splitright
 set showtabline=0
 
 
-" ----------------------------------------------------------------------
+" ----------------------------------------------------------------------------
 " Undo
 "
 if exists("+undofile")
@@ -221,7 +231,7 @@ if exists("+undofile")
         set undodir=~/.vim/undo
 endif
 
-" ----------------------------------------------------------------------
+" ----------------------------------------------------------------------------
 " Unprintable chars highlighting
 "
 set list
@@ -233,7 +243,7 @@ else
         set listchars=tab:>\ ,trail:.,extends:>,precedes:<,nbsp:.
 endif
 
-" ----------------------------------------------------------------------
+" ----------------------------------------------------------------------------
 " Status line
 "
 " Display incomplete commands
@@ -266,14 +276,14 @@ set statusline+=[0x%B]\                         " Current char
 set statusline+=[%l/%L\ %c]\                    " Cursor line / total lines
 set statusline+=%P                              " Percent through file
 
-" ----------------------------------------------------------------------
+" ----------------------------------------------------------------------------
 " Store swap files in fixed location, not current directory
 " (swap file name will be built from the complete path to
 " the file with all path separators substituted to percent '%' signs)
 "
 set dir=~/.vim/swap//,/var/tmp//,/tmp//,.
 
-" ----------------------------------------------------------------------
+" ----------------------------------------------------------------------------
 " Cursor shape in insert/command mode
 "
 "if exists("$DISPLAY")
@@ -316,7 +326,7 @@ if exists("+colorcolumn")
         au InsertLeave * setlocal colorcolumn=0
 endif
 
-" ----------------------------------------------------------------------
+" ----------------------------------------------------------------------------
 " Colorscheme
 "
 if exists("$DISPLAY")
@@ -353,12 +363,12 @@ if exists("$DISPLAY")
 "       colorscheme miro8
 endif
 
-" ----------------------------------------------------------------------
+" ----------------------------------------------------------------------------
 " Don't use Ex mode, use Q for formatting
 "
 map Q gq
 
-" ----------------------------------------------------------------------
+" ----------------------------------------------------------------------------
 " Put these in an autocmd group, so that we can delete them easily.
 "
 augroup vimrcEx
@@ -369,19 +379,13 @@ autocmd FileType text setlocal textwidth=78
 
 augroup END
 
-" ----------------------------------------------------------------------
-" Screen redrawing
-"
-nnoremap <silent> <C-l> :redraw!<CR>
-cnoremap <silent> <C-l> :redraw!<CR>
-
-" ----------------------------------------------------------------------
+" ----------------------------------------------------------------------------
 " Force the cursor to drop back ONLY when necessary when
 " exiting insert mode
 "
 "inoremap <silent> <Esc> <C-O>:stopinsert<CR>
 
-" ----------------------------------------------------------------------
+" ----------------------------------------------------------------------------
 " Turn on English/Italian spell checking
 "
 nnoremap <silent> <leader>se :setlocal spell spelllang=en<CR>
@@ -391,7 +395,13 @@ nnoremap <silent> <leader>si :setlocal spell spelllang=it<CR>
 nnoremap <silent> <leader>so :setlocal nospell<CR>
         \:echo "Spell check switched off"<CR>
 
-" ----------------------------------------------------------------------
+" ----------------------------------------------------------------------------
+" Make jumping to a marked line more intuitive
+"
+nnoremap ` '
+nnoremap ' `
+
+" ----------------------------------------------------------------------------
 " Occur: report all the lines containing a keyword (or the last search
 " regexp) in a scratch buffer
 "
@@ -406,13 +416,13 @@ command! -nargs=+ Occur
 nnoremap <silent> <leader>w :Occur /warn/ %<CR>
 nnoremap <silent> <leader>e :Occur /error/ %<CR>
 
-" ----------------------------------------------------------------------
+" ----------------------------------------------------------------------------
 " Delete all lines containing the WORD under the cursor
 "
 nnoremap <silent> <leader>dw
         \ :let cl=line(".")<CR>:g/<C-R><C-A>/d<CR>:call cursor(cl, 1)<CR>
 
-" ----------------------------------------------------------------------
+" ----------------------------------------------------------------------------
 " Delete all the "well known" (and "not dangerous") warnings
 "
 nnoremap <leader>kw
@@ -427,7 +437,7 @@ nnoremap <leader>kw
         \NRIF-47\\|
         \ENCEXT-3509/d<CR>
 
-" ----------------------------------------------------------------------
+" ----------------------------------------------------------------------------
 " Paste the visual selection to the scratchpad (along with
 " the current file name)
 "
@@ -436,28 +446,28 @@ vnoremap <silent> <leader>ps
         \ :call system("echo File: " . shellescape(expand("%:p")) . "
         \ >> ~/vimwiki/Scratchpad.wiki")<CR>
 
-" ----------------------------------------------------------------------
+" ----------------------------------------------------------------------------
 " Search for visual selection
 "
 vnoremap * <Esc>/<C-R>*<CR>
 vnoremap # <Esc>?<C-R>*<CR>
 
-" ----------------------------------------------------------------------
+" ----------------------------------------------------------------------------
 " Copy the current buffer filename (with full path)
 "
 nnoremap <silent> <leader>yy :let @*=expand("%:p")<CR>
 
-" ----------------------------------------------------------------------
+" ----------------------------------------------------------------------------
 " Swap wrap mode
 "
 "nnoremap <silent> <leader>w :set wrap!<CR>
 
-" ----------------------------------------------------------------------
+" ----------------------------------------------------------------------------
 " Toggle cursorline/cursorcolumn mode
 "
 "
 nnoremap <silent> <C-_> :set cursorline!<CR>
-function! ToggleCursorColumnVisibility()
+function! CursorColumnVisibilityToggling()
         if (&cursorcolumn)
                 setlocal nocursorcolumn
                 setlocal colorcolumn=0
@@ -467,20 +477,20 @@ function! ToggleCursorColumnVisibility()
                 "setlocal colorcolumn=+0
         endif
 endfunction
-nnoremap <silent> <C-\> :call ToggleCursorColumnVisibility()<CR>
+nnoremap <silent> <C-\> :call CursorColumnVisibilityToggling()<CR>
 
-" ----------------------------------------------------------------------
+" ----------------------------------------------------------------------------
 " Always go to the beginning of a line before doing a 'gF' operation
 "
 "
 nnoremap gF 0gF
 
-" ----------------------------------------------------------------------
+" ----------------------------------------------------------------------------
 " Always use command window when enter command mode
 "
 "nnoremap : q:i
 
-" ----------------------------------------------------------------------
+" ----------------------------------------------------------------------------
 " Fix default regex handling (this makes searches use normal regexes)
 "
 nnoremap / /\v
@@ -500,18 +510,18 @@ vnoremap <leader>? ?\V
 "nnoremap <leader>? q?i\V
 "vnoremap <leader>? q?i\V
 
-" ----------------------------------------------------------------------
+" ----------------------------------------------------------------------------
 " Make the tab key match bracket pairs
 "
 "nnoremap <Tab> %
 "vnoremap <Tab> %
 
-" ----------------------------------------------------------------------
+" ----------------------------------------------------------------------------
 " Quickly close current buffer
 "
 nnoremap <silent> <leader>q :bdelete<CR>
 
-" ----------------------------------------------------------------------
+" ----------------------------------------------------------------------------
 " Mappings to access buffers (don't use "\p" because a delay before
 " pressing "p" would accidentally paste).
 " \ls      : list buffers
@@ -532,7 +542,7 @@ nnoremap <silent> <leader>7  :7b<CR>
 nnoremap <silent> <leader>8  :8b<CR>
 nnoremap <silent> <leader>9  :9b<CR>
 
-" ----------------------------------------------------------------------
+" ----------------------------------------------------------------------------
 " Always make search matches visible within their own context
 " Note: commented out because of the "search hit TOP..." message problem
 "
@@ -541,13 +551,13 @@ nnoremap <silent> <leader>9  :9b<CR>
 "nnoremap * *zz
 "nnoremap # #zz
 
-" ----------------------------------------------------------------------
+" ----------------------------------------------------------------------------
 " Remove expandtab for Makefile and Python
 "
 au BufEnter [mM]akefile*,GNUmakefile,*.mk,*.mak,*.py set noexpandtab
 au BufLeave [mM]akefile*,GNUmakefile,*.mk,*.mak,*.py set expandtab
 
-" ----------------------------------------------------------------------
+" ----------------------------------------------------------------------------
 " Use right movement keys!
 "
 nnoremap j  gj
@@ -561,7 +571,7 @@ nnoremap k  gk
 "inoremap <left>        <nop>
 "inoremap <right>       <nop>
 
-" ----------------------------------------------------------------------
+" ----------------------------------------------------------------------------
 " In insert mode, mimic some normal mode keys
 "
 "inoremap <C-h> <C-o>h
@@ -569,7 +579,7 @@ nnoremap k  gk
 "inoremap <C-k> <C-o>k
 "inoremap <C-l> <C-o>l
 
-" ----------------------------------------------------------------------
+" ----------------------------------------------------------------------------
 " Move effectively among tabs
 "
 nnoremap <silent> <C-t>l :tabnext<CR>
@@ -579,7 +589,7 @@ nnoremap <silent> <C-t><Left> :tabprevious<CR>
 nnoremap <silent> <C-t>e :tabedit %<CR>
 nnoremap <silent> <C-t>q :tabclose<CR>
 
-" ----------------------------------------------------------------------
+" ----------------------------------------------------------------------------
 " Move effectively among windows
 "
 "nnoremap <C-h> <C-w><C-h>
@@ -587,40 +597,54 @@ nnoremap <silent> <C-t>q :tabclose<CR>
 "nnoremap <C-k> <C-w><C-k>
 "nnoremap <C-l> <C-w><C-l>
 
-" ----------------------------------------------------------------------
+" ----------------------------------------------------------------------------
 " Underline
 "
 nnoremap <leader>u yypVr=
 
-" ----------------------------------------------------------------------
+" ----------------------------------------------------------------------------
 " Comment header definition
 "
 autocmd FileType c,cpp,java,scala let b:cchar = '//'
 autocmd FileType sh,csh,tcsh      let b:cchar = '#'
 autocmd FileType tcl,conf,fstab   let b:cchar = '#'
-autocmd FileType make,muttrc      let b:cchar = '#'
-autocmd FileType tex,sty          let b:cchar = '%'
+autocmd FileType make,muttrc,txt  let b:cchar = '#'
+autocmd FileType tex,sty           let b:cchar = '%'
 autocmd FileType mail             let b:cchar = '>'
 autocmd FileType vim              let b:cchar = '"'
 autocmd FileType xdefaults        let b:cchar = '!'
 
-" ----------------------------------------------------------------------
+" ----------------------------------------------------------------------------
 " Rulers
 "
-nnoremap <leader>- o<C-R>=escape(b:cchar,'\/')<CR> <Esc>70a-<Esc>
+function! Ruler()
+        let l:tw = &textwidth ? &textwidth : 72
+        let l:charNo = l:tw - strlen(b:cchar) - 1
+        call append('.', b:cchar)
+        exec "normal j"
+        s/$/\=(' ' . repeat('-', l:charNo))
+endfunction
+nnoremap <leader>- :call Ruler()<CR>
 
-" ----------------------------------------------------------------------
+" ----------------------------------------------------------------------------
 " Comments
 "
-noremap <silent> <leader>c :<C-B>silent <C-E>s/^/<C-R>=escape(b:cchar,'\/')<CR>/<CR>:nohlsearch<CR>
-noremap <silent> <leader>cc :<C-B>silent <C-E>s/^\V<C-R>=escape(b:cchar,'\/')<CR>//e<CR>:nohlsearch<CR>
+function! CommentToggling() range
+        if (match(getline('.'), '^\s*' . b:cchar) != -1)
+                execute a:firstline . ',' . a:lastline . 's/^\(\s*\)' . escape(b:cchar, '/') . '/\1'
+        else
+                execute a:firstline . ',' . a:lastline . 's/^/' . escape(b:cchar, '/')
+        endif
+        nohlsearch
+endfunction
+noremap <silent> <leader>c :call CommentToggling()<CR>
 
-" ----------------------------------------------------------------------
+" ----------------------------------------------------------------------------
 " Do not remove indentation for comments when smartindex is set
 "
 inoremap # X#
 
-" ----------------------------------------------------------------------
+" ----------------------------------------------------------------------------
 " E-mails/notes
 "
 nnoremap <leader>s O[...]<Esc>j0
@@ -630,31 +654,31 @@ iab _br Best regards
 iab _all All the best
 iab _t Thanks in advance
 
-" ----------------------------------------------------------------------
+" ----------------------------------------------------------------------------
 " Common refuses
 "
 "cnoremap Q q
 cnoremap Qa qa
 cnoremap QA qa
 
-" ----------------------------------------------------------------------
+" ----------------------------------------------------------------------------
 " Toggle mouse paste mode with F12
 "
 nnoremap <silent> <F12> :set paste!<CR>
 set pastetoggle=<F12>
 
-" ----------------------------------------------------------------------
+" ----------------------------------------------------------------------------
 " diff mode
 "
 set diffopt+=iwhite     " Ignore white speces
 au FilterWritePre * if &diff | execute "nnoremap <C-p> [cz." | execute "nnoremap <C-n> ]cz." | endif
 
-" ----------------------------------------------------------------------
+" ----------------------------------------------------------------------------
 " Spell check when writing commit logs
 "
 autocmd filetype svn,*commit* setlocal spell spelllang=en
 
-" ----------------------------------------------------------------------
+" ----------------------------------------------------------------------------
 " Set completion to the current script (only if a specific plugin does
 " not already exist for that filetype)
 "
@@ -665,7 +689,7 @@ autocmd Filetype *
         \ endif
 endif
 
-" ----------------------------------------------------------------------
+" ----------------------------------------------------------------------------
 " netrw config section
 " (see http://ivanbrennan.nyc/blog/2014/01/16/rigging-vims-netrw)
 "
@@ -722,17 +746,17 @@ augroup NetrwGroup
         autocmd! BufEnter * call NormalizeWidths()
 augroup END
 
-" ----------------------------------------------------------------------
+" ----------------------------------------------------------------------------
 " In mutt: 72-char per line max, set en spell checker
 "
 au BufRead ~/.mutt/tmp/mutt-* :source ~/.vim/mutt.vim
 
-" ----------------------------------------------------------------------
+" ----------------------------------------------------------------------------
 " For tmp files, map a killall keybind
 "
 au BufRead /tmp/* nnoremap <silent> <leader>k :1,$d<CR>ZZ
 
-" ----------------------------------------------------------------------
+" ----------------------------------------------------------------------------
 " Switch b/w spaces and tabs
 "
 nnoremap <silent> <leader><TAB> :set expandtab!<CR>:retab!<CR>
@@ -740,14 +764,14 @@ nnoremap <silent> <leader><TAB> :set expandtab!<CR>:retab!<CR>
 "au BufWritePre * set noexpandtab | retab!
 "au BufWritePost * set expandtab | retab!
 
-" ----------------------------------------------------------------------
+" ----------------------------------------------------------------------------
 " Save the contents of the current window " (<leader>v to restore)
 "
 au BufWinLeave * if expand("%") != "" | mkview | endif
 nnoremap <silent> <leader>v :loadview<CR>
 "au VimEnter * silent loadview
 
-" ----------------------------------------------------------------------
+" ----------------------------------------------------------------------------
 " Remove overheads for large files
 "
 " Large files are > 100MB
@@ -763,7 +787,7 @@ augroup LargeFile
         autocmd BufReadPre * let f=expand("<afile>") | if getfsize(f) > g:LargeFile | set eventignore+=FileType | setlocal noswapfile bufhidden=unload buftype=nowrite undolevels=-1 | else | set eventignore-=FileType | endif
 augroup END
 
-" ----------------------------------------------------------------------
+" ----------------------------------------------------------------------------
 " Empty lines insertion
 "
 "nnoremap <silent> <Enter> ciW<CR><Esc>:if match(@", "^\\s*$") < 0<Bar>exec "norm P-$diw+"<Bar>endif<CR>
@@ -774,13 +798,13 @@ nnoremap <leader>O O<Esc>
 nnoremap <leader>n i<CR><Esc>
 nnoremap <leader>\ i\<CR><Esc>^
 
-" ----------------------------------------------------------------------
+" ----------------------------------------------------------------------------
 " Move current line up/down
 "
 nnoremap <F2> :m +1<CR>
 nnoremap <F3> :m -2<CR>
 
-" ----------------------------------------------------------------------
+" ----------------------------------------------------------------------------
 " Number incr/decr
 "
 nnoremap + <C-a>
@@ -790,7 +814,7 @@ vnoremap <silent> - :norm <CR>
 vnoremap <leader>+ :II 1 ''<CR>
 vnoremap <leader>- :II -1 ''<CR>
 
-" ----------------------------------------------------------------------
+" ----------------------------------------------------------------------------
 " Remove trailing spaces
 "
 function! RemoveTrailingSpaces()
@@ -801,7 +825,7 @@ function! RemoveTrailingSpaces()
 endfunction
 nnoremap <silent> <leader><Space> :call RemoveTrailingSpaces()<CR>
 
-" ----------------------------------------------------------------------
+" ----------------------------------------------------------------------------
 " Window zooming
 "
 function! ZoomWin()
@@ -817,19 +841,20 @@ nnoremap <C-w><C-u> <C-w>o
 nnoremap <silent> <C-w><C-o> :call ZoomWin()<CR>
 nnoremap <silent> <C-w>o :call ZoomWin()<CR>
 
-" ----------------------------------------------------------------------
+" ----------------------------------------------------------------------------
 " Omni-completion function (when available)
 "
 inoremap @@ <C-x><C-o>
 
-" ----------------------------------------------------------------------
+" ----------------------------------------------------------------------------
 "  Edit a new file, whose name is under the cursor
 "
 map <leader>gf :e <cfile><CR>
 
-" ----------------------------------------------------------------------
+" ----------------------------------------------------------------------------
 "  Move cursor line to top/middle/bottom, scrolling the edit window when
-"  the function is called with an argument (whatever it is)
+"  the function is called with an argument (whatever it is), then clear
+"  and redraw the screen
 "
 function! MoveCursorLine(...)
         let l:top    = line('w0')
@@ -844,47 +869,11 @@ function! MoveCursorLine(...)
         endif
         execute "normal " . l:cmd
 endfunction
-nnoremap <silent> <C-l> :call MoveCursorLine("scroll")<CR>
-nnoremap <silent> <leader>m <C-l>:call MoveCursorLine()<CR>
+cnoremap <silent> <C-l> :redraw!<CR>
+nnoremap <silent> <C-l> :call MoveCursorLine("scroll")<CR>:redraw!<CR>
+nnoremap <silent> <leader>m :call MoveCursorLine()<CR>:redraw!<CR>
 
-" ----------------------------------------------------------------------
-" vim-notes plugin
-"
-let g:notes_directories=['$HOME/notes']
-let g:notes_suffix=".txt"
-let g:notes_unicode_enabled = 0
-nnoremap <silent> <leader>nn :Note<CR>
-nnoremap <silent> <leader>dn :DeleteNote!<CR>
-vnoremap <silent> <leader>en :NoteFromSelectedText<CR>
-vnoremap <silent> <leader>sn :SplitNoteFromSelectedText<CR>
-vnoremap <silent> <leader>tn :TabNoteFromSelectedText<CR>
-nnoremap <silent> <leader>wp :execute "Note Planning for WK".system("date --date=next-monday +%y%V")<CR>
-nnoremap <silent> <leader>wt :r ~/notes/weekly_planning.tmpl<CR>
-
-" ----------------------------------------------------------------------
-" Tabular plugin
-"
-nmap <silent> <leader>a= :Tabularize /=<CR>
-vmap <silent> <leader>a= :Tabularize /=<CR>
-nmap <silent> <leader>a: :Tabularize /:\zs<CR>
-vmap <silent> <leader>a: :Tabularize /:\zs<CR>
-nmap <silent> <leader>a<Bar> :Tabularize /\|/l1<CR>
-vmap <silent> <leader>a<Bar> :Tabularize /\|/l1<CR>
-nmap <silent> <leader>a<Space> :Tabularize / /l0<CR>
-vmap <silent> <leader>a<Space> :Tabularize / /l0<CR>
-
-" ----------------------------------------------------------------------
-" Tbone plugin
-"
-vnoremap <silent> <leader><CR> :Twrite Top<CR>
-nnoremap <silent> <leader><CR> :.Twrite Top<CR>
-
-" ----------------------------------------------------------------------
-" csv plugin
-"
-nnoremap <silent> <leader>A :%CSVArrangeColumn<CR>
-
-" ----------------------------------------------------------------------
+" ----------------------------------------------------------------------------
 " VCS helpers
 "
 function! VCScmd(...)
@@ -917,16 +906,52 @@ endfunction
 
 autocmd BufRead * call VCSmaps()
 
-" ----------------------------------------------------------------------
-" Source local vimrc
+" ----------------------------------------------------------------------------
+" vim-notes plugin
 "
-try
-        source ~/.vim/vimrc.local
-catch
-        " Do not output any error msg in case no local vimrc exists
-endtry
+let g:notes_directories=['$HOME/notes']
+let g:notes_suffix=".txt"
+let g:notes_unicode_enabled = 0
+nnoremap <silent> <leader>nn :Note<CR>
+nnoremap <silent> <leader>dn :DeleteNote!<CR>
+vnoremap <silent> <leader>en :NoteFromSelectedText<CR>
+vnoremap <silent> <leader>sn :SplitNoteFromSelectedText<CR>
+vnoremap <silent> <leader>tn :TabNoteFromSelectedText<CR>
+nnoremap <silent> <leader>wp :execute "Note Planning for WK".system("date --date=next-monday +%y%V")<CR>
+nnoremap <silent> <leader>wt :r ~/notes/weekly_planning.tmpl<CR>
 
-" ----------------------------------------------------------------------
+" ----------------------------------------------------------------------------
+" Tabular plugin
+"
+nmap <silent> <leader>a= :Tabularize /=<CR>
+vmap <silent> <leader>a= :Tabularize /=<CR>
+nmap <silent> <leader>a: :Tabularize /:\zs<CR>
+vmap <silent> <leader>a: :Tabularize /:\zs<CR>
+nmap <silent> <leader>a<Bar> :Tabularize /\|/l1<CR>
+vmap <silent> <leader>a<Bar> :Tabularize /\|/l1<CR>
+nmap <silent> <leader>a<Space> :Tabularize / /l0<CR>
+vmap <silent> <leader>a<Space> :Tabularize / /l0<CR>
+
+" ----------------------------------------------------------------------------
+" Tbone plugin
+"
+vnoremap <silent> <leader><CR> :Twrite Top<CR>
+nnoremap <silent> <leader><CR> :.Twrite Top<CR>
+
+" ----------------------------------------------------------------------------
+" csv plugin
+"
+nnoremap <silent> <leader>A :%CSVArrangeColumn<CR>
+
+" ----------------------------------------------------------------------------
+" supertab plugin + completion popup menu adjustment
+"
+let g:SuperTabDefaultCompletionType = "context"
+set completeopt=longest,menuone
+inoremap <leader><Tab> <Tab>
+inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+
+" ----------------------------------------------------------------------------
 " Some useful abbreviations
 "
 cnoreabbrev f find
@@ -939,11 +964,5 @@ cnoreabbrev vsf vertical sfind
 try
         source ~/.vim/vimrc.local
 catch
-        " If file is not found, just ignore it
+        " Do not output any error msg in case no local vimrc exists
 endtry
-
-" ----------------------------------------------------------------------
-" TODO list
-"
-"
-"- Shebang line / Copyright
