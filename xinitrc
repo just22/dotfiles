@@ -58,7 +58,7 @@ fi
 #xconsole -geometry 480x130-0-0 -daemon -notify -verbose -exitOnFail &
 
 # Select the X session to start
-DEFAULT_XSESSION_CMD="startxfce4"
+DEFAULT_XSESSION_CMD=${DEFAULT_XSESSION_CMD-startxfce4}
 #DEFAULT_XSESSION_CMD="startxfce4 --with-ck-launch"
 #DEFAULT_XSESSION_CMD="startfluxbox"
 #DEFAULT_XSESSION_CMD="cwm"
@@ -108,7 +108,7 @@ cwm|twm)
         check-batt-status &
 
         # Status bar
-        statusbar &
+        #statusbar &
 
         # Wallpaper setting
         [ -x ~/.fehbg ] && ~/.fehbg
