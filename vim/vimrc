@@ -610,6 +610,8 @@ nnoremap <leader>u yypVr=
 " Comment header definition
 "
 autocmd FileType c,cpp,java,scala let b:cchar = '//'
+autocmd FileType verilog          let b:cchar = '//'
+autocmd FileType vhdl             let b:cchar = '--'
 autocmd FileType sh,csh,tcsh      let b:cchar = '#'
 autocmd FileType tcl,conf,fstab   let b:cchar = '#'
 autocmd FileType make,muttrc,txt  let b:cchar = '#'
@@ -968,7 +970,7 @@ cnoreabbrev sf sfind
 cnoreabbrev vsf vertical sfind
 
 " ----------------------------------------------------------------------
-" External configuration files
+" Source local vimrc file
 "
 try
         source ~/.vim/vimrc.local
