@@ -953,12 +953,15 @@ nnoremap <silent> <leader>A :%CSVArrangeColumn<CR>
 " supertab plugin + completion popup menu adjustment
 "
 let g:SuperTabDefaultCompletionType = "context"
+let g:SuperTabLongestHighlight = 1
+let g:SuperTabMappingForward = "<F1>"
+let g:SuperTabMappingBackward = "<S-F1>"
 set completeopt=longest,menuone
 inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
 
 " ----------------------------------------------------------------------------
 " Map <Tab> to <C-Tab> to allow inserting a tab character not at the beginning
-" of the line
+" of the line (when g:SuperTabMappingForward is set to '<tab>')
 "
 inoremap <Esc>[27;5;9~ <Tab>
 
