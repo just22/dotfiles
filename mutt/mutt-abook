@@ -1,0 +1,18 @@
+# ----------------------------------------------------------------------
+#  $Id$
+#
+# Recursively extract from/to/cc e-mail addresses from current/input dir
+# and build a list of mutt aliases.
+# Note: very primitive script, only lines with a unique address are
+#       processed, name string parsing not performed at all
+# ----------------------------------------------------------------------
+
+if [ "$1" == -h ]; then
+    echo "Usage: mutt-abook <maildir>"
+    exit 0
+fi
+
+egrep -Rihs "^(from|to|cc): .+ <[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}>$" "${1-.}" |
+sed -E -e "s/^.+: //; s/[\"']//g;" |
+sort -t "<" -k2 -u |
+awk -F ' <|>$' '{alias=$1; gsub(/[ ,.]/, "_", alias); printf "alias %s %s <%s>\n", tolower(alias), $1, $2}'

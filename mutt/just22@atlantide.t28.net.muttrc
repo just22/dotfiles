@@ -1,0 +1,24 @@
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#  just22.adl@gmail.com account settings
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+set folder = "$HOME/mail/just22@atlantide.t28.net"
+set status_format = "───%>─[ just22@atlantide.t28.net ]───[ %f %r ]───[ %m msg ]%?n?───[ %n new ]?%?d?───[ %d deleted ]?%?t?───[ %t tagged ]?%?p?───[ %p postponed ]?───"
+
+# Mailboxes to monitor for new mail (and listed in the sidebar)
+unmailboxes *
+#mailboxes `find $HOME/mail/just22@atlantide.t28.net -mindepth 1 -maxdepth 1 -type d | awk '{gsub(/[\47 ]/, "\\\\&", $0); print $0}' | tr "\n" " "`
+mailboxes `find $HOME/mail/just22@atlantide.t28.net -type d -a -name cur -prune -o -type d -a -name new -prune -o -type d -a -name tmp -prune -o -mindepth 1 -type d -print | awk '{gsub(/[\47 ]/, "\\\\&", $0); print $0}' | tr "\n" " "`
+
+set spoolfile  = +INBOX     # Go there when started
+set postponed  = +Drafts    # Save postponed messages in Gmail's "system" draft folder
+set record     = +Sent      # Append outgoing messages to "sent" folder
+set trash      = +Trash
+set mail_check = 10
+
+set realname = "Alessandro DE LAURENZIS"
+set from = "just22@atlantide.t28.net"
+alternates ""
+
+# Signature
+set signature=~/.signatures/just22.adl@gmail.com
