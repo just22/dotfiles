@@ -23,29 +23,15 @@ fi
 # ----------------------------------------------------------------------
 # File listing
 #
-alias la='l -A'
-
-alias ll='l -lh'
+alias ll='l -lAh'
 llm() { ll "$@" | less; }
 alias llt='ll -tr'
 lltm() { llt "$@" | less; }
 alias lltc='llt -c'
 lltcm() { lltc "$@" | less; }
-
-alias lla='ll -A'
-llam() { lla "$@" | less; }
-alias llat='lla -tr'
-llatm() { llat "$@" | less; }
-alias llatc='llat -c'
-llatcm() { llatc "$@" | less; }
-
-lsl()  { find ${1-.} -maxdepth 1 -type l -a ! -name ".*" -ls; }
-lsla() { find ${1-.} -maxdepth 1 -type l -ls; }
-
-lsf()  { find ${1-.} -maxdepth 1 -type f -a ! -name ".*" -print; }
-lsfa() { find ${1-.} -maxdepth 1 -type f -print; }
-
-latest_mod() { find ${1-.} -type d \( -name .cache -o -name .snapshot \) -prune -o -type f -mtime -1 -print; }
+llink() { find ${1-.} -maxdepth 1 -type l -ls; }
+lfile() { find ${1-.} -maxdepth 1 -type f -print; }
+lmod() { find ${1-.} -type d \( -name .cache -o -name .snapshot \) -prune -o -type f -mtime -1 -print; }
 
 # ----------------------------------------------------------------------
 # Safe file operations
@@ -133,7 +119,7 @@ else
         # BSD version
         alias cal='cal -mw | sed -E "2,\$s/(^|[^0-9])($(date +%e))( |$)/\1$(tput rev)$(echo "\2")$(tput sgr0)\3/g"'
 fi
-alias now='date "+%a %d %b %Y %Z (WK%g%V) - %H:%M"'
+alias now='date "+%a %d %b %Y %Z (WK %V) - %H:%M"'
 
 # ----------------------------------------------------------------------
 # Colorize grep
@@ -157,7 +143,8 @@ fi
 # ----------------------------------------------------------------------
 # File/dir statistics
 #
-alias usage='du -chs ./* | sort -rh | head -10'
+ldu() { du -chs ${1-.}/* | sort -rh | head -10; }
+alias usage='ldu'
 #usage() { du -chs "$1"./* | sort -rh | head -10; }
 #nfa() { find "${1-.}" -maxdepth 1 -type f -print | wc -l; }
 #nf()  { find "${1-.}" -maxdepth 1 -type f ! -name ".*" -print | wc -l; }
@@ -245,7 +232,7 @@ age() {
 # ----------------------------------------------------------------------
 # Calculator
 #
-c() { echo "scale=3; $@" | bc; }
+alias c=calc
 d2h() { echo "obase=16; ibase=10; $1" | bc; }
 d2o() { echo "obase=8;  ibase=10; $1" | bc; }
 d2b() { echo "obase=2;  ibase=10; $1" | bc; }
@@ -260,14 +247,6 @@ h2o() { echo "obase=8;  ibase=16; $1" | bc; }
 h2d() { echo "obase=10; ibase=16; $1" | bc; }
 
 # ----------------------------------------------------------------------
-# User space (u)mount
-# Note: TEMPORARY - To be improved asap
-#
-#alias mount_datavol01='sudo mount -t nfs -o rw,nodev,nosuid,noexec argo:/var/nfs/datavol01 ~/media/datavol01'
-#alias umount_datavol01='sudo umount ~/media/datavol01'
-mrh () { sudo sshfs $USER@$1:/home/$USER $2; }
-
-# ----------------------------------------------------------------------
 # Reinforce cache policy for mplayer
 #
 alias mplayer-hm='mplayer -cache 1572864 -cache-min 80'
@@ -279,6 +258,11 @@ alias :e='vim'
 alias :b#='r vim'
 alias :q='exit'
 
+# ----------------------------------------------------------------------
+# Commands with progress monitors
+#
+pdd() { dd if="$1" | pv | dd of="$2"; }
+alias pcp='rsync -avzhHp --info=progress2,name0'
 
 # ----------------------------------------------------------------------
 # Various
@@ -287,16 +271,13 @@ alias cl='clear'
 alias r='fc -s'
 alias v='fc -e vim'
 alias cutf='tr -s "\t" " " | sed "s/^ //" | cut -d" " -f'
-alias rs='rsync -avzhHp --progress'
+alias rs='rsync -avzhHp --info=progress2'
 alias pid='ps axwwwww | grep -v grep | egrep --'
 alias catn='cat -n'
 alias touchall='ls -tr | xargs touch'
-alias se='env sudoedit'
 showpath() { echo ${1-$PATH} | tr ":" "\n"; }
-vimall() { find ${1-.} -maxdepth 1 -type f -a ! -name ".*" -print | xargs sh -c '</dev/tty vim "$@"' ignoreme; }
-vimalldot() { find ${1-.} -maxdepth 1 -type f -a -name ".*" -print | xargs sh -c '</dev/tty vim "$@"' ignoreme; }
-grepopen() { grep -l "$@" | xargs sh -c '</dev/tty vim "$@"' ignoreme; }
-
+vimall() { find ${1-.} -maxdepth 1 -type f -print | xargs sh -c '</dev/tty vim "$@"' ignoreme; }
+grepo() { grep -l "$@" | xargs sh -c '</dev/tty vim "$@"' ignoreme; }
 runl() { $(head -n "+$1" "$2" | tail -n 1); }
 
 # Find files by (part of) name
@@ -309,27 +290,6 @@ bl() {
                 awk '{printf "%s %s %s\n", $11, $12, $13}'
 }
 
-# Colorized mc
-mc-color() {
-        TERM=${TERM/screen/xterm}
-        TERM_COLORS="$(tput colors 2>/dev/null)"
-        if [ "$TERM_COLORS" -ge 256 ]; then
-                [ "$USER" == root ] &&
-                        TERM=${TERM/screen/xterm} /usr/bin/env mc -S modarin256root-defbg ||
-                        TERM=${TERM/screen/xterm} /usr/bin/env mc -S modarin256-defbg
-        elif [ "$TERM_COLORS" -ge 16 ]; then
-                [ "$USER" == root ] &&
-                        TERM=${TERM/screen/xterm} /usr/bin/env mc -S modarcon16root-defbg ||
-                        TERM=${TERM/screen/xterm} /usr/bin/env mc -S modarcon16-defbg
-        elif [ "$TERM_COLORS" -ge 8 ]; then
-                TERM=${TERM/screen/xterm} /usr/bin/env mc -S gotar
-        else
-                TERM=${TERM/screen/xterm} /usr/bin/env mc -b
-        fi
-}
-alias mc='mc-color'
-alias smc='sudo mc'
-
 # ----------------------------------------------------------------------
 # Vim notes
 #
@@ -337,14 +297,6 @@ nn() { vim -c ":Note $*"; }
 sp() { vim -c ":Note Scratchpad"; }
 wp() { vim -c ":Note Planning for WK $(date --date=next-monday +%y%V)"; }
 todo() { vim -c ":Note todo"; }
-
-# ----------------------------------------------------------------------
-# Vimwiki
-#
-#alias wiki='vim -c "call vimwiki#base#goto_index(v:count1)"'
-#alias gwiki='gvim -c "call vimwiki#base#goto_index(v:count1)"'
-#alias diary='vim -c "call vimwiki#diary#make_note(v:count1)"'
-#alias gdiary='gvim -c "call vimwiki#diary#make_note(v:count1)"'
 
 # ----------------------------------------------------------------------
 # git
@@ -360,12 +312,12 @@ git_remote_repo() {
         fi
 }
 gclone() { git clone https://just22@atlantide.t28.net/git/$1; }
-alias Gpush='git_remote_repo push'
-alias Gpull='git_remote_repo pull'
-alias Gfetch='git_remote_repo fetch'
-alias Gstatus='git status'
-alias Gdiff='git diff'
-alias Glog='git log'
+alias gpush='git_remote_repo push'
+alias gpull='git_remote_repo pull'
+alias gfetch='git_remote_repo fetch'
+alias gstatus='git status'
+alias gdiff='git diff'
+alias glog='git log'
 
 # ----------------------------------------------------------------------
 # cvs
