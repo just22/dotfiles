@@ -32,24 +32,25 @@ xterm -title "System stats" -e systat &
 # Compositor manager
 xcompmgr &
 
-# Set the root window background
+# Set the root window background & wallpaper
 fbsetroot -gradient Vertical -from rgb:07/36/42 -to rgb:58/6E/75
+fbsetbg -l
 
 # Xscreensaver
 xscreensaver &
 
 # Battery status check daemon
-~/bin/check-batt-status &
+#~/bin/check-batt-status &
 
 # Desktop management
-(sleep 1; dbus-launch pcmanfm --desktop) &
+#(sleep 1; dbus-launch pcmanfm --desktop) &
 
 # Statusbar
-(sleep 4; statusbar) &
+headup -b -v -k -l -u -p
 
 # Reserve space for statusbar
-# (Just a WA, since dzen2 doesn't play well with Fluxbox's slit)
-(sleep 4; space_dapp) &
+# (Just a WA, since dzen2/bbpager don't play well with Fluxbox's slit)
+(sleep 3; space_dapp) &
 
 # Tray apps
 #/usr/local/libexec/tray-app/sound -i &
