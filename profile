@@ -20,6 +20,9 @@ umask 022
 
 # Set PATH so it includes user's private bin if it exists
 PATH=/bin:/sbin:/usr/bin:/usr/sbin:/usr/X11R6/bin:/usr/games:/usr/local/bin:/usr/local/sbin:/usr/local/jre-1.7.0/bin
+if [ -d "$HOME/.local/bin" ] ; then
+    PATH="$HOME/.local/bin:$PATH"
+fi
 if [ -d "$HOME/bin" ] ; then
     PATH="$HOME/bin:$PATH"
 fi
@@ -65,6 +68,9 @@ export BROWSER=firefox-launcher
 
 # Default mail client
 export MAILER="xterm -e mutt"
+
+# Default printer
+export PRINTER=HP_Deskjet_1510
 
 # Interactive shells startup file
 case $SHELL in
