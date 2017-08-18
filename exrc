@@ -4,9 +4,6 @@
 "  vi config file
 " ----------------------------------------------------------------------
 "
-" Allow reading any .exrc files found in the current directory
-set exrc
-"
 " Automatically indent new lines
 set autoindent
 "
