@@ -55,10 +55,10 @@
                 # fluxbox restart...)
                 [exec] (LVDS Only)         {wmrestart --output LVDS1 --auto --output VGA1 --off}
                 [exec] (VGA Only)          {wmrestart --output LVDS1 --off  --output VGA1 --auto}
-                [exec] (VGA on the Left)   {wmrestart --output LVDS1 --auto --output VGA1 --off; sleep 1; wmrestart --output LVDS1 --auto --primary --output VGA1 --auto --left-of  LVDS1}
-                [exec] (VGA on the Right)  {wmrestart --output LVDS1 --auto --output VGA1 --off; sleep 1; wmrestart --output LVDS1 --auto --primary --output VGA1 --auto --right-of LVDS1}
-                [exec] (VGA on the Top)    {wmrestart --output LVDS1 --auto --output VGA1 --off; sleep 1; wmrestart --output LVDS1 --auto --primary --output VGA1 --auto --above    LVDS1}
-                [exec] (VGA on the Bottom) {wmrestart --output LVDS1 --auto --output VGA1 --off; sleep 1; wmrestart --output LVDS1 --auto --primary --output VGA1 --auto --below    LVDS1}
+                [exec] (VGA on the Left)   {wmrestart --output LVDS1 --auto --primary --output VGA1 --auto --left-of  LVDS1}
+                [exec] (VGA on the Right)  {wmrestart --output LVDS1 --auto --primary --output VGA1 --auto --right-of LVDS1}
+                [exec] (VGA on the Top)    {wmrestart --output LVDS1 --auto --primary --output VGA1 --auto --above    LVDS1}
+                [exec] (VGA on the Bottom) {wmrestart --output LVDS1 --auto --primary --output VGA1 --auto --below    LVDS1}
         [end]
         [submenu] (Window Manager) </usr/local/share/icons/gnome/16x16/apps/preferences-system-windows.png>
                 [config] (Configure)
