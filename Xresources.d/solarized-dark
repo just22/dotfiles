@@ -31,7 +31,7 @@ XTerm*foreground:               S_base0
 XTerm*cursorColor:              S_base1
 XTerm*fading:                   40
 XTerm*fadeColor:                S_base03
-XTerm*pointerColorBackground:   S_base01
+XTerm*pointerColorBackground:   S_base02
 XTerm*pointerColorForeground:   S_base1
 XTerm*color0:                   S_base02
 XTerm*color1:                   S_red
