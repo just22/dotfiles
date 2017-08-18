@@ -61,15 +61,16 @@ XTerm*on3Clicks:           regex [^ \n]+
 XTerm*on4Clicks:           regex [^#$]+
 XTerm*on5Clicks:           line
 
-! Visual bell
+! No visual bell, urgency hint
 XTerm*visualBell:          false
+XTerm*bellIsUrgent:        true
 
 ! BS/DEL consistent behavior
 ! Open URLs directly from xterm (Alt+b after selection)
 XTerm*VT100.translations: #override \
     <Key>Insert: string(0x1b) string("[2~") \n\
     <Key>Delete: string(0x1b) string("[3~") \n\
-    Meta <Key>b: exec-formatted("uzbl-browser '%t'", PRIMARY) \n\
+    Meta <Key>b: exec-formatted("xdg-open '%t'", PRIMARY) \n\
 
 ! Send unique keycodes for "special" control sequences
 XTerm*vt100.modifyOtherKeys: 1
