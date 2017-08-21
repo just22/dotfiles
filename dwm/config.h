@@ -63,6 +63,7 @@ static const Rule rules[] = {
 	{ "Firefox",	"Navigator",	NULL,			1 << 4,		False,		-1 },
 	{ "Firefox",	"Browser",	NULL,			1 << 4,		True,		-1 },
 	{ "Firefox",	"Places",	NULL,			1 << 4,		True,		-1 },
+	{ "Firefox",	"Toplevel",	NULL,			0,		True,		-1 },
 	{ "Claws-mail",	"claws-mail",	NULL,			1 << 3,		False,		-1 },
 	{ "XConsole",	NULL,		NULL,			1 << 5,		False,		-1 },
 	{ "Xmessage",	NULL,		NULL,			0,		True,		-1 },
@@ -111,17 +112,17 @@ static const char *dmenucmd[]		= { "dmenu_run", "-m", dmenumon, "-fn", dmenufont
 static const char *termcmd[]		= { "xterm", NULL };
 static const char *tmuxcmd[]		= { "xterm", "-e", "tmux attach-session -d || tmux new-session", NULL };
 static const char *logoutcmd[]		= { "dmenu-session-logout", NULL };
-static const char *lowervolcmd[]	= { "volume-handler", "down", "12", NULL };
-static const char *mutecmd[]		= { "volume-handler", "toggle_mute", "NULL", NULL };
-static const char *raisevolcmd[]	= { "volume-handler", "up", "12", NULL };
+static const char *lowervolcmd[]	= { "mixerctl", "-q", "outputs.master=-10", NULL };
+static const char *mutecmd[]		= { "mixerctl", "-q", "-t", "outputs.master.mute", NULL };
+static const char *raisevolcmd[]	= { "mixerctl", "-q", "outputs.master=+10", NULL };
 static const char *setdisplaycmd[]	= { "dmenu-xrandr", NULL };
 static const char *suspendcmd[]		= { "zzz", NULL };
 static const char *hibernatecmd[]	= { "ZZZ", NULL };
 static const char *browsercmd[]		= { "firefox-launcher", NULL };
-static const char *mailclientcmd[]	= { "claws-mail",NULL };
+static const char *mailclientcmd[]	= { "xterm", "-title", "Mutt E-Mail Client", "-e", "mutt", NULL };
 static const char *lockcmd[]		= { "xscreensaver-command", "-lock", NULL };
 static const char *filemanagercmd[]	= { "xterm", "-e", "ranger", NULL };
-static const char *filebrowsercmd[]	= { "dmenu-fb", NULL };
+static const char *filebrowsercmd[]	= { "dmenu-filebrowser", NULL };
 static const char *playercmd[]		= { "play-url", "-g", "-d", "-p", NULL };
 static const char *winsearchcmd[]	= { "win_search", NULL };
 static const char *tmuxpanesearchcmd[]	= { "tmux_pane_search", NULL };
@@ -169,13 +170,16 @@ static Key keys[] = {
 	{ MODKEY,                       XK_q,                       quit,           {0} },
 	{ MODKEY|ShiftMask,             XK_q,                       spawn,          {.v = logoutcmd} },
 	{ 0,                            XF86XK_AudioLowerVolume,    spawn,          {.v = lowervolcmd} },
+	{ MODKEY|ControlMask,           XK_v,                       spawn,          {.v = lowervolcmd} },
 	{ 0,                            XF86XK_AudioMute,           spawn,          {.v = mutecmd} },
+	{ MODKEY|ControlMask,           XK_m,                       spawn,          {.v = mutecmd} },
 	{ 0,                            XF86XK_AudioRaiseVolume,    spawn,          {.v = raisevolcmd} },
+	{ MODKEY|ControlMask|ShiftMask, XK_v,                       spawn,          {.v = raisevolcmd} },
 	{ 0,                            XF86XK_Display,             spawn,          {.v = setdisplaycmd} },
 	{ MODKEY|ShiftMask,             XK_d,                       spawn,          {.v = setdisplaycmd} },
 	{ MODKEY|ShiftMask,             XK_s,                       spawn,          {.v = suspendcmd} },
 	{ MODKEY|ShiftMask,             XK_h,                       spawn,          {.v = hibernatecmd} },
-	{ MODKEY|ShiftMask,             XK_Delete,                  spawn,          {.v = lockcmd} },
+	{ Mod1Mask|ControlMask,         XK_Delete,                  spawn,          {.v = lockcmd} },
 	{ MODKEY|ShiftMask,             XK_b,                       spawn,          {.v = browsercmd} },
 	{ MODKEY|ShiftMask,             XK_m,                       spawn,          {.v = mailclientcmd} },
 	{ MODKEY|ShiftMask,             XK_f,                       spawn,          {.v = filemanagercmd} },
