@@ -5,6 +5,135 @@
 # ----------------------------------------------------------------------
 
 # ----------------------------------------------------------------------
+# Custom aliases/functions help
+#
+cust() { echo '
+# ----------------------------------------------------------------------
+# List directory contents
+#
+l               - Colored list
+ll              - Long list
+llm             - Long list | $PAGER
+llt             - Long list, sort by time modified
+lltm            - Long list, sort by time modified | $PAGER
+lltc            - Long list, sort by file status time change
+lltcm           - Long list, sort by file status time change | $PAGER
+llink           - List links
+lfile           - List files only
+lmod            - List of files modified in the last 24hrs
+ 
+# ----------------------------------------------------------------------
+# (Un)safe file operations
+#
+rmf             - Recursively remove directory entries, no confirmation
+rm              - Remove directory entries, request confirmation
+cp              - Copy files, request confirmation before overwriting, preserve attributes
+mv              - Move files, request confirmation before overwriting
+ 
+# ----------------------------------------------------------------------
+# History
+#
+h               - History (most recent 25 entries)
+hgrep           - History grep
+v               - Edit lst command in $EDITOR
+ 
+# ----------------------------------------------------------------------
+# Calendar
+#
+now             - Current date/time in proper format
+ 
+# ----------------------------------------------------------------------
+# Colorize grep
+#
+{,e,f,x}grepc   - Grep with colors
+ 
+# ----------------------------------------------------------------------
+# File/dir statistics
+#
+ldu/usage       - Show first 10 biggest files
+nf              - Number of non-hidden files
+nfh             - Number of hidden files
+nfa             - Number of all files
+nd              - Number of non-hidden directories
+ndh             - Number of hidden directories
+nda             - Number of all directories
+nl              - Number of non-hidden links
+nlh             - Number of hidden links
+nla             - Number of all links
+ft              - Report file type in dir/tree
+age             - File "age"
+ 
+# ----------------------------------------------------------------------
+# Calculator
+#
+c               - Simple calculator with (optional) ENG notation
+d2h             - DEC to HEX converter
+d2o             - DEC to OCT converter
+d2b             - DEC to BIN converter
+o2h             - OCT to HEX converter
+o2d             - OCT to DEC converter
+o2b             - OCT to BIN converter
+b2h             - BIN to HEX converter
+b2o             - BIN to OCT converter
+b2d             - BIN to DEC converter
+h2b             - HEX to BIN converter
+h2o             - HEX to OCT converter
+h2d             - HEX to DEC converter
+ 
+# ----------------------------------------------------------------------
+# Some vim-style commands
+#
+:e              - Edit file
+:b#             - Edit previous file
+:q              - Exit
+ 
+# ----------------------------------------------------------------------
+# Commands with progress monitors
+#
+pdd             - dd with progress monitor
+pcp             - cp with progress monitor
+ 
+# ----------------------------------------------------------------------
+# Various
+#
+cl              - Clear screen
+r               - Re-execute most recent command, [-g] [old=new] [prefix]
+v               - Edit last command
+cutf            - Select nth field of line
+rs              - rsync with most common options
+pid             - Process IDs matching argument
+catn            - cat -n
+runl            - Execute line $1 from file $2
+touchall        - Change file access and modification times to all files in current dir
+showpath        - Show $PATH (or the variable provided as argument) in a readable form
+vimall          - Open all files in <dir>
+grepo()         - Open all files after pattern match
+ff              - Recursively find files by (part of) name
+ff.             - Find files in current directory by (part of) name
+bln             - List broken links
+ 
+# ----------------------------------------------------------------------
+# cvs
+#
+cvs-ck          - Check for modified files
+cvs-up          - Update
+cvs-mrg         - Update with merge
+cvs-adddir      - Recursively add directories in current path to cvs tree
+ 
+# ----------------------------------------------------------------------
+# Change XTerm colorscheme on-the-fly
+#
+dark            - Switch current xterm colors to solarized-dark
+dark-desat      - Switch current xterm colors to solarized-dark-desaturated
+light           - Switch current xterm colors to solarized-light
+light-desat     - Switch current xterm colors to solarized-light-desaturated
+
+' | grep ${1-.}
+}
+alias custm='cust | $PAGER'
+
+
+# ----------------------------------------------------------------------
 # Enable color support for ls
 #
 if [ "${COLOR_SUPPORT}" = 1 ]; then
@@ -24,11 +153,11 @@ fi
 # File listing
 #
 alias ll='l -lAh'
-llm() { ll "$@" | less; }
+llm() { ll "$@" | $PAGER; }
 alias llt='ll -tr'
-lltm() { llt "$@" | less; }
+lltm() { llt "$@" | $PAGER; }
 alias lltc='llt -c'
-lltcm() { lltc "$@" | less; }
+lltcm() { lltc "$@" | $PAGER; }
 llink() { find ${1-.} -maxdepth 1 -type l -ls; }
 lfile() { find ${1-.} -maxdepth 1 -type f -print; }
 lmod() { find ${1-.} -type d \( -name .cache -o -name .snapshot \) -prune -o -type f -mtime -1 -print; }
@@ -90,10 +219,9 @@ alias hgrep='history | egrep'
 alias v='fc -e vim'
 
 # ----------------------------------------------------------------------
-# It is a good idea to always specify the full path name for the
-# passwd(1), su(1) and sudo(8) commands as this inhibits the
-# possibility of rogue files placed in your PATH being executed
-# for most shells
+# It is safer to always specify the full path name for passwd(1), su(1)
+# and sudo(8) commands as this inhibits the possibility of rogue files
+# placed in your PATH being executed for most shells
 #
 alias passwd='/usr/bin/passwd'
 
@@ -145,14 +273,6 @@ fi
 #
 ldu() { du -chs ${1-.}/* | sort -rh | head -10; }
 alias usage='ldu'
-#usage() { du -chs "$1"./* | sort -rh | head -10; }
-#nfa() { find "${1-.}" -maxdepth 1 -type f -print | wc -l; }
-#nf()  { find "${1-.}" -maxdepth 1 -type f ! -name ".*" -print | wc -l; }
-#nfh() { find "${1-.}" -maxdepth 1 -type f -name ".*" -print | wc -l; }
-#nda() { find "${1-.}" -maxdepth 1 -type d -print | wc -l; }
-#ndh() { find "${1-.}" -maxdepth 1 -type d -name ".*" -print | wc -l; }
-#nda() { find "${1-.}" -maxdepth 1 -type d ! -name ".*" -print | wc -l; }
-#nla() { find "${1-.}" -maxdepth 1 -type l -print | wc -l; }
 nf()  { ls -l  $1 | egrep "^-" | wc -l; }
 nfa() { ls -lA $1 | egrep "^-" | wc -l; }
 nfh() { ls -lA $1 | egrep "^-" | awk '{print $9}' | egrep "^\." | wc -l; }
@@ -178,11 +298,10 @@ ft() {
         else
                 local FIND_OPT="-maxdepth 1"
         fi
-        find ${*-.} $FIND_OPT -type f -print | xargs file -b 2>/dev/null |
-                awk '
-                {tcnt[$0]++}
-                END{for (type in tcnt) printf("%d\t%s\n", tcnt[type], type)}
-                ' | sort -nr
+        find ${*-.} $FIND_OPT -type f -print0 | xargs -0 file -b 2>/dev/null |
+        awk '{tcnt[$0]++}
+             END{for (type in tcnt) printf("%d\t%s\n", tcnt[type], type)}' |
+        sort -nr
 }
 
 # File "age"
@@ -285,7 +404,7 @@ ff() { find . -name "*${1}*" -ls; }
 ff.() { find . -maxdepth 1 -name "*${1}*" -ls; }
 
 # List broken links
-bl() {
+bln() {
         find -L ${1-.} -maxdepth 1 -type l -ls |
                 awk '{printf "%s %s %s\n", $11, $12, $13}'
 }
@@ -338,3 +457,4 @@ alias dark='dynamic-colors switch solarized-dark'
 alias dark-desat='dynamic-colors switch solarized-dark-desaturated'
 alias light='dynamic-colors switch solarized-light'
 alias light-desat='dynamic-colors switch solarized-light-desaturated'
+
