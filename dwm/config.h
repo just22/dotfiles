@@ -128,6 +128,7 @@ static const char *winsearchcmd[]	= { "win_search", NULL };
 static const char *tmuxpanesearchcmd[]	= { "tmux_pane_search", NULL };
 static const char *calccmd[]		= { "dmenu-calc", NULL };
 static const char *timercmd[]		= { "dmenu-timer", NULL };
+static const char *kbdlayoutcmd[]	= { "dmenu-kbd", NULL };
 static const char *rootmenucmd[]	= { "dmenu-root", NULL };
 static const char *perfpolicycmd[]	= { "dmenu-perf", NULL };
 
@@ -185,6 +186,7 @@ static Key keys[] = {
 	{ MODKEY|ShiftMask,             XK_f,                       spawn,          {.v = filemanagercmd} },
 	{ MODKEY|ShiftMask,             XK_c,                       spawn,          {.v = calccmd} },
 	{ MODKEY|ShiftMask,             XK_r,                       spawn,          {.v = timercmd} },
+	{ MODKEY|ShiftMask,             XK_k,                       spawn,          {.v = kbdlayoutcmd} },
 	{ MODKEY,                       XK_f,                       spawn,          {.v = filebrowsercmd} },
 	{ MODKEY|ShiftMask,             XK_p,                       spawn,          {.v = playercmd} },
 	{ MODKEY,                       XK_w,                       spawn,          {.v = winsearchcmd} },
