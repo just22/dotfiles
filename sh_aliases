@@ -7,7 +7,7 @@
 # ----------------------------------------------------------------------
 # Custom aliases/functions help
 #
-cust() { echo '
+_helpme() { cat << __HELP__
 # ----------------------------------------------------------------------
 # List directory contents
 #
@@ -21,7 +21,7 @@ lltcm           - Long list, sort by file status time change | $PAGER
 llink           - List links
 lfile           - List files only
 lmod            - List of files modified in the last 24hrs
- 
+
 # ----------------------------------------------------------------------
 # (Un)safe file operations
 #
@@ -29,24 +29,25 @@ rmf             - Recursively remove directory entries, no confirmation
 rm              - Remove directory entries, request confirmation
 cp              - Copy files, request confirmation before overwriting, preserve attributes
 mv              - Move files, request confirmation before overwriting
- 
+del             - Safe(r) remove
+
 # ----------------------------------------------------------------------
 # History
 #
 h               - History (most recent 25 entries)
 hgrep           - History grep
 v               - Edit lst command in $EDITOR
- 
+
 # ----------------------------------------------------------------------
 # Calendar
 #
 now             - Current date/time in proper format
- 
+
 # ----------------------------------------------------------------------
 # Colorize grep
 #
 {,e,f,x}grepc   - Grep with colors
- 
+
 # ----------------------------------------------------------------------
 # File/dir statistics
 #
@@ -62,7 +63,7 @@ nlh             - Number of hidden links
 nla             - Number of all links
 ft              - Report file type in dir/tree
 age             - File "age"
- 
+
 # ----------------------------------------------------------------------
 # Calculator
 #
@@ -79,20 +80,20 @@ b2d             - BIN to DEC converter
 h2b             - HEX to BIN converter
 h2o             - HEX to OCT converter
 h2d             - HEX to DEC converter
- 
+
 # ----------------------------------------------------------------------
 # Some vim-style commands
 #
 :e              - Edit file
 :b#             - Edit previous file
 :q              - Exit
- 
+
 # ----------------------------------------------------------------------
 # Commands with progress monitors
 #
 pdd             - dd with progress monitor
 pcp             - cp with progress monitor
- 
+
 # ----------------------------------------------------------------------
 # Various
 #
@@ -103,15 +104,25 @@ cutf            - Select nth field of line
 rs              - rsync with most common options
 pid             - Process IDs matching argument
 catn            - cat -n
-runl            - Execute line $1 from file $2
+runl            - Execute line \$1 from file \$2
 touchall        - Change file access and modification times to all files in current dir
-showpath        - Show $PATH (or the variable provided as argument) in a readable form
+showpath        - Show \$PATH (or the variable provided as argument) in a readable form
 vimall          - Open all files in <dir>
 grepo()         - Open all files after pattern match
 ff              - Recursively find files by (part of) name
 ff.             - Find files in current directory by (part of) name
 bln             - List broken links
- 
+fpath           - Print absolute pathname (with dereferenced symbolic links)
+flast           - Print the last modified file or directory
+
+# ----------------------------------------------------------------------
+# Moving around
+#
+m               - Set mark \$1 at current directory
+g               - Jump to mark \$1
+marks           - List all marks
+cds             - cd with shortened pathnames
+
 # ----------------------------------------------------------------------
 # cvs
 #
@@ -119,7 +130,7 @@ cvs-ck          - Check for modified files
 cvs-up          - Update
 cvs-mrg         - Update with merge
 cvs-adddir      - Recursively add directories in current path to cvs tree
- 
+
 # ----------------------------------------------------------------------
 # Change XTerm colorscheme on-the-fly
 #
@@ -127,10 +138,9 @@ dark            - Switch current xterm colors to solarized-dark
 dark-desat      - Switch current xterm colors to solarized-dark-desaturated
 light           - Switch current xterm colors to solarized-light
 light-desat     - Switch current xterm colors to solarized-light-desaturated
-
-' | grep ${1-.}
+__HELP__
 }
-alias custm='cust | $PAGER'
+helpme() { _helpme | grep ${1-.\*} | less -cF; }
 
 
 # ----------------------------------------------------------------------
@@ -153,11 +163,11 @@ fi
 # File listing
 #
 alias ll='l -lAh'
-llm() { ll "$@" | $PAGER; }
+llm() { ll "$@" | ${PAGER-less}; }
 alias llt='ll -tr'
-lltm() { llt "$@" | $PAGER; }
+lltm() { llt "$@" | ${PAGER-less}; }
 alias lltc='llt -c'
-lltcm() { lltc "$@" | $PAGER; }
+lltcm() { lltc "$@" | ${PAGER-less}; }
 llink() { find ${1-.} -maxdepth 1 -type l -ls; }
 lfile() { find ${1-.} -maxdepth 1 -type f -print; }
 lmod() { find ${1-.} -type d \( -name .cache -o -name .snapshot \) -prune -o -type f -mtime -1 -print; }
@@ -174,34 +184,36 @@ alias mv='/bin/mv -i'
 # Safe remove
 #
 del() {
-        if [ $# -eq 0 ]; then
-                echo "usage: del source ..."
+        case "$#" in
+        0)
+                echo "Usage: del file ..."
                 return
-        fi
-        for f in $(ls -d $*); do
-                if [ "$1" != "-f" ]; then
-                        case "$(/bin/ls -dl "$f")" in
-                        -*) ft="regular file" ;;
-                        b*) ft="block special file" ;;
-                        c*) ft="character special file" ;;
-                        d*) ft="directory" ;;
-                        l*) ft="symbolic link" ;;
-                        p*) ft="FIFO" ;;
-                        s*) ft="socket link" ;;
-                        esac
-                        echo -n "Move $ft $f to trash [y/N]? "
-                        read r
-                        if [ "$r" != y ] && [ "$r" != "Y" ]; then
-                                        continue
-                        fi
-                fi
-                dn="${HOME}/.trash$(dirname $(readlink -f "$f"))"
-                bn="$(basename $(readlink -f "$f"))"
-                mkdir -p "$dn" 2>/dev/null
-                /bin/mv -f "$f" "${dn}/${bn}"
-        done
+                ;;
+        1)
+                case "$(/bin/ls -dl "$1")" in
+                -*) ft="regular file" ;;
+                b*) ft="block special file" ;;
+                c*) ft="character special file" ;;
+                d*) ft="directory" ;;
+                l*) ft="symbolic link" ;;
+                p*) ft="FIFO" ;;
+                s*) ft="socket link" ;;
+                esac
+                echo -n "Remove $ft $1? [y/N] "; read r
+                case "$r" in
+                [yY]*) /bin/rm -rf "$1" ;;
+                esac
+                ;;
+        *)
+                echo "You're going to (recursively) remove the following elements:"
+                ls -dF "$@"
+                echo -n "Please confirm [y/N] "; read r
+                case "$r" in
+                [yY]*) /bin/rm -rf "$@"
+                esac
+                ;;
+        esac
 }
-alias delf='del -f'
 
 # ----------------------------------------------------------------------
 # Dir stack commands
@@ -394,20 +406,59 @@ alias rs='rsync -avzhHp --info=progress2'
 alias pid='ps axwwwww | grep -v grep | egrep --'
 alias catn='cat -n'
 alias touchall='ls -tr | xargs touch'
+alias info='info --vi-keys'
+alias fpath='readlink -f'
 showpath() { echo ${1-$PATH} | tr ":" "\n"; }
 vimall() { find ${1-.} -maxdepth 1 -type f -print | xargs sh -c '</dev/tty vim "$@"' ignoreme; }
 grepo() { grep -l "$@" | xargs sh -c '</dev/tty vim "$@"' ignoreme; }
 runl() { $(head -n "+$1" "$2" | tail -n 1); }
+flast() { ls -dt "$@" | head -1; }
+
+# ----------------------------------------------------------------------
+# Moving around
+#
+m() { eval _mrk_${1-0}="$(pwd)"; }
+j() {
+        d="$(eval "echo \$_mrk_${1-0}")"
+        if [ -d "$d" ]; then
+                cd "$d"
+        else
+                >&2 echo "Invalid mark: '${1-0}'"
+        fi
+        unset d
+}
+marks() { (set -o posix; set) | sed -ne "s/^_mrk_//p"; }
+cds() {
+        d="$1"
+        # Add '*' to every shortened element of the path; trailing '/.'
+        # ensures this only matches a directory
+        d_path="$(echo "$d" | sed -Ee 's/([^/]+)/\1*/g')/."
+
+        # 'set' will clear the arglist and expand $d_path; in case $d_path is
+        # empty, set "dummy" and shift it away
+        set dummy $d_path; shift
+
+        # Change directory if got one match, else print an error message
+        if [ "$1" == "$d_path" ]; then
+                # shell didn't expand $d_path: pattern doesn't match a valid path
+                >&2 echo "cds: no match for $d_path"
+        elif [ $# == 1 ]; then
+                echo "$1"
+                cd "$1"
+        else
+                >&2 echo "cds: too many matches for $d_path:"
+                >&2 ls -d "$@"
+        fi
+
+        unset d d_path
+}
 
 # Find files by (part of) name
 ff() { find . -name "*${1}*" -ls; }
 ff.() { find . -maxdepth 1 -name "*${1}*" -ls; }
 
 # List broken links
-bln() {
-        find -L ${1-.} -maxdepth 1 -type l -ls |
-                awk '{printf "%s %s %s\n", $11, $12, $13}'
-}
+bln() { find ${1-.} -maxdepth 1 -type l | xargs file | grep broken | tr -s "[[:space:]]"; }
 
 # ----------------------------------------------------------------------
 # Vim notes
