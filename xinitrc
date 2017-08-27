@@ -7,6 +7,10 @@
 #  etc.), and launches a window (or session) manager.
 # ----------------------------------------------------------------------
 
+# Send HUP signal to all processes on exit
+# Temporary disabled: it works for login shells only...
+#set +o nohup
+
 # X apps default settings
 xrdb -load -I${HOME} ~/.Xresources
 
@@ -28,8 +32,6 @@ xsetroot -solid rgb:58/6E/75
 # Local fonts path
 xset fp+ /usr/local/share/fonts/terminus
 xset fp+ /usr/local/share/fonts/cantarell
-xset fp+ /usr/local/share/fonts/Droid
-xset fp+ /usr/local/share/ghostscript/fonts
 xset fp+ ~/.fonts/stlarch
 xset fp rehash
 
@@ -51,75 +53,87 @@ mkdir -m 1777 ${HOME}/tmp
 
 # Start a session bus instance of dbus-daemon
 if [ -x /usr/local/bin/dbus-launch -a -z "${DBUS_SESSION_BUS_ADDRESS}" ]; then
-    eval `dbus-launch --sh-syntax --exit-with-session`
+        eval `dbus-launch --sh-syntax --exit-with-session`
 fi
 
 # Console log (launched again to match colorscheme)
 #xconsole -geometry 480x130-0-0 -daemon -notify -verbose -exitOnFail &
 
 # Select the X session to start
-DEFAULT_XSESSION_CMD=${DEFAULT_XSESSION_CMD-startfluxbox}
-#DEFAULT_XSESSION_CMD="startxfce4 --with-ck-launch"
-#DEFAULT_XSESSION_CMD="startfluxbox"
-#DEFAULT_XSESSION_CMD="cwm"
-#DEFAULT_XSESSION_CMD="twm"
-#SELECT_XSESSION=1
+#DEFAULT_XSESSION_CMD=${DEFAULT_XSESSION_CMD-startxfce4}
+#DEFAULT_XSESSION_CMD=${DEFAULT_XSESSION_CMD-startxfce4 --with-ck-launch}
+DEFAULT_XSESSION_CMD=${DEFAULT_XSESSION_CMD-dwm-session}
 
+#SELECT_XSESSION=1
 [ x$SELECT_XSESSION != "x" ] &&
 if [ -e /usr/local/bin/Xdialog ]; then
-    XSESSION_CMD=`Xdialog \
-                --buttons-style text \
-                --no-close \
-                --no-cancel \
-                --no-tags \
-                --screen-center \
-                --stdout \
-                --menubox \
-                    "Select the X session" \
-                    195x155 \
-                    5 \
-                    "startxfce4"                        "Xfce4" \
-                    "startxfce4 --with-ck-launch"       "Xfce4 (with polkit)" \
-                    "startfluxbox"                      "Fluxbox" \
-                    "cwm"                               "cwm" \
-                    "twm"                               "twm"`
-fi ||
-XSESSION_CMD="$DEFAULT_XSESSION_CMD"
+        XSESSION_CMD=`Xdialog --buttons-style text                                              \
+                              --no-close                                                        \
+                              --no-cancel                                                       \
+                              --no-tags                                                         \
+                              --screen-center                                                   \
+                              --stdout                                                          \
+                              --menubox                                                         \
+                                  "Select the X session"                                        \
+                                  195x170                                                       \
+                                  5                                                             \
+                                  "dwm-session"                       "dwm"                     \
+                                  "startxfce4"                        "Xfce4"                   \
+                                  "startxfce4 --with-ck-launch"       "Xfce4 (with polkit)"     \
+                                  "cwm"                               "cwm"                     \
+                                  "twm"                               "twm"`
+fi || XSESSION_CMD="$DEFAULT_XSESSION_CMD"
 
-# X screen reset and lock daemon (activated by SIGUSR1)
-xscreen-reset &
+# Just to play it safe...
+export XSESSION_CMD=${XSESSION_CMD:-twm}
 
-# Reminder
+# Remind daemon
 if ! pgrep -x remind; then
-        remind -z -k'xmessage -title "Remind" -buttons "Ok" %s &' ~/.reminders &
+        #remind -z -k'xmessage -center -title "Remind" -buttons "Ok" %s &' ~/.reminders &
+        remind -z -k'remind-notify %s' ~/.reminders &
 fi
+
+# OfflineIMAP
+pkill -TERM -u $(id -u) -f /usr/local/bin/offlineimap
+offlineimap -s -u quiet -c ~/.offlineimaprc-sandro.delaurenzis@gmail.com &
+offlineimap -s -u quiet -c ~/.offlineimaprc-just22@atlantide.t28.net &
+
+# Set the root window background
+xsetroot -solid rgb:58/6E/75
+
+# Xscreensaver
+xscreensaver &
+
+# xidle daemon (corner locking virtually disabled, no timeout,
+# activated by SIGUSR1)
+
+if ! pgrep -u $UID -x xidle > /dev/null 2>&1; then
+        xidle -delay 86400 -program ${HOME}/bin/xsession-lock &
+fi
+
+# Launch "Today's reminders" daemon
+remind-today &
 
 # Start any other required daemons, then the selected X session
 case "$XSESSION_CMD" in
 cwm|twm)
 
-        # xlock through xidle
-        #xidle -delay 2 -nw -timeout 600 -program "xlock -mousemotion" &
-
-        # Xscreensaver
-        xscreensaver &
-
-        # Battery status check daemon
-        #check-batt-status &
-
         # Status bar
-        headup &
+        ["$XSESSION_CMD" == "cwm" ] && headup -b -v -k -l -w -d \
+                                    || headup -b -v -k -l -d
 
         # Wallpaper setting
         [ -x ~/.fehbg ] && ~/.fehbg
 
         ;;
 
-"")
-        XSESSION_CMD=twm
+*)
         ;;
 
 esac
 
-export XSESSION_CMD
+# Save current DISPLAY in /tmp
+echo "$DISPLAY" > /tmp/X_DISPLAY."$USER"
+
+# ...and finally start the X-Session!
 exec $XSESSION_CMD
