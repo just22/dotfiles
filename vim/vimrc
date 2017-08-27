@@ -654,8 +654,8 @@ inoremap # X#
 " ----------------------------------------------------------------------------
 " E-mails/notes
 "
-nnoremap <leader>s O[...]<Esc>j0
-nnoremap <leader>ss O[....................snip....................]<Esc>j0
+nnoremap <leader>s o[...]<Esc>j0
+nnoremap <leader>ss o[....................snip....................]<Esc>j0
 iab _h Hello
 iab _br Best regards
 iab _all All the best
