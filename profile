@@ -56,7 +56,7 @@ export LANG LC_COLLATE LC_CTYPE LC_MONETARY LC_NUMERIC LC_TIME LC_MESSAGES LC_AL
 
 # Default pager
 export PAGER=less
-export LESS="-M -i -X -R"
+export LESS="-M -i -X -R -c"
 [ -x /usr/bin/lesspipe ] && export LESSOPEN="|lesspipe.sh %s"
 
 # Default editor
