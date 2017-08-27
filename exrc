@@ -46,7 +46,7 @@ set shiftwidth=8
 " When a bracket is inserted, briefly jump to the matching one
 set showmatch
 "
-" If in Insert or Replace mode put a message on the last line
+" Display the current editor mode and a “modified” flag
 set showmode
 "
 " Number of spaces that a <Tab> in the file counts for
