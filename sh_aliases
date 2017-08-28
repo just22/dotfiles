@@ -4,9 +4,6 @@
 #  Aliases for Bourne-type shells
 # ----------------------------------------------------------------------
 
-# ----------------------------------------------------------------------
-# Custom aliases/functions help
-#
 _helpme() { cat << __HELP__
 # ----------------------------------------------------------------------
 # List directory contents
@@ -111,7 +108,7 @@ vimall          - Open all files in <dir>
 grepo()         - Open all files after pattern match
 ff              - Recursively find files by (part of) name
 ff.             - Find files in current directory by (part of) name
-bln             - List broken links
+bln             - List broken links (-l for long format)
 fpath           - Print absolute pathname (with dereferenced symbolic links)
 flast           - Print the last modified file or directory
 
@@ -417,9 +414,9 @@ flast() { ls -dt "$@" | head -1; }
 # ----------------------------------------------------------------------
 # Moving around
 #
-m() { eval _mrk_${1-0}="$(pwd)"; }
+m() { eval _dirmrk_${1-0}="$(pwd)"; }
 j() {
-        d="$(eval "echo \$_mrk_${1-0}")"
+        d="$(eval "echo \$_dirmrk_${1-0}")"
         if [ -d "$d" ]; then
                 cd "$d"
         else
@@ -427,7 +424,7 @@ j() {
         fi
         unset d
 }
-marks() { (set -o posix; set) | sed -ne "s/^_mrk_//p"; }
+marks() { (set -o posix; set) | sed -ne "s/^_dirmrk_//p"; }
 cds() {
         d="$1"
         # Add '*' to every shortened element of the path; trailing '/.'
@@ -458,7 +455,16 @@ ff() { find . -name "*${1}*" -ls; }
 ff.() { find . -maxdepth 1 -name "*${1}*" -ls; }
 
 # List broken links
-bln() { find ${1-.} -maxdepth 1 -type l | xargs file | grep broken | tr -s "[[:space:]]"; }
+bln() {
+        if [ "$1" == "-l" ]; then
+                fcmd=ls
+                shift
+        else
+                fcmd=print
+        fi
+        find ${1-.} -maxdepth 1 -type l -exec test ! -e {} \; -$fcmd
+        unset fcmd
+}
 
 # ----------------------------------------------------------------------
 # Vim notes
