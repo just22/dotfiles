@@ -41,27 +41,20 @@ if [ "${TERM}" == "vt220" ]; then
 fi
 
 # Locale settings
-LANG=""
-LC_COLLATE="C"
-LC_CTYPE="en_US.UTF-8"
-LC_MONETARY="C"
-LC_NUMERIC="C"
-LC_TIME="C"
-LC_MESSAGES="C"
-LC_ALL="en_US.UTF-8"
-export LANG LC_COLLATE LC_CTYPE LC_MONETARY LC_NUMERIC LC_TIME LC_MESSAGES LC_ALL
+#export LC_CTYPE="en_US.UTF-8"
 
 # Note: Default pager/editor/browser definitions moved here because
 #       there are applications launched from X using them
 
 # Default pager
-export PAGER=less
-export LESS="-M -i -X -R -c"
+PAGER=less
+LESS="-M -i -X -R -c"
+export PAGER LESS
 [ -x /usr/bin/lesspipe ] && export LESSOPEN="|lesspipe.sh %s"
 
 # Default editor
-export EDITOR=vim
-export VISUAL=vim
+export EDITOR=vi
+export VISUAL=vi
 
 # Default browser
 export BROWSER=firefox-launcher
@@ -73,20 +66,22 @@ export MAILER="xterm -e mutt"
 export PRINTER=HP_Deskjet_1510
 
 # Interactive shells startup file
-case $SHELL in
-*ksh*)
+if [ -n "$KSH_VERSION" ]; then
+        SH=ksh
         [ -e $HOME/.kshrc ] && export ENV=$HOME/.kshrc
-        ;;
-*bash*)
+elif [ -n "$BASH_VERSION" ]; then
+        SH=bash
         [ -e $HOME/.bashrc ] && . $HOME/.bashrc
-        ;;
-*)
-        ;;
-esac
+elif [ -n "$SH_VERSION" ]; then
+        SH=sh
+else
+        SH=?
+fi
+export SH
 
 # CPAN local modules config
-export PERL_MB_OPT="--install_base \"/home/just22/perl5\""
-export PERL_MM_OPT="INSTALL_BASE=/home/just22/perl5"
+export PERL_MB_OPT="--install_base \"${HOME}/perl5\""
+export PERL_MM_OPT="INSTALL_BASE=${HOME}/perl5"
 export PERL5LIB="${HOME}/perl5/lib/perl5:${HOME}/.fvwm/perllib:${PERL5LIB}"
 
 # Autotools version env variables
