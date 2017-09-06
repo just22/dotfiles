@@ -1,0 +1,115 @@
+# ----------------------------------------------------------------------
+#  $Id$
+#
+# Bourne shell prompt look
+# (colored when the terminal has the capability)
+# ----------------------------------------------------------------------
+
+_escseq() {
+        local esc="\e"
+        local code="$1"
+        if [ -n "$BASH_VERSION" ]; then
+                echo -e "\x01${esc}[${code}m\x02"
+        else
+                echo -e "\[${esc}[${code}m\]"
+        fi
+}
+
+if [ -z ${NO_COLORS+x} ] && [ $(tput colors) -ge 8 ]; then
+        COLOR_SUPPORT=1
+
+        # ANSI escape sequences for graphics mode
+        # Color codes:
+        # 0 -> Black
+        # 1 -> Red
+        # 2 -> Green
+        # 3 -> Yellow
+        # 4 -> Blue
+        # 5 -> Magenta
+        # 6 -> Cyan
+        # 7 -> White
+
+        # Text attributes
+             RSTCOL="$(_escseq  0)"
+               BOLD="$(_escseq  1)"
+          UNDERLINE="$(_escseq  4)"
+              BLINK="$(_escseq  5)"
+            REVERSE="$(_escseq  7)"
+          CONCEALED="$(_escseq  8)"
+
+        # Foreground colors
+           FG_BLACK="$(_escseq 30)"
+             FG_RED="$(_escseq 31)"
+           FG_GREEN="$(_escseq 32)"
+          FG_YELLOW="$(_escseq 33)"
+            FG_BLUE="$(_escseq 34)"
+         FG_MAGENTA="$(_escseq 35)"
+            FG_CYAN="$(_escseq 36)"
+           FG_WHITE="$(_escseq 37)"
+
+        # Prompt colors
+            P_HICOL="$FG_YELLOW"
+          P_NORMCOL="$FG_CYAN"
+
+        # Background colors
+           BG_BLACK="$(_escseq 40)"
+             BG_RED="$(_escseq 41)"
+           BG_GREEN="$(_escseq 42)"
+          BG_YELLOW="$(_escseq 43)"
+            BG_BLUE="$(_escseq 44)"
+         BG_MAGENTA="$(_escseq 45)"
+            BG_CYAN="$(_escseq 46)"
+           BG_WHITE="$(_escseq 47)"
+else
+        COLOR_SUPPORT=0
+fi
+
+
+PS1_HEAD="..."
+PS1_TAIL='\`.....'
+[ -n "$DISPLAY" ] && case "$TERM" in
+xterm*|screen*)
+        PS1_HEAD="┌──"
+        PS1_TAIL="└─────"
+        ;;
+esac
+
+_ps1_exit_status() {
+        local es="$?"
+        [ "$es" -ne 0 ] && echo -e "[\$?=${P_HICOL}${es}${P_NORMCOL}]-)"
+}
+_ps1_sjobs() {
+        local sj="$(jobs | grep -vc Running)"
+        [ "$sj" -ne 0 ] && echo -e "[${P_HICOL}${sj}${P_NORMCOL} stopped]-"
+}
+_ps1_prjconf() {
+        [ -n "$PRJ_REF" ] && echo -e "[${P_HICOL}${PRJ_REF}${P_NORMCOL}]-"
+}
+_ps1_check_vcs() {
+        if [ "$PWD" != "$OWD" ]; then
+                OWD="$PWD"
+                if git rev-parse --git-dir > /dev/null 2>&1; then
+                        echo -e "[${P_HICOL}git${P_NORMCOL}]-"
+                elif ls ./CVS > /dev/null 2>&1; then
+                        echo -e "[${P_HICOL}cvs${P_NORMCOL}]-"
+                elif ls ./.SYNC > /dev/null 2>&1; then
+                        echo -e "[${P_HICOL}dss${P_NORMCOL}]-"
+                fi
+        fi
+}
+_ps1_cwd() {
+        echo "[$PWD]" | sed -e "s#$HOME#~#; s#${G_WORSPACE-\0}#...#"
+}
+
+# If this is an xterm, then set the title
+PS1="\033]0;[\s] [\w] [Last cmd: \"\$(tail -1 $HISTFILE)\"]\007"
+
+# Command line prompt
+PS1="${PS1}${P_NORMCOL}\n${PS1_HEAD}"                   # Prompt "head"
+PS1="${PS1}[\u@${P_HICOL}\h${P_NORMCOL}]-[\s]-"         # user@hostname / shell
+PS1="${PS1}\$(_ps1_exit_status)"                        # Last command exit status
+PS1="${PS1}\$(_ps1_sjobs)"                              # No. of stopped jobs
+PS1="${PS1}\$(_ps1_prjconf)"                            # Shell configured for a specific project?
+PS1="${PS1}\$(_ps1_check_vcs)"                          # In a VCS tree?
+PS1="${PS1}\$(_ps1_cwd)"                                # Current directory
+PS1="${PS1}\n${P_NORMCOL}${PS1_TAIL}[\!]-\$ ${RSTCOL}"  # Prompt "tail"
