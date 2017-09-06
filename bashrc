@@ -43,14 +43,29 @@ shopt -s globstar
 #shopt -s extglob
 
 # ----------------------------------------------------------------------
-# Don't exit the shell when EOF (Ctrl-d) is received as line first input
-#
-export IGNOREEOF=1000
-
-# ----------------------------------------------------------------------
 # No core dumps
 #
 ulimit -c 0
+
+# ----------------------------------------------------------------------
+# Vi mode, please!
+#
+set -o vi
+
+# ----------------------------------------------------------------------
+# The editor used by the fc command
+#
+if vim --version > /dev/null; then
+        FCEDIT=vim
+else
+        FCEDIT=vi
+fi
+export FCEDIT
+
+# ----------------------------------------------------------------------
+# Don't exit the shell when EOF (Ctrl-d) is received as line first input
+#
+export IGNOREEOF=1000
 
 # ----------------------------------------------------------------------
 # No autologout
@@ -58,161 +73,29 @@ ulimit -c 0
 TMOUT=0
 
 # ----------------------------------------------------------------------
-# When running in X and if TERM support it, set some UTF-8 strings
+# History settings
 #
-[ -n "$DISPLAY" ] && case "$XTERM_LOCALE" in
-*UTF-8)
-        UTF8_PS1=1
-        UTF8_HSEP=" ─› "
-        UTF8_PSHEAD_L1="┌──"
-        UTF8_PSHEAD_L2="└─────›"
-        UTF8_LASTOK="✓"
-        UTF8_LASTFAIL="✗"
-        ;;
-*)
-        UTF8_PS1=0
-        ;;
-esac
-
-# ----------------------------------------------------------------------
-# Set history
-#
-shopt -s histappend
-HISTCONTROL=ignorespace:erasedups
-HISTIGNORE="exit:?q"
 HISTFILE=~/.bash_history
 HISTSIZE=500
-HISTFILESIZE=2000
-HISTTIMEFORMAT="%d/%m %R${UTF8_HSEP-" -> "}"
+HISTFILESIZE=10000
+HISTCONTROL=ignorespace:ignoredups
+HISTIGNORE="exit:?q"
+HISTTIMEFORMAT="%d/%m %R -> "
+
+# Update history file on-the-fly
+shopt -s histappend
+PROMPT_COMMAND="history -a"
 
 # ----------------------------------------------------------------------
-# The editor used by the fc command
+# Useful keybindings
 #
-export FCEDIT=vim
+bind -m vi-insert "\C-l":clear-screen
+bind '\C-w:unix-filename-rubout'
 
 # ----------------------------------------------------------------------
-# Prompt look
-# (colored when the terminal has the capability)
+# Make C-w to delete back to the last /
 #
-
-# Color support can be forced off setting NO_COLORS (to any values)
-# This will influence file listing aliases' behavior too
-#NO_COLORS=""
-
-# Count stopped jobs
-sj() { jobs -s | wc -l | tr -d " "; }
-
-set_prompt() {
-        [ $? -ne 0 ] &&
-                LAST_EXIT="${HICOL}${UTF8_LASTFAIL-fail}${NORMCOL}" ||
-                LAST_EXIT="${UTF8_LASTOK-ok}"
-
-        if [ "$COLOR_SUPPORT" == 1 ]; then
-                HICOL="$FG_YELLOW"
-                NORMCOL="$FG_BLUE"
-                [ $USER == root ] && USRCOL="$FG_RED" || USRCOL="$HICOL"
-        fi
-
-        if [ $UTF8_PS1 ]; then
-
-                PS1="${NORMCOL}${UTF8_PSHEAD_L1}"                       # Cosmetic
-
-                PS1=${PS1}"[${USRCOL}\u${NORMCOL}@\h]-"                 # user@hostname
-
-                [ -n "$PRJ_REF" ] &&
-                        PS1=${PS1}"[${HICOL}$PRJ_REF${NORMCOL}]-"       # Prj-ready shell?
-
-                PS1=${PS1}"[$(sj)]-"                                    # No. of stopped jobs
-
-                PS1=${PS1}"[$LAST_EXIT]-"                               # Last command exit status
-
-                git rev-parse --git-dir > /dev/null 2>&1 &&
-                        PS1=${PS1}"[${HICOL}git${NORMCOL}]-"            # In a git tree?
-
-                ls ./CVS > /dev/null 2>&1 &&
-                        PS1=${PS1}"[${HICOL}cvs${NORMCOL}]-"            # In a CVS tree?
-
-                ls ./.SYNC > /dev/null 2>&1 &&
-                        PS1=${PS1}"[${HICOL}dss${NORMCOL}]-"            # In a Synchronicity tree?
-
-                PS1=${PS1}"[\W]"                                        # CWD basename
-
-                PS1=${PS1}"\n${NORMCOL}${UTF8_PSHEAD_L2} ${RSTCOL}"     # Cosmetic
-
-        else
-                PS1="${NORMCOL}[${USRCOL}\u${NORMCOL}@\h]-"             # user@hostname
-                PS1=${PS1}"[$LAST_EXIT]-"                               # Last command exit status
-                PS1=${PS1}"[\W]> ${RSTCOL}"                             # CWD basename
-        fi
-
-        # If this is an xterm, then set the title
-        [ -n "$DISPLAY" ] && case "$TERM" in
-        xterm*|screen*)
-                PS1="\[\033]0;[\s] [\w] [Last cmd: \"$(history 1 | awk -v HS="${UTF8_HSEP-" -> "}" 'BEGIN{FS=HS} {print $2}')\"]\007\]"$PS1
-                ;;
-        *)
-                ;;
-        esac
-}
-
-escseq() {
-          ESC="\e"
-         CODE="$1"
-         printf "\[%s[%sm\]" $ESC $CODE
-}
-
-if [ -z ${NO_COLORS+x} ] && [ $(tput colors) -ge 8 ]; then
-        COLOR_SUPPORT=1
-
-        # ANSI escape sequences for graphics mode
-        # Color codes:
-        # 0 -> Black
-        # 1 -> Red
-        # 2 -> Green
-        # 3 -> Yellow
-        # 4 -> Blue
-        # 5 -> Magenta
-        # 6 -> Cyan
-        # 7 -> White
-
-        # Text attributes
-             RSTCOL="$(escseq  0)"
-               BOLD="$(escseq  1)"
-          UNDERLINE="$(escseq  4)"
-              BLINK="$(escseq  5)"
-            REVERSE="$(escseq  7)"
-          CONCEALED="$(escseq  8)"
-
-        # Foreground colors
-           FG_BLACK="$(escseq 30)"
-             FG_RED="$(escseq 31)"
-           FG_GREEN="$(escseq 32)"
-          FG_YELLOW="$(escseq 33)"
-            FG_BLUE="$(escseq 34)"
-         FG_MAGENTA="$(escseq 35)"
-            FG_CYAN="$(escseq 36)"
-           FG_WHITE="$(escseq 37)"
-
-        # Background colors
-           BG_BLACK="$(escseq 40)"
-             BG_RED="$(escseq 41)"
-           BG_GREEN="$(escseq 42)"
-          BG_YELLOW="$(escseq 43)"
-            BG_BLUE="$(escseq 44)"
-         BG_MAGENTA="$(escseq 45)"
-            BG_CYAN="$(escseq 46)"
-           BG_WHITE="$(escseq 47)"
-else
-        COLOR_SUPPORT=0
-fi
-
-PROMPT_COMMAND=set_prompt
-
-# ----------------------------------------------------------------------
-# Aliases/functions definition
-#
-[ -f ~/.sh_aliases ]   && source ~/.sh_aliases
-[ -f ~/.bash_aliases ] && source ~/.bash_aliases
+stty werase undef
 
 # ----------------------------------------------------------------------
 # Enable programmable completion features
@@ -227,7 +110,7 @@ fi
 # Show running command in the terminal title:
 # http://mg.pov.lt/blog/bash-prompt.html
 #
-show_cmd_in_titlebar()
+cmdrun_in_titlebar()
 {
         case "$BASH_COMMAND" in
         *\033]0*|*\033]1*|*\033]2*)
@@ -252,7 +135,7 @@ show_cmd_in_titlebar()
                 ;;
         esac
 }
-trap show_cmd_in_titlebar DEBUG
+trap cmdrun_in_titlebar DEBUG
 
 # ----------------------------------------------------------------------
 # Clear screen on exit
@@ -260,21 +143,20 @@ trap show_cmd_in_titlebar DEBUG
 #
 #trap clear EXIT
 
-# ----------------------------------------------------------------------
-# Vi mode, please!
-#
-set -o vi
+# Color support can be forced off setting NO_COLORS (to any values)
+# This will influence file listing aliases' behavior too
+#NO_COLORS=""
 
 # ----------------------------------------------------------------------
-# Useful keybindings
+# Prompt look
 #
-bind -m vi-insert "\C-l":clear-screen
-bind '\C-w:unix-filename-rubout'
+[ -f ~/.sh_prompt ] && source ~/.sh_prompt
 
 # ----------------------------------------------------------------------
-# Make C-w to delete back to the last /
+# Aliases/functions definition
 #
-stty werase undef
+[ -f ~/.sh_aliases ]   && source ~/.sh_aliases
+[ -f ~/.bash_aliases ] && source ~/.bash_aliases
 
 # ----------------------------------------------------------------------
 # Addenda to ~/.bashrc specific for machine/site
