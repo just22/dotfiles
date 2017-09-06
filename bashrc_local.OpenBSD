@@ -60,10 +60,10 @@
     # Port management
     #
     mks() {
-            CWD="$(pwd)"
+            opwd="$PWD"
             cd /usr/ports
             make search name="$1" | egrep "Port:|Path:|Info:|^$"
-            cd "$CWD"
+            cd "$opwd"
     }
     alias mkc='make clean'
     alias mkca='make clean=all'
