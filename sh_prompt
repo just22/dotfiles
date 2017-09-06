@@ -73,42 +73,42 @@ esac
 
 _ps1_exit_status() {
         es="$?"
-        [ "$es" -ne 0 ] && echo "[\$?=${es}]"
+        [ "$es" -ne 0 ] && echo "-[\$?=${es}]-"
         unset es
 }
 _ps1_sjobs() {
         sj="$(jobs | grep -vc Running)"
-        [ "$sj" -ne 0 ] && echo "[${sj} stopped]"
+        [ "$sj" -ne 0 ] && echo "-[${sj} stopped]-"
         unset sj
 }
 _ps1_prjconf() {
-        [ -n "$PRJ_REF" ] && echo "[${PRJ_REF}]"
+        [ -n "$PRJ_REF" ] && echo "-[${PRJ_REF}]-"
 }
 _ps1_check_vcs() {
         if [ "$PWD" != "$OWD" ]; then
                 OWD="$PWD"
                 if git rev-parse --git-dir > /dev/null 2>&1; then
-                        echo "[git]"
+                        echo "-[git]-"
                 elif ls ./CVS > /dev/null 2>&1; then
-                        echo "[cvs]"
+                        echo "-[cvs]-"
                 elif ls ./.SYNC > /dev/null 2>&1; then
-                        echo "[dss]"
+                        echo "-[dss]-"
                 fi
         fi
 }
 _ps1_cwd() {
-        echo "[$PWD]" | sed -e "s#$HOME#~#; s#${G_WORKSPACE-\0}#\$G_WORKSPACE#"
+        echo "-[$PWD]" | sed -e "s#$HOME#~#; s#${G_WORKSPACE-\0}#\$G_WORKSPACE#"
 }
 
 # Command line prompt
 PS1="${P_NORMCOL}\n${PS1_HEAD}"                         # Prompt "head"
-PS1="${PS1}[\u@${P_HICOL}\h${P_NORMCOL}]-[\s]"          # user@hostname / shell
+PS1="${PS1}[\u@${P_HICOL}\h${P_NORMCOL}]--[\s]-"        # user@hostname / shell
 PS1="${PS1}${P_HICOL}\$(_ps1_exit_status)${P_NORMCOL}"  # Last command exit status (Mind: it *must* be the first command to be evaluated)
 PS1="${PS1}${P_HICOL}\$(_ps1_sjobs)${P_NORMCOL}"        # No. of stopped jobs
 PS1="${PS1}\$(_ps1_prjconf)"                            # Shell configured for a specific project?
 PS1="${PS1}\$(_ps1_check_vcs)"                          # In a VCS tree?
 PS1="${PS1}\$(_ps1_cwd)"                                # Current directory
-PS1="${PS1}\n${P_NORMCOL}${PS1_TAIL}[\!]-\$ ${RSTCOL}"  # Prompt "tail"
+PS1="${PS1}\n${P_NORMCOL}${PS1_TAIL}[\!]--\$ ${RSTCOL}" # Prompt "tail"
 
 # If this is an xterm, then set the title
 PS1="${PS1}\[\033]0;[\s] [\w] [Last cmd: \"\$(tail -1 $HISTFILE)\"]\007\]"
