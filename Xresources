@@ -25,7 +25,7 @@ XTerm*faceName:            DejaVu Sans Mono:style=Book
 XTerm*faceSize:            10
 
 !XTerm*faceName:            Terminus
-!XTerm*faceSize:            11
+!XTerm*faceSize:            10
 
 ! No bold fonts and colors
 XTerm*allowBoldFonts:      false
