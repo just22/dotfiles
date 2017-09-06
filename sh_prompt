@@ -97,7 +97,19 @@ _ps1_check_vcs() {
         fi
 }
 _ps1_cwd() {
-        echo "-[$PWD]" | sed -e "s#$HOME#~#; s#${G_WORKSPACE-\0}#\$G_WORKSPACE#"
+        echo "$PWD" | sed -e "s#$HOME#~#" |
+        awk -F "/" '{
+                if (length($0) > 40) {
+                        p = "/" $NF;
+                        for (f = 1; ; f++) {
+                                if (length("/" $(NF - f) p) > 39) break;
+                                p = "/" $(NF - f) p
+                        }
+                        p = substr(p, length(p) - 40 + 1, length(p));
+                        $0 = "..." p
+                }
+                print "-[" $0 "]"
+        }'
 }
 
 # Command line prompt
