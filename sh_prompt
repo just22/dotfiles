@@ -78,7 +78,7 @@ _ps1_exit_status() {
 }
 _ps1_sjobs() {
         sj="$(jobs | grep -vc Running)"
-        [ "$sj" -ne 0 ] && echo "-[${sj} stopped]-"
+        [ "$sj" -ne 0 ] && echo "-[S=${sj}]-"
         unset sj
 }
 _ps1_prjconf() {
@@ -97,17 +97,10 @@ _ps1_check_vcs() {
         fi
 }
 _ps1_cwd() {
-        echo "$PWD" | sed -e "s#$HOME#~#" |
+        echo "$PWD" | sed -e "s#$HOME#~#; s#$G_WORKSPACE#\$G_WORKSPACE#" |
         awk -F "/" '{
-                if (length($0) > 40) {
-                        p = "/" $NF;
-                        for (f = 1; ; f++) {
-                                if (length("/" $(NF - f) p) > 39) break;
-                                p = "/" $(NF - f) p
-                        }
-                        p = substr(p, length(p) - 40 + 1, length(p));
-                        $0 = "..." p
-                }
+                if (length($0) > 32)
+                        $0 = "..." substr($0, length($0) - 28, length($0));
                 print "-[" $0 "]"
         }'
 }
