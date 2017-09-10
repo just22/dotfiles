@@ -72,18 +72,19 @@ xterm*|screen*)
         ;;
 esac
 
-# A complete prompt requires at least a 50-column wide terminal; for narrow
-# ones, revert to minimal infobox
 _ps1_exit_status() {
         es="$?"
-        [ "$COLUMNS" -ge 50 ] && [ "$es" -ne 0 ] && echo "\$?=${es}, "
+        [ "$es" -ne 0 ] && echo "\$?=${es}, "
         unset es
 }
-_ps1_prjconf() {
-        [ "$COLUMNS" -ge 50 ] && [ -n "$PRJ_REF" ] && echo "${PRJ_REF}, "
-}
-_ps1_check_vcs() {
-        if [ "$COLUMNS" -ge 50 ]; then
+
+# This is a general purpose function, we just take advantage of its execution
+# each time the prompt must be issued
+_ps1_newdir() {
+        ppwd=$(cat /tmp/ppwd.$$ 2>/dev/null)
+        if [ "$PWD" != "$ppwd" ]; then
+                [ -f "$ppwd"/.exit ] && >&2 . "$ppwd"/.exit
+                echo "$PWD" > /tmp/ppwd.$$
                 if [ -d CVS ]; then
                         echo "cvs, "
                 elif [ -d .SYNC ]; then
@@ -91,10 +92,8 @@ _ps1_check_vcs() {
                 elif git rev-parse --git-dir > /dev/null 2>&1; then
                         echo "git, "
                 fi
+                [ -f .enter ] && >&2 . .enter
         fi
-}
-_ps1_noinfo() {
-        [ "$COLUMNS" -lt 50 ] && echo "*, "
 }
 
 # Command line prompt
@@ -102,11 +101,10 @@ PS1="\[\033[?7l\]"                                      # Do not wrap prompt lin
 PS1="${PS1}${P_NORMCOL}\n${PS1_HEAD}"                   # Prompt "head"
 PS1="${PS1}[\u@${P_HICOL}\h${P_NORMCOL}]-"              # user@hostname
 PS1="${PS1}[${P_HICOL}\$(_ps1_exit_status)${P_NORMCOL}" # Infobox: last command exit status
-PS1="${PS1}\$(_ps1_prjconf)"                            # Infobox: prj ref
-PS1="${PS1}${P_HICOL}\$(_ps1_check_vcs)${P_NORMCOL}"    # Infobox: in a VCS tree?
-PS1="${PS1}${P_HICOL}\$(_ps1_noinfo)${P_NORMCOL}"       # Infobox: no info for narrow terminals
+PS1="${PS1}\${PRJ_REF:+\$PRJ_REF, }"                    # Infobox: prj ref
+PS1="${PS1}${P_HICOL}\$(_ps1_newdir)${P_NORMCOL}"       # If new cwd: VCS tree? .enter/.exit cmd files?
 PS1="${PS1}\j jobs]-"                                   # Infobox: no. of managed jobs
-PS1="${PS1}[\W]"                                        # Current working directory
+PS1="${PS1}[\W]"                                        # $PWD basename
 PS1="${PS1}\n${P_NORMCOL}${PS1_TAIL} \$ ${RSTCOL}"      # Prompt "tail"
 PS1="${PS1}\[\033[?7h\]"                                # Restore line wrapping
 
