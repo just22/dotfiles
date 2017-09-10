@@ -139,10 +139,10 @@ act_on_cmd()
 trap act_on_cmd DEBUG
 
 # ----------------------------------------------------------------------
-# Clear screen on exit
+# Clean-up /tmp on exit
 # Note: Commands in ~/.bash_logout are run only by login shells...
 #
-#trap clear EXIT
+trap "rm -f /tmp/*.$$" EXIT
 
 # ----------------------------------------------------------------------
 # Color support can be forced off setting NO_COLORS (to any values)

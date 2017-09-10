@@ -37,6 +37,11 @@ HISTCONTROL=ignorespace:ignoredups
 export FCEDIT="vim"
 
 # ----------------------------------------------------------------------
+# Clean-up /tmp on exit
+#
+trap "rm -f /tmp/*.$$" EXIT
+
+# ----------------------------------------------------------------------
 # Colored prompt, if the terminal has the capability
 #
 
