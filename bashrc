@@ -75,16 +75,13 @@ TMOUT=0
 # ----------------------------------------------------------------------
 # History settings
 #
+shopt -s histappend
 HISTFILE=~/.bash_history
 HISTSIZE=500
 HISTFILESIZE=10000
 HISTCONTROL=ignorespace:ignoredups
 HISTIGNORE="exit:?q"
 HISTTIMEFORMAT="%d/%m %R -> "
-
-# Update history file on-the-fly
-shopt -s histappend
-PROMPT_COMMAND="history -a"
 
 # ----------------------------------------------------------------------
 # Useful keybindings
@@ -107,11 +104,12 @@ if ! shopt -oq posix; then
 fi
 
 # ----------------------------------------------------------------------
-# Show running command in the terminal title:
-# http://mg.pov.lt/blog/bash-prompt.html
+# Actions to be taken on new command run
 #
-cmdrun_in_titlebar()
+act_on_cmd()
 {
+        # Show running command in the terminal title:
+        # http://mg.pov.lt/blog/bash-prompt.html
         case "$BASH_COMMAND" in
         *\033]0*|*\033]1*|*\033]2*)
                 # Command is trying to set the title bar/icon name as well;
@@ -119,7 +117,7 @@ cmdrun_in_titlebar()
                 # In any case nested escapes confuse the terminal, so don't
                 # output them
                 ;;
-        fg|set_prompt|exit)
+        fg|exit)
                 ;;
         *)
                 case "$TERM" in
@@ -134,8 +132,11 @@ cmdrun_in_titlebar()
                 esac
                 ;;
         esac
+
+        # Update $HISTFILE on-the-fly
+        history -a
 }
-trap cmdrun_in_titlebar DEBUG
+trap act_on_cmd DEBUG
 
 # ----------------------------------------------------------------------
 # Clear screen on exit
@@ -143,9 +144,10 @@ trap cmdrun_in_titlebar DEBUG
 #
 #trap clear EXIT
 
+# ----------------------------------------------------------------------
 # Color support can be forced off setting NO_COLORS (to any values)
 # This will influence file listing aliases' behavior too
-#NO_COLORS=""
+#NO_COLORS=
 
 # ----------------------------------------------------------------------
 # Prompt look
