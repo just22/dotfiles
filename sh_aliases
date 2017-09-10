@@ -64,7 +64,6 @@ age             - File "age"
 # ----------------------------------------------------------------------
 # Calculator
 #
-c               - Simple calculator with (optional) ENG notation
 d2h             - DEC to HEX converter
 d2o             - DEC to OCT converter
 d2b             - DEC to BIN converter
@@ -88,13 +87,13 @@ h2d             - HEX to DEC converter
 # ----------------------------------------------------------------------
 # Commands with progress monitors
 #
-pdd             - dd with progress monitor
 pcp             - cp with progress monitor
 
 # ----------------------------------------------------------------------
 # Various
 #
-cl              - Clear screen
+c               - Clear screen
+d               - Current working dir
 r               - Re-execute most recent command, [-g] [old=new] [prefix]
 v               - Edit last command
 cutf            - Select nth field of line
@@ -111,6 +110,7 @@ ff.             - Find files in current directory by (part of) name
 bln             - List broken links (-l for long format)
 fpath           - Print absolute pathname (with dereferenced symbolic links)
 flast           - Print the last modified file or directory
+nowrap          - Do not wrap output of specified command
 
 # ----------------------------------------------------------------------
 # Moving around
@@ -223,8 +223,8 @@ mkpd() { mkdir "$1"; pd "$1"; }
 # ----------------------------------------------------------------------
 # History
 #
-alias h='history 25'
-alias hgrep='history | egrep'
+alias h='history | tail -25'
+alias hgrep='history | grep -E '
 alias v='fc -e vim'
 
 # ----------------------------------------------------------------------
@@ -282,15 +282,15 @@ fi
 #
 ldu() { du -chs ${1-.}/* | sort -rh | head -10; }
 alias usage='ldu'
-nf()  { ls -l  $1 | egrep "^-" | wc -l; }
-nfa() { ls -lA $1 | egrep "^-" | wc -l; }
-nfh() { ls -lA $1 | egrep "^-" | awk '{print $9}' | egrep "^\." | wc -l; }
-nd()  { ls -l  $1 | egrep "^d" | wc -l; }
-nda() { ls -lA $1 | egrep "^d" | wc -l; }
-ndh() { ls -lA $1 | egrep "^d" | awk '{print $9}' | egrep "^\." | wc -l; }
-nl()  { ls -l  $1 | egrep "^l" | wc -l; }
-nla() { ls -lA $1 | egrep "^l" | wc -l; }
-nlh() { ls -lA $1 | egrep "^l" | awk '{print $9}' | egrep "^\." | wc -l; }
+nf()  { ls -l  $1 | grep "^-" | wc -l; }
+nfa() { ls -lA $1 | grep "^-" | wc -l; }
+nfh() { ls -lA $1 | grep "^-" | awk '{print $9}' | grep "^\." | wc -l; }
+nd()  { ls -l  $1 | grep "^d" | wc -l; }
+nda() { ls -lA $1 | grep "^d" | wc -l; }
+ndh() { ls -lA $1 | grep "^d" | awk '{print $9}' | grep "^\." | wc -l; }
+nl()  { ls -l  $1 | grep "^l" | wc -l; }
+nla() { ls -lA $1 | grep "^l" | wc -l; }
+nlh() { ls -lA $1 | grep "^l" | awk '{print $9}' | grep "^\." | wc -l; }
 
 # Report file type in dir/tree
 ft() {
@@ -360,7 +360,6 @@ age() {
 # ----------------------------------------------------------------------
 # Calculator
 #
-alias c=calc
 d2h() { echo "obase=16; ibase=10; $1" | bc; }
 d2o() { echo "obase=8;  ibase=10; $1" | bc; }
 d2b() { echo "obase=2;  ibase=10; $1" | bc; }
@@ -380,27 +379,28 @@ h2d() { echo "obase=10; ibase=16; $1" | bc; }
 alias mplayer-hm='mplayer -cache 1572864 -cache-min 80'
 
 # ----------------------------------------------------------------------
-# Some vim commands I'm accustomed to...
+# Some vi commands I'm accustomed to...
 #
 alias :e='vim'
 alias :b#='r vim'
 alias :q='exit'
+alias :0='clear'
 
 # ----------------------------------------------------------------------
 # Commands with progress monitors
 #
-pdd() { dd if="$1" | pv | dd of="$2"; }
 alias pcp='rsync -avzhHp --info=progress2,name0'
 
 # ----------------------------------------------------------------------
 # Various
 #
-alias cl='clear'
+alias c='clear'
+alias d='echo $PWD'
 alias r='fc -s'
 alias v='fc -e vim'
 alias cutf='tr -s "\t" " " | sed "s/^ //" | cut -d" " -f'
 alias rs='rsync -avzhHp --info=progress2'
-alias pid='ps axwwwww | grep -v grep | egrep --'
+alias pid='ps axwwwww | grep -v grep | grep -E --'
 alias catn='cat -n'
 alias touchall='ls -tr | xargs touch'
 alias info='info --vi-keys'
@@ -410,6 +410,7 @@ vimall() { find ${1-.} -maxdepth 1 -type f -print | xargs sh -c '</dev/tty vim "
 grepo() { grep -l "$@" | xargs sh -c '</dev/tty vim "$@"' ignoreme; }
 runl() { $(head -n "+$1" "$2" | tail -n 1); }
 flast() { ls -dt "$@" | head -1; }
+nowrap() { printf '\033[?7l'; $@; printf '\033[?7h'; }
 
 # ----------------------------------------------------------------------
 # Moving around
