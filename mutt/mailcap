@@ -9,3 +9,8 @@ image/png; ${HOME}/.mutt/view_attachment.sh geeqie %s;
 application/vnd.ms-excel; ${HOME}/.mutt/view_attachment.sh soffice %s;
 application/vnd.ms-word; ${HOME}/.mutt/view_attachment.sh soffice %s;
 application/msword; ${HOME}/.mutt/view_attachment.sh soffice %s;
+
+text/calendar; mutt-ics; copiousoutput
+application/ics; mutt-ics; copiousoutput
+#text/calendar; ${HOME}/.mutt/vcalendar-filter; copiousoutput
+#application/ics; ${HOME}/.mutt/vcalendar-filter; copiousoutput
