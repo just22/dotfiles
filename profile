@@ -40,8 +40,8 @@ if [ "${TERM}" == "vt220" ]; then
     console-logout &
 fi
 
-# Locale settings
-#export LC_CTYPE="en_US.UTF-8"
+# In X, always enable UTF-8 encoding
+[ -n "$DISPLAY" ] && export LC_CTYPE=en_US.UTF-8
 
 # Note: Default pager/editor/browser definitions moved here because
 #       there are applications launched from X using them
