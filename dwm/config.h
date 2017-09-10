@@ -76,6 +76,7 @@ static const Rule rules[] = {
 	{ "XClock",	"xclock",	NULL,			0,		True,		-1 },
 	{ "XBiff",	"xbiff",	NULL,			0,		True,		-1 },
 	{ "Clock",	"oclock",	NULL,			0,		True,		-1 },
+	{ "Xdialog",	"Xdialog",	NULL,			0,		True,		-1 },
 };
 
 /* layout(s) */
