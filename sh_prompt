@@ -57,7 +57,7 @@ if [ -z ${NO_COLORS+x} ] && [ $(tput colors) -ge 8 ]; then
         # Prompt colors
             P_HICOL="$FG_YELLOW"
           P_NORMCOL="$FG_CYAN"
-          [ "$UID" == 0 ] && P_USERCOL="$FG_RED" || P_USERCOL="$P_NORMCOL"
+          [ "$(id -u)" -eq 0 ] && P_USERCOL="$FG_RED" || P_USERCOL="$P_NORMCOL"
 else
         COLOR_SUPPORT=0
 fi
@@ -81,18 +81,18 @@ _ps1_exit_status() {
 
 # This is a general purpose function, we just take advantage of its execution
 # each time the prompt must be issued
-_ps1_newdir() {
+_ps1_dircheck() {
+        if [ -d CVS ]; then
+                echo "cvs, "
+        elif [ -d .SYNC ]; then
+                echo "dss, "
+        elif git rev-parse --git-dir > /dev/null 2>&1; then
+                echo "git, "
+        fi
         ppwd=$(cat /tmp/ppwd.$$ 2>/dev/null)
         if [ "$PWD" != "$ppwd" ]; then
                 [ -f "$ppwd"/.exit ] && >&2 . "$ppwd"/.exit
                 echo "$PWD" > /tmp/ppwd.$$
-                if [ -d CVS ]; then
-                        echo "cvs, "
-                elif [ -d .SYNC ]; then
-                        echo "dss, "
-                elif git rev-parse --git-dir > /dev/null 2>&1; then
-                        echo "git, "
-                fi
                 [ -f .enter ] && >&2 . .enter
         fi
 }
@@ -103,10 +103,10 @@ PS1="${PS1}${P_NORMCOL}\n${PS1_HEAD}"                                   # Prompt
 PS1="${PS1}[${P_USERCOL}\u${P_NORMCOL}@${P_HICOL}\h${P_NORMCOL}]-"      # user@hostname
 PS1="${PS1}[${P_HICOL}\$(_ps1_exit_status)${P_NORMCOL}"                 # Infobox: last command exit status
 PS1="${PS1}\${PRJ_REF:+\$PRJ_REF, }"                                    # Infobox: prj ref
-PS1="${PS1}${P_HICOL}\$(_ps1_newdir)${P_NORMCOL}"                       # If new cwd: VCS tree? .enter/.exit cmd files?
+PS1="${PS1}${P_HICOL}\$(_ps1_dircheck)${P_NORMCOL}"                     # Infobox: VCS tree?; .enter/.exit cmd files?
 PS1="${PS1}\j jobs]-"                                                   # Infobox: no. of managed jobs
 PS1="${PS1}[\W]"                                                        # $PWD basename
-PS1="${PS1}\n${P_NORMCOL}${PS1_TAIL} \$ ${RSTCOL}"                      # Prompt "tail"
+PS1="${PS1}\n${P_NORMCOL}${PS1_TAIL} \\$ ${RSTCOL}"                     # Prompt "tail"
 PS1="${PS1}\[\033[?7h\]"                                                # Restore line wrapping
 
 # If this is an xterm, then set the title
