@@ -65,13 +65,19 @@ fi
 
 PS1_HEAD="..."
 PS1_TAIL='\`.....'
-[ -n "$DISPLAY" ] && [ "${LC_CTYPE%UTF-8}" != "$LC_CTYPE" ] &&
-case "$TERM" in
-xterm*|screen*)
-        PS1_HEAD="┌──"
-        PS1_TAIL="└─────"
-        ;;
-esac
+
+# UTF-8 encoding?
+if [ "${LC_ALL%UTF-8}"   != "$LC_ALL" ]   || \
+   [ "${LC_CTYPE%UTF-8}" != "$LC_CTYPE" ] || \
+   [ "${LANG%UTF-8}"     != "$LANG" ]
+then
+        case "$TERM" in
+        xterm*|screen*)
+                PS1_HEAD="┌──"
+                PS1_TAIL="└─────"
+                ;;
+        esac
+fi
 
 _ps1_exit_status() {
         es="$?"
