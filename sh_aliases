@@ -34,11 +34,11 @@ lmod            - List of files modified in the last 24hrs
 # ----------------------------------------------------------------------
 # (Un)safe file operations
 #
-rmf             - Recursively remove directory entries, no confirmation
-rm              - Remove directory entries, request confirmation
 cp              - Copy files, request confirmation before overwriting, preserve attributes
-mv              - Move files, request confirmation before overwriting
 del             - Safe(r) remove
+mv              - Move files, request confirmation before overwriting
+rm              - Remove directory entries, request confirmation
+rmf             - Recursively remove directory entries, no confirmation
 
 # ----------------------------------------------------------------------
 # History
@@ -53,47 +53,43 @@ v               - Edit lst command in $EDITOR
 now             - Current date/time in proper format
 
 # ----------------------------------------------------------------------
-# Colorize grep
-#
-{,e,f,x}grepc   - Grep with colors
-
-# ----------------------------------------------------------------------
 # File/dir statistics
 #
-ldu/usage       - Show first 10 biggest files
-nf              - Number of non-hidden files
-nfh             - Number of hidden files
-nfa             - Number of all files
-nd              - Number of non-hidden directories
-ndh             - Number of hidden directories
-nda             - Number of all directories
-nl              - Number of non-hidden links
-nlh             - Number of hidden links
-nla             - Number of all links
-ft              - Report file type in dir/tree
 age             - File "age"
+ft              - Report file type in dir/tree
+ldu/usage       - Show first 10 biggest files
+nd              - Number of non-hidden directories
+nda             - Number of all directories
+ndh             - Number of hidden directories
+nf              - Number of non-hidden files
+nfa             - Number of all files
+nfh             - Number of hidden files
+nl              - Number of non-hidden links
+nla             - Number of all links
+nlh             - Number of hidden links
 
 # ----------------------------------------------------------------------
 # Calculator
 #
-d2h             - DEC to HEX converter
-d2o             - DEC to OCT converter
-d2b             - DEC to BIN converter
-o2h             - OCT to HEX converter
-o2d             - OCT to DEC converter
-o2b             - OCT to BIN converter
+b2d             - BIN to DEC converter
 b2h             - BIN to HEX converter
 b2o             - BIN to OCT converter
-b2d             - BIN to DEC converter
+d2b             - DEC to BIN converter
+d2h             - DEC to HEX converter
+d2o             - DEC to OCT converter
 h2b             - HEX to BIN converter
-h2o             - HEX to OCT converter
 h2d             - HEX to DEC converter
+h2o             - HEX to OCT converter
+o2b             - OCT to BIN converter
+o2d             - OCT to DEC converter
+o2h             - OCT to HEX converter
 
 # ----------------------------------------------------------------------
 # Some vim-style commands
 #
-:e              - Edit file
+:0              - Clear
 :b#             - Edit previous file
+:e              - Edit file
 :q              - Exit
 
 # ----------------------------------------------------------------------
@@ -104,41 +100,42 @@ pcp             - cp with progress monitor
 # ----------------------------------------------------------------------
 # Various
 #
+bln             - List broken links (-l for long format)
 c               - Clear screen
-d               - Current working dir
-r               - Re-execute most recent command, [-g] [old=new] [prefix]
-v               - Edit last command
-cutf            - Select nth field of line
-rs              - rsync with most common options
-pid             - Process IDs matching argument
 catn            - cat -n
-runl            - Execute line \$1 from file \$2
-touchall        - Change file access and modification times to all files in current dir
-showpath        - Show \$PATH (or the variable provided as argument) in a readable form
-vimall          - Open all files in <dir>
-grepo()         - Open all files after pattern match
+cutf            - Select nth field of line
+d               - Current working dir
 ff              - Recursively find files by (part of) name
 ff.             - Find files in current directory by (part of) name
-bln             - List broken links (-l for long format)
-fpath           - Print absolute pathname (with dereferenced symbolic links)
 flast           - Print the last modified file or directory
+fpath           - Print absolute pathname (with dereferenced symbolic links)
+{,e,f,x}grepc   - Colorized grep
+grepo           - Open all files after pattern match
 nowrap          - Do not wrap output of specified command
+pid             - Process IDs matching argument
+r               - Re-execute most recent command, [-g] [old=new] [prefix]
+rs              - rsync with most common options
+runl            - Execute line \$1 from file \$2
+showpath        - Show \$PATH (or the variable provided as argument) in a readable form
+touchall        - Change file access and modification times to all files in current dir
+v               - Edit last command
+vimall          - Open all files in <dir>
 
 # ----------------------------------------------------------------------
 # Moving around
 #
-m               - Set mark \$1 at current directory
-g               - Jump to mark \$1
-marks           - List all marks
 cds             - cd with shortened pathnames
+g               - Jump to mark \$1
+m               - Set mark \$1 at current directory
+marks           - List all marks
 
 # ----------------------------------------------------------------------
 # cvs
 #
-cvs-ck          - Check for modified files
-cvs-up          - Update
-cvs-mrg         - Update with merge
 cvs-adddir      - Recursively add directories in current path to cvs tree
+cvs-ck          - Check for modified files
+cvs-mrg         - Update with merge
+cvs-up          - Update
 
 # ----------------------------------------------------------------------
 # Change XTerm colorscheme on-the-fly
