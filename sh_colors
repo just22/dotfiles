@@ -1,0 +1,62 @@
+# ----------------------------------------------------------------------
+#  $Id$
+#
+# Bourne shell type color management
+# ----------------------------------------------------------------------
+
+_escseq() {
+        esc="\e"
+        code="$1"
+        echo -e "${esc}[${code}m"
+        unset esc code
+}
+
+if [ -z ${NO_COLORS+x} ] && [ $(tput colors) -ge 8 ]; then
+        COLOR_SUPPORT=1
+
+        # ANSI escape sequences for graphics mode
+        # Color codes:
+        # 0 -> Black
+        # 1 -> Red
+        # 2 -> Green
+        # 3 -> Yellow
+        # 4 -> Blue
+        # 5 -> Magenta
+        # 6 -> Cyan
+        # 7 -> White
+
+        # Text attributes
+             RSTCOL="\[$(_escseq  0)\]"
+               BOLD="\[$(_escseq  1)\]"
+          UNDERLINE="\[$(_escseq  4)\]"
+              BLINK="\[$(_escseq  5)\]"
+            REVERSE="\[$(_escseq  7)\]"
+          CONCEALED="\[$(_escseq  8)\]"
+
+        # Foreground colors
+           FG_BLACK="\[$(_escseq 30)\]"
+             FG_RED="\[$(_escseq 31)\]"
+           FG_GREEN="\[$(_escseq 32)\]"
+          FG_YELLOW="\[$(_escseq 33)\]"
+            FG_BLUE="\[$(_escseq 34)\]"
+         FG_MAGENTA="\[$(_escseq 35)\]"
+            FG_CYAN="\[$(_escseq 36)\]"
+           FG_WHITE="\[$(_escseq 37)\]"
+
+        # Background colors
+           BG_BLACK="\[$(_escseq 40)\]"
+             BG_RED="\[$(_escseq 41)\]"
+           BG_GREEN="\[$(_escseq 42)\]"
+          BG_YELLOW="\[$(_escseq 43)\]"
+            BG_BLUE="\[$(_escseq 44)\]"
+         BG_MAGENTA="\[$(_escseq 45)\]"
+            BG_CYAN="\[$(_escseq 46)\]"
+           BG_WHITE="\[$(_escseq 47)\]"
+
+        # Prompt colors
+            P_HICOL="$FG_YELLOW"
+          P_NORMCOL="$FG_CYAN"
+          [ "$(id -u)" -eq 0 ] && P_USERCOL="$FG_RED" || P_USERCOL="$P_NORMCOL"
+else
+        COLOR_SUPPORT=0
+fi
