@@ -146,8 +146,9 @@ trap "rm -f /tmp/*.$$" EXIT
 
 # ----------------------------------------------------------------------
 # Color support can be forced off setting NO_COLORS (to any values)
-# This will influence file listing aliases' behavior too
+# This will influence prompt and file listing aliases' behavior
 #NO_COLORS=
+[ -f ~/.sh_colors ] && source ~/.sh_colors
 
 # ----------------------------------------------------------------------
 # Prompt look
