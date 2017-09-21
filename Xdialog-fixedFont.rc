@@ -1,0 +1,4 @@
+style 'fixed_font' {
+	font_name = "DejaVu Sans Mono 10"
+}
+widget '*' style 'fixed_font'
