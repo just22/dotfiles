@@ -77,10 +77,10 @@ TMOUT=0
 #
 shopt -s histappend
 HISTFILE=~/.bash_history
-HISTSIZE=500
-HISTFILESIZE=10000
+HISTSIZE=-1
+HISTFILESIZE=101
 HISTCONTROL=ignorespace:ignoredups
-HISTIGNORE="exit:?q"
+HISTIGNORE="exit:\:q"
 HISTTIMEFORMAT="%d/%m %R -> "
 
 # ----------------------------------------------------------------------
@@ -154,6 +154,9 @@ trap "rm -f /tmp/*.$$" EXIT
 # Prompt look
 #
 [ -f ~/.sh_prompt ] && source ~/.sh_prompt
+
+# If this is an xterm, then set the title
+PS1="${PS1}\[\033]0;[\s-\v] [\w] [Last cmd: \"\$(fc -l | awk 'END{print $2}')\"]\007\]"
 
 # ----------------------------------------------------------------------
 # Aliases/functions definition
