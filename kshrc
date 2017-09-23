@@ -51,6 +51,9 @@ trap "rm -f /tmp/*.$$" EXIT
 #
 [ -f ~/.sh_prompt ] && . ~/.sh_prompt
 
+# If this is an xterm, then set the title
+PS1="${PS1}\[\033]0;[\s-\v] [\w] [Last cmd: \"\$(tail -1 "$HISTFILE")\"]\007\]"
+
 # ----------------------------------------------------------------------
 # Aliases/functions definition
 #
