@@ -104,6 +104,9 @@ set hidden
 " Keep 100 lines of command line history
 set history=100
 
+" Do not redraw the screen while executing commands that have not been typed
+set lazyredraw
+
 " "Leader" key mapping
 let mapleader="\<Space>"
 let maplocalleader="\<Space>"
