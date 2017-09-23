@@ -56,8 +56,8 @@ if [ -x /usr/local/bin/dbus-launch -a -z "${DBUS_SESSION_BUS_ADDRESS}" ]; then
         eval `dbus-launch --sh-syntax --exit-with-session`
 fi
 
-# Console log (launched again to match colorscheme)
-#xconsole -geometry 480x130-0-0 -daemon -notify -verbose -exitOnFail &
+# Console log (launched again to match fonts and colorscheme)
+xconsole -geometry 480x130-0-0 -daemon -notify -verbose -exitOnFail &
 
 # Select the X session to start
 #DEFAULT_XSESSION_CMD=${DEFAULT_XSESSION_CMD-startxfce4}
@@ -95,8 +95,8 @@ fi
 
 # OfflineIMAP
 pkill -TERM -u $(id -u) -f /usr/local/bin/offlineimap
-offlineimap -s -u quiet -c ~/.offlineimaprc-sandro.delaurenzis@gmail.com &
-offlineimap -s -u quiet -c ~/.offlineimaprc-just22@atlantide.t28.net &
+offlineimap -s -u syslog -c ~/.offlineimaprc.d/sandro.delaurenzis@gmail.com.rc &
+offlineimap -s -u syslog -c ~/.offlineimaprc.d/just22@atlantide.t28.net.rc &
 
 # Set the root window background
 xsetroot -solid rgb:58/6E/75
@@ -106,7 +106,6 @@ xscreensaver &
 
 # xidle daemon (corner locking virtually disabled, no timeout,
 # activated by SIGUSR1)
-
 if ! pgrep -u $UID -x xidle > /dev/null 2>&1; then
         xidle -delay 86400 -program ${HOME}/bin/xsession-lock &
 fi
