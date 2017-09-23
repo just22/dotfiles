@@ -6,7 +6,7 @@
 # ----------------------------------------------------------------------
 
 PS1_HEAD="..."
-PS1_TAIL='\`.....'
+PS1_TAIL='\`..... '
 
 # UTF-8 encoding?
 if [ "${LC_ALL%UTF-8}"   != "$LC_ALL" ]   || \
@@ -16,7 +16,7 @@ then
         case "$TERM" in
         xterm*|screen*)
                 PS1_HEAD="┌──"
-                PS1_TAIL="└─────"
+                PS1_TAIL="└───── "
                 ;;
         esac
 fi
@@ -54,8 +54,5 @@ PS1="${PS1}\${PRJ_REF:+\$PRJ_REF, }"                                    # Infobo
 PS1="${PS1}${P_HICOL}\$(_ps1_dircheck)${P_NORMCOL}"                     # Infobox: VCS tree?; .enter/.exit cmd files?
 PS1="${PS1}\j jobs]-"                                                   # Infobox: no. of managed jobs
 PS1="${PS1}[\W]"                                                        # $PWD basename
-PS1="${PS1}\n${P_NORMCOL}${PS1_TAIL} \\$ ${RSTCOL}"                     # Prompt "tail"
+PS1="${PS1}\n${P_NORMCOL}${PS1_TAIL}[\!] \\$ ${RSTCOL}"                      # Prompt "tail"
 PS1="${PS1}\[\033[?7h\]"                                                # Restore line wrapping
-
-# If this is an xterm, then set the title
-PS1="${PS1}\[\033]0;[\s] [\w] [Last cmd: \"\$(tail -1 $HISTFILE)\"]\007\]"
