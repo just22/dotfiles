@@ -7,7 +7,6 @@ set status_format = "───%>─[ just22@atlantide.t28.net ]───[ %f %r 
 
 # Mailboxes to monitor for new mail (and listed in the sidebar)
 unmailboxes *
-#mailboxes `find $HOME/mail/just22@atlantide.t28.net -mindepth 1 -maxdepth 1 -type d | awk '{gsub(/[\47 ]/, "\\\\&", $0); print $0}' | tr "\n" " "`
 mailboxes `find $HOME/mail/just22@atlantide.t28.net -type d -a -name cur -prune -o -type d -a -name new -prune -o -type d -a -name tmp -prune -o -mindepth 1 -type d -print | awk '{gsub(/[\47 ]/, "\\\\&", $0); print $0}' | tr "\n" " "`
 
 set spoolfile  = +INBOX     # Go there when started
@@ -20,5 +19,8 @@ set realname = "Alessandro DE LAURENZIS"
 set from = "just22@atlantide.t28.net"
 alternates ""
 
+set smtp_url = "smtp://just22@atlantide.t28.net@atlantide.t28.net:587"
+source "gpg2 -d ~/.mutt/just22@atlantide.t28.net.credentials.gpg |"
+
 # Signature
-set signature=~/.signatures/just22@atlantide.t28.net
+set signature=~/.mutt/just22@atlantide.t28.net.signature

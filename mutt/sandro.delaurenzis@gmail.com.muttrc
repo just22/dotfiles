@@ -19,5 +19,8 @@ set realname = "Alessandro DE LAURENZIS"
 set from = "sandro.delaurenzis@gmail.com"
 alternates ""
 
+set smtp_url = "smtp://sandro.delaurenzis@gmail.com@smtp.gmail.com:587"
+source "gpg2 -d ~/.mutt/sandro.delaurenzis@gmail.com.credentials.gpg |"
+
 # Signature
-set signature= ~/.signatures/sandro.delaurenzis@gmail.com
+set signature= ~/.mutt/sandro.delaurenzis@gmail.com.signature
