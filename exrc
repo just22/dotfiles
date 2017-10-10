@@ -1,14 +1,11 @@
 " ----------------------------------------------------------------------
 "  $Id$
 "
-"  vi config file
+"  vi configuration file
 " ----------------------------------------------------------------------
 "
 " Automatically indent new lines
 set autoindent
-"
-" Use ESC to edit the colon command-line history
-"set cedit=
 "
 " Use extended regular expressions (EREs)
 set extended
@@ -40,13 +37,10 @@ set searchincr
 " Number of spaces to use for each step of (auto)indent
 set shiftwidth=8
 "
-" Show (partial) command in the last line of the screen
-"set showcmd
-"
 " When a bracket is inserted, briefly jump to the matching one
 set showmatch
 "
-" Display the current editor mode and a “modified” flag
+" Display the current editor mode and a "modified" flag
 set showmode
 "
 " Number of spaces that a <Tab> in the file counts for
@@ -56,25 +50,28 @@ set tabstop=8
 set verbose
 "
 " Handy abbreviations
-abbr _mail <a href="mailto://just22.adl@gmail.com">just22.adl@gmail.com</a>
+abbr _mail [mailto://just22.adl@gmail.com">just22.adl@gmail.com]
 abbr _AdL Alessandro DE LAURENZIS <just22.adl@gmail.com>
 "
-" Format current paragraph/buffer
-map \f {!}fmt -w 72
-map \F 1G!Gfmt -w 72
+" Move effectively among open files
+map \l :args
+map \b :prev
+map \f :next
+map \g :e#
+"
+" Format current paragraph/file
+map \p {!}fmt -w 72
+map \P 1G!Gfmt -w 72
 "
 " Spell checker
-map \se :w:!aspell -l en check %:e!
-map \si :w:!aspell -l it check %:e!
+map \E :w:!aspell -l en check %:e!
+map \I :w:!aspell -l it check %:e!
 "
-" Attribution line: author,date
-map \a o# justt2.adl@gmail.com - :r !datekJ
+" Attribution line: author, date
+map \a o# AdL, :r !date +\%Y-\%m-\%dkJ
 "
-" Insert shell comment line
-map \c o60i#
-"
-" Insert AdL comment line
-map \d O# AdL
+" Insert note
+map \n o# AdL: 
 "
 " Edit .exrc
 map \e :e $HOME/.exrc
@@ -82,8 +79,8 @@ map \e :e $HOME/.exrc
 " Source .exrc
 map \r :so $HOME/.exrc
 "
-" Dupe line, comment original
-map \n YPi#
+" Duplicate line, comment original
+map \d YI#p
 "
 " Empty line above current one
 map \O O
@@ -91,20 +88,21 @@ map \O O
 " Empty line below current one
 map \o o
 "
-" New script (sh)
-map \t 1GO#/bin/sh# :r!ls %kJA - # # dave@foo.edu - :r !datekJo# 60a#Ypo# EOF: :r!ls %kJ1G$
+" New script header
+map \0 1GO#/bin/sh# 70a-o#  $Id$#  # 70a-kA
 "
-" Shebang line
-map \0 1Gi#!/bin/sh
+" Copyright
+map \R O# (C) :r !date +\%YkJA Alessandro De Laurenzis <just22.adl@gmail.com>
 "
-" Copyright line
-map \C I## (C) 2015   A. DE LAURENZIS <just22.adl@gmail.com>    All Rights Reserved## This code is free software; it may be freely distributed and used as# long as this header is retained.# All modifications must be clearly indicated.## The author makes no promise of technical support. However, bug reports,# suggestions, questions, and comments are welcome.## NO WARRANTY OF ANY KIND EXPRESSED OR IMPLIED. USE AT YOUR OWN RISK.#
+" 3-clausole BSD license
+map \L O# (C) :r !date +\%YkJA Alessandro De Laurenzis <just22.adl@gmail.com># All Rights Reserved## Redistribution and use in source and binary forms, with or without# modification, are permitted provided that the following conditions# are met:## 1. Redistributions of source code must retain the above copyright#    notice, this list of conditions and the following disclaimer.## 2. Redistributions in binary form must reproduce the above copyright#    notice, this list of conditions and the following disclaimer in the#    documentation and/or other materials provided with the distribution.## 3. Neither the name of the copyright holder nor the names of its#    contributors may be used to endorse or promote products derived#    from this software without specific prior written permission.## THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS# "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT# LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR# A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT# HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,# SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT# LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,# DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY# THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT# (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE# OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 "
 " New section
-map \- o# 70a-o##kA 
+map \- o# 70a-o##kA 
 "
-" Comment out current line
-map \c I#
+" (Un)comment out current line
+map \c 0i#
+map \C :s/^#//
 "
 " On-line help
 map #1 :viusage
@@ -117,11 +115,9 @@ map #3 :m -2
 map + #+
 map - #-
 "
-" Shell if;then;fi construct
-map \i oif [ mja ]; thenfi`ja
-"
-" For email
-map \. o....................<snip>....................
+" Snip line
+map \s o[...]
+map \S o....................<snip>....................
 "
 "
 " eof: .exrc
