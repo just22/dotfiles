@@ -4,6 +4,10 @@
 "  vi configuration file
 " ----------------------------------------------------------------------
 "
+"
+" ----------------------------------------------------------------------
+"  SET OPTIONS
+"
 " Automatically indent new lines
 set autoindent
 "
@@ -13,8 +17,8 @@ set extended
 " Use TAB to perform file path completion on the colon command-line
 set filec=\	
 "
-" Ignore case differences in regular expressions
-set ignorecase
+" Case-insensitive RE, except if upper-case letters appear in search string
+set iclower
 "
 " Precede each line with its ordinal number
 set number
@@ -49,9 +53,15 @@ set tabstop=8
 " Display an error message for every error
 set verbose
 "
-" Handy abbreviations
-abbr _mail [mailto://just22.adl@gmail.com">just22.adl@gmail.com]
-abbr _AdL Alessandro DE LAURENZIS <just22.adl@gmail.com>
+"
+" ----------------------------------------------------------------------
+"  MAPS
+"
+" Edit .exrc
+map \e :e $HOME/.exrc
+"
+" Source .exrc
+map \r :so $HOME/.exrc
 "
 " Move effectively among open files
 map \l :args
@@ -73,19 +83,11 @@ map \a o# AdL, :r !date +\%Y-\%m-\%dkJ
 " Insert note
 map \n o# AdL: 
 "
-" Edit .exrc
-map \e :e $HOME/.exrc
-"
-" Source .exrc
-map \r :so $HOME/.exrc
-"
 " Duplicate line, comment original
 map \d YI#p
 "
-" Empty line above current one
+" Empty line above/below current one
 map \O O
-"
-" Empty line below current one
 map \o o
 "
 " New script header
@@ -98,7 +100,7 @@ map \R O# (C) :r !date +\%YkJA Alessandro De Laurenzis <just22.adl@gmail.com>
 map \L O# (C) :r !date +\%YkJA Alessandro De Laurenzis <just22.adl@gmail.com># All Rights Reserved## Redistribution and use in source and binary forms, with or without# modification, are permitted provided that the following conditions# are met:## 1. Redistributions of source code must retain the above copyright#    notice, this list of conditions and the following disclaimer.## 2. Redistributions in binary form must reproduce the above copyright#    notice, this list of conditions and the following disclaimer in the#    documentation and/or other materials provided with the distribution.## 3. Neither the name of the copyright holder nor the names of its#    contributors may be used to endorse or promote products derived#    from this software without specific prior written permission.## THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS# "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT# LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR# A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT# HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,# SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT# LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,# DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY# THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT# (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE# OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 "
 " New section
-map \- o# 70a-o##kA 
+map \- o# 70a-o##kA  
 "
 " (Un)comment out current line
 map \c 0i#
@@ -118,6 +120,17 @@ map - #-
 " Snip line
 map \s o[...]
 map \S o....................<snip>....................
+"
+" Search for word under the cursor
+map * dePo/\<pA\>"wdd@w
+"
+"
+" ----------------------------------------------------------------------
+"  ABBREVIATIONS
+"
+" Signatures
+abbr _AdL Alessandro DE LAURENZIS <just22.adl@gmail.com>
+abbr _mail [mailto://just22.adl@gmail.com">just22.adl@gmail.com]
 "
 "
 " eof: .exrc
