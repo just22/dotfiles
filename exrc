@@ -20,6 +20,9 @@ set filec=\
 " Case-insensitive RE, except if upper-case letters appear in search string
 set iclower
 "
+" Left-right scrolling (unwrap long lines)
+set leftright
+"
 " Precede each line with its ordinal number
 set number
 "
@@ -50,7 +53,7 @@ set showmode
 " Number of spaces that a <Tab> in the file counts for
 set tabstop=8
 "
-" Display an error message for every error
+" Display a message for every error
 set verbose
 "
 "
@@ -91,7 +94,7 @@ map \O O
 map \o o
 "
 " New script header
-map \0 1GO#/bin/sh# 70a-o#  $Id$#  # 70a-kA
+map \h 1GO#/bin/sh# 70a-o#  $Id$#  # 70a-kA
 "
 " Copyright
 map \R O# (C) :r !date +\%YkJA Alessandro De Laurenzis <just22.adl@gmail.com>
@@ -121,8 +124,11 @@ map - #-
 map \s o[...]
 map \S o....................<snip>....................
 "
-" Search for word under the cursor
-map * dePo/\<pA\>"wdd@w
+" Search for word at cursor position
+map * 
+"
+" Edit the file at cursor position
+map gf :e%dWPo:e! p"fdd@f
 "
 "
 " ----------------------------------------------------------------------
