@@ -395,9 +395,9 @@ augroup END
 " ----------------------------------------------------------------------------
 " Turn on English/Italian spell checking
 "
-nnoremap <silent> <leader>se :setlocal spell spelllang=en<CR>
+nnoremap <silent> <leader>E :setlocal spell spelllang=en<CR>
         \:echo "Spell check (EN) switched on"<CR>
-nnoremap <silent> <leader>si :setlocal spell spelllang=it<CR>
+nnoremap <silent> <leader>I :setlocal spell spelllang=it<CR>
         \:echo "Spell check (IT) switched on"<CR>
 nnoremap <silent> <leader>so :setlocal nospell<CR>
         \:echo "Spell check switched off"<CR>
@@ -430,28 +430,17 @@ nnoremap <silent> <leader>dw
         \ :let cl=line(".")<CR>:g/<C-R><C-A>/d<CR>:call cursor(cl, 1)<CR>
 
 " ----------------------------------------------------------------------------
-" Delete all the "well known" (and "not dangerous") warnings
-"
-nnoremap <leader>kw
-        \ :g/ENCLF-200\\|
-        \ENCSYC-881\\|
-        \obsolete\\|
-        \ENCLF-200\\|
-        \EMS-27\\|
-        \TCLCMD-1142\\|
-        \EMS-42\\|
-        \ENCOPT-3058\\|
-        \NRIF-47\\|
-        \ENCEXT-3509/d<CR>
-
-" ----------------------------------------------------------------------------
 " Paste the visual selection to the scratchpad (along with
 " the current file name)
 "
 vnoremap <silent> <leader>ps
-        \ :<C-U>silent! '<,'>w >> ~/vimwiki/Scratchpad.wiki<CR>
-        \ :call system("echo File: " . shellescape(expand("%:p")) . "
-        \ >> ~/vimwiki/Scratchpad.wiki")<CR>
+        \ :<C-U>silent! '<,'>w >> ~/.scratchpad<CR>
+        \ :call system("echo Yanked from: " . shellescape(expand("%:p")) . " >> ~/.scratchpad")<CR>
+
+" ----------------------------------------------------------------------------
+" Copy the current buffer filename (with full path)
+"
+nnoremap <silent> <leader>yy :let @*=expand("%:p")<CR>
 
 " ----------------------------------------------------------------------------
 " Search for visual selection
@@ -460,18 +449,12 @@ vnoremap * <Esc>/<C-R>*<CR>
 vnoremap # <Esc>?<C-R>*<CR>
 
 " ----------------------------------------------------------------------------
-" Copy the current buffer filename (with full path)
-"
-nnoremap <silent> <leader>yy :let @*=expand("%:p")<CR>
-
-" ----------------------------------------------------------------------------
 " Swap wrap mode
 "
-"nnoremap <silent> <leader>w :set wrap!<CR>
+nnoremap <silent> <leader>W :set wrap!<CR>
 
 " ----------------------------------------------------------------------------
 " Toggle cursorline/cursorcolumn mode
-"
 "
 nnoremap <silent> <C-_> :set cursorline!<CR>
 function! CursorColumnVisibilityToggling()
@@ -488,7 +471,6 @@ nnoremap <silent> <C-\> :call CursorColumnVisibilityToggling()<CR>
 
 " ----------------------------------------------------------------------------
 " Always go to the beginning of a line before doing a 'gF' operation
-"
 "
 nnoremap gF 0gF
 
@@ -508,20 +490,6 @@ nnoremap ? ?\v
 vnoremap ? ?\v
 nnoremap <leader>? ?\V
 vnoremap <leader>? ?\V
-"nnoremap / q/i\v
-"vnoremap / q/i\v
-"nnoremap <leader>/ q/i\V
-"vnoremap <leader>/ q/i\V
-"nnoremap ? q?i\v
-"vnoremap ? q?i\v
-"nnoremap <leader>? q?i\V
-"vnoremap <leader>? q?i\V
-
-" ----------------------------------------------------------------------------
-" Make the tab key match bracket pairs
-"
-"nnoremap <Tab> %
-"vnoremap <Tab> %
 
 " ----------------------------------------------------------------------------
 " Quickly close current buffer
@@ -550,15 +518,6 @@ nnoremap <silent> <leader>8  :8b<CR>
 nnoremap <silent> <leader>9  :9b<CR>
 
 " ----------------------------------------------------------------------------
-" Always make search matches visible within their own context
-" Note: commented out because of the "search hit TOP..." message problem
-"
-"nnoremap n nzz
-"nnoremap N Nzz
-"nnoremap * *zz
-"nnoremap # #zz
-
-" ----------------------------------------------------------------------------
 " Remove expandtab for Makefile and Python
 "
 au BufEnter [mM]akefile*,GNUmakefile,*.mk,*.mak,*.py set noexpandtab
@@ -569,22 +528,13 @@ au BufLeave [mM]akefile*,GNUmakefile,*.mk,*.mak,*.py set expandtab
 "
 nnoremap j  gj
 nnoremap k  gk
-"nnoremap <up>          <nop>
-"nnoremap <down>        <nop>
-"nnoremap <left>        <nop>
-"nnoremap <right>       <nop>
-"inoremap <up>          <nop>
-"inoremap <down>        <nop>
-"inoremap <left>        <nop>
-"inoremap <right>       <nop>
 
 " ----------------------------------------------------------------------------
-" In insert mode, mimic some normal mode keys
+" Emacs style keybindings in insert mode
 "
-"inoremap <C-h> <C-o>h
-"inoremap <C-j> <C-o>j
-"inoremap <C-k> <C-o>k
-"inoremap <C-l> <C-o>l
+inoremap <C-d> <C-o>x
+inoremap <C-a> <C-o>I
+inoremap <C-e> <C-o>A
 
 " ----------------------------------------------------------------------------
 " Move effectively among tabs
@@ -599,10 +549,10 @@ nnoremap <silent> <C-t>q :tabclose<CR>
 " ----------------------------------------------------------------------------
 " Move effectively among windows
 "
-"nnoremap <C-h> <C-w><C-h>
-"nnoremap <C-j> <C-w><C-j>
-"nnoremap <C-k> <C-w><C-k>
-"nnoremap <C-l> <C-w><C-l>
+nnoremap <C-w>h <C-w><C-h>
+nnoremap <C-w>j <C-w><C-j>
+nnoremap <C-w>k <C-w><C-k>
+nnoremap <C-w>l <C-w><C-l>
 
 " ----------------------------------------------------------------------------
 " Underline
@@ -610,7 +560,7 @@ nnoremap <silent> <C-t>q :tabclose<CR>
 nnoremap <leader>u yypVr=
 
 " ----------------------------------------------------------------------------
-" Comment header definition
+" Comments
 "
 autocmd FileType c,cpp,java,scala let b:cchar = '//'
 autocmd FileType verilog          let b:cchar = '//'
@@ -624,21 +574,6 @@ autocmd FileType mail             let b:cchar = '>'
 autocmd FileType vim              let b:cchar = '"'
 autocmd FileType xdefaults        let b:cchar = '!'
 
-" ----------------------------------------------------------------------------
-" Rulers
-"
-function! Ruler()
-        let l:tw = &textwidth ? &textwidth : 72
-        let l:charNo = l:tw - strlen(b:cchar) - 1
-        call append('.', b:cchar)
-        exec "normal j"
-        s/$/\=(' ' . repeat('-', l:charNo))
-endfunction
-nnoremap <leader>- :call Ruler()<CR>
-
-" ----------------------------------------------------------------------------
-" Comments
-"
 function! CommentToggling() range
         if (match(getline('.'), '^\s*' . b:cchar) != -1)
                 execute a:firstline . ',' . a:lastline . 's/^\(\s*\)' . escape(b:cchar, '/') . '/\1'
@@ -648,6 +583,18 @@ function! CommentToggling() range
         nohlsearch
 endfunction
 noremap <silent> <leader>c :call CommentToggling()<CR>
+
+" ----------------------------------------------------------------------------
+" Ruler
+"
+function! Ruler()
+        let l:tw = &textwidth ? &textwidth : 72
+        let l:charNo = l:tw - strlen(b:cchar) - 1
+        call append('.', b:cchar)
+        exec "normal j"
+        s/$/\=(' ' . repeat('-', l:charNo))
+endfunction
+nnoremap <leader>- :call Ruler()<CR>
 
 " ----------------------------------------------------------------------------
 " Do not remove indentation for comments when smartindex is set
@@ -667,7 +614,6 @@ iab _t Thanks in advance
 " ----------------------------------------------------------------------------
 " Common refuses
 "
-"cnoremap Q q
 cnoremap Qa qa
 cnoremap QA qa
 
@@ -784,8 +730,7 @@ nnoremap <silent> <leader>v :loadview<CR>
 " ----------------------------------------------------------------------------
 " Remove overheads for large files
 "
-" Large files are > 100MB
-" Set options:
+" When file's dimension is > 100MB, set the following options:
 " eventignore+=FileType (no syntax hilight etc, assumes FileType always on)
 " noswapfile (save copy of file)
 " bufhidden=unload (save memory when other file is viewed)
@@ -800,9 +745,6 @@ augroup END
 " ----------------------------------------------------------------------------
 " Empty lines insertion
 "
-"nnoremap <silent> <Enter> ciW<CR><Esc>:if match(@", "^\\s*$") < 0<Bar>exec "norm P-$diw+"<Bar>endif<CR>
-"nnoremap <silent> <C-j> :set paste<CR>m`O<Esc>``:set nopaste<CR>
-"nnoremap <silent> <C-k> m`:silent -g/\m^\s*$/d<CR>``:nohlsearch<CR>
 nnoremap <leader>o o<Esc>
 nnoremap <leader>O O<Esc>
 nnoremap <leader>n i<CR><Esc>
