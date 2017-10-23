@@ -60,11 +60,10 @@ fi
 xconsole -geometry 480x130-0-0 -daemon -notify -verbose -exitOnFail &
 
 # Select the X session to start
-#DEFAULT_XSESSION_CMD=${DEFAULT_XSESSION_CMD-startxfce4}
-#DEFAULT_XSESSION_CMD=${DEFAULT_XSESSION_CMD-startxfce4 --with-ck-launch}
-DEFAULT_XSESSION_CMD=${DEFAULT_XSESSION_CMD-dwm-session}
-
+#DEFAULT_XSESSION_CMD=${DEFAULT_XSESSION_CMD-dwm-session}
+DEFAULT_XSESSION_CMD=${DEFAULT_XSESSION_CMD-startxfce4}
 #SELECT_XSESSION=1
+
 [ x$SELECT_XSESSION != "x" ] &&
 if [ -e /usr/local/bin/Xdialog ]; then
         XSESSION_CMD=`Xdialog --buttons-style text                                              \
@@ -75,12 +74,10 @@ if [ -e /usr/local/bin/Xdialog ]; then
                               --stdout                                                          \
                               --menubox                                                         \
                                   "Select the X session"                                        \
-                                  195x170                                                       \
-                                  5                                                             \
-                                  "dwm-session"                       "dwm"                     \
+                                  195x135                                                       \
+                                  3                                                             \
                                   "startxfce4"                        "Xfce4"                   \
-                                  "startxfce4 --with-ck-launch"       "Xfce4 (with polkit)"     \
-                                  "cwm"                               "cwm"                     \
+                                  "dwm-session"                       "dwm"                     \
                                   "twm"                               "twm"`
 fi || XSESSION_CMD="$DEFAULT_XSESSION_CMD"
 
@@ -94,9 +91,7 @@ if ! pgrep -x remind; then
 fi
 
 # OfflineIMAP
-pkill -TERM -u $(id -u) -f /usr/local/bin/offlineimap
-offlineimap -s -u syslog -c ~/.offlineimaprc.d/sandro.delaurenzis@gmail.com.rc &
-offlineimap -s -u syslog -c ~/.offlineimaprc.d/just22@atlantide.t28.net.rc &
+force-mailbox-sync -q
 
 # Set the root window background
 xsetroot -solid rgb:58/6E/75
