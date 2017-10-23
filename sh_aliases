@@ -205,9 +205,10 @@ alias mv='/bin/mv -i'
 # Safe remove
 #
 del() {
+        local ft
         case "$#" in
         0)
-                echo "Usage: del file ..."
+                echo "usage: del file ..."
                 return
                 ;;
         1)
@@ -220,19 +221,21 @@ del() {
                 p*) ft="FIFO" ;;
                 s*) ft="socket link" ;;
                 esac
-                echo -n "Remove $ft $1? [y/N] "; read r
-                case "$r" in
-                [yY]*) /bin/rm -rf "$1" ;;
-                esac
+                if [ -n "$ft" ]; then
+                        echo -n "Remove $ft $1? [y/N] "; read r
+                fi
                 ;;
         *)
-                echo "You're going to (recursively) remove the following elements:"
-                ls -dF "$@"
-                echo -n "Please confirm [y/N] "; read r
-                case "$r" in
-                [yY]*) /bin/rm -rf "$@"
-                esac
+                local fl="$(ls -dF1 "$@")"
+                if [ -n "$fl" ]; then
+                        echo "You're going to (recursively) remove the following elements:"
+                        echo "$fl"
+                        echo -n "Please confirm [y/N] "; read r
+                fi
                 ;;
+        esac
+        case "$r" in
+        [yY]*) /bin/rm -rf "$@"
         esac
 }
 
