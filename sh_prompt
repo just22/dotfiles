@@ -5,22 +5,6 @@
 # (colored when the terminal has the capability)
 # ----------------------------------------------------------------------
 
-PS1_HEAD="..."
-PS1_TAIL='\`..... '
-
-# UTF-8 encoding?
-if [ "${LC_ALL%UTF-8}"   != "$LC_ALL" ]   || \
-   [ "${LC_CTYPE%UTF-8}" != "$LC_CTYPE" ] || \
-   [ "${LANG%UTF-8}"     != "$LANG" ]
-then
-        case "$TERM" in
-        xterm*|screen*)
-                PS1_HEAD="┌──"
-                PS1_TAIL="└─────"
-                ;;
-        esac
-fi
-
 _ps1_exit_status() {
         es="$?"
         [ "$es" -ne 0 ] && echo "\$?=${es}, "
@@ -47,12 +31,12 @@ _ps1_dircheck() {
 
 # Command line prompt
 PS1="\[\033[?7l\]"                                                      # Do not wrap prompt line
-PS1="${PS1}${P_NORMCOL}\n${PS1_HEAD}"                                   # Prompt "head"
+PS1="${PS1}${P_NORMCOL}\n"                                              # Prompt "head"
 PS1="${PS1}[${P_USERCOL}\u${P_NORMCOL}@${P_HICOL}\h${P_NORMCOL}]-"      # user@hostname
 PS1="${PS1}[${P_HICOL}\$(_ps1_exit_status)${P_NORMCOL}"                 # Infobox: last command exit status
 PS1="${PS1}\${PRJ_REF:+\$PRJ_REF, }"                                    # Infobox: prj ref
 PS1="${PS1}${P_HICOL}\$(_ps1_dircheck)${P_NORMCOL}"                     # Infobox: VCS tree?; .enter/.exit cmd files?
 PS1="${PS1}\j jobs]-"                                                   # Infobox: no. of managed jobs
-PS1="${PS1}[\W]"                                                        # $PWD basename
-PS1="${PS1}\n${P_NORMCOL}${PS1_TAIL}[\!]-\\$ ${RSTCOL}"                 # Prompt "tail"
+PS1="${PS1}[\w]"                                                        # $PWD basename
+PS1="${PS1}\n${P_NORMCOL}[\A]-\\$ ${RSTCOL}"                            # Prompt "tail"
 PS1="${PS1}\[\033[?7h\]"                                                # Restore line wrapping
