@@ -32,11 +32,6 @@ HISTSIZE=500
 HISTCONTROL=ignorespace:ignoredups
 
 # ----------------------------------------------------------------------
-# The editor used by fc
-#
-export FCEDIT="vim"
-
-# ----------------------------------------------------------------------
 # Clean-up /tmp on exit
 #
 trap "rm -f /tmp/*.$$" EXIT
@@ -64,6 +59,17 @@ PS1="${PS1}\[\033]0;[\s-\v] [\w] [Last cmd: \"\$(tail -1 "$HISTFILE")\"]\007\]"
 # Addenda to ~/.kshrc specific for machine/site
 #
 [ -f ~/.kshrc_local ] && . ~/.kshrc_local
+
+# ------------------------------------------------------------------
+# Print a random, hopefully interesting, adage
+#
+if fortune -f > /dev/null 2>&1; then
+        if cowthink -l > /dev/null 2>&1; then
+                fortune | cowthink
+        else
+                fortune
+        fi
+fi
 
 # ----------------------------------------------------------------------
 # Debug
