@@ -53,16 +53,6 @@ ulimit -c 0
 set -o vi
 
 # ----------------------------------------------------------------------
-# The editor used by the fc command
-#
-if vim --version > /dev/null; then
-        FCEDIT=vim
-else
-        FCEDIT=vi
-fi
-export FCEDIT
-
-# ----------------------------------------------------------------------
 # Don't exit the shell when EOF (Ctrl-d) is received as line first input
 #
 export IGNOREEOF=1000
@@ -106,7 +96,7 @@ fi
 # ----------------------------------------------------------------------
 # Actions to be taken on new command run
 #
-act_on_cmd()
+_newCmdAct()
 {
         # Show running command in the terminal title:
         # http://mg.pov.lt/blog/bash-prompt.html
@@ -136,7 +126,7 @@ act_on_cmd()
         # Update $HISTFILE on-the-fly
         history -a
 }
-trap act_on_cmd DEBUG
+trap _newCmdAct DEBUG
 
 # ----------------------------------------------------------------------
 # Clean-up /tmp on exit
@@ -153,10 +143,11 @@ trap "rm -f /tmp/*.$$" EXIT
 # ----------------------------------------------------------------------
 # Prompt look
 #
+PROMPT_DIRTRIM=3
 [ -f ~/.sh_prompt ] && source ~/.sh_prompt
 
 # If this is an xterm, then set the title
-PS1="${PS1}\[\033]0;[\s-\v] [\w] [Last cmd: \"\$(fc -l | awk 'END{print $2}')\"]\007\]"
+PS1="${PS1}\[\033]0;[\s-\v] [\w] [Last cmd: \"\$(tail -1 \"$HISTFILE\")\"]\007\]"
 
 # ----------------------------------------------------------------------
 # Aliases/functions definition
@@ -168,6 +159,17 @@ PS1="${PS1}\[\033]0;[\s-\v] [\w] [Last cmd: \"\$(fc -l | awk 'END{print $2}')\"]
 # Addenda to ~/.bashrc specific for machine/site
 #
 [ -f ~/.bashrc_local ] && source ~/.bashrc_local
+
+# ------------------------------------------------------------------
+# Print a random, hopefully interesting, adage
+#
+if fortune -f > /dev/null 2>&1; then
+        if cowthink -l > /dev/null 2>&1; then
+                fortune | cowthink
+        else
+                fortune
+        fi
+fi
 
 # ----------------------------------------------------------------------
 # Debug
