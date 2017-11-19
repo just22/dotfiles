@@ -148,6 +148,9 @@ map gf :e%dWPo:e! p"fdd@f
 map  z.
 map!  mpz.`pa
 "
+" Kill the current file's content
+map \k :w! /tmp/$USER.vi.killed:%dZZ
+"
 "
 " ----------------------------------------------------------------------
 "  ABBREVIATIONS
@@ -166,6 +169,10 @@ abbr _d !awk 'BEGIN {b=""} {b=b$0"\n"; sub("^", "\#"); print} END {printf "\%s",
 " Settings for specific file types
 abbr _vi source ~/.exrc.d/cchar_dquotes.exrc
 abbr _v source ~/.exrc.d/cchar_dslash.exrc
+"
+" Copy/paste between sessions
+abbr _y w! /tmp/$USER.vi.yank
+abbr _p r /tmp/$USER.vi.yank
 "
 "
 " eof: .exrc
