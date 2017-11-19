@@ -31,12 +31,12 @@ _ps1_dircheck() {
 
 # Command line prompt
 PS1="\[\033[?7l\]"                                                      # Do not wrap prompt line
-PS1="${PS1}${P_NORMCOL}\n"                                              # Prompt "head"
+PS1="${PS1}${P_NORMCOL}\n"                                              # Empty line
 PS1="${PS1}[${P_USERCOL}\u${P_NORMCOL}@${P_HICOL}\h${P_NORMCOL}]-"      # user@hostname
 PS1="${PS1}[${P_HICOL}\$(_ps1_exit_status)${P_NORMCOL}"                 # Infobox: last command exit status
 PS1="${PS1}\${PRJ_REF:+\$PRJ_REF, }"                                    # Infobox: prj ref
 PS1="${PS1}${P_HICOL}\$(_ps1_dircheck)${P_NORMCOL}"                     # Infobox: VCS tree?; .enter/.exit cmd files?
 PS1="${PS1}\j jobs]-"                                                   # Infobox: no. of managed jobs
-PS1="${PS1}[\w]"                                                        # $PWD basename
-PS1="${PS1}\n${P_NORMCOL}[\A]-\\$ ${RSTCOL}"                            # Prompt "tail"
+PS1="${PS1}[\w]"                                                        # The current working directory
+PS1="${PS1}\n${P_NORMCOL}[\A]-\\$ ${RSTCOL}"                            # New line with current time and "prompt char"
 PS1="${PS1}\[\033[?7h\]"                                                # Restore line wrapping
