@@ -32,8 +32,6 @@ call vundle#begin()
 
 Plugin 'https://github.com/altercation/vim-colors-solarized.git'
 
-Plugin 'https://github.com/tpope/vim-fugitive'
-
 Plugin 'https://github.com/tpope/vim-tbone.git'
 
 Plugin 'https://github.com/sk1418/QFGrep'
@@ -54,6 +52,8 @@ Plugin 'https://github.com/LaTeX-Box-Team/LaTeX-Box'
 Plugin 'VisIncr'
 
 Plugin 'https://github.com/ervandew/supertab.git'
+
+Plugin 'https://github.com/kien/ctrlp.vim'
 
 call vundle#end()
 
@@ -108,8 +108,10 @@ set history=100
 set lazyredraw
 
 " "Leader" key mapping
-let mapleader="\<Space>"
-let maplocalleader="\<Space>"
+"let mapleader="\<Space>"
+"let maplocalleader="\<Space>"
+let mapleader="!"
+let maplocalleader="!"
 
 " Enable mouse use in all modes (in console too)
 set mouse=a
@@ -480,7 +482,7 @@ nnoremap gF 0gF
 "nnoremap : q:i
 
 " ----------------------------------------------------------------------------
-" Fix default regex handling (this makes searches use normal regexes)
+" Fix default regex handling (this makes searches use EREs)
 "
 nnoremap / /\v
 vnoremap / /\v
@@ -904,6 +906,14 @@ let g:SuperTabMappingForward = "<F1>"
 let g:SuperTabMappingBackward = "<S-F1>"
 set completeopt=longest,menuone
 inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+
+" ----------------------------------------------------------------------------
+" ctrlp plugin
+"
+let g:ctrlp_map = '<leader>p'
+let g:ctrlp_root_markers = ['.vim_ctrlp_root']
+let g:ctrlp_working_path_mode = 'ra'
+let g:ctrlp_custom_ignore = '\v[\/](.git|.hg|.svn|CVS|.SYNC)$'
 
 " ----------------------------------------------------------------------------
 " Map <Tab> to <C-Tab> to allow inserting a tab character not at the beginning
