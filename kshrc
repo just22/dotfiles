@@ -63,11 +63,11 @@ PS1="${PS1}\[\033]0;[\s-\v] [\w] [Last cmd: \"\$(tail -1 "$HISTFILE")\"]\007\]"
 # ------------------------------------------------------------------
 # Print a random, hopefully interesting, adage
 #
-if fortune -f > /dev/null 2>&1; then
-        if cowthink -l > /dev/null 2>&1; then
-                fortune | cowthink
+if which fortune > /dev/null 2>&1; then
+        if which cowthink > /dev/null 2>&1; then
+                fortune -as | cowthink
         else
-                fortune
+                fortune -as
         fi
 fi
 
