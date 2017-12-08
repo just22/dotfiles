@@ -4,29 +4,29 @@
 #  Aliases for Bourne-type shells
 # ----------------------------------------------------------------------
 
-_helpme() { cat << __HELP__
+_myalias() { cat << __MYALIAS__
 # ----------------------------------------------------------------------
 # List directory contents
 #
 l               - Colored list
-la              - All files list
-lam             - All files list | $PAGER
-lat             - All files list, sort by time modified
-latm            - All files list, sort by time modified | $PAGER
-latc            - All files list, sort by file status time change
-latcm           - All files list, sort by file status time change | $PAGER
+la              - All files
+lam             - All files | $PAGER
+lat             - All files sorted by time modified
+latm            - All files sorted by time modified | $PAGER
+latc            - All files sorted by file status time change
+latcm           - All files sorted by file status time change | $PAGER
 ll              - Long list
 llm             - Long list | $PAGER
-llt             - Long list, sort by time modified
-lltm            - Long list, sort by time modified | $PAGER
-lltc            - Long list, sort by file status time change
-lltcm           - Long list, sort by file status time change | $PAGER
-lla             - All files long list
-llam            - All files long list | $PAGER
-llat            - All files long list, sort by time modified
-llatm           - All files long list, sort by time modified | $PAGER
-llatc           - All files long list, sort by file status time change
-llatcm          - All files long list, sort by file status time change | $PAGER
+llt             - Long list, sorted by time modified
+lltm            - Long list, sorted by time modified | $PAGER
+lltc            - Long list, sorted by file status time change
+lltcm           - Long list, sorted by file status time change | $PAGER
+lla             - All files, long list
+llam            - All files, long list | $PAGER
+llat            - All files, long list, sorted by time modified
+llatm           - All files, long list, sorted by time modified | $PAGER
+llatc           - All files, long list, sorted by file status time change
+llatcm          - All files, long list, sorted by file status time change | $PAGER
 llink           - List links
 lfile           - List files only
 lmod            - List of files modified in the last 24hrs
@@ -144,9 +144,9 @@ dark            - Switch current xterm colors to solarized-dark
 dark-desat      - Switch current xterm colors to solarized-dark-desaturated
 light           - Switch current xterm colors to solarized-light
 light-desat     - Switch current xterm colors to solarized-light-desaturated
-__HELP__
+__MYALIAS__
 }
-helpme() { _helpme | grep ${1-.\*} | less -cF; }
+myalias() { _myalias | grep ${1-.\*} | less -cF; }
 
 
 # ----------------------------------------------------------------------
