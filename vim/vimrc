@@ -55,6 +55,8 @@ Plugin 'https://github.com/ervandew/supertab.git'
 
 Plugin 'https://github.com/kien/ctrlp.vim'
 
+Plugin 'https://github.com/christoomey/vim-tmux-navigator'
+
 call vundle#end()
 
 " ----------------------------------------------------------------------------
@@ -914,6 +916,16 @@ let g:ctrlp_map = '<leader>p'
 let g:ctrlp_root_markers = ['.vim_ctrlp_root']
 let g:ctrlp_working_path_mode = 'ra'
 let g:ctrlp_custom_ignore = '\v[\/](.git|.hg|.svn|CVS|.SYNC)$'
+
+" ----------------------------------------------------------------------------
+" vim-tmux-navigator plugin
+"
+let g:tmux_navigator_no_mappings = 1
+nnoremap <silent> <Esc>[1;5A :TmuxNavigateUp<CR>
+nnoremap <silent> <Esc>[1;5B :TmuxNavigateDown<CR>
+nnoremap <silent> <Esc>[1;5C :TmuxNavigateRight<CR>
+nnoremap <silent> <Esc>[1;5D :TmuxNavigateLeft<CR>
+nnoremap <silent> <C-,>      :TmuxNavigatePrevious<CR>
 
 " ----------------------------------------------------------------------------
 " Map <Tab> to <C-Tab> to allow inserting a tab character not at the beginning
