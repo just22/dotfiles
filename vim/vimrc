@@ -486,14 +486,14 @@ nnoremap gF 0gF
 " ----------------------------------------------------------------------------
 " Fix default regex handling (this makes searches use EREs)
 "
-nnoremap / /\v
-vnoremap / /\v
-nnoremap <leader>/ /\V
-vnoremap <leader>/ /\V
-nnoremap ? ?\v
-vnoremap ? ?\v
-nnoremap <leader>? ?\V
-vnoremap <leader>? ?\V
+"nnoremap / /\v
+"vnoremap / /\v
+"nnoremap <leader>/ /\V
+"vnoremap <leader>/ /\V
+"nnoremap ? ?\v
+"vnoremap ? ?\v
+"nnoremap <leader>? ?\V
+"vnoremap <leader>? ?\V
 
 " ----------------------------------------------------------------------------
 " Quickly close current buffer
