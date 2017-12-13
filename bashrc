@@ -67,8 +67,6 @@ TMOUT=0
 #
 shopt -s histappend
 HISTFILE=~/.bash_history
-HISTSIZE=-1
-HISTFILESIZE=101
 HISTCONTROL=ignorespace:ignoredups
 HISTIGNORE="exit:\:q"
 HISTTIMEFORMAT="%d/%m %R -> "
