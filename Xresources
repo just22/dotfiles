@@ -9,7 +9,7 @@
 !
 
 ! Term name
-XTerm*termName:            xterm-256color
+!XTerm*termName:            xterm-256color
 
 ! Fonts
 !XTerm*font:                -xos4-terminus-medium-r-normal-*-14-*-*-*-*-*-iso10646-1
