@@ -30,6 +30,8 @@ call vundle#begin()
         Plugin 'gmarik/vundle'
 " }
 
+Plugin 'https://github.com/chriskempson/base16-vim'
+
 Plugin 'https://github.com/altercation/vim-colors-solarized.git'
 
 Plugin 'https://github.com/tpope/vim-tbone.git'
@@ -56,6 +58,8 @@ Plugin 'https://github.com/ervandew/supertab.git'
 Plugin 'https://github.com/kien/ctrlp.vim'
 
 Plugin 'https://github.com/christoomey/vim-tmux-navigator'
+
+Plugin 'https://github.com/molok/vim-smartusline'
 
 call vundle#end()
 
@@ -173,6 +177,10 @@ set softtabstop=8
 "
 " Highlight the last used search pattern
 set hlsearch
+nnoremap <silent> <Tab> :nohlsearch<CR>
+
+" Highlight all occurrences of the word under the cursor (without moving)
+nnoremap <Leader>* :let @/='\<<C-R>=expand("<cword>")<CR>\>'<CR>:set hls<CR>
 
 " Searching is not case sensitive
 set ignorecase
@@ -182,7 +190,6 @@ set incsearch
 
 " If a pattern contains an uppercase letter, it is case sensitive, otherwise, it is not
 set smartcase
-nnoremap <silent> <Tab> :nohlsearch<CR>
 
 " ----------------------------------------------------------------------------
 " Visibility and context
@@ -326,7 +333,7 @@ set dir=~/.vim/swap//,/var/tmp//,/tmp//,.
 "
 "au InsertEnter * highlight! CursorLineNR ctermfg=0 ctermbg=7
 "au InsertLeave * highlight! clear CursorLineNR ctermfg ctermbg
-"
+
 au InsertEnter * setlocal cursorcolumn
 if exists("+colorcolumn")
         au InsertEnter * setlocal colorcolumn=78
@@ -340,39 +347,43 @@ endif
 " ----------------------------------------------------------------------------
 " Colorscheme
 "
-if exists("$DISPLAY")
-        set background=dark
-        if exists("$DISPLAY")
-                set t_Co=256
-        endif
-
-        syntax enable
-
-        let g:solarized_contrast="high"  "default value is normal
-        let g:solarized_visibility="normal"  "default value is normal
-        let g:solarized_diffmode="high"  "default value is normal
-
-        " The following items are available options, but
-        " they are currently set to their defaults.
-        "let g:solarized_termtrans=0
-        "let g:solarized_degrade=0
-        "let g:solarized_bold=1
-        "let g:solarized_underline=1
-        "let g:solarized_italic=1
-        "let g:solarized_termcolors=16
-        "let g:solarized_hitrail=0
-        "let g:solarized_menu=1
-
-        "colorscheme solarized
-        colorscheme solarized_mod
-
-        "colorscheme base16-chalk-custom
-        "
-        "let g:mirodark_disable_color_approximation=1
-        "colorscheme mirodark
-"else
-"       colorscheme miro8
+if filereadable(expand("$HOME/.vim/colors/base16.vim"))
+        colorscheme base16
 endif
+
+"if exists("$DISPLAY")
+"        set background=dark
+"        if exists("$DISPLAY")
+                set t_Co=256
+"        endif
+"
+"        syntax enable
+"
+"        let g:solarized_contrast="high"  "default value is normal
+"        let g:solarized_visibility="normal"  "default value is normal
+"        let g:solarized_diffmode="high"  "default value is normal
+"
+"        " The following items are available options, but
+"        " they are currently set to their defaults
+"        "let g:solarized_termtrans=0
+"        "let g:solarized_degrade=0
+"        "let g:solarized_bold=1
+"        "let g:solarized_underline=1
+"        "let g:solarized_italic=1
+"        "let g:solarized_termcolors=16
+"        "let g:solarized_hitrail=0
+"        "let g:solarized_menu=1
+"
+"        "colorscheme solarized
+"        colorscheme solarized_minimal
+"
+"        "colorscheme base16-chalk-custom
+"        "
+"        "let g:mirodark_disable_color_approximation=1
+"        "colorscheme mirodark
+""else
+""       colorscheme miro8
+"endif
 
 " ----------------------------------------------------------------------------
 " Don't use Ex mode, use Q for formatting
@@ -668,7 +679,7 @@ function! VexToggle(dir)
 endfunction
 
 function! VexOpen(dir)
-        let vex_width=90
+        let vex_width=50
         execute "Vexplore " . a:dir
         let t:vex_buf_nr=bufnr("%")
         wincmd H
@@ -863,6 +874,13 @@ endfunction
 autocmd BufRead * call VCSmaps()
 
 " ----------------------------------------------------------------------------
+" Output the current syntax group
+"
+map <F10> :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans<'
+\ . synIDattr(synID(line("."),col("."),0),"name") . "> lo<"
+\ . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">"<CR>
+
+" ----------------------------------------------------------------------------
 " vim-notes plugin
 "
 let g:notes_directories=['$HOME/notes']
@@ -928,7 +946,11 @@ nnoremap <silent> <Esc>[1;5A :TmuxNavigateUp<CR>
 nnoremap <silent> <Esc>[1;5B :TmuxNavigateDown<CR>
 nnoremap <silent> <Esc>[1;5C :TmuxNavigateRight<CR>
 nnoremap <silent> <Esc>[1;5D :TmuxNavigateLeft<CR>
-nnoremap <silent> <C-,>      :TmuxNavigatePrevious<CR>
+nnoremap <silent> <Esc>[A    :TmuxNavigateUp<CR>
+nnoremap <silent> <Esc>[B    :TmuxNavigateDown<CR>
+nnoremap <silent> <Esc>[C    :TmuxNavigateRight<CR>
+nnoremap <silent> <Esc>[D    :TmuxNavigateLeft<CR>
+nnoremap <silent> <C-\>      :TmuxNavigatePrevious<CR>
 
 " ----------------------------------------------------------------------------
 " Map <Tab> to <C-Tab> to allow inserting a tab character not at the beginning
@@ -951,3 +973,4 @@ try
 catch
         " Do not output any error msg in case no local vimrc exists
 endtry
+
