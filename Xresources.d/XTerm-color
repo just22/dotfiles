@@ -2,13 +2,36 @@
 !  $Id$
 ! ----------------------------------------------------------------------
 
+! Base16 colorscheme
+XTerm*foreground:       base05
+XTerm*background:       base00
+XTerm*cursorColor:      base05
+
+XTerm*color0:           base00
+XTerm*color1:           base08
+XTerm*color2:           base0B
+XTerm*color3:           base0A
+XTerm*color4:           base0D
+XTerm*color5:           base0E
+XTerm*color6:           base0C
+XTerm*color7:           base05
+
+XTerm*color8:           base03
+XTerm*color9:           base09
+XTerm*color10:          base01
+XTerm*color11:          base02
+XTerm*color12:          base04
+XTerm*color13:          base06
+XTerm*color14:          base0F
+XTerm*color15:          base07
+
 ! Use color for underline attribute
-*VT100*colorULMode: on
-*VT100*colorUL: #b58900
+*VT100*colorULMode:     on
+*VT100*colorUL:         base0A
 
 ! Disable underlining, because colorULMode is set
-*VT100*underLine: off
+*VT100*underLine:       off
 
 ! Use color for the bold attribute
-*VT100*colorBDMode: on
-*VT100*colorBD: #dc322f
+*VT100*colorBDMode:     on
+*VT100*colorBD:         base08
