@@ -1,0 +1,8 @@
+! ----------------------------------------------------------------------
+!  $Id$
+! ----------------------------------------------------------------------
+
+! Base16 colorscheme
+XConsole*foreground:    base05
+XConsole*background:    base00
+XConsole*cursorColor:   base05
