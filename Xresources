@@ -92,9 +92,6 @@ XTerm*highlightColorMode:  false
 ! Dynamic colors
 XTerm*dynamicColors:       true
 
-! Enable colors for underline and bold
-#include ".Xresources.d/XTerm-color"
-
 
 ! ----------------------------------------------------------------------
 ! URxvt section
@@ -202,4 +199,5 @@ xfig*startlatexFont:    Default
 ! ----------------------------------------------------------------------
 ! Default colorscheme
 !
-#include ".Xresources.d/base16.colors"
+#include ".Xresources.d/base16.colorscheme"
+#include ".Xresources.d/XTerm-color"
