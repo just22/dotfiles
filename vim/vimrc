@@ -32,8 +32,6 @@ call vundle#begin()
 
 Plugin 'https://github.com/chriskempson/base16-vim'
 
-Plugin 'https://github.com/altercation/vim-colors-solarized.git'
-
 Plugin 'https://github.com/tpope/vim-tbone.git'
 
 Plugin 'https://github.com/sk1418/QFGrep'
@@ -195,7 +193,9 @@ set smartcase
 " Visibility and context
 "
 " Highlight the screen line of the cursor
-set cursorline
+if exists("$DISPLAY")
+        set cursorline
+endif
 
 " Precede each line with its line number
 set number
@@ -302,92 +302,91 @@ set statusline+=%P                              " Percent through file
 set dir=~/.vim/swap//,/var/tmp//,/tmp//,.
 
 " ----------------------------------------------------------------------------
-" Cursor shape in insert/command mode
+" Insert/command mode flag
 "
-"if exists("$DISPLAY")
-"       " 0 -> blinking block
-"       " 1 -> blinking block
-"       " 2 -> solid block
-"       " 3 -> blinking underscore
-"       " 4 -> solid underscore
-"       " 5 -> blinking vertical bar
-"       " 6 -> solid vertical bar
-"       if &term =~ "^xterm.*"
-"               let &t_SI .= "\<Esc>[3 q"
-"               let &t_EI .= "\<Esc>[0 q"
-"       elseif &term =~ "^screen.*"
-"               let &t_SI .= "\033Ptmux;\033\033[3 q\007\033\\"
-"               let &t_EI .= "\033Ptmux;\033\033[0 q\007\033\\"
-"       endif
-"else
-"       if &term == "linux"      " Virtual console, not in tmux
-"               let &t_ve = substitute(&t_ve, '\e[?\zs0c', '6c', 'g')
-"               au InsertEnter * let &t_ve = substitute(&t_ve, '\e[?\zs6c', '2c', 'g')
-"               au InsertLeave * let &t_ve = substitute(&t_ve, '\e[?\zs2c', '6c', 'g')
-"       elseif &term =~ "^screen.*"   " tmux in virtual console
-"       endif
-"endif
+if exists("$DISPLAY")
+        au InsertEnter * setlocal cursorcolumn
+        if exists("+colorcolumn")
+                au InsertEnter * setlocal colorcolumn=78
+        endif
 
-" In insert/replace mode, highlight the cursor column and the edge of
-" text area and unset cursorline visibility
-"
-"au InsertEnter * highlight! CursorLineNR ctermfg=0 ctermbg=7
-"au InsertLeave * highlight! clear CursorLineNR ctermfg ctermbg
-
-au InsertEnter * setlocal cursorcolumn
-if exists("+colorcolumn")
-        au InsertEnter * setlocal colorcolumn=78
-endif
-
-au InsertLeave * setlocal nocursorcolumn
-if exists("+colorcolumn")
-        au InsertLeave * setlocal colorcolumn=0
+        au InsertLeave * setlocal nocursorcolumn
+        if exists("+colorcolumn")
+                au InsertLeave * setlocal colorcolumn=0
+        endif
 endif
 
 " ----------------------------------------------------------------------------
 " Colorscheme
 "
-if filereadable(expand("$HOME/.vim/colors/base16.vim"))
-        colorscheme base16
-endif
-
 if exists("$DISPLAY")
         set t_Co=256
+        if filereadable(expand("$HOME/.vim/colors/base16.vim"))
+                colorscheme base16
+        endif
 endif
 
-"if exists("$DISPLAY")
-"        set background=dark
-"        if exists("$DISPLAY")
-"                set t_Co=256
-"        endif
-"
-"        syntax enable
-"
-"        let g:solarized_contrast="high"  "default value is normal
-"        let g:solarized_visibility="normal"  "default value is normal
-"        let g:solarized_diffmode="high"  "default value is normal
-"
-"        " The following items are available options, but
-"        " they are currently set to their defaults
-"        "let g:solarized_termtrans=0
-"        "let g:solarized_degrade=0
-"        "let g:solarized_bold=1
-"        "let g:solarized_underline=1
-"        "let g:solarized_italic=1
-"        "let g:solarized_termcolors=16
-"        "let g:solarized_hitrail=0
-"        "let g:solarized_menu=1
-"
-"        "colorscheme solarized
-"        colorscheme solarized_minimal
-"
-"        "colorscheme base16-chalk-custom
-"        "
-"        "let g:mirodark_disable_color_approximation=1
-"        "colorscheme mirodark
-""else
-""       colorscheme miro8
-"endif
+function! MinimalSyntaxSwap()
+        if ! exists("b:minSyntax") || b:minSyntax == 0
+                let b:minSyntax = 1
+                hi Boolean term=NONE cterm=NONE ctermfg=NONE ctermbg=NONE gui=NONE guifg=NONE guibg=NONE
+                hi Character term=NONE cterm=NONE ctermfg=NONE ctermbg=NONE gui=NONE guifg=NONE guibg=NONE
+                hi Conceal term=NONE cterm=NONE ctermfg=NONE ctermbg=NONE gui=NONE guifg=NONE guibg=NONE
+                hi Conditional term=NONE cterm=NONE ctermfg=NONE ctermbg=NONE gui=NONE guifg=NONE guibg=NONE
+                hi Constant term=NONE cterm=NONE ctermfg=NONE ctermbg=NONE gui=NONE guifg=NONE guibg=NONE
+                hi Debug term=NONE cterm=NONE ctermfg=NONE ctermbg=NONE gui=NONE guifg=NONE guibg=NONE
+                hi Define term=NONE cterm=NONE ctermfg=NONE ctermbg=NONE gui=NONE guifg=NONE guibg=NONE
+                hi Delimiter term=NONE cterm=NONE ctermfg=NONE ctermbg=NONE gui=NONE guifg=NONE guibg=NONE
+                hi Directive term=NONE cterm=NONE ctermfg=NONE ctermbg=NONE gui=NONE guifg=NONE guibg=NONE
+                hi Exception term=NONE cterm=NONE ctermfg=NONE ctermbg=NONE gui=NONE guifg=NONE guibg=NONE
+                hi Float term=NONE cterm=NONE ctermfg=NONE ctermbg=NONE gui=NONE guifg=NONE guibg=NONE
+                hi Format term=NONE cterm=NONE ctermfg=NONE ctermbg=NONE gui=NONE guifg=NONE guibg=NONE
+                hi Function term=NONE cterm=NONE ctermfg=NONE ctermbg=NONE gui=NONE guifg=NONE guibg=NONE
+                hi Identifier term=NONE cterm=NONE ctermfg=NONE ctermbg=NONE gui=NONE guifg=NONE guibg=NONE
+                hi Ignore term=NONE cterm=NONE ctermfg=NONE ctermbg=NONE gui=NONE guifg=NONE guibg=NONE
+                hi Include term=NONE cterm=NONE ctermfg=NONE ctermbg=NONE gui=NONE guifg=NONE guibg=NONE
+                hi Keyword term=NONE cterm=NONE ctermfg=NONE ctermbg=NONE gui=NONE guifg=NONE guibg=NONE
+                hi Label term=NONE cterm=NONE ctermfg=NONE ctermbg=NONE gui=NONE guifg=NONE guibg=NONE
+                hi Macro term=NONE cterm=NONE ctermfg=NONE ctermbg=NONE gui=NONE guifg=NONE guibg=NONE
+                hi Number term=NONE cterm=NONE ctermfg=NONE ctermbg=NONE gui=NONE guifg=NONE guibg=NONE
+                hi Operator term=NONE cterm=NONE ctermfg=NONE ctermbg=NONE gui=NONE guifg=NONE guibg=NONE
+                hi PreCondit term=NONE cterm=NONE ctermfg=NONE ctermbg=NONE gui=NONE guifg=NONE guibg=NONE
+                hi PreProc term=NONE cterm=NONE ctermfg=NONE ctermbg=NONE gui=NONE guifg=NONE guibg=NONE
+                hi Repeat term=NONE cterm=NONE ctermfg=NONE ctermbg=NONE gui=NONE guifg=NONE guibg=NONE
+                hi SpecialChar term=NONE cterm=NONE ctermfg=NONE ctermbg=NONE gui=NONE guifg=NONE guibg=NONE
+                hi SpecialComment term=NONE cterm=NONE ctermfg=NONE ctermbg=NONE gui=NONE guifg=NONE guibg=NONE
+                hi Special term=NONE cterm=NONE ctermfg=NONE ctermbg=NONE gui=NONE guifg=NONE guibg=NONE
+                hi Statement term=NONE cterm=NONE ctermfg=NONE ctermbg=NONE gui=NONE guifg=NONE guibg=NONE
+                hi StorageClass term=NONE cterm=NONE ctermfg=NONE ctermbg=NONE gui=NONE guifg=NONE guibg=NONE
+                hi String term=NONE cterm=NONE ctermfg=NONE ctermbg=NONE gui=NONE guifg=NONE guibg=NONE
+                hi Structure term=NONE cterm=NONE ctermfg=NONE ctermbg=NONE gui=NONE guifg=NONE guibg=NONE
+                hi Tag term=NONE cterm=NONE ctermfg=NONE ctermbg=NONE gui=NONE guifg=NONE guibg=NONE
+                hi Title term=NONE cterm=NONE ctermfg=NONE ctermbg=NONE gui=NONE guifg=NONE guibg=NONE
+                hi Typedef term=NONE cterm=NONE ctermfg=NONE ctermbg=NONE gui=NONE guifg=NONE guibg=NONE
+                hi Type term=NONE cterm=NONE ctermfg=NONE ctermbg=NONE gui=NONE guifg=NONE guibg=NONE
+                hi Underlined term=NONE cterm=NONE ctermfg=NONE ctermbg=NONE gui=NONE guifg=NONE guibg=NONE
+        else
+                let b:minSyntax = 0
+                if exists("$DISPLAY")
+                        set t_Co=256
+                        if filereadable(expand("$HOME/.vim/colors/base16.vim"))
+                                colorscheme base16
+                        else
+                                colorscheme default
+                        endif
+                else
+                        colorscheme default
+                endif
+        endif
+endfunction
+
+if exists("$DISPLAY")
+        let b:minSyntax = 0
+else
+        call MinimalSyntaxSwap()
+endif
+
+nnoremap <silent> <leader>sx :call MinimalSyntaxSwap()<CR>
 
 " ----------------------------------------------------------------------------
 " Don't use Ex mode, use Q for formatting
@@ -483,7 +482,6 @@ function! CursorColumnVisibilityToggling()
         else
                 setlocal cursorcolumn
                 setlocal colorcolumn=78
-                "setlocal colorcolumn=+0
         endif
 endfunction
 nnoremap <silent> <C-\> :call CursorColumnVisibilityToggling()<CR>
