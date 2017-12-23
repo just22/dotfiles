@@ -201,3 +201,4 @@ xfig*startlatexFont:    Default
 !
 #include ".Xresources.d/base16.colorscheme"
 #include ".Xresources.d/XTerm-color"
+#include ".Xresources.d/XConsole-color"
