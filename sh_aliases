@@ -141,9 +141,7 @@ cvs-up          - Update
 # Change XTerm colorscheme on-the-fly
 #
 dark            - Switch current xterm colors to solarized-dark
-dark-desat      - Switch current xterm colors to solarized-dark-desaturated
 light           - Switch current xterm colors to solarized-light
-light-desat     - Switch current xterm colors to solarized-light-desaturated
 __MYALIAS__
 }
 myalias() { _myalias | grep ${1-.\*} | less -cF; }
@@ -538,8 +536,6 @@ cvs-adddir() {
 # ----------------------------------------------------------------------
 # Change XTerm colorscheme on-the-fly
 #
-alias dark='dynamic-colors switch solarized-dark'
-alias dark-desat='dynamic-colors switch solarized-dark-desaturated'
-alias light='dynamic-colors switch solarized-light'
-alias light-desat='dynamic-colors switch solarized-light-desaturated'
+alias dark='colman set solarized-dark'
+alias light='colman set solarized-light'
 
