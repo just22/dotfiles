@@ -30,7 +30,7 @@ call vundle#begin()
         Plugin 'gmarik/vundle'
 " }
 
-Plugin 'https://github.com/chriskempson/base16-vim'
+Plugin 'https://github.com/wincent/terminus'
 
 Plugin 'https://github.com/tpope/vim-tbone.git'
 
@@ -56,8 +56,6 @@ Plugin 'https://github.com/ervandew/supertab.git'
 Plugin 'https://github.com/kien/ctrlp.vim'
 
 Plugin 'https://github.com/christoomey/vim-tmux-navigator'
-
-Plugin 'https://github.com/molok/vim-smartusline'
 
 call vundle#end()
 
@@ -101,6 +99,9 @@ set cmdwinheight=5
 
 " Character encoding
 set encoding=utf-8
+
+" Comment lines sane join
+set formatoptions+=j
 
 " Make a buffer hidden when it is |abandon|ed (instead of unloading it)
 set hidden
@@ -302,19 +303,29 @@ set statusline+=%P                              " Percent through file
 set dir=~/.vim/swap//,/var/tmp//,/tmp//,.
 
 " ----------------------------------------------------------------------------
-" Insert/command mode flag
+" Change statusbar color when in insert mode (not in GUI)
 "
-if exists("$DISPLAY")
-        au InsertEnter * setlocal cursorcolumn
-        if exists("+colorcolumn")
-                au InsertEnter * setlocal colorcolumn=78
-        endif
+"if exists("$DISPLAY") && ! has("gui_running")
+"        au InsertEnter * hi StatusLine ctermfg=00 ctermbg=01
+"        au InsertLeave * hi StatusLine ctermfg=10 ctermbg=12
+"endif
+"inoremap  :hi StatusLine ctermfg=10 ctermbg=12<CR>
 
-        au InsertLeave * setlocal nocursorcolumn
-        if exists("+colorcolumn")
-                au InsertLeave * setlocal colorcolumn=0
+" ----------------------------------------------------------------------------
+" Current and 78th columns highlight toggling
+"
+function! ColHiToggle()
+        if ! exists("b:hiColumns") || b:hiColumns == 0
+                let b:hiColumns = 1
+                setlocal cursorcolumn
+                setlocal colorcolumn=78
+        else
+                let b:hiColumns = 0
+                setlocal nocursorcolumn
+                setlocal colorcolumn=0
         endif
-endif
+endfunction
+nnoremap <leader><leader> :call ColHiToggle()<CR>
 
 " ----------------------------------------------------------------------------
 " Colorscheme
@@ -326,7 +337,7 @@ if exists("$DISPLAY")
         endif
 endif
 
-function! MinimalSyntaxSwap()
+function! MinimalSyntaxToggle()
         if ! exists("b:minSyntax") || b:minSyntax == 0
                 let b:minSyntax = 1
                 hi Boolean term=NONE cterm=NONE ctermfg=NONE ctermbg=NONE gui=NONE guifg=NONE guibg=NONE
@@ -383,10 +394,10 @@ endfunction
 if exists("$DISPLAY")
         let b:minSyntax = 0
 else
-        call MinimalSyntaxSwap()
+        call MinimalSyntaxToggle()
 endif
 
-nnoremap <silent> <leader>sx :call MinimalSyntaxSwap()<CR>
+nnoremap <silent> <leader>sx :call MinimalSyntaxToggle()<CR>
 
 " ----------------------------------------------------------------------------
 " Don't use Ex mode, use Q for formatting
@@ -883,6 +894,34 @@ map <F10> :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans
 \ . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">"<CR>
 
 " ----------------------------------------------------------------------------
+" Let <Space> act as in less
+"
+nnoremap <Space> 
+nnoremap <C-@> 
+
+" ----------------------------------------------------------------------------
+" Keep selected text when fixing indentation
+"
+vnoremap < <gv
+vnoremap > >gv
+
+" ----------------------------------------------------------------------------
+" Return to normal mode when leaving a buffer
+"
+:autocmd BufLeave * stopinsert
+
+" ----------------------------------------------------------------------------
+" Map ENTER and BACKSPACE in normal/visual mode to move among paragraphs
+"
+nnoremap <BS> {
+onoremap <BS> {
+vnoremap <BS> {
+
+nnoremap <expr> <CR> empty(&buftype) ? '}' : '<CR>'
+onoremap <expr> <CR> empty(&buftype) ? '}' : '<CR>'
+vnoremap <CR> }
+
+" ----------------------------------------------------------------------------
 " vim-notes plugin
 "
 let g:notes_directories=['$HOME/notes']
@@ -953,6 +992,12 @@ nnoremap <silent> <Esc>[B    :TmuxNavigateDown<CR>
 nnoremap <silent> <Esc>[C    :TmuxNavigateRight<CR>
 nnoremap <silent> <Esc>[D    :TmuxNavigateLeft<CR>
 nnoremap <silent> <C-\>      :TmuxNavigatePrevious<CR>
+
+" ----------------------------------------------------------------------------
+" terminus plugin
+"
+let g:TerminusInsertCursorShape  = 1
+let g:TerminusReplaceCursorShape = 2
 
 " ----------------------------------------------------------------------------
 " Map <Tab> to <C-Tab> to allow inserting a tab character not at the beginning
