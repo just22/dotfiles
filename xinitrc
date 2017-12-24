@@ -11,8 +11,10 @@
 # Temporary disabled: it works for login shells only...
 #set +o nohup
 
-# X apps default settings
-xrdb -load -I${HOME} ~/.Xresources
+# Set the default colorscheme and X resources
+if ! colman set solarized-dark; then
+        xrdb -load -I${HOME} ~/.Xresources
+fi
 
 # Set keyboard layout
 setxkbmap it
