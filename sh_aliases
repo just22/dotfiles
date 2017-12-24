@@ -142,6 +142,18 @@ cvs-up          - Update
 #
 dark            - Switch current xterm colors to solarized-dark
 light           - Switch current xterm colors to solarized-light
+
+# ----------------------------------------------------------------------
+# dict.org searches
+#
+en              - English definitions
+lookup          - Engligh word matching (SOUNDEX algorithm)
+syn             - English synonyms
+enit            - English to Italian translation
+iten            - Italian to English translation
+comp            - Definition from The Free On-line Dictionary of Computing
+joke            - Definition from The Devil's Dictionary (1881-1906)
+
 __MYALIAS__
 }
 myalias() { _myalias | grep ${1-.\*} | less -cF; }
@@ -539,3 +551,13 @@ cvs-adddir() {
 alias dark='colman set solarized-dark'
 alias light='colman set solarized-light'
 
+# ----------------------------------------------------------------------
+# dict.org lookups
+#
+en()     { curl -s dict://dict.org/define:$1:gcide          | grep -Ev "^[0-9]+ |^\." | less -F; }
+lookup() { curl -s dict://dict.org/match:$1:gcide::soundex  | grep -Ev "^[0-9]+ |^\." | tr -d \" | awk '{print $2}' | less -F; }
+syn()    { curl -s dict://dict.org/define:$1:moby-thesaurus | grep -Ev "^[0-9]+ |^\." | less -F; }
+enit()   { curl -s dict://dict.org/define:$1:fd-eng-ita     | grep -Ev "^[0-9]+ |^\." | less -F; }
+iten()   { curl -s dict://dict.org/define:$1:fd-ita-eng     | grep -Ev "^[0-9]+ |^\." | less -F; }
+comp()   { curl -s dict://dict.org/define:$1:foldoc         | grep -Ev "^[0-9]+ |^\." | less -F; }
+joke()   { curl -s dict://dict.org/define:$1:devil          | grep -Ev "^[0-9]+ |^\." | less -F; }
