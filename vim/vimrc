@@ -28,9 +28,6 @@ set autoread
 " Allow backspacing over everything in insert mode
 set backspace=indent,eol,start
 
-" Clipboard settings
-set clipboard=autoselectplus,exclude:cons\|linux
-
 " Number of screen lines to use for the command-line window
 set cmdwinheight=5
 
