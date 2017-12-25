@@ -5,21 +5,255 @@
 " ----------------------------------------------------------------------------
 
 " ----------------------------------------------------------------------------
+" Preliminary settings
+" ----------------------------------------------------------------------------
+
 " Use Vim rather than Vi settings (much better!)
 " This must be first, because it changes other options as a side effect
-"
 set nocompatible
 
-" ----------------------------------------------------------------------------
-" When started as "evim", evim.vim will already have done these settings
-"
+" When started as "evim" (Easy Vim, setup for modeless editing), end here
 if v:progname =~? "evim"
         finish
 endif
 
+
+" ----------------------------------------------------------------------------
+" General settings
+" ----------------------------------------------------------------------------
+
+" Automatically read again a file when changed outside of Vim
+set autoread
+
+" Allow backspacing over everything in insert mode
+set backspace=indent,eol,start
+
+" Clipboard settings
+set clipboard=autoselectplus,exclude:cons\|linux
+
+" Number of screen lines to use for the command-line window
+set cmdwinheight=5
+
+" Ignore white spaces in diff mode
+set diffopt+=iwhite
+
+" Store swap files in fixed location, not current directory
+set dir=~/.vim/swap//,/var/tmp//,/tmp//,.
+
+" Character encoding
+set encoding=utf-8
+
+" Comment lines sane join
+set formatoptions+=j
+
+" Make a buffer hidden when it is |abandon|ed (instead of unloading it)
+set hidden
+
+" Keep 100 lines of command line history
+set history=100
+
+" Do not redraw the screen while executing commands that have not been typed
+set lazyredraw
+
+" Enable mouse use in all modes (in console too)
+set mouse=a
+
+" Disable beeping (aka bell) and window flashing
+set noerrorbells visualbell t_vb=
+
+" Switch off automatically setting options by means of modelines (to prevent
+" some security exploits)
+set nomodeline
+
+" Paste mode
+set pastetoggle=<F12>
+nnoremap <silent> <F12> :set paste!<CR>
+
+" Command for starting a shell
+set shell=/bin/sh
+
+" The time in milliseconds that is waited for a mapped key
+set timeoutlen=500
+
+" Do not set xterm title
+"set notitle
+
+" The time in milliseconds that is waited for a key code
+set ttimeoutlen=10
+
+" Improves smoothness of redrawing
+set ttyfast
+
+" On pressing 'wildchar' (usually <Tab>) to invoke completion, the possible
+" matches are shown
+set wildmenu
+
+" When more than one match, complete till longest common string
+set wildmode=longest,list
+
+
+" ----------------------------------------------------------------------------
+" Tabs and indentation
+" ----------------------------------------------------------------------------
+
+" Copy indent from current line when starting a new line
+set autoindent
+
+" Do smart autoindenting when starting a new line
+set smartindent
+
+" Use spaces instead of tabs by default
+set expandtab
+
+" Number of spaces that a <Tab> in the file counts for
+set tabstop=8
+
+" Number of spaces to use for each step of (auto)indent
+set shiftwidth=8
+
+" Number of spaces that a <Tab> counts for while performing editing operations
+set softtabstop=8
+
+
+" ----------------------------------------------------------------------------
+" Search
+" ----------------------------------------------------------------------------
+
+" Highlight the last used search pattern
+set hlsearch
+
+" Searching is not case sensitive
+set ignorecase
+
+" While typing a search command, show where the pattern matches
+set incsearch
+
+" If a pattern contains an uppercase letter, it is case sensitive, otherwise, it is not
+set smartcase
+
+
+" ----------------------------------------------------------------------------
+" Visibility and context
+" ----------------------------------------------------------------------------
+
+" Highlight the screen line of the cursor
+if exists("$DISPLAY")
+        set cursorline
+endif
+
+" Precede each line with its line number
+set number
+
+" Show the line number relative to the line with the cursor
+if exists("+relativenumber")
+        set norelativenumber
+        nnoremap <silent> <leader>R :set relativenumber!<CR>
+endif
+nnoremap <silent> <leader>N :set number!<CR>
+
+" Show the cursor position all the time
+set noruler
+
+" Minimal number of screen lines to keep above and below the cursor
+set scrolloff=2
+
+" Wrap long lines
+set nowrap
+
+
+" ----------------------------------------------------------------------------
+" Windows and tabs
+" ----------------------------------------------------------------------------
+
+" Splitting a window will put the new window below/right the current one
+set splitbelow
+set splitright
+
+" Never show tab page labels
+set showtabline=0
+
+
+" ----------------------------------------------------------------------------
+" Undo
+" ----------------------------------------------------------------------------
+if exists("+undofile")
+        " Store undo info so you can undo previous actions even after you close and reopen a file (only in 7.3)
+        set undofile
+        " Store undo files in a fixed location, not current directory
+        set undodir=~/.vim/undo
+endif
+
+
+" ----------------------------------------------------------------------------
+" Unprintable chars highlighting
+" ----------------------------------------------------------------------------
+set list
+if (&term != "vt220") && (&term != "wsvt25")
+        set listchars=tab:→\ ,trail:·,extends:»,precedes:«,nbsp:·
+else
+        set listchars=tab:>\ ,trail:.,extends:>,precedes:<,nbsp:.
+endif
+
+
+" ----------------------------------------------------------------------------
+" Status line
+" ----------------------------------------------------------------------------
+
+" Display incomplete commands
+set showcmd
+
+" If in Insert, Replace or Visual mode put a message on the last line
+set showmode
+
+" Always show a status line for the last window
+set laststatus=2
+
+" Paste status
+function! PasteStatus()
+        if (&paste)
+                return '[paste] '
+        else
+                return ''
+        endif
+endfunction
+
+" Flag multiple tabs
+function! MultiTabs()
+        if (tabpagewinnr(2, '$') > 0)
+                return '[tab+] '
+        else
+                return ''
+        endif
+endfunction
+
+set statusline=%*                               " Reset statusline format
+set statusline+=[%t]\                           " Name (tail) of file in the buffer
+set statusline+=[#%n]\                          " Buffer number
+set statusline+=[%Y%W%R%M%W]\                   " Filetype
+set statusline+=%{'['.&ff.']'}\                 " File format
+set statusline+=%{'['.&fenc.']'}\               " File encoding
+set statusline+=%{MultiTabs()}                  " Working with multiple tab pages
+set statusline+=%{PasteStatus()}                " Paste mode
+set statusline+=%=                              " Move to right
+set statusline+=[0x%B]\                         " Current char
+set statusline+=[%l/%L\ %c]\                    " Cursor line / total lines
+set statusline+=%P                              " Percent through file
+
+
+" ----------------------------------------------------------------------------
+" Change statusbar color when in insert mode (not in GUI)
+"
+"if exists("$DISPLAY") && ! has("gui_running")
+"        autocmd InsertEnter * hi StatusLine ctermfg=00 ctermbg=01
+"        autocmd InsertLeave * hi StatusLine ctermfg=10 ctermbg=12
+"endif
+"inoremap  :hi StatusLine ctermfg=10 ctermbg=12<CR>
+
+
 " ----------------------------------------------------------------------------
 "  Plugins config section (using Vundle)
-"
+" ----------------------------------------------------------------------------
+
 filetype off
 set rtp+=~/.vim/bundles/vundle/
 call vundle#rc("~/.vim/bundles")
@@ -59,282 +293,90 @@ Plugin 'https://github.com/christoomey/vim-tmux-navigator'
 
 call vundle#end()
 
-" ----------------------------------------------------------------------------
 " Enable extended % matching
-"
 runtime macros/matchit.vim
 
-" ----------------------------------------------------------------------------
 " Enable file type detection. Use the default filetype settings, so that mail
 " gets 'tw' set to 72, 'cindent' is on in C files, etc. Also load indent
 " files, to automatically do language-dependent indenting.
-"
-"filetype plugin indent on
-filetype plugin on
+filetype plugin indent on
+
+" vim-notes
+let g:notes_directories=['$HOME/notes']
+let g:notes_suffix=".txt"
+let g:notes_unicode_enabled = 0
+nnoremap <silent> <leader>nn :Note<CR>
+nnoremap <silent> <leader>dn :DeleteNote!<CR>
+vnoremap <silent> <leader>en :NoteFromSelectedText<CR>
+vnoremap <silent> <leader>sn :SplitNoteFromSelectedText<CR>
+vnoremap <silent> <leader>tn :TabNoteFromSelectedText<CR>
+nnoremap <silent> <leader>wp :execute "Note Planning for WK".system("date --date=next-monday +%y%V")<CR>
+nnoremap <silent> <leader>wt :r ~/notes/weekly_planning.tmpl<CR>
+
+" Tabular
+nmap <silent> <leader>a= :Tabularize /=<CR>
+vmap <silent> <leader>a= :Tabularize /=<CR>
+nmap <silent> <leader>a: :Tabularize /:\zs<CR>
+vmap <silent> <leader>a: :Tabularize /:\zs<CR>
+nmap <silent> <leader>a<Bar> :Tabularize /\|/l1<CR>
+vmap <silent> <leader>a<Bar> :Tabularize /\|/l1<CR>
+nmap <silent> <leader>a<Space> :Tabularize / /l0<CR>
+vmap <silent> <leader>a<Space> :Tabularize / /l0<CR>
+
+" Tbone
+vnoremap <silent> <leader><CR> :Twrite Top<CR>
+nnoremap <silent> <leader><CR> :.Twrite Top<CR>
+
+" csv
+nnoremap <silent> <leader>A :%CSVArrangeColumn<CR>
+
+" supertab (+ completion popup menu adjustment)
+let g:SuperTabDefaultCompletionType = "context"
+let g:SuperTabLongestHighlight = 1
+let g:SuperTabMappingForward = "<F1>"
+let g:SuperTabMappingBackward = "<S-F1>"
+set completeopt=longest,menuone
+inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+
+" ctrlp
+let g:ctrlp_map = '<leader>p'
+let g:ctrlp_use_caching = 1
+let g:ctrlp_clear_cache_on_exit = 0
+let g:ctrlp_cache_dir = $HOME.'/.vim/cache/ctrlp'
+let g:ctrlp_root_markers = ['.vim_ctrlp_root']
+let g:ctrlp_working_path_mode = 'ra'
+let g:ctrlp_custom_ignore = '\v[\/](.git|.hg|.svn|CVS|.SYNC)$'
+
+" vim-tmux-navigator
+let g:tmux_navigator_no_mappings = 1
+nnoremap <silent> <Esc>[1;5A :TmuxNavigateUp<CR>
+nnoremap <silent> <Esc>[1;5B :TmuxNavigateDown<CR>
+nnoremap <silent> <Esc>[1;5C :TmuxNavigateRight<CR>
+nnoremap <silent> <Esc>[1;5D :TmuxNavigateLeft<CR>
+nnoremap <silent> <Esc>[A    :TmuxNavigateUp<CR>
+nnoremap <silent> <Esc>[B    :TmuxNavigateDown<CR>
+nnoremap <silent> <Esc>[C    :TmuxNavigateRight<CR>
+nnoremap <silent> <Esc>[D    :TmuxNavigateLeft<CR>
+nnoremap <silent> <C-\>      :TmuxNavigatePrevious<CR>
+
+" netrw (see http://ivanbrennan.nyc/blog/2014/01/16/rigging-vims-netrw)
+let g:netrw_liststyle=3         " 0: thin view; 3: tree view
+let g:netrw_banner=0            " No banner
+let g:netrw_altv=1              " Open files shown on the right
+let g:netrw_browse_split=4      " Open files in previous window
+"let g:netrw_preview=1          " Preview window shown in a vertically split
+augroup NetrwGroup
+        autocmd! BufEnter * call NormalizeWidths()
+augroup END
+
 
 " ----------------------------------------------------------------------------
-" Automatically reload config file when it is written
-"
-autocmd! BufWritePost .vimrc source %
-autocmd! BufWritePost ~/.vim/vimrc source %
-
+" Syntax highlighting
 " ----------------------------------------------------------------------------
+
 " Switch syntax highlighting on, when the terminal has colors
-"
 if &t_Co > 2 || has("gui_running")
         syntax on
-endif
-
-" ----------------------------------------------------------------------------
-" General settings
-"
-" Automatically read again a file when changed outside of Vim
-set autoread
-
-" Allow backspacing over everything in insert mode
-set backspace=indent,eol,start
-
-" Number of screen lines to use for the command-line window
-set cmdwinheight=5
-
-" Character encoding
-set encoding=utf-8
-
-" Comment lines sane join
-set formatoptions+=j
-
-" Make a buffer hidden when it is |abandon|ed (instead of unloading it)
-set hidden
-
-" Keep 100 lines of command line history
-set history=100
-
-" Do not redraw the screen while executing commands that have not been typed
-set lazyredraw
-
-" "Leader" key mapping
-"let mapleader="\<Space>"
-"let maplocalleader="\<Space>"
-let mapleader="!"
-let maplocalleader="!"
-
-" Enable mouse use in all modes (in console too)
-set mouse=a
-
-" Disable beeping (aka bell) and window flashing
-set noerrorbells visualbell t_vb=
-
-" Switch off automatically setting options by means of modelines (to prevent
-" some security exploits)
-set nomodeline
-
-" Command for starting a shell
-set shell=/bin/sh
-
-" The time in milliseconds that is waited for a mapped key
-set timeoutlen=500
-
-" Do not set xterm title
-"set notitle
-
-" The time in milliseconds that is waited for a key code
-set ttimeoutlen=10
-
-" Improves smoothness of redrawing
-set ttyfast
-
-" On pressing 'wildchar' (usually <Tab>) to invoke completion, the possible
-" matches are shown
-set wildmenu
-
-" When more than one match, complete till longest common string
-set wildmode=longest,list
-
-" ----------------------------------------------------------------------------
-" Tabs and indentation
-"
-" Copy indent from current line when starting a new line
-set autoindent
-
-" Do smart autoindenting when starting a new line
-set smartindent
-
-" Use spaces instead of tabs by default
-set expandtab
-
-" Number of spaces that a <Tab> in the file counts for
-set tabstop=8
-
-" Number of spaces to use for each step of (auto)indent
-set shiftwidth=8
-
-" Number of spaces that a <Tab> counts for while performing editing operations
-set softtabstop=8
-
-" ----------------------------------------------------------------------------
-" Search
-"
-" Highlight the last used search pattern
-set hlsearch
-nnoremap <silent> <Tab> :nohlsearch<CR>
-
-" Highlight all occurrences of the word under the cursor (without moving)
-nnoremap <Leader>* :let @/='\<<C-R>=expand("<cword>")<CR>\>'<CR>:set hls<CR>
-
-" Searching is not case sensitive
-set ignorecase
-
-" While typing a search command, show where the pattern matches
-set incsearch
-
-" If a pattern contains an uppercase letter, it is case sensitive, otherwise, it is not
-set smartcase
-
-" ----------------------------------------------------------------------------
-" Visibility and context
-"
-" Highlight the screen line of the cursor
-if exists("$DISPLAY")
-        set cursorline
-endif
-
-" Precede each line with its line number
-set number
-
-" Show the line number relative to the line with the cursor
-if exists("+relativenumber")
-        set norelativenumber
-        nnoremap <silent> <leader>R :set relativenumber!<CR>
-endif
-nnoremap <silent> <leader>N :set number!<CR>
-
-" Minimal number of screen lines to keep above and below the cursor
-nnoremap <silent> <leader>S :let &scrolloff=5-&scrolloff<CR>
-
-" Show the cursor position all the time
-set noruler
-
-" Minimal number of screen lines to keep above and below the cursor
-set scrolloff=2
-
-" Wrap long lines
-set nowrap
-
-" ----------------------------------------------------------------------------
-" Windows and tabs
-"
-" Splitting a window will put the new window below/right the current one
-set splitbelow
-set splitright
-
-" Never show tab page labels
-set showtabline=0
-
-" ----------------------------------------------------------------------------
-" Undo
-"
-if exists("+undofile")
-        " Store undo info so you can undo previous actions even after you close and reopen a file (only in 7.3)
-        set undofile
-        " Store undo files in a fixed location, not current directory
-        set undodir=~/.vim/undo
-endif
-
-" ----------------------------------------------------------------------------
-" Unprintable chars highlighting
-"
-set list
-nnoremap <silent> <leader>0 :set list!<CR>
-
-if (&term != "vt220") && (&term != "wsvt25")
-        set listchars=tab:→\ ,trail:·,extends:»,precedes:«,nbsp:·
-else
-        set listchars=tab:>\ ,trail:.,extends:>,precedes:<,nbsp:.
-endif
-
-" ----------------------------------------------------------------------------
-" Status line
-"
-" Display incomplete commands
-set showcmd
-
-" If in Insert, Replace or Visual mode put a message on the last line
-set showmode
-
-" Always show a status line for the last window
-set laststatus=2
-
-" Paste status
-function! PasteStatus()
-        if (&paste)
-                return '[paste] '
-        else
-                return ''
-        endif
-endfunction
-
-" Working with multiple tabs (considered unusual...)
-function! MultiTabs()
-        if (tabpagewinnr(2, '$') > 0)
-                return '[tab+] '
-        else
-                return ''
-        endif
-endfunction
-
-set statusline=%*                               " Reset statusline format
-set statusline+=[%t]\                           " Name (tail) of file in the buffer
-set statusline+=[#%n]\                          " Buffer number
-set statusline+=[%Y%W%R%M%W]\                   " Filetype
-set statusline+=%{'['.&ff.']'}\                 " File format
-set statusline+=%{'['.&fenc.']'}\               " File encoding
-set statusline+=%{MultiTabs()}                  " Working with multiple tab pages
-set statusline+=%{PasteStatus()}                " Paste mode
-set statusline+=%=                              " Move to right
-set statusline+=[0x%B]\                         " Current char
-set statusline+=[%l/%L\ %c]\                    " Cursor line / total lines
-set statusline+=%P                              " Percent through file
-
-" ----------------------------------------------------------------------------
-" Store swap files in fixed location, not current directory
-" (swap file name will be built from the complete path to
-" the file with all path separators substituted to percent '%' signs)
-"
-set dir=~/.vim/swap//,/var/tmp//,/tmp//,.
-
-" ----------------------------------------------------------------------------
-" Change statusbar color when in insert mode (not in GUI)
-"
-"if exists("$DISPLAY") && ! has("gui_running")
-"        au InsertEnter * hi StatusLine ctermfg=00 ctermbg=01
-"        au InsertLeave * hi StatusLine ctermfg=10 ctermbg=12
-"endif
-"inoremap  :hi StatusLine ctermfg=10 ctermbg=12<CR>
-
-" ----------------------------------------------------------------------------
-" Current and 78th columns highlight toggling
-"
-function! ColHiToggle()
-        if ! exists("b:hiColumns") || b:hiColumns == 0
-                let b:hiColumns = 1
-                setlocal cursorcolumn
-                setlocal colorcolumn=78
-        else
-                let b:hiColumns = 0
-                setlocal nocursorcolumn
-                setlocal colorcolumn=0
-        endif
-endfunction
-nnoremap <leader><leader> :call ColHiToggle()<CR>
-
-" ----------------------------------------------------------------------------
-" Colorscheme
-"
-if exists("$DISPLAY")
-        set t_Co=256
-        if filereadable(expand("$HOME/.vim/colors/base16.vim"))
-                colorscheme base16
-        endif
 endif
 
 function! MinimalSyntaxToggle()
@@ -399,197 +441,26 @@ endif
 
 nnoremap <silent> <leader>sx :call MinimalSyntaxToggle()<CR>
 
-" ----------------------------------------------------------------------------
-" Don't use Ex mode, use Q for formatting
-"
-map Q gq
 
 " ----------------------------------------------------------------------------
-" Put these in an autocmd group, so that we can delete them easily.
-"
+" Autocommands
+" ----------------------------------------------------------------------------
+
 augroup vimrcEx
-au!
-
-" For all text files set 'textwidth' to 78 characters.
-autocmd FileType text setlocal textwidth=78
-
+        autocmd!
+        " For all text files set 'textwidth' to 78 characters
+        autocmd FileType text setlocal textwidth=78
 augroup END
 
-" ----------------------------------------------------------------------------
-" Force the cursor to drop back ONLY when necessary when
-" exiting insert mode
-"
-"inoremap <silent> <Esc> <C-O>:stopinsert<CR>
+" Automatically reload vim config file when it is written
+autocmd! BufWritePost .vimrc source %
+autocmd! BufWritePost ~/.vim/vimrc source %
 
-" ----------------------------------------------------------------------------
-" Turn on English/Italian spell checking
-"
-nnoremap <silent> <leader>E :setlocal spell spelllang=en<CR>
-        \:echo "Spell check (EN) switched on"<CR>
-nnoremap <silent> <leader>I :setlocal spell spelllang=it<CR>
-        \:echo "Spell check (IT) switched on"<CR>
-nnoremap <silent> <leader>so :setlocal nospell<CR>
-        \:echo "Spell check switched off"<CR>
-
-" ----------------------------------------------------------------------------
-" Make jumping to a marked line more intuitive
-"
-nnoremap ` '
-nnoremap ' `
-
-" ----------------------------------------------------------------------------
-" Occur: report all the lines containing a keyword (or the last search
-" regexp) in a scratch buffer
-"
-" Note: External grep doesn't work when filenames contain unusual
-"       characters (e.g., ":")
-"set grepprg=egrep\ -n\ -i\ $*\ /dev/null
-"        \ execute 'silent grep! <args>' |
-command! -nargs=+ Occur
-        \ execute 'silent vimgrep! <args>' |
-        \ copen 20 |
-        \ redraw!
-nnoremap <silent> <leader>w :Occur /warn/ %<CR>
-nnoremap <silent> <leader>e :Occur /error/ %<CR>
-
-" ----------------------------------------------------------------------------
-" Delete all lines containing the WORD under the cursor
-"
-nnoremap <silent> <leader>dw
-        \ :let cl=line(".")<CR>:g/<C-R><C-A>/d<CR>:call cursor(cl, 1)<CR>
-
-" ----------------------------------------------------------------------------
-" Paste the visual selection to the scratchpad (along with
-" the current file name)
-"
-vnoremap <silent> <leader>ps
-        \ :<C-U>silent! '<,'>w >> ~/.scratchpad<CR>
-        \ :call system("echo Yanked from: " . shellescape(expand("%:p")) . " >> ~/.scratchpad")<CR>
-
-" ----------------------------------------------------------------------------
-" Copy the current buffer filename (with full path)
-"
-nnoremap <silent> <leader>yy :let @*=expand("%:p")<CR>
-
-" ----------------------------------------------------------------------------
-" Search for visual selection
-"
-vnoremap * <Esc>/<C-R>*<CR>
-vnoremap # <Esc>?<C-R>*<CR>
-
-" ----------------------------------------------------------------------------
-" Swap wrap mode
-"
-nnoremap <silent> <leader>W :set wrap!<CR>
-
-" ----------------------------------------------------------------------------
-" Toggle cursorline/cursorcolumn mode
-"
-nnoremap <silent> <C-_> :set cursorline!<CR>
-function! CursorColumnVisibilityToggling()
-        if (&cursorcolumn)
-                setlocal nocursorcolumn
-                setlocal colorcolumn=0
-        else
-                setlocal cursorcolumn
-                setlocal colorcolumn=78
-        endif
-endfunction
-nnoremap <silent> <C-\> :call CursorColumnVisibilityToggling()<CR>
-
-" ----------------------------------------------------------------------------
-" Always go to the beginning of a line before doing a 'gF' operation
-"
-nnoremap gF 0gF
-
-" ----------------------------------------------------------------------------
-" Always use command window when enter command mode
-"
-"nnoremap : q:i
-
-" ----------------------------------------------------------------------------
-" Fix default regex handling (this makes searches use EREs)
-"
-"nnoremap / /\v
-"vnoremap / /\v
-"nnoremap <leader>/ /\V
-"vnoremap <leader>/ /\V
-"nnoremap ? ?\v
-"vnoremap ? ?\v
-"nnoremap <leader>? ?\V
-"vnoremap <leader>? ?\V
-
-" ----------------------------------------------------------------------------
-" Quickly close current buffer
-"
-nnoremap <silent> <leader>q :bdelete<CR>
-
-" ----------------------------------------------------------------------------
-" Mappings to access buffers (don't use "\p" because a delay before
-" pressing "p" would accidentally paste).
-" \ls      : list buffers
-" \b \f \g : go back/forward/last-used
-" \1 \2 \3 : go to buffer 1/2/3 etc.
-"
-nnoremap <leader>l  :ls<CR>
-nnoremap <leader>b  :bp<CR>
-nnoremap <leader>f  :bn<CR>
-nnoremap <leader>g  :e#<CR>
-nnoremap <silent> <leader>1  :1b<CR>
-nnoremap <silent> <leader>2  :2b<CR>
-nnoremap <silent> <leader>3  :3b<CR>
-nnoremap <silent> <leader>4  :4b<CR>
-nnoremap <silent> <leader>5  :5b<CR>
-nnoremap <silent> <leader>6  :6b<CR>
-nnoremap <silent> <leader>7  :7b<CR>
-nnoremap <silent> <leader>8  :8b<CR>
-nnoremap <silent> <leader>9  :9b<CR>
-
-" ----------------------------------------------------------------------------
 " Remove expandtab for Makefile and Python
-"
-au BufEnter [mM]akefile*,GNUmakefile,*.mk,*.mak,*.py set noexpandtab
-au BufLeave [mM]akefile*,GNUmakefile,*.mk,*.mak,*.py set expandtab
+autocmd BufEnter [mM]akefile*,GNUmakefile,*.mk,*.mak,*.py set noexpandtab
+autocmd BufLeave [mM]akefile*,GNUmakefile,*.mk,*.mak,*.py set expandtab
 
-" ----------------------------------------------------------------------------
-" Use right movement keys!
-"
-nnoremap j  gj
-nnoremap k  gk
-
-" ----------------------------------------------------------------------------
-" Emacs style keybindings in insert mode
-"
-inoremap <C-d> <C-o>x
-inoremap <C-a> <C-o>I
-inoremap <C-e> <C-o>A
-
-" ----------------------------------------------------------------------------
-" Move effectively among tabs
-"
-nnoremap <silent> <C-t>l :tabnext<CR>
-nnoremap <silent> <C-t><Right> :tabnext<CR>
-nnoremap <silent> <C-t>h :tabprevious<CR>
-nnoremap <silent> <C-t><Left> :tabprevious<CR>
-nnoremap <silent> <C-t>e :tabedit %<CR>
-nnoremap <silent> <C-t>q :tabclose<CR>
-
-" ----------------------------------------------------------------------------
-" Move effectively among windows
-"
-nnoremap <C-w>h <C-w><C-h>
-nnoremap <C-w>j <C-w><C-j>
-nnoremap <C-w>k <C-w><C-k>
-nnoremap <C-w>l <C-w><C-l>
-
-" ----------------------------------------------------------------------------
-" Underline
-"
-nnoremap <leader>u yypVr=
-
-" ----------------------------------------------------------------------------
-" Comments
-"
+" Comment char
 autocmd FileType c,cpp,java,scala let b:cchar = '//'
 autocmd FileType verilog          let b:cchar = '//'
 autocmd FileType vhdl             let b:cchar = '--'
@@ -602,6 +473,85 @@ autocmd FileType mail             let b:cchar = '>'
 autocmd FileType vim              let b:cchar = '"'
 autocmd FileType xdefaults        let b:cchar = '!'
 
+" Special mappings in diff mode
+autocmd FilterWritePre * if &diff | execute "nnoremap <C-p> [cz." | execute "nnoremap <C-n> ]cz." | endif
+
+" Spell check when writing commit logs
+autocmd filetype svn,*commit* setlocal spell spelllang=en
+
+" Set completion to the current script (only if a specific plugin does
+" not already exist for that filetype)
+if has("autocmd") && exists("+omnifunc")
+        autocmd Filetype *
+                \ if &omnifunc == "" |
+                \       setlocal omnifunc=syntaxcomplete#Complete |
+                \ endif
+endif
+
+" In mutt: 72-char per line max, set en spell checker
+autocmd BufRead ~/.mutt/tmp/mutt-* :source ~/.vim/mutt.vim
+
+" For tmp files, map a killall keybind
+autocmd BufRead /tmp/* nnoremap <silent> <leader>k :1,$d<CR>ZZ
+
+" Save the contents of the current window
+autocmd BufWinLeave * if expand("%") != "" | mkview | endif
+
+" Remove overheads for large files
+" When file's dimension is > 100MB, set the following options:
+" eventignore+=FileType (no syntax hilight etc, assumes FileType always on)
+" noswapfile (save copy of file)
+" bufhidden=unload (save memory when other file is viewed)
+" buftype=nowritefile (is read-only)
+" undolevels=-1 (no undo possible)
+let g:LargeFile = 1024 * 1024 * 100
+augroup LargeFile
+        autocmd BufReadPre * let f=expand("<afile>") | if getfsize(f) > g:LargeFile | set eventignore+=FileType | setlocal noswapfile bufhidden=unload buftype=nowrite undolevels=-1 | else | set eventignore-=FileType | endif
+augroup END
+
+" VCS helpers
+autocmd BufRead * call VCSmaps()
+
+" Return to normal mode when leaving a buffer
+autocmd BufLeave * stopinsert
+
+
+" ----------------------------------------------------------------------------
+" Colorscheme
+" ----------------------------------------------------------------------------
+if exists("$DISPLAY")
+        set t_Co=256
+        if filereadable(expand("$HOME/.vim/colors/base16.vim"))
+                colorscheme base16
+        endif
+endif
+
+
+" ----------------------------------------------------------------------------
+" Custom functions and commands
+" ----------------------------------------------------------------------------
+
+" Toggle cursorline/cursorcolumn mode
+function! CursorColumnVisibilityToggling()
+        if (&cursorcolumn)
+                setlocal nocursorcolumn
+                setlocal colorcolumn=0
+        else
+                setlocal cursorcolumn
+                setlocal colorcolumn=78
+        endif
+endfunction
+
+" Occur: report all lines containing a keyword (or the last search
+" regexp) in a scratch buffer
+" Note: External grep doesn't work when filenames contain unusual
+"       characters (e.g., ":")
+command! -nargs=+ Occur
+        \ execute 'silent vimgrep! <args>' |
+        \ copen 20 |
+        \ redraw!
+
+" Comment line toggling
 function! CommentToggling() range
         if (match(getline('.'), '^\s*' . b:cchar) != -1)
                 execute a:firstline . ',' . a:lastline . 's/^\(\s*\)' . escape(b:cchar, '/') . '/\1'
@@ -610,11 +560,8 @@ function! CommentToggling() range
         endif
         nohlsearch
 endfunction
-noremap <silent> <leader>c :call CommentToggling()<CR>
 
-" ----------------------------------------------------------------------------
 " Ruler
-"
 function! Ruler()
         let l:tw = &textwidth ? &textwidth : 72
         let l:charNo = l:tw - strlen(b:cchar) - 1
@@ -622,67 +569,8 @@ function! Ruler()
         exec "normal j"
         s/$/\=(' ' . repeat('-', l:charNo))
 endfunction
-nnoremap <leader>- :call Ruler()<CR>
 
-" ----------------------------------------------------------------------------
-" Do not remove indentation for comments when smartindex is set
-"
-inoremap # X#
-
-" ----------------------------------------------------------------------------
-" E-mails/notes
-"
-nnoremap <leader>s o[...]<Esc>j0
-nnoremap <leader>ss o[....................snip....................]<Esc>j0
-iab _h Hello
-iab _br Best regards
-iab _all All the best
-iab _t Thanks in advance
-
-" ----------------------------------------------------------------------------
-" Common refuses
-"
-cnoremap Qa qa
-cnoremap QA qa
-
-" ----------------------------------------------------------------------------
-" Toggle mouse paste mode with F12
-"
-nnoremap <silent> <F12> :set paste!<CR>
-set pastetoggle=<F12>
-
-" ----------------------------------------------------------------------------
-" diff mode
-"
-set diffopt+=iwhite     " Ignore white speces
-au FilterWritePre * if &diff | execute "nnoremap <C-p> [cz." | execute "nnoremap <C-n> ]cz." | endif
-
-" ----------------------------------------------------------------------------
-" Spell check when writing commit logs
-"
-autocmd filetype svn,*commit* setlocal spell spelllang=en
-
-" ----------------------------------------------------------------------------
-" Set completion to the current script (only if a specific plugin does
-" not already exist for that filetype)
-"
-if has("autocmd") && exists("+omnifunc")
-autocmd Filetype *
-        \ if &omnifunc == "" |
-        \       setlocal omnifunc=syntaxcomplete#Complete |
-        \ endif
-endif
-
-" ----------------------------------------------------------------------------
-" netrw config section
-" (see http://ivanbrennan.nyc/blog/2014/01/16/rigging-vims-netrw)
-"
-let g:netrw_liststyle=3         " 0: thin view; 3: tree view
-let g:netrw_banner=0            " No banner
-let g:netrw_altv=1              " Open files shown on the right
-let g:netrw_browse_split=4      " Open files in previous window
-"let g:netrw_preview=1          " Preview window shown in a vertically split
-
+" netrw helpers (see http://ivanbrennan.nyc/blog/2014/01/16/rigging-vims-netrw)
 function! VexToggle(dir)
         if exists("t:vex_buf_nr")
                 call VexClose()
@@ -723,91 +611,15 @@ function! NormalizeWidths()
         unlet eadirection_backup
 endfunction
 
-noremap <silent> <leader>, :call VexToggle(getcwd())<CR>
-noremap <silent> <leader>. :call VexToggle("")<CR>
-
-augroup NetrwGroup
-        autocmd! BufEnter * call NormalizeWidths()
-augroup END
-
-" ----------------------------------------------------------------------------
-" In mutt: 72-char per line max, set en spell checker
-"
-au BufRead ~/.mutt/tmp/mutt-* :source ~/.vim/mutt.vim
-
-" ----------------------------------------------------------------------------
-" For tmp files, map a killall keybind
-"
-au BufRead /tmp/* nnoremap <silent> <leader>k :1,$d<CR>ZZ
-
-" ----------------------------------------------------------------------------
-" Switch b/w spaces and tabs
-"
-nnoremap <silent> <leader><TAB> :set expandtab!<CR>:retab!<CR>
-"au BufReadPost * retab! | silent earlier 1 | 0
-"au BufWritePre * set noexpandtab | retab!
-"au BufWritePost * set expandtab | retab!
-
-" ----------------------------------------------------------------------------
-" Save the contents of the current window " (<leader>v to restore)
-"
-au BufWinLeave * if expand("%") != "" | mkview | endif
-nnoremap <silent> <leader>v :loadview<CR>
-"au VimEnter * silent loadview
-
-" ----------------------------------------------------------------------------
-" Remove overheads for large files
-"
-" When file's dimension is > 100MB, set the following options:
-" eventignore+=FileType (no syntax hilight etc, assumes FileType always on)
-" noswapfile (save copy of file)
-" bufhidden=unload (save memory when other file is viewed)
-" buftype=nowritefile (is read-only)
-" undolevels=-1 (no undo possible)
-"
-let g:LargeFile = 1024 * 1024 * 100
-augroup LargeFile
-        autocmd BufReadPre * let f=expand("<afile>") | if getfsize(f) > g:LargeFile | set eventignore+=FileType | setlocal noswapfile bufhidden=unload buftype=nowrite undolevels=-1 | else | set eventignore-=FileType | endif
-augroup END
-
-" ----------------------------------------------------------------------------
-" Empty lines insertion
-"
-nnoremap <leader>o o<Esc>
-nnoremap <leader>O O<Esc>
-nnoremap <leader>n i<CR><Esc>
-nnoremap <leader>\ i\<CR><Esc>^
-
-" ----------------------------------------------------------------------------
-" Move current line up/down
-"
-nnoremap <F2> :m +1<CR>
-nnoremap <F3> :m -2<CR>
-
-" ----------------------------------------------------------------------------
-" Number incr/decr
-"
-nnoremap + <C-a>
-nnoremap - <C-x>
-vnoremap <silent> + :norm <CR>
-vnoremap <silent> - :norm <CR>
-vnoremap <leader>+ :II 1 ''<CR>
-vnoremap <leader>- :II -1 ''<CR>
-
-" ----------------------------------------------------------------------------
 " Remove trailing spaces
-"
 function! RemoveTrailingSpaces()
         let _cpos = getpos(".")
         execute '%s/\s\+$//'
         execute 'nohlsearch'
         call setpos(".", _cpos)
 endfunction
-nnoremap <silent> <leader><Space> :call RemoveTrailingSpaces()<CR>
 
-" ----------------------------------------------------------------------------
 " Window zooming
-"
 function! ZoomWin()
         if exists('g:zoomOn') && g:zoomOn
                 let g:zoomOn = 0
@@ -817,25 +629,10 @@ function! ZoomWin()
                 tab split
         endif
 endfunction
-nnoremap <C-w><C-u> <C-w>o
-nnoremap <silent> <C-w><C-o> :call ZoomWin()<CR>
-nnoremap <silent> <C-w>o :call ZoomWin()<CR>
 
-" ----------------------------------------------------------------------------
-" Omni-completion function (when available)
-"
-inoremap @@ <C-x><C-o>
-
-" ----------------------------------------------------------------------------
-"  Edit a new file, whose name is under the cursor
-"
-map <leader>gf :e <cfile><CR>
-
-" ----------------------------------------------------------------------------
 "  Move cursor line to top/middle/bottom, scrolling the edit window when
 "  the function is called with an argument (whatever it is), then clear
 "  and redraw the screen
-"
 function! MoveCursorLine(...)
         let l:top    = line('w0')
         let l:bottom = line('w$')
@@ -849,13 +646,8 @@ function! MoveCursorLine(...)
         endif
         execute "normal " . l:cmd
 endfunction
-cnoremap <silent> <C-l> :redraw!<CR>
-nnoremap <silent> <C-l> :call MoveCursorLine("scroll")<CR>:redraw!<CR>
-nnoremap <silent> <leader>m :call MoveCursorLine()<CR>:redraw!<CR>
 
-" ----------------------------------------------------------------------------
 " VCS helpers
-"
 function! VCScmd(...)
         let vcscmd  = a:1
         let vcsfile = a:2
@@ -884,35 +676,98 @@ function! VCSmaps()
         endif
 endfunction
 
-autocmd BufRead * call VCSmaps()
 
 " ----------------------------------------------------------------------------
+" Normal mappings
+" ----------------------------------------------------------------------------
+
+" Make jumping to a marked line more intuitive
+nnoremap ' `
+
+" Search for visual selection
+vnoremap * <Esc>/<C-R>*<CR>
+vnoremap # <Esc>?<C-R>*<CR>
+
+" Highlight reference columns
+nnoremap <silent> <F2> :call CursorColumnVisibilityToggling()<CR>
+
+" Switch b/w spaces and tabs
+nnoremap <silent> <F3> :set expandtab!<CR>:retab!<CR>
+
 " Output the current syntax group
-"
-map <F10> :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans<'
-\ . synIDattr(synID(line("."),col("."),0),"name") . "> lo<"
-\ . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">"<CR>
+nnoremap <F10> :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans<'
+               \ . synIDattr(synID(line("."),col("."),0),"name") . "> lo<"
+               \ . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">"<CR>
 
-" ----------------------------------------------------------------------------
+" Toggle cursorline highlight
+nnoremap <silent> <C-_> :set cursorline!<CR>
+
+" Always go to the beginning of a line before doing a 'gF' operation
+nnoremap gF 0gF
+
+" Fix default regex handling
+"nnoremap / /\v
+"vnoremap / /\v
+"nnoremap <leader>/ /\V
+"vnoremap <leader>/ /\V
+"nnoremap ? ?\v
+"vnoremap ? ?\v
+"nnoremap <leader>? ?\V
+"vnoremap <leader>? ?\V
+
+" Use right movement keys!
+nnoremap j  gj
+nnoremap k  gk
+
+" Emacs style keybindings in insert mode
+inoremap <C-d> <C-o>x
+inoremap <C-a> <C-o>I
+inoremap <C-e> <C-o>A
+
+" Move effectively among tabs
+nnoremap <silent> <C-t>l        :tabnext<CR>
+nnoremap <silent> <C-t><Right>  :tabnext<CR>
+nnoremap <silent> <C-t>h        :tabprevious<CR>
+nnoremap <silent> <C-t><Left>   :tabprevious<CR>
+nnoremap <silent> <C-t>e        :tabedit %<CR>
+nnoremap <silent> <C-t>q        :tabclose<CR>
+
+" Move effectively among windows
+nnoremap <C-w>h <C-w><C-h>
+nnoremap <C-w>j <C-w><C-j>
+nnoremap <C-w>k <C-w><C-k>
+nnoremap <C-w>l <C-w><C-l>
+
+" Do not remove indentation for comments when smartindex is set
+inoremap # X#
+
+" Common refuses
+cnoremap Qa qa
+cnoremap QA qa
+
+" Number incr/decr
+nnoremap + <C-a>
+nnoremap - <C-x>
+vnoremap <silent> + :norm <CR>
+vnoremap <silent> - :norm <CR>
+
+" Window zooming
+nnoremap <C-w><C-u> <C-w>o
+nnoremap <silent> <C-w><C-o> :call ZoomWin()<CR>
+nnoremap <silent> <C-w>o :call ZoomWin()<CR>
+
+" Omni-completion function (when available)
+inoremap @@ <C-x><C-o>
+
 " Let <Space> act as in less
-"
 nnoremap <Space> 
 nnoremap <C-@> 
 
-" ----------------------------------------------------------------------------
 " Keep selected text when fixing indentation
-"
 vnoremap < <gv
 vnoremap > >gv
 
-" ----------------------------------------------------------------------------
-" Return to normal mode when leaving a buffer
-"
-:autocmd BufLeave * stopinsert
-
-" ----------------------------------------------------------------------------
 " Map ENTER and BACKSPACE in normal/visual mode to move among paragraphs
-"
 nnoremap <BS> {
 onoremap <BS> {
 vnoremap <BS> {
@@ -921,100 +776,157 @@ nnoremap <expr> <CR> empty(&buftype) ? '}' : '<CR>'
 onoremap <expr> <CR> empty(&buftype) ? '}' : '<CR>'
 vnoremap <CR> }
 
-" ----------------------------------------------------------------------------
-" vim-notes plugin
-"
-let g:notes_directories=['$HOME/notes']
-let g:notes_suffix=".txt"
-let g:notes_unicode_enabled = 0
-nnoremap <silent> <leader>nn :Note<CR>
-nnoremap <silent> <leader>dn :DeleteNote!<CR>
-vnoremap <silent> <leader>en :NoteFromSelectedText<CR>
-vnoremap <silent> <leader>sn :SplitNoteFromSelectedText<CR>
-vnoremap <silent> <leader>tn :TabNoteFromSelectedText<CR>
-nnoremap <silent> <leader>wp :execute "Note Planning for WK".system("date --date=next-monday +%y%V")<CR>
-nnoremap <silent> <leader>wt :r ~/notes/weekly_planning.tmpl<CR>
-
-" ----------------------------------------------------------------------------
-" Tabular plugin
-"
-nmap <silent> <leader>a= :Tabularize /=<CR>
-vmap <silent> <leader>a= :Tabularize /=<CR>
-nmap <silent> <leader>a: :Tabularize /:\zs<CR>
-vmap <silent> <leader>a: :Tabularize /:\zs<CR>
-nmap <silent> <leader>a<Bar> :Tabularize /\|/l1<CR>
-vmap <silent> <leader>a<Bar> :Tabularize /\|/l1<CR>
-nmap <silent> <leader>a<Space> :Tabularize / /l0<CR>
-vmap <silent> <leader>a<Space> :Tabularize / /l0<CR>
-
-" ----------------------------------------------------------------------------
-" Tbone plugin
-"
-vnoremap <silent> <leader><CR> :Twrite Top<CR>
-nnoremap <silent> <leader><CR> :.Twrite Top<CR>
-
-" ----------------------------------------------------------------------------
-" csv plugin
-"
-nnoremap <silent> <leader>A :%CSVArrangeColumn<CR>
-
-" ----------------------------------------------------------------------------
-" supertab plugin + completion popup menu adjustment
-"
-let g:SuperTabDefaultCompletionType = "context"
-let g:SuperTabLongestHighlight = 1
-let g:SuperTabMappingForward = "<F1>"
-let g:SuperTabMappingBackward = "<S-F1>"
-set completeopt=longest,menuone
-inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
-
-" ----------------------------------------------------------------------------
-" ctrlp plugin
-"
-let g:ctrlp_map = '<leader>p'
-let g:ctrlp_use_caching = 1
-let g:ctrlp_clear_cache_on_exit = 0
-let g:ctrlp_cache_dir = $HOME.'/.vim/cache/ctrlp'
-let g:ctrlp_root_markers = ['.vim_ctrlp_root']
-let g:ctrlp_working_path_mode = 'ra'
-let g:ctrlp_custom_ignore = '\v[\/](.git|.hg|.svn|CVS|.SYNC)$'
-
-" ----------------------------------------------------------------------------
-" vim-tmux-navigator plugin
-"
-let g:tmux_navigator_no_mappings = 1
-nnoremap <silent> <Esc>[1;5A :TmuxNavigateUp<CR>
-nnoremap <silent> <Esc>[1;5B :TmuxNavigateDown<CR>
-nnoremap <silent> <Esc>[1;5C :TmuxNavigateRight<CR>
-nnoremap <silent> <Esc>[1;5D :TmuxNavigateLeft<CR>
-nnoremap <silent> <Esc>[A    :TmuxNavigateUp<CR>
-nnoremap <silent> <Esc>[B    :TmuxNavigateDown<CR>
-nnoremap <silent> <Esc>[C    :TmuxNavigateRight<CR>
-nnoremap <silent> <Esc>[D    :TmuxNavigateLeft<CR>
-nnoremap <silent> <C-\>      :TmuxNavigatePrevious<CR>
-
-" ----------------------------------------------------------------------------
-" terminus plugin
-"
-let g:TerminusInsertCursorShape  = 1
-let g:TerminusReplaceCursorShape = 2
-
-" ----------------------------------------------------------------------------
-" Map <Tab> to <C-Tab> to allow inserting a tab character not at the beginning
+" Map <C-Tab> to <Tab> to allow inserting a tab character not at the beginning
 " of the line (when g:SuperTabMappingForward is set to '<tab>')
-"
 inoremap <Esc>[27;5;9~ <Tab>
 
+
 " ----------------------------------------------------------------------------
-" Some useful abbreviations
-"
-cnoreabbrev f find
-cnoreabbrev sf sfind
-cnoreabbrev vsf vertical sfind
+" Mappings using <leader>
+" ----------------------------------------------------------------------------
+
+" Some guidelines for chosing the most appropriate <leader> key and relative
+" mappings:
+" - <leader> positions should be:
+"       * independent from keyboard layout;
+"       * on the left side;
+" - <leader> shouldn't be a key combination (no ModKey, no Shift);
+" - always use <leader> with one or two lowercase letters.
+let mapleader="\<Tab>"
+let maplocalleader="\<Tab>"
+
+" ** <leader> ** Temporarely switch off hlsearch
+nnoremap <silent> <leader><leader> :nohlsearch<CR>
+
+" ** * ** Highlight all occurrences of the word under the cursor (without moving)
+nnoremap <silent> <leader>* :let @/='\<<C-R>=expand("<cword>")<CR>\>'<CR>:set hls<CR>
+
+" ** +- ** Visual mode inc/dec
+vnoremap <leader>+ :II 1 ''<CR>
+vnoremap <leader>- :II -1 ''<CR>
+
+" ** - ** Ruler
+nnoremap <leader>- :call Ruler()<CR>
+
+" ** ., ** netrw windows
+noremap <silent> <leader>, :call VexToggle(getcwd())<CR>
+noremap <silent> <leader>. :call VexToggle("")<CR>
+
+" ** <Up>/<Down> ** Move current line up/down
+nnoremap <leader><Up>   :m -2<CR>
+nnoremap <leader><Down> :m +1<CR>
+
+" ** [] ** Snip line
+nnoremap <leader>[s o[...]<Esc>j0
+nnoremap <leader>]l o[....................snip....................]<Esc>j0
+
+" ** <Space> ** Remove trailing spaces
+nnoremap <silent> <leader><Space> :call RemoveTrailingSpaces()<CR>
+
+" ** <C-l> ** Recenter cursor line and redraw
+cnoremap <silent> <C-l> :redraw!<CR>
+nnoremap <silent> <C-l> :call MoveCursorLine("scroll")<CR>:redraw!<CR>
+
+" ** 0 ** Toggle non-printable chars visibility
+nnoremap <silent> <leader>0 :set list!<CR>
+
+" ** 1-9 ** Switch to buffer #
+nnoremap <silent> <leader>1  :1b<CR>
+nnoremap <silent> <leader>2  :2b<CR>
+nnoremap <silent> <leader>3  :3b<CR>
+nnoremap <silent> <leader>4  :4b<CR>
+nnoremap <silent> <leader>5  :5b<CR>
+nnoremap <silent> <leader>6  :6b<CR>
+nnoremap <silent> <leader>7  :7b<CR>
+nnoremap <silent> <leader>8  :8b<CR>
+nnoremap <silent> <leader>9  :9b<CR>
+
+" ** B ** Switch to previous buffer in list
+nnoremap <leader>b  :bp<CR>
+
+" ** C ** Toggle comment
+noremap <silent> <leader>c :call CommentToggling()<CR>
+
+" ** D ** Delete all lines containing the WORD under the cursor
+nnoremap <silent> <leader>dw
+        \ :let cl=line(".")<CR>:g/<C-R><C-A>/d<CR>:call cursor(cl, 1)<CR>
+
+" ** F ** Switch to next buffer in list
+nnoremap <leader>f  :bn<CR>
+
+" ** G ** Switch to alternate buffer
+nnoremap <leader>g  :e#<CR>
+
+" ** GF ** Edit a new file, whose name is under the cursor
+nnoremap <leader>gf :e <cfile><CR>
+
+" ** K ** See killall keybind in autocmd section
+
+" ** L ** Buffer list
+nnoremap <leader>l  :ls<CR>
+
+" ** M ** Move cursor line
+nnoremap <silent> <leader>m :call MoveCursorLine()<CR>:redraw!<CR>
+
+" ** N ** Insert newline
+nnoremap <leader>n i<CR><Esc>
+
+" ** O ** Insert empty lines
+nnoremap <leader>o o<Esc>
+nnoremap <leader>O O<Esc>
+
+" ** P ** Paste the visual selection to the scratchpad (along with
+"         the current file name)
+vnoremap <silent> <leader>p
+        \ :<C-U>silent! '<,'>w >> ~/.scratchpad<CR>
+        \ :call system("echo Yanked from: " . shellescape(expand("%:p")) . " >> ~/.scratchpad")<CR>
+
+" ** Q ** Quickly close current buffer
+nnoremap <silent> <leader>q :bdelete<CR>
+
+" ** S ** Turn spell checking on/off
+nnoremap <silent> <leader>se :setlocal spell spelllang=en<CR>
+        \:echo "Spell check (EN) switched on"<CR>
+nnoremap <silent> <leader>si :setlocal spell spelllang=it<CR>
+        \:echo "Spell check (IT) switched on"<CR>
+nnoremap <silent> <leader>so :setlocal nospell<CR>
+        \:echo "Spell check switched off"<CR>
+
+" ** U ** Underline
+nnoremap <leader>u yypVr=
+
+" ** V ** Restore the cursor position in the current window
+"         (from last edit session)
+nnoremap <silent> <leader>v :loadview<CR>
+
+" ** Y ** Copy the current buffer filename (with full path)
+nnoremap <silent> <leader>y :let @*=expand("%:p")<CR>
+
+" ** W ** Word occurrences
+nnoremap <silent> <leader>ww :Occur /warn/ %<CR>
+nnoremap <silent> <leader>we :Occur /error/ %<CR>
+
+" ** Z ** Wrap mode toggling
+nnoremap <silent> <leader>z :set wrap!<CR>
+
+
+" ----------------------------------------------------------------------------
+" Abbreviations
+" ----------------------------------------------------------------------------
+
+cnoreabbrev f    find
+cnoreabbrev sf   sfind
+cnoreabbrev vsf  vertical sfind
+
+iabbrev     _h   Hello
+iabbrev     _br  Best regards
+iabbrev     _all All the best
+iabbrev     _t   Thanks in advance
+
 
 " ----------------------------------------------------------------------
 " Source local vimrc file
-"
+" ----------------------------------------------------------------------------
 try
         source ~/.vim/vimrc.local
 catch
