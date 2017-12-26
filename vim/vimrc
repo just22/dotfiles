@@ -52,8 +52,12 @@ set history=100
 " Do not redraw the screen while executing commands that have not been typed
 set lazyredraw
 
-" Enable mouse use in all modes (in console too)
-set mouse=a
+" Do not enable mouse in INSERT mode when in a TMUX session
+if (&term =~ "^screen")
+        set mouse=nvc
+else
+        set mouse=a
+endif
 
 " Disable beeping (aka bell) and window flashing
 set noerrorbells visualbell t_vb=
@@ -80,6 +84,9 @@ set ttimeoutlen=10
 
 " Improves smoothness of redrawing
 set ttyfast
+
+" Enable extended mouse support
+set ttymouse=sgr
 
 " On pressing 'wildchar' (usually <Tab>) to invoke completion, the possible
 " matches are shown
@@ -263,26 +270,26 @@ call vundle#begin()
 
 Plugin 'https://github.com/wincent/terminus'
 
-Plugin 'https://github.com/tpope/vim-tbone.git'
+Plugin 'https://github.com/jpalardy/vim-slime'
 
 Plugin 'https://github.com/sk1418/QFGrep'
 
-Plugin 'https://github.com/AndrewRadev/linediff.vim.git'
+Plugin 'https://github.com/AndrewRadev/linediff.vim'
 
 Plugin 'https://github.com/chrisbra/csv.vim'
 
 " vim-notes {
-        Plugin 'https://github.com/xolox/vim-misc.git'
-        Plugin 'https://github.com/xolox/vim-notes.git'
+        Plugin 'https://github.com/xolox/vim-misc'
+        Plugin 'https://github.com/xolox/vim-notes'
 " }
 
-Plugin 'https://github.com/godlygeek/tabular.git'
+Plugin 'https://github.com/godlygeek/tabular'
 
 Plugin 'https://github.com/LaTeX-Box-Team/LaTeX-Box'
 
 Plugin 'VisIncr'
 
-Plugin 'https://github.com/ervandew/supertab.git'
+Plugin 'https://github.com/ervandew/supertab'
 
 Plugin 'https://github.com/kien/ctrlp.vim'
 
@@ -298,34 +305,20 @@ runtime macros/matchit.vim
 " files, to automatically do language-dependent indenting.
 filetype plugin indent on
 
+" terminus
+let g:TerminusMouse=0
+
+" vim-slime
+let g:slime_target = "tmux"
+let g:slime_paste_file = "/tmp/$USER.vim-slime.paste"
+let g:slime_default_config = {"socket_name": split($TMUX, ",")[0], "target_pane": ":.1"}
+let g:slime_dont_ask_default = 1
+let g:slime_no_mappings = 1
+
 " vim-notes
 let g:notes_directories=['$HOME/notes']
 let g:notes_suffix=".txt"
 let g:notes_unicode_enabled = 0
-nnoremap <silent> <leader>nn :Note<CR>
-nnoremap <silent> <leader>dn :DeleteNote!<CR>
-vnoremap <silent> <leader>en :NoteFromSelectedText<CR>
-vnoremap <silent> <leader>sn :SplitNoteFromSelectedText<CR>
-vnoremap <silent> <leader>tn :TabNoteFromSelectedText<CR>
-nnoremap <silent> <leader>wp :execute "Note Planning for WK".system("date --date=next-monday +%y%V")<CR>
-nnoremap <silent> <leader>wt :r ~/notes/weekly_planning.tmpl<CR>
-
-" Tabular
-nmap <silent> <leader>a= :Tabularize /=<CR>
-vmap <silent> <leader>a= :Tabularize /=<CR>
-nmap <silent> <leader>a: :Tabularize /:\zs<CR>
-vmap <silent> <leader>a: :Tabularize /:\zs<CR>
-nmap <silent> <leader>a<Bar> :Tabularize /\|/l1<CR>
-vmap <silent> <leader>a<Bar> :Tabularize /\|/l1<CR>
-nmap <silent> <leader>a<Space> :Tabularize / /l0<CR>
-vmap <silent> <leader>a<Space> :Tabularize / /l0<CR>
-
-" Tbone
-vnoremap <silent> <leader><CR> :Twrite Top<CR>
-nnoremap <silent> <leader><CR> :.Twrite Top<CR>
-
-" csv
-nnoremap <silent> <leader>A :%CSVArrangeColumn<CR>
 
 " supertab (+ completion popup menu adjustment)
 let g:SuperTabDefaultCompletionType = "context"
@@ -436,8 +429,6 @@ else
         call MinimalSyntaxToggle()
 endif
 
-nnoremap <silent> <leader>sx :call MinimalSyntaxToggle()<CR>
-
 
 " ----------------------------------------------------------------------------
 " Autocommands
@@ -448,10 +439,6 @@ augroup vimrcEx
         " For all text files set 'textwidth' to 78 characters
         autocmd FileType text setlocal textwidth=78
 augroup END
-
-" Automatically reload vim config file when it is written
-autocmd! BufWritePost .vimrc source %
-autocmd! BufWritePost ~/.vim/vimrc source %
 
 " Remove expandtab for Makefile and Python
 autocmd BufEnter [mM]akefile*,GNUmakefile,*.mk,*.mak,*.py set noexpandtab
@@ -756,7 +743,7 @@ nnoremap <silent> <C-w>o :call ZoomWin()<CR>
 " Omni-completion function (when available)
 inoremap @@ <C-x><C-o>
 
-" Let <Space> act as in less
+" Use <Space>/<C-Space> for scrolling
 nnoremap <Space> 
 nnoremap <C-@> 
 
@@ -765,11 +752,11 @@ vnoremap < <gv
 vnoremap > >gv
 
 " Map ENTER and BACKSPACE in normal/visual mode to move among paragraphs
-nnoremap <BS> {
+nnoremap <BS> {z.
 onoremap <BS> {
 vnoremap <BS> {
 
-nnoremap <expr> <CR> empty(&buftype) ? '}' : '<CR>'
+nnoremap <expr> <CR> empty(&buftype) ? '}z.' : '<CR>'
 onoremap <expr> <CR> empty(&buftype) ? '}' : '<CR>'
 vnoremap <CR> }
 
@@ -795,6 +782,10 @@ let maplocalleader="\<Tab>"
 " ** <leader> ** Temporarely switch off hlsearch
 nnoremap <silent> <leader><leader> :nohlsearch<CR>
 
+" ** <CR> ** vim-slime plugin
+nmap <silent> <leader><CR> <Plug>SlimeLineSend
+xmap <silent> <leader><CR> <Plug>SlimeRegionSend
+
 " ** * ** Highlight all occurrences of the word under the cursor (without moving)
 nnoremap <silent> <leader>* :let @/='\<<C-R>=expand("<cword>")<CR>\>'<CR>:set hls<CR>
 
@@ -814,11 +805,11 @@ nnoremap <leader><Up>   :m -2<CR>
 nnoremap <leader><Down> :m +1<CR>
 
 " ** [] ** Snip line
-nnoremap <leader>[s o[...]<Esc>j0
-nnoremap <leader>]l o[....................snip....................]<Esc>j0
+nnoremap <leader>[ o[...]<Esc>j0
+nnoremap <leader>] o[....................snip....................]<Esc>j0
 
 " ** <Space> ** Remove trailing spaces
-nnoremap <silent> <leader><Space> :call RemoveTrailingSpaces()<CR>
+nnoremap <silent> <leader><Space> :silent! call RemoveTrailingSpaces()<CR>
 
 " ** <C-l> ** Recenter cursor line and redraw
 cnoremap <silent> <C-l> :redraw!<CR>
@@ -837,6 +828,16 @@ nnoremap <silent> <leader>6  :6b<CR>
 nnoremap <silent> <leader>7  :7b<CR>
 nnoremap <silent> <leader>8  :8b<CR>
 nnoremap <silent> <leader>9  :9b<CR>
+
+" ** A ** Tabular plugin
+nmap <silent> <leader>a= :Tabularize /=<CR>
+vmap <silent> <leader>a= :Tabularize /=<CR>
+nmap <silent> <leader>a: :Tabularize /:\zs<CR>
+vmap <silent> <leader>a: :Tabularize /:\zs<CR>
+nmap <silent> <leader>a<Bar> :Tabularize /\|/l1<CR>
+vmap <silent> <leader>a<Bar> :Tabularize /\|/l1<CR>
+nmap <silent> <leader>a<Space> :Tabularize / /l0<CR>
+vmap <silent> <leader>a<Space> :Tabularize / /l0<CR>
 
 " ** B ** Switch to previous buffer in list
 nnoremap <leader>b  :bp<CR>
@@ -857,16 +858,25 @@ nnoremap <leader>g  :e#<CR>
 " ** GF ** Edit a new file, whose name is under the cursor
 nnoremap <leader>gf :e <cfile><CR>
 
+" ** I ** csv plugin
+nnoremap <silent> <leader>i :%CSVArrangeColumn<CR>
+
 " ** K ** See killall keybind in autocmd section
 
 " ** L ** Buffer list
-nnoremap <leader>l  :ls<CR>
+nnoremap <leader>l  :ls<CR>:buffer<Space>
 
 " ** M ** Move cursor line
 nnoremap <silent> <leader>m :call MoveCursorLine()<CR>:redraw!<CR>
 
-" ** N ** Insert newline
-nnoremap <leader>n i<CR><Esc>
+" ** N ** vim-notes plugin
+nnoremap <silent> <leader>nn :Note<CR>
+nnoremap <silent> <leader>nd :DeleteNote!<CR>
+vnoremap <silent> <leader>ne :NoteFromSelectedText<CR>
+vnoremap <silent> <leader>ns :SplitNoteFromSelectedText<CR>
+vnoremap <silent> <leader>nt :TabNoteFromSelectedText<CR>
+nnoremap <silent> <leader>nw :execute "Note Planning for WK".system("date --date=next-monday +%y%V")<CR>
+nnoremap <silent> <leader>np :r ~/notes/weekly_planning.tmpl<CR>
 
 " ** O ** Insert empty lines
 nnoremap <leader>o o<Esc>
@@ -895,6 +905,9 @@ nnoremap <leader>u yypVr=
 " ** V ** Restore the cursor position in the current window
 "         (from last edit session)
 nnoremap <silent> <leader>v :loadview<CR>
+
+" ** X ** Minimal syntax toggling
+nnoremap <silent> <leader>x :call MinimalSyntaxToggle()<CR>
 
 " ** Y ** Copy the current buffer filename (with full path)
 nnoremap <silent> <leader>y :let @*=expand("%:p")<CR>
