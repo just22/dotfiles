@@ -40,7 +40,7 @@ set dir=~/.vim/swap//,/var/tmp//,/tmp//,.
 " Character encoding
 set encoding=utf-8
 
-" Comment lines sane join
+" Sanely join comment lines
 set formatoptions+=j
 
 " Make a buffer hidden when it is |abandon|ed (instead of unloading it)
@@ -286,6 +286,8 @@ Plugin 'https://github.com/raimondi/delimitmate'
 
 Plugin 'https://github.com/mbbill/undotree'
 
+Plugin 'https://github.com/tpope/vim-commentary'
+
 call vundle#end()
 
 " Enable extended % matching
@@ -436,19 +438,6 @@ autocmd FileType text setlocal textwidth=78
 autocmd BufEnter [mM]akefile*,GNUmakefile,*.mk,*.mak,*.py set noexpandtab
 autocmd BufLeave [mM]akefile*,GNUmakefile,*.mk,*.mak,*.py set expandtab
 
-" Comment char
-autocmd FileType c,cpp,java,scala let b:cchar = '//'
-autocmd FileType verilog          let b:cchar = '//'
-autocmd FileType vhdl             let b:cchar = '--'
-autocmd FileType sh,csh,tcsh      let b:cchar = '#'
-autocmd FileType tcl,conf,fstab   let b:cchar = '#'
-autocmd FileType make,muttrc,txt  let b:cchar = '#'
-autocmd FileType remind,tmux      let b:cchar = '#'
-autocmd FileType tex,sty          let b:cchar = '%'
-autocmd FileType mail             let b:cchar = '>'
-autocmd FileType vim              let b:cchar = '"'
-autocmd FileType xdefaults        let b:cchar = '!'
-
 " Special mappings in diff mode
 autocmd FilterWritePre * if &diff | execute "nnoremap <C-p> [cz." | execute "nnoremap <C-n> ]cz." | endif
 
@@ -526,16 +515,6 @@ command! -nargs=+ Occur
         \ execute 'silent vimgrep! <args>' |
         \ copen 20 |
         \ redraw!
-
-" Comment line toggling
-function! CommentToggling() range
-        if (match(getline('.'), '^\s*' . b:cchar) != -1)
-                execute a:firstline . ',' . a:lastline . 's/^\(\s*\)' . escape(b:cchar, '/') . '/\1'
-        else
-                execute a:firstline . ',' . a:lastline . 's/^/' . escape(b:cchar, '/')
-        endif
-        nohlsearch
-endfunction
 
 " Ruler
 function! Ruler()
@@ -839,9 +818,6 @@ vmap <silent> <leader>a<Space> :Tabularize / /l0<CR>
 
 " ** B ** Switch to previous buffer in list
 nmap <leader>b  :bp<CR>
-
-" ** C ** Toggle comment
-map <silent> <leader>c :call CommentToggling()<CR>
 
 " ** D ** Delete all lines containing the WORD under the cursor
 nnoremap <silent> <leader>dw
