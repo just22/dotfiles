@@ -68,7 +68,7 @@ set nomodeline
 
 " Paste mode
 set pastetoggle=<F12>
-nnoremap <silent> <F12> :set paste!<CR>
+nmap <silent> <F12> :set paste!<CR>
 
 " Command for starting a shell
 set shell=/bin/sh
@@ -151,9 +151,9 @@ set number
 " Show the line number relative to the line with the cursor
 if exists("+relativenumber")
         set norelativenumber
-        nnoremap <silent> <leader>R :set relativenumber!<CR>
+        nmap <silent> <leader>R :set relativenumber!<CR>
 endif
-nnoremap <silent> <leader>N :set number!<CR>
+nmap <silent> <leader>N :set number!<CR>
 
 " Show the cursor position all the time
 set noruler
@@ -245,16 +245,6 @@ set statusline+=%P                              " Percent through file
 
 
 " ----------------------------------------------------------------------------
-" Change statusbar color when in insert mode (not in GUI)
-"
-"if exists("$DISPLAY") && ! has("gui_running")
-"        autocmd InsertEnter * hi StatusLine ctermfg=00 ctermbg=01
-"        autocmd InsertLeave * hi StatusLine ctermfg=10 ctermbg=12
-"endif
-"inoremap  :hi StatusLine ctermfg=10 ctermbg=12<CR>
-
-
-" ----------------------------------------------------------------------------
 "  Plugins config section (using Vundle)
 " ----------------------------------------------------------------------------
 
@@ -278,10 +268,7 @@ Plugin 'https://github.com/AndrewRadev/linediff.vim'
 
 Plugin 'https://github.com/chrisbra/csv.vim'
 
-" vim-notes {
-        Plugin 'https://github.com/xolox/vim-misc'
-        Plugin 'https://github.com/xolox/vim-notes'
-" }
+Plugin 'https://github.com/vimwiki/vimwiki'
 
 Plugin 'https://github.com/godlygeek/tabular'
 
@@ -294,6 +281,10 @@ Plugin 'https://github.com/ervandew/supertab'
 Plugin 'https://github.com/kien/ctrlp.vim'
 
 Plugin 'https://github.com/christoomey/vim-tmux-navigator'
+
+Plugin 'https://github.com/raimondi/delimitmate'
+
+Plugin 'https://github.com/mbbill/undotree'
 
 call vundle#end()
 
@@ -339,15 +330,15 @@ let g:ctrlp_custom_ignore = '\v[\/](.git|.hg|.svn|CVS|.SYNC)$'
 
 " vim-tmux-navigator
 let g:tmux_navigator_no_mappings = 1
-nnoremap <silent> <Esc>[1;5A :TmuxNavigateUp<CR>
-nnoremap <silent> <Esc>[1;5B :TmuxNavigateDown<CR>
-nnoremap <silent> <Esc>[1;5C :TmuxNavigateRight<CR>
-nnoremap <silent> <Esc>[1;5D :TmuxNavigateLeft<CR>
-nnoremap <silent> <Esc>[A    :TmuxNavigateUp<CR>
-nnoremap <silent> <Esc>[B    :TmuxNavigateDown<CR>
-nnoremap <silent> <Esc>[C    :TmuxNavigateRight<CR>
-nnoremap <silent> <Esc>[D    :TmuxNavigateLeft<CR>
-nnoremap <silent> <C-\>      :TmuxNavigatePrevious<CR>
+nmap <silent> <Esc>[1;5A :TmuxNavigateUp<CR>
+nmap <silent> <Esc>[1;5B :TmuxNavigateDown<CR>
+nmap <silent> <Esc>[1;5C :TmuxNavigateRight<CR>
+nmap <silent> <Esc>[1;5D :TmuxNavigateLeft<CR>
+nmap <silent> <Esc>[A    :TmuxNavigateUp<CR>
+nmap <silent> <Esc>[B    :TmuxNavigateDown<CR>
+nmap <silent> <Esc>[C    :TmuxNavigateRight<CR>
+nmap <silent> <Esc>[D    :TmuxNavigateLeft<CR>
+nmap <silent> <C-\>      :TmuxNavigatePrevious<CR>
 
 " netrw (see http://ivanbrennan.nyc/blog/2014/01/16/rigging-vims-netrw)
 let g:netrw_liststyle=3         " 0: thin view; 3: tree view
@@ -528,10 +519,9 @@ function! CursorColumnVisibilityToggling()
         endif
 endfunction
 
-" Occur: report all lines containing a keyword (or the last search
-" regexp) in a scratch buffer
-" Note: External grep doesn't work when filenames contain unusual
-"       characters (e.g., ":")
+" Occur: report all lines containing a keyword (or the last search regexp) in
+"        a scratch buffer; note: external grep doesn't work when filenames
+"        contain unusual characters (e.g., ":")
 command! -nargs=+ Occur
         \ execute 'silent vimgrep! <args>' |
         \ copen 20 |
@@ -652,13 +642,13 @@ endfunction
 
 function! VCSmaps()
         if isdirectory(expand('%:.:h') . '/' . 'CVS')
-                nnoremap <buffer> <silent> <leader>vd :call VCScmd('cvs -q update -p', expand('%'), 1)<CR>
-                nnoremap <buffer> <silent> <leader>vD :call VCScmd('cvs diff', expand('%'))<CR>
-                nnoremap <buffer> <silent> <leader>vh :call VCScmd('cvs log', expand('%'))<CR>
+                nmap <buffer> <silent> <leader>vd :call VCScmd('cvs -q update -p', expand('%'), 1)<CR>
+                nmap <buffer> <silent> <leader>vD :call VCScmd('cvs diff', expand('%'))<CR>
+                nmap <buffer> <silent> <leader>vh :call VCScmd('cvs log', expand('%'))<CR>
         elseif isdirectory(expand('%:.:h') . '/' . '.SYNC')
-                nnoremap <buffer> <silent> <leader>vd :call VCScmd('~/bin/dss-cat', expand('%'), 1)<CR>
-                nnoremap <buffer> <silent> <leader>vD :call VCScmd('dssc diff -kk -unified -version Latest', expand('%'))<CR>
-                nnoremap <buffer> <silent> <leader>vh :call VCScmd('dssc vhist', expand('%'))<CR>
+                nmap <buffer> <silent> <leader>vd :call VCScmd('~/bin/dss-cat', expand('%'), 1)<CR>
+                nmap <buffer> <silent> <leader>vD :call VCScmd('dssc diff -kk -unified -version Latest', expand('%'))<CR>
+                nmap <buffer> <silent> <leader>vh :call VCScmd('dssc vhist', expand('%'))<CR>
         endif
 endfunction
 
@@ -675,18 +665,21 @@ vnoremap * <Esc>/<C-R>*<CR>
 vnoremap # <Esc>?<C-R>*<CR>
 
 " Highlight reference columns
-nnoremap <silent> <F2> :call CursorColumnVisibilityToggling()<CR>
+nmap <silent> <F2> :call CursorColumnVisibilityToggling()<CR>
 
 " Switch b/w spaces and tabs
-nnoremap <silent> <F3> :set expandtab!<CR>:retab!<CR>
+nmap <silent> <F3> :set expandtab!<CR>:retab!<CR>
+
+" Undo tree
+nmap <F4> :UndotreeToggle<CR>
 
 " Output the current syntax group
-nnoremap <F10> :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans<'
-               \ . synIDattr(synID(line("."),col("."),0),"name") . "> lo<"
-               \ . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">"<CR>
+nmap <F10> :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans<'
+           \ . synIDattr(synID(line("."),col("."),0),"name") . "> lo<"
+           \ . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">"<CR>
 
 " Toggle cursorline highlight
-nnoremap <silent> <C-_> :set cursorline!<CR>
+nmap <silent> <C-_> :set cursorline!<CR>
 
 " Always go to the beginning of a line before doing a 'gF' operation
 nnoremap gF 0gF
@@ -739,8 +732,8 @@ vnoremap <silent> - :norm <CR>
 
 " Window zooming
 nnoremap <C-w><C-u> <C-w>o
-nnoremap <silent> <C-w><C-o> :call ZoomWin()<CR>
-nnoremap <silent> <C-w>o :call ZoomWin()<CR>
+nmap <silent> <C-w><C-o> :call ZoomWin()<CR>
+nmap <silent> <C-w>o :call ZoomWin()<CR>
 
 " Omni-completion function (when available)
 inoremap @@ <C-x><C-o>
@@ -782,7 +775,7 @@ let mapleader="\<Tab>"
 let maplocalleader="\<Tab>"
 
 " ** <leader> ** Temporarely switch off hlsearch
-nnoremap <silent> <leader><leader> :nohlsearch<CR>
+nmap <silent> <leader><leader> :nohlsearch<CR>
 
 " ** <CR> ** vim-slime plugin
 nmap <silent> <leader><CR> <Plug>SlimeLineSend
@@ -791,16 +784,19 @@ xmap <silent> <leader><CR> <Plug>SlimeRegionSend
 " ** * ** Highlight all occurrences of the word under the cursor (without moving)
 nnoremap <silent> <leader>* :let @/='\<<C-R>=expand("<cword>")<CR>\>'<CR>:set hls<CR>
 
+" ** / ** Show all occurrences of the word under the cursor
+nmap <silent> <leader>** :Occur /<C-r><C-w>/ %<CR>
+
 " ** +- ** Visual mode inc/dec
-vnoremap <leader>+ :II 1 ''<CR>
-vnoremap <leader>- :II -1 ''<CR>
+vmap <leader>+ :II 1 ''<CR>
+vmap <leader>- :II -1 ''<CR>
 
 " ** - ** Ruler
-nnoremap <leader>- :call Ruler()<CR>
+nmap <leader>- :call Ruler()<CR>
 
 " ** ., ** netrw windows
-noremap <silent> <leader>, :call VexToggle(getcwd())<CR>
-noremap <silent> <leader>. :call VexToggle("")<CR>
+map <silent> <leader>, :call VexToggle(getcwd())<CR>
+map <silent> <leader>. :call VexToggle("")<CR>
 
 " ** <Up>/<Down> ** Move current line up/down
 nnoremap <leader><Up>   :m -2<CR>
@@ -811,25 +807,25 @@ nnoremap <leader>[ o[...]<Esc>j0
 nnoremap <leader>] o[....................snip....................]<Esc>j0
 
 " ** <Space> ** Remove trailing spaces
-nnoremap <silent> <leader><Space> :silent! call RemoveTrailingSpaces()<CR>
+nmap <silent> <leader><Space> :silent! call RemoveTrailingSpaces()<CR>
 
 " ** <C-l> ** Recenter cursor line and redraw
-cnoremap <silent> <C-l> :redraw!<CR>
-nnoremap <silent> <C-l> :call MoveCursorLine("scroll")<CR>:redraw!<CR>
+cmap <silent> <C-l> :redraw!<CR>
+nmap <silent> <C-l> :call MoveCursorLine("scroll")<CR>:redraw!<CR>
 
 " ** 0 ** Toggle non-printable chars visibility
-nnoremap <silent> <leader>0 :set list!<CR>
+nmap <silent> <leader>0 :set list!<CR>
 
 " ** 1-9 ** Switch to buffer #
-nnoremap <silent> <leader>1  :1b<CR>
-nnoremap <silent> <leader>2  :2b<CR>
-nnoremap <silent> <leader>3  :3b<CR>
-nnoremap <silent> <leader>4  :4b<CR>
-nnoremap <silent> <leader>5  :5b<CR>
-nnoremap <silent> <leader>6  :6b<CR>
-nnoremap <silent> <leader>7  :7b<CR>
-nnoremap <silent> <leader>8  :8b<CR>
-nnoremap <silent> <leader>9  :9b<CR>
+nmap <silent> <leader>1  :1b<CR>
+nmap <silent> <leader>2  :2b<CR>
+nmap <silent> <leader>3  :3b<CR>
+nmap <silent> <leader>4  :4b<CR>
+nmap <silent> <leader>5  :5b<CR>
+nmap <silent> <leader>6  :6b<CR>
+nmap <silent> <leader>7  :7b<CR>
+nmap <silent> <leader>8  :8b<CR>
+nmap <silent> <leader>9  :9b<CR>
 
 " ** A ** Tabular plugin
 nmap <silent> <leader>a= :Tabularize /=<CR>
@@ -842,43 +838,43 @@ nmap <silent> <leader>a<Space> :Tabularize / /l0<CR>
 vmap <silent> <leader>a<Space> :Tabularize / /l0<CR>
 
 " ** B ** Switch to previous buffer in list
-nnoremap <leader>b  :bp<CR>
+nmap <leader>b  :bp<CR>
 
 " ** C ** Toggle comment
-noremap <silent> <leader>c :call CommentToggling()<CR>
+map <silent> <leader>c :call CommentToggling()<CR>
 
 " ** D ** Delete all lines containing the WORD under the cursor
 nnoremap <silent> <leader>dw
         \ :let cl=line(".")<CR>:g/<C-R><C-A>/d<CR>:call cursor(cl, 1)<CR>
 
 " ** F ** Switch to next buffer in list
-nnoremap <leader>f  :bn<CR>
+nmap <leader>f  :bn<CR>
 
 " ** G ** Switch to alternate buffer
-nnoremap <leader>g  :e#<CR>
+nmap <leader>g  :e#<CR>
 
 " ** GF ** Edit a new file, whose name is under the cursor
-nnoremap <leader>gf :e <cfile><CR>
+nmap <leader>gf :e <cfile><CR>
 
 " ** I ** csv plugin
-nnoremap <silent> <leader>i :%CSVArrangeColumn<CR>
+nmap <silent> <leader>i :%CSVArrangeColumn<CR>
 
 " ** K ** See killall keybind in autocmd section
 
 " ** L ** Buffer list
-nnoremap <leader>l  :ls<CR>:buffer<Space>
+nmap <leader>l  :ls<CR>:buffer<Space>
 
 " ** M ** Move cursor line
-nnoremap <silent> <leader>m :call MoveCursorLine()<CR>:redraw!<CR>
+nmap <silent> <leader>m :call MoveCursorLine()<CR>:redraw!<CR>
 
 " ** N ** vim-notes plugin
-nnoremap <silent> <leader>nn :Note<CR>
-nnoremap <silent> <leader>nd :DeleteNote!<CR>
-vnoremap <silent> <leader>ne :NoteFromSelectedText<CR>
-vnoremap <silent> <leader>ns :SplitNoteFromSelectedText<CR>
-vnoremap <silent> <leader>nt :TabNoteFromSelectedText<CR>
-nnoremap <silent> <leader>nw :execute "Note Planning for WK".system("date --date=next-monday +%y%V")<CR>
-nnoremap <silent> <leader>np :r ~/notes/weekly_planning.tmpl<CR>
+"nmap <silent> <leader>nn :Note<CR>
+"nmap <silent> <leader>nd :DeleteNote!<CR>
+"vmap <silent> <leader>ne :NoteFromSelectedText<CR>
+"vmap <silent> <leader>ns :SplitNoteFromSelectedText<CR>
+"vmap <silent> <leader>nt :TabNoteFromSelectedText<CR>
+"nmap <silent> <leader>nw :execute "Note Planning for WK".system("date --date=next-monday +%y%V")<CR>
+"nmap <silent> <leader>np :r ~/notes/weekly_planning.tmpl<CR>
 
 " ** O ** Insert empty lines
 nnoremap <leader>o o<Esc>
@@ -886,43 +882,41 @@ nnoremap <leader>O O<Esc>
 
 " ** P ** Paste the visual selection to the scratchpad (along with
 "         the current file name)
-vnoremap <silent> <leader>p
+vmap <silent> <leader>p
         \ :<C-U>silent! '<,'>w >> ~/.scratchpad<CR>
         \ :call system("echo Yanked from: " . shellescape(expand("%:p")) . " >> ~/.scratchpad")<CR>
 
 " ** Q ** Quickly close current buffer
-nnoremap <silent> <leader>q :bdelete<CR>
+nmap <silent> <leader>q :bdelete<CR>
 
 " ** R ** Reload config file
-nnoremap <silent> <leader>r :source $HOME/.vimrc<CR>
+nmap <leader>r :source $HOME/.vimrc<CR>
 
 " ** S ** Turn spell checking on/off
-nnoremap <silent> <leader>se :setlocal spell spelllang=en<CR>
+nmap <silent> <leader>se :setlocal spell spelllang=en<CR>
         \:echo "Spell check (EN) switched on"<CR>
-nnoremap <silent> <leader>si :setlocal spell spelllang=it<CR>
+nmap <silent> <leader>si :setlocal spell spelllang=it<CR>
         \:echo "Spell check (IT) switched on"<CR>
-nnoremap <silent> <leader>so :setlocal nospell<CR>
+nmap <silent> <leader>so :setlocal nospell<CR>
         \:echo "Spell check switched off"<CR>
 
 " ** U ** Underline
-nnoremap <leader>u yypVr=
+nmap <leader>u yypVr=
 
 " ** V ** Restore the cursor position in the current window
 "         (from last edit session)
-nnoremap <silent> <leader>v :loadview<CR>
+nmap <silent> <leader>v :loadview<CR>
 
 " ** X ** Minimal syntax toggling
-nnoremap <silent> <leader>x :call MinimalSyntaxToggle()<CR>
+nmap <silent> <leader>x :call MinimalSyntaxToggle()<CR>
 
 " ** Y ** Copy the current buffer filename (with full path)
-nnoremap <silent> <leader>y :let @*=expand("%:p")<CR>
+nmap <silent> <leader>yy :let @*=expand("%:p")<CR>
 
-" ** W ** Word occurrences
-nnoremap <silent> <leader>ww :Occur /warn/ %<CR>
-nnoremap <silent> <leader>we :Occur /error/ %<CR>
+" ** W ** Reserved for VimWiki
 
 " ** Z ** Wrap mode toggling
-nnoremap <silent> <leader>z :set wrap!<CR>
+nmap <silent> <leader>z :set wrap!<CR>
 
 
 " ----------------------------------------------------------------------------
