@@ -146,7 +146,8 @@ light           - Switch current xterm colors to solarized-light
 # ----------------------------------------------------------------------
 # dict.org searches
 #
-en              - English definitions
+en              - English definitions (WordNet)
+eng             - English definitions (all resurces)
 lookup          - Engligh word matching (SOUNDEX algorithm)
 syn             - English synonyms
 enit            - English to Italian translation
@@ -554,8 +555,9 @@ alias light='colman set solarized-light'
 # ----------------------------------------------------------------------
 # dict.org lookups
 #
-en()     { curl -s dict://dict.org/define:$1:gcide          | grep -Ev "^[0-9]+ |^\." | less -F; }
-lookup() { curl -s dict://dict.org/match:$1:gcide::soundex  | grep -Ev "^[0-9]+ |^\." | tr -d \" | awk '{print $2}' | less -F; }
+en()     { curl -s dict://dict.org/define:$1:wn             | grep -Ev "^[0-9]+ |^\." | less -F; }
+eng()    { curl -s dict://dict.org/define:$1                | grep -Ev "^[0-9]+ |^\." | less -F; }
+lookup() { curl -s dict://dict.org/match:$1::soundex        | grep -Ev "^[0-9]+ |^\." | tr -d \" | awk '{print $2}' | less -F; }
 syn()    { curl -s dict://dict.org/define:$1:moby-thesaurus | grep -Ev "^[0-9]+ |^\." | less -F; }
 enit()   { curl -s dict://dict.org/define:$1:fd-eng-ita     | grep -Ev "^[0-9]+ |^\." | less -F; }
 iten()   { curl -s dict://dict.org/define:$1:fd-ita-eng     | grep -Ev "^[0-9]+ |^\." | less -F; }
