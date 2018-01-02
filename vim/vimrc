@@ -427,40 +427,55 @@ endif
 " Autocommands
 " ----------------------------------------------------------------------------
 
-" Put them in an autocmd group, so that they can be deleted easily
-augroup vimrcEx
-autocmd!
+" Put all autocmds in this group, so that they can be deleted easily
+augroup vimrcAutoCmd
 
-" For all text files set 'textwidth' to 78 characters
-autocmd FileType text setlocal textwidth=78
+        autocmd!
 
-" Remove expandtab for Makefile and Python
-autocmd BufEnter [mM]akefile*,GNUmakefile,*.mk,*.mak,*.py set noexpandtab
-autocmd BufLeave [mM]akefile*,GNUmakefile,*.mk,*.mak,*.py set expandtab
+        " For all text files set 'textwidth' to 78 characters
+        autocmd FileType text setlocal textwidth=78
 
-" Special mappings in diff mode
-autocmd FilterWritePre * if &diff | execute "nnoremap <C-p> [cz." | execute "nnoremap <C-n> ]cz." | endif
+        " Remove expandtab for Makefile and Python
+        autocmd BufEnter [mM]akefile*,GNUmakefile,*.mk,*.mak,*.py set noexpandtab
+        autocmd BufLeave [mM]akefile*,GNUmakefile,*.mk,*.mak,*.py set expandtab
 
-" Spell check when writing commit logs
-autocmd filetype svn,*commit* setlocal spell spelllang=en
+        " Special mappings in diff mode
+        autocmd FilterWritePre * if &diff | execute "nnoremap <C-p> [cz." | execute "nnoremap <C-n> ]cz." | endif
 
-" Set completion to the current script (only if a specific plugin does
-" not already exist for that filetype)
-if has("autocmd") && exists("+omnifunc")
-        autocmd Filetype *
-                \ if &omnifunc == "" |
-                \       setlocal omnifunc=syntaxcomplete#Complete |
-                \ endif
-endif
+        " Spell check when writing commit logs
+        autocmd filetype svn,*commit* setlocal spell spelllang=en
 
-" In mutt: 72-char per line max, set en spell checker
-autocmd BufRead ~/.mutt/tmp/mutt-* :source ~/.vim/mutt.vim
+        " Set completion to the current script (only if a specific plugin does
+        " not already exist for that filetype)
+        if exists("+omnifunc")
+                autocmd Filetype *
+                        \ if &omnifunc == "" |
+                        \       setlocal omnifunc=syntaxcomplete#Complete |
+                        \ endif
+        endif
 
-" For tmp files, map a killall keybind
-autocmd BufRead /tmp/* nnoremap <silent> <leader>k :1,$d<CR>ZZ
+        " In mutt: 72-char per line max, set en spell checker
+        autocmd BufRead ~/.mutt/tmp/mutt-* :source ~/.vim/mutt.vim
 
-" Save the contents of the current window
-autocmd BufWinLeave * if expand("%") != "" | mkview | endif
+        " For tmp files, map a killall keybind
+        autocmd BufRead /tmp/* nnoremap <silent> <leader>k :1,$d<CR>ZZ
+
+        " Save the contents of the current window
+        autocmd BufWinLeave * if expand("%") != "" | mkview | endif
+
+        " VCS helpers
+        autocmd BufRead * call VCSmaps()
+
+        " Return to normal mode when leaving a buffer
+        autocmd BufLeave * stopinsert
+
+        " Autosave scratchpad buffer
+        autocmd BufLeave ${HOME}/.scratchpad write
+
+        " In quickfix window, <CR> will just locate the match, without jumping
+        au FileType qf nnoremap <buffer> <CR> <CR><C-W>p
+
+augroup END
 
 " Remove overheads for large files
 " When file's dimension is > 100MB, set the following options:
@@ -471,16 +486,10 @@ autocmd BufWinLeave * if expand("%") != "" | mkview | endif
 " undolevels=-1 (no undo possible)
 let g:LargeFile = 1024 * 1024 * 100
 augroup LargeFile
+        autocmd!
         autocmd BufReadPre * let f=expand("<afile>") | if getfsize(f) > g:LargeFile | set eventignore+=FileType | setlocal noswapfile bufhidden=unload buftype=nowrite undolevels=-1 | else | set eventignore-=FileType | endif
 augroup END
 
-" VCS helpers
-autocmd BufRead * call VCSmaps()
-
-" Return to normal mode when leaving a buffer
-autocmd BufLeave * stopinsert
-
-augroup END
 
 " ----------------------------------------------------------------------------
 " Colorscheme
@@ -509,11 +518,16 @@ function! CursorColumnVisibilityToggling()
 endfunction
 
 " Occur: report all lines containing a keyword (or the last search regexp) in
-"        a scratch buffer; note: external grep doesn't work when filenames
+"        quickfix window; note: external grep doesn't work when filenames
 "        contain unusual characters (e.g., ":")
 command! -nargs=+ Occur
+        \ let cpos = getpos(".") |
         \ execute 'silent vimgrep! <args>' |
+        \ call setpos(".", cpos) |
+        \ unlet cpos |
+        \ cd %:p:h |
         \ copen 20 |
+        \ cd - |
         \ redraw!
 
 " Ruler
@@ -643,9 +657,6 @@ nnoremap ' `
 vnoremap * <Esc>/<C-R>*<CR>
 vnoremap # <Esc>?<C-R>*<CR>
 
-" Highlight reference columns
-nmap <silent> <F2> :call CursorColumnVisibilityToggling()<CR>
-
 " Switch b/w spaces and tabs
 nmap <silent> <F3> :set expandtab!<CR>:retab!<CR>
 
@@ -720,6 +731,8 @@ inoremap @@ <C-x><C-o>
 " Use <Space>/<C-Space> for scrolling
 nnoremap <Space> 
 nnoremap <C-@> 
+vnoremap <Space> 
+vnoremap <C-@> 
 
 " Keep selected text when fixing indentation
 vnoremap < <gv
@@ -737,6 +750,17 @@ vnoremap <CR> }
 " Map <C-Tab> to <Tab> to allow inserting a tab character not at the beginning
 " of the line (when g:SuperTabMappingForward is set to '<tab>')
 inoremap <Esc>[27;5;9~ <Tab>
+
+" Scratchpad
+nmap gso :vsplit ${HOME}/.scratchpad<CR>
+nmap gsc :vsplit ${HOME}/.scratchpad<CR>:3,$d<CR>
+vmap gsp y
+        \:let headLine = "[... From: " . expand("%:p") . " ...]"<CR>
+        \:vsplit ${HOME}/.scratchpad<CR>
+        \Go<Esc>
+        \:put =headLine<CR>
+        \p
+        \:unlet headLine<CR>
 
 
 " ----------------------------------------------------------------------------
@@ -763,7 +787,7 @@ xmap <silent> <leader><CR> <Plug>SlimeRegionSend
 " ** * ** Highlight all occurrences of the word under the cursor (without moving)
 nnoremap <silent> <leader>* :let @/='\<<C-R>=expand("<cword>")<CR>\>'<CR>:set hls<CR>
 
-" ** / ** Show all occurrences of the word under the cursor
+" ** ** ** Show all occurrences of the word under the cursor
 nmap <silent> <leader>** :Occur /<C-r><C-w>/ %<CR>
 
 " ** +- ** Visual mode inc/dec
@@ -819,6 +843,9 @@ vmap <silent> <leader>a<Space> :Tabularize / /l0<CR>
 " ** B ** Switch to previous buffer in list
 nmap <leader>b  :bp<CR>
 
+" ** C ** Highlight reference columns
+nmap <silent> <leader>c :call CursorColumnVisibilityToggling()<CR>
+
 " ** D ** Delete all lines containing the WORD under the cursor
 nnoremap <silent> <leader>dw
         \ :let cl=line(".")<CR>:g/<C-R><C-A>/d<CR>:call cursor(cl, 1)<CR>
@@ -855,12 +882,6 @@ nmap <silent> <leader>m :call MoveCursorLine()<CR>:redraw!<CR>
 " ** O ** Insert empty lines
 nnoremap <leader>o o<Esc>
 nnoremap <leader>O O<Esc>
-
-" ** P ** Paste the visual selection to the scratchpad (along with
-"         the current file name)
-vmap <silent> <leader>p
-        \ :<C-U>silent! '<,'>w >> ~/.scratchpad<CR>
-        \ :call system("echo Yanked from: " . shellescape(expand("%:p")) . " >> ~/.scratchpad")<CR>
 
 " ** Q ** Quickly close current buffer
 nmap <silent> <leader>q :bdelete<CR>
