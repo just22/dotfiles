@@ -25,7 +25,7 @@ endif
 " Automatically read again a file when changed outside of Vim
 set autoread
 
-" Allow backspacing over everything in insert mode
+" Allow backspacing over everything in INSERT mode
 set backspace=indent,eol,start
 
 " Number of screen lines to use for the command-line window
@@ -34,7 +34,7 @@ set cmdwinheight=5
 " Ignore white spaces in diff mode
 set diffopt+=iwhite
 
-" Store swap files in fixed location, not current directory
+" Store swap files in fixed location, not in current directory
 set dir=~/.vim/swap//,/var/tmp//,/tmp//,.
 
 " Character encoding
@@ -151,9 +151,7 @@ set number
 " Show the line number relative to the line with the cursor
 if exists("+relativenumber")
         set norelativenumber
-        nmap <silent> <leader>R :set relativenumber!<CR>
 endif
-nmap <silent> <leader>N :set number!<CR>
 
 " Show the cursor position all the time
 set noruler
@@ -206,7 +204,7 @@ endif
 " Display incomplete commands
 set showcmd
 
-" If in Insert, Replace or Visual mode put a message on the last line
+" If in INSERT, REPLACE or VISUAL mode put a message on the last line
 set showmode
 
 " Always show a status line for the last window
@@ -299,7 +297,7 @@ runtime macros/matchit.vim
 filetype plugin indent on
 
 " terminus
-let g:TerminusMouse=0
+let g:TerminusMouse = 0
 
 " vim-slime
 let g:slime_target = "tmux"
@@ -309,8 +307,8 @@ let g:slime_dont_ask_default = 1
 let g:slime_no_mappings = 1
 
 " vim-notes
-let g:notes_directories=['$HOME/notes']
-let g:notes_suffix=".txt"
+let g:notes_directories = ['$HOME/notes']
+let g:notes_suffix = ".txt"
 let g:notes_unicode_enabled = 0
 
 " supertab (+ completion popup menu adjustment)
@@ -343,11 +341,11 @@ nmap <silent> <Esc>[D    :TmuxNavigateLeft<CR>
 nmap <silent> <C-\>      :TmuxNavigatePrevious<CR>
 
 " netrw (see http://ivanbrennan.nyc/blog/2014/01/16/rigging-vims-netrw)
-let g:netrw_liststyle=3         " 0: thin view; 3: tree view
-let g:netrw_banner=0            " No banner
-let g:netrw_altv=1              " Open files shown on the right
-let g:netrw_browse_split=4      " Open files in previous window
-"let g:netrw_preview=1          " Preview window shown in a vertically split
+let g:netrw_liststyle = 3         " 0: thin view; 3: tree view
+let g:netrw_banner = 0            " No banner
+let g:netrw_altv = 1              " Open files shown on the right
+let g:netrw_browse_split = 4      " Open files in previous window
+"let g:netrw_preview = 1          " Preview window shown in a vertically split
 augroup NetrwGroup
         autocmd! BufEnter * call NormalizeWidths()
 augroup END
@@ -466,14 +464,17 @@ augroup vimrcAutoCmd
         " VCS helpers
         autocmd BufRead * call VCSmaps()
 
-        " Return to normal mode when leaving a buffer
-        autocmd BufLeave * stopinsert
+        " Return to NORMAL mode when leaving a buffer
+        autocmd BufLeave,WinLeave * stopinsert
 
         " Autosave scratchpad buffer
         autocmd BufLeave ${HOME}/.scratchpad write
 
         " In quickfix window, <CR> will just locate the match, without jumping
-        au FileType qf nnoremap <buffer> <CR> <CR><C-W>p
+        autocmd FileType qf nnoremap <buffer> <CR> <CR><C-W>p
+
+        " If quickfix is the last window, quit
+        autocmd BufEnter * call QuitIfOnlyQuickfix()
 
 augroup END
 
@@ -487,7 +488,7 @@ augroup END
 let g:LargeFile = 1024 * 1024 * 100
 augroup LargeFile
         autocmd!
-        autocmd BufReadPre * let f=expand("<afile>") | if getfsize(f) > g:LargeFile | set eventignore+=FileType | setlocal noswapfile bufhidden=unload buftype=nowrite undolevels=-1 | else | set eventignore-=FileType | endif
+        autocmd BufReadPre * let f = expand("<afile>") | if getfsize(f) > g:LargeFile | set eventignore+=FileType | setlocal noswapfile bufhidden=unload buftype=nowrite undolevels=-1 | else | set eventignore-=FileType | endif
 augroup END
 
 
@@ -552,15 +553,15 @@ function! VexToggle(dir)
 endfunction
 
 function! VexOpen(dir)
-        let vex_width=50
+        let vex_width = 50
         execute "Vexplore " . a:dir
-        let t:vex_buf_nr=bufnr("%")
+        let t:vex_buf_nr = bufnr("%")
         wincmd H
         call VexSize(vex_width)
 endfunction
 
 function! VexClose()
-        let curr_win_nr=winnr()
+        let curr_win_nr = winnr()
         let target_win_nr = (curr_win_nr == 1) ? winnr("#") : curr_win_nr
         1wincmd w
         close
@@ -576,10 +577,10 @@ function! VexSize(vex_width)
 endfunction
 
 function! NormalizeWidths()
-        let eadirection_backup=&eadirection
+        let eadirection_backup = &eadirection
         set eadirection=hor
         set equalalways! equalalways!
-        let &eadirection=eadirection_backup
+        let &eadirection = eadirection_backup
         unlet eadirection_backup
 endfunction
 
@@ -648,6 +649,14 @@ function! VCSmaps()
         endif
 endfunction
 
+" If quickfix is the last window, quit
+function! QuitIfOnlyQuickfix()
+        if &buftype=="quickfix"
+                if winnr('$') < 2
+                        quit
+                endif
+        endif
+endfunction
 
 " ----------------------------------------------------------------------------
 " Normal mappings
@@ -659,9 +668,6 @@ nnoremap ' `
 " Search for visual selection
 vnoremap * <Esc>/<C-R>*<CR>
 vnoremap # <Esc>?<C-R>*<CR>
-
-" Switch b/w spaces and tabs
-nmap <silent> <F3> :set expandtab!<CR>:retab!<CR>
 
 " Undo tree
 nmap <F4> :UndotreeToggle<CR>
@@ -691,7 +697,7 @@ nnoremap gF 0gF
 nnoremap j  gj
 nnoremap k  gk
 
-" Emacs style keybindings in insert mode
+" Emacs style keybindings in INSERT mode
 inoremap <C-d> <C-o>x
 inoremap <C-a> <C-o>I
 inoremap <C-e> <C-o>A
@@ -741,7 +747,7 @@ vnoremap <C-@> 
 vnoremap < <gv
 vnoremap > >gv
 
-" Map ENTER and BACKSPACE in normal/visual mode to move among paragraphs
+" Map ENTER and BACKSPACE in NORMAL/VISUAL mode to move among paragraphs
 nnoremap <BS> {z.
 onoremap <BS> {
 vnoremap <BS> {
@@ -755,7 +761,7 @@ vnoremap <CR> }
 inoremap <Esc>[27;5;9~ <Tab>
 
 " Scratchpad
-nmap gso :vsplit ${HOME}/.scratchpad<CR>
+nmap gso :vsplit ${HOME}/.scratchpad<CR>G
 nmap gsc :vsplit ${HOME}/.scratchpad<CR>:3,$d<CR>
 vmap gsp y
         \:let headLine = "[... From: " . expand("%:p") . " ...]"<CR>
@@ -777,8 +783,8 @@ vmap gsp y
 "       * on the left side;
 " - <leader> shouldn't be a key combination (no ModKey, no Shift);
 " - always use <leader> with one or two lowercase letters.
-let mapleader="\<Tab>"
-let maplocalleader="\<Tab>"
+let mapleader = "\<Tab>"
+let maplocalleader = "\<Tab>"
 
 " ** <leader> ** Temporarely switch off hlsearch
 nmap <silent> <leader><leader> :nohlsearch<CR>
@@ -788,12 +794,12 @@ nmap <silent> <leader><CR> <Plug>SlimeLineSend
 xmap <silent> <leader><CR> <Plug>SlimeRegionSend
 
 " ** * ** Highlight all occurrences of the word under the cursor (without moving)
-nnoremap <silent> <leader>* :let @/='\<<C-R>=expand("<cword>")<CR>\>'<CR>:set hls<CR>
+nnoremap <silent> <leader>* :let @/ = '\<<C-R>=expand("<cword>")<CR>\>'<CR>:set hls<CR>
 
 " ** ** ** Show all occurrences of the word under the cursor
 nmap <silent> <leader>** :Occur /<C-r><C-w>/ %<CR>
 
-" ** +- ** Visual mode inc/dec
+" ** +- ** VISUAL mode inc/dec
 vmap <leader>+ :II 1 ''<CR>
 vmap <leader>- :II -1 ''<CR>
 
@@ -819,8 +825,6 @@ nmap <silent> <leader><Space> :silent! call RemoveTrailingSpaces()<CR>
 cmap <silent> <C-l> :redraw!<CR>
 nmap <silent> <C-l> :call MoveCursorLine("scroll")<CR>:redraw!<CR>
 
-" ** 0 ** Toggle non-printable chars visibility
-nmap <silent> <leader>0 :set list!<CR>
 
 " ** 1-9 ** Switch to buffer #
 nmap <silent> <leader>1  :1b<CR>
@@ -846,12 +850,9 @@ vmap <silent> <leader>a<Space> :Tabularize / /l0<CR>
 " ** B ** Switch to previous buffer in list
 nmap <leader>b  :bp<CR>
 
-" ** C ** Highlight reference columns
-nmap <silent> <leader>c :call CursorColumnVisibilityToggling()<CR>
-
 " ** D ** Delete all lines containing the WORD under the cursor
 nnoremap <silent> <leader>dw
-        \ :let cl=line(".")<CR>:g/<C-R><C-A>/d<CR>:call cursor(cl, 1)<CR>
+        \ :let cl = line(".")<CR>:g/<C-R><C-A>/d<CR>:call cursor(cl, 1)<CR>
 
 " ** F ** Switch to next buffer in list
 nmap <leader>f  :bn<CR>
@@ -892,13 +893,16 @@ nmap <silent> <leader>q :bdelete<CR>
 " ** R ** Reload config file
 nmap <leader>r :source $HOME/.vimrc<CR>
 
-" ** S ** Turn spell checking on/off
-nmap <silent> <leader>se :setlocal spell spelllang=en<CR>
-        \:echo "Spell check (EN) switched on"<CR>
-nmap <silent> <leader>si :setlocal spell spelllang=it<CR>
-        \:echo "Spell check (IT) switched on"<CR>
-nmap <silent> <leader>so :setlocal nospell<CR>
-        \:echo "Spell check switched off"<CR>
+" ** S ** Option toggling
+nmap <silent> <leader>sc :call CursorColumnVisibilityToggling()<CR>
+nmap <leader>se :setlocal spell spelllang=en<CR>
+nmap <leader>si :setlocal spell spelllang=it<CR>
+nmap <leader>so :setlocal nospell<CR>
+nmap <silent> <leader>sl :set list!<CR>:set list?<CR>
+nmap <silent> <leader>sn :set number!<CR>
+nmap <silent> <leader>sr :set relativenumber!<CR>
+nmap <silent> <leader>st :set expandtab!<CR>:retab!<CR>:set expandtab?<CR>
+nmap <silent> <leader>sw :set wrap!<CR>:set wrap?<CR>
 
 " ** U ** Underline
 nmap <leader>u yypVr=
@@ -911,12 +915,9 @@ nmap <silent> <leader>v :loadview<CR>
 nmap <silent> <leader>x :call MinimalSyntaxToggle()<CR>
 
 " ** Y ** Copy the current buffer filename (with full path)
-nmap <silent> <leader>yy :let @*=expand("%:p")<CR>
+nmap <silent> <leader>yy :let @* = expand("%:p")<CR>
 
 " ** W ** Reserved for VimWiki
-
-" ** Z ** Wrap mode toggling
-nmap <silent> <leader>z :set wrap!<CR>
 
 
 " ----------------------------------------------------------------------------
