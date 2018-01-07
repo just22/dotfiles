@@ -534,15 +534,6 @@ command! -nargs=+ Occur
         \ unlet currFileDir |
         \ redraw!
 
-" Ruler
-function! Ruler()
-        let l:tw = &textwidth ? &textwidth : 72
-        let l:charNo = l:tw - strlen(b:cchar) - 1
-        call append('.', b:cchar)
-        exec "normal j"
-        s/$/\=(' ' . repeat('-', l:charNo))
-endfunction
-
 " netrw helpers (see http://ivanbrennan.nyc/blog/2014/01/16/rigging-vims-netrw)
 function! VexToggle(dir)
         if exists("t:vex_buf_nr")
@@ -804,7 +795,8 @@ vmap <leader>+ :II 1 ''<CR>
 vmap <leader>- :II -1 ''<CR>
 
 " ** - ** Ruler
-nmap <leader>- :call Ruler()<CR>
+nmap <leader>- o<Esc>72i-<Esc>gcc73\|D
+" ----------------------------------------------------------------------
 
 " ** ., ** netrw windows
 map <silent> <leader>, :call VexToggle(getcwd())<CR>
@@ -813,10 +805,6 @@ map <silent> <leader>. :call VexToggle("")<CR>
 " ** <Up>/<Down> ** Move current line up/down
 nnoremap <leader><Up>   :m -2<CR>
 nnoremap <leader><Down> :m +1<CR>
-
-" ** [] ** Snip line
-nnoremap <leader>[ o[...]<Esc>j0
-nnoremap <leader>] o[....................snip....................]<Esc>j0
 
 " ** <Space> ** Remove trailing spaces
 nmap <silent> <leader><Space> :silent! call RemoveTrailingSpaces()<CR>
@@ -850,9 +838,15 @@ vmap <silent> <leader>a<Space> :Tabularize / /l0<CR>
 " ** B ** Switch to previous buffer in list
 nmap <leader>b  :bp<CR>
 
-" ** D ** Delete all lines containing the WORD under the cursor
+" ** DD ** Duplicate line, comment original
+nmap <silent> <leader>dd Ygccp
+
+" ** DW ** Delete all lines containing the WORD under the cursor
 nnoremap <silent> <leader>dw
         \ :let cl = line(".")<CR>:g/<C-R><C-A>/d<CR>:call cursor(cl, 1)<CR>
+
+" ** E ** Edit Vim's config file
+nmap <leader>e :e ${HOME}/.vimrc<CR>
 
 " ** F ** Switch to next buffer in list
 nmap <leader>f  :bn<CR>
@@ -863,8 +857,58 @@ nmap <leader>g  :e#<CR>
 " ** GF ** Edit a new file, whose name is under the cursor
 nmap <leader>gf :e <cfile><CR>
 
-" ** I ** csv plugin
-nmap <silent> <leader>i :%CSVArrangeColumn<CR>
+" ** I ** Insert specific elements
+"
+" Attribution line: author, date
+nmap <silent> <leader>ia oAdL, <Esc>:r !date +\%Y-\%m-\%d<CR>kJgcc$
+"
+" Copyright line
+nmap <silent> <leader>ic O(C) <Esc>:r !date +\%Y<CR>kJA Alessandro De Laurenzis <just22.adl@gmail.com><Esc>gcc
+"
+" File header
+nmap <silent> <leader>ih 1GO#/bin/sh<CR><CR>
+                           \# <Esc>70a-<Esc>o
+                           \#  $$<CR>
+                           \#  <CR>
+                           \# <Esc>70a-<Esc>kA
+"
+" 3-clausole BSD license
+map <silent> <leader>il :set paste<CR>o
+                        \(C) <Esc>mw:r !date +\%Y<CR>kJA Alessandro DE LAURENZIS <just22.adl@gmail.com><CR>
+                        \All Rights Reserved<CR><CR>
+                        \Redistribution and use in source and binary forms, with or without<CR>
+                        \modification, are permitted provided that the following conditions<CR>
+                        \are met:<CR>
+                        \<CR>
+                        \1. Redistributions of source code must retain the above copyright<CR>
+                        \   notice, this list of conditions and the following disclaimer.<CR><CR>
+                        \2. Redistributions in binary form must reproduce the above copyright<CR>
+                        \   notice, this list of conditions and the following disclaimer in the<CR>
+                        \   documentation and/or other materials provided with the distribution.<CR>
+                        \<CR>
+                        \3. Neither the name of the copyright holder nor the names of its<CR>
+                        \   contributors may be used to endorse or promote products derived<CR>
+                        \   from this software without specific prior written permission.<CR>
+                        \<CR>
+                        \THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS<CR>
+                        \"AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT<CR>
+                        \LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR<CR>
+                        \A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT<CR>
+                        \HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,<CR>
+                        \SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT<CR>
+                        \LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,<CR>
+                        \DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY<CR>
+                        \THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT<CR>
+                        \(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE<CR>
+                        \OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.<CR><Esc>
+                        \mz:set nopaste<CR>V`wgc`z
+"
+" Note
+nmap <silent> <leader>in oAdL: <Esc>gccA
+"
+" Snip lines
+nmap <silent> <leader>is o[...]<Esc>j0
+nmap <silent> <leader>iS o[....................snip....................]<Esc>j0
 
 " ** K ** See killall keybind in autocmd section
 
@@ -873,15 +917,6 @@ nmap <leader>l  :ls<CR>:buffer<Space>
 
 " ** M ** Move cursor line
 nmap <silent> <leader>m :call MoveCursorLine()<CR>:redraw!<CR>
-
-" ** N ** vim-notes plugin
-"nmap <silent> <leader>nn :Note<CR>
-"nmap <silent> <leader>nd :DeleteNote!<CR>
-"vmap <silent> <leader>ne :NoteFromSelectedText<CR>
-"vmap <silent> <leader>ns :SplitNoteFromSelectedText<CR>
-"vmap <silent> <leader>nt :TabNoteFromSelectedText<CR>
-"nmap <silent> <leader>nw :execute "Note Planning for WK".system("date --date=next-monday +%y%V")<CR>
-"nmap <silent> <leader>np :r ~/notes/weekly_planning.tmpl<CR>
 
 " ** O ** Insert empty lines
 nnoremap <leader>o o<Esc>
@@ -908,7 +943,7 @@ nmap <silent> <leader>sw :set wrap!<CR>:set wrap?<CR>
 nmap <leader>u yypVr=
 
 " ** V ** Restore the cursor position in the current window
-"         (from last edit session)
+"         (from last edit session); see also VCSmaps
 nmap <silent> <leader>v :loadview<CR>
 
 " ** X ** Minimal syntax toggling
@@ -924,14 +959,19 @@ nmap <silent> <leader>yy :let @* = expand("%:p")<CR>
 " Abbreviations
 " ----------------------------------------------------------------------------
 
-cnoreabbrev f    find
-cnoreabbrev sf   sfind
-cnoreabbrev vsf  vertical sfind
+cabbrev f    find
+cabbrev sf   sfind
+cabbrev vsf  vertical sfind
 
+" Mail
 iabbrev     _h   Hello
 iabbrev     _br  Best regards
 iabbrev     _all All the best
 iabbrev     _t   Thanks in advance
+
+" Copy/paste between sessions
+cabbrev _y w! /tmp/$USER.vi.yank
+cabbrev _p r /tmp/$USER.vi.yank
 
 
 " ----------------------------------------------------------------------
