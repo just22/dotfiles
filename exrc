@@ -25,13 +25,13 @@ set iclower
 "
 " Left-right scrolling (unwrap long lines)
 set leftright
-map !w :set leftright
-map !!w :set noleftright
+map 	sw :set leftright
+map 	sW :set noleftright
 "
 " Precede each line with its ordinal number
 set number
-map !n :set number
-map !!n :set nonumber
+map 	sn :set number
+map 	sN :set nonumber
 "
 " *Always* show changes that commands make
 set report=1
@@ -71,75 +71,75 @@ set remap
 map ' `
 "
 " Edit .exrc
-map !e :e $HOME/.exrc
+map 	e :e $HOME/.exrc
 "
 " Source .exrc
-map !r :so $HOME/.exrc
+map 	r :so $HOME/.exrc
 "
 " Move effectively among open files
-map !l :args
-map !b :prev
-map !f :next
-map !g :e#
+map 	l :args
+map 	b :prev
+map 	f :next
+map 	g :e#
 "
 " Move to the beginning of file
 map gg :0
 "
 " Display lines in an unambiguous fashion
-map !0 :set list
-map !!0 :set nolist
+map 	sl :set list
+map 	sL :set nolist
 "
 " Format current paragraph/file
-map !p {!}fmt -w 72
-map !P 1G!Gfmt -w 72
+map 	p {!}fmt -w 72
+map 	P 1G!Gfmt -w 72
 "
 " Spell checker
-map !E :w:!aspell -l en check %:e!
-map !I :w:!aspell -l it check %:e!
+map 	E :w:!aspell -l en check %:e!
+map 	I :w:!aspell -l it check %:e!
 "
 " Duplicate line, comment original
-map !d YI#p
+map 	dd YI#p
 "
 " Insert an empty line above/below current one
-map !O O
-map !o o
+map 	O O
+map 	o o
 "
 " Attribution line: author, date
-map !ia o# AdL, :r !date +\%Y-\%m-\%dkJ
+map 	ia o# AdL, :r !date +\%Y-\%m-\%dkJ$
 "
 " Insert note
-map !in o# AdL: 
+map 	in o# AdL: 
 "
 " Insert file header
-map !ih 1GO#/bin/sh# 70a-o#  $Id$#  # 70a-kA
+map 	ih 1GO#/bin/sh# 70a-o#  $$#  # 70a-kA
 "
 " Copyright
-map !ic O# (C) :r !date +\%YkJA Alessandro De Laurenzis <just22.adl@gmail.com>
+map 	ic O# (C) :r !date +\%YkJA Alessandro De Laurenzis <just22.adl@gmail.com>
 "
 " 3-clausole BSD license
-map !il O# (C) :r !date +\%YkJA Alessandro De Laurenzis <just22.adl@gmail.com># All Rights Reserved## Redistribution and use in source and binary forms, with or without# modification, are permitted provided that the following conditions# are met:## 1. Redistributions of source code must retain the above copyright#    notice, this list of conditions and the following disclaimer.## 2. Redistributions in binary form must reproduce the above copyright#    notice, this list of conditions and the following disclaimer in the#    documentation and/or other materials provided with the distribution.## 3. Neither the name of the copyright holder nor the names of its#    contributors may be used to endorse or promote products derived#    from this software without specific prior written permission.## THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS# "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT# LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR# A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT# HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,# SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT# LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,# DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY# THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT# (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE# OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+map 	il O# (C) :r !date +\%YkJA Alessandro De Laurenzis <just22.adl@gmail.com># All Rights Reserved## Redistribution and use in source and binary forms, with or without# modification, are permitted provided that the following conditions# are met:## 1. Redistributions of source code must retain the above copyright#    notice, this list of conditions and the following disclaimer.## 2. Redistributions in binary form must reproduce the above copyright#    notice, this list of conditions and the following disclaimer in the#    documentation and/or other materials provided with the distribution.## 3. Neither the name of the copyright holder nor the names of its#    contributors may be used to endorse or promote products derived#    from this software without specific prior written permission.## THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS# "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT# LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR# A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT# HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,# SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT# LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,# DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY# THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT# (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE# OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 "
 " New section
-map !- o# 70a-o##kA  
+map 	- o# 70a-o##kA  
 "
 " Comment/uncomment current line
-map !c 0i#
-map !C :s/^#//
+map 	c 0i#
+map 	C :s/^#//
 "
 " On-line help
 map #1 :viusage
 "
 " Move current line up or down
-map #2 :m +1
-map #3 :m -2
+map 	OA :m -2
+map 	OB :m +1
 "
 " Number incr/dec
 map + #+
 map - #-
 "
 " Snip line
-map !s o[...]
-map !S o....................<snip>....................
+map 	is o[...]
+map 	iS o....................<snip>....................
 "
 " Search for word at cursor position
 map * 
@@ -148,11 +148,11 @@ map * 
 map gf :e%dWPo:e! p"fdd@f
 "
 " Place current line in the center of the screen
-map  z.
-map!  mpz.`pa
+map  z.
+map!  mpz.`pa
 "
 " Kill the current file's content
-map !k :w! /tmp/$USER.vi.killed:%dZZ
+map 	k :w! /tmp/$USER.vi.killed:%dZZ
 "
 "
 " ----------------------------------------------------------------------
