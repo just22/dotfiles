@@ -300,11 +300,13 @@ filetype plugin indent on
 let g:TerminusMouse = 0
 
 " vim-slime
-let g:slime_target = "tmux"
-let g:slime_paste_file = "/tmp/$USER.vim-slime.paste"
-let g:slime_default_config = {"socket_name": split($TMUX, ",")[0], "target_pane": ":.1"}
-let g:slime_dont_ask_default = 1
-let g:slime_no_mappings = 1
+if exists("$TMUX")
+        let g:slime_target = "tmux"
+        let g:slime_paste_file = "/tmp/$USER.vim-slime.paste"
+        let g:slime_default_config = {"socket_name": split($TMUX, ",")[0], "target_pane": ":.1"}
+        let g:slime_dont_ask_default = 1
+        let g:slime_no_mappings = 1
+endif
 
 " vim-notes
 let g:notes_directories = ['$HOME/notes']
@@ -349,6 +351,24 @@ let g:netrw_browse_split = 4      " Open files in previous window
 augroup NetrwGroup
         autocmd! BufEnter * call NormalizeWidths()
 augroup END
+
+" vimwiki
+function! VimwikiLinkHandler(link)
+        " Use Vim to open external files with the 'file:' scheme.  E.g.:
+        let link = a:link
+        if link =~# '^file:'
+                let link_infos = vimwiki#base#resolve_link(link)
+                if link_infos.filename == ''
+                        echomsg 'Vimwiki Error: Unable to resolve link!'
+                        return 0
+                else
+                        exe 'edit ' . fnameescape(link_infos.filename)
+                        return 1
+                endif
+        else
+                return 0
+        endif
+endfunction
 
 
 " ----------------------------------------------------------------------------
@@ -866,7 +886,7 @@ nmap <silent> <leader>ia oAdL, <Esc>:r !date +\%Y-\%m-\%d<CR>kJgcc$
 nmap <silent> <leader>ic O(C) <Esc>:r !date +\%Y<CR>kJA Alessandro De Laurenzis <just22.adl@gmail.com><Esc>gcc
 "
 " File header
-nmap <silent> <leader>ih 1GO#/bin/sh<CR><CR>
+nmap <silent> <leader>ih 1GO#!/bin/sh<CR><CR>
                            \# <Esc>70a-<Esc>o
                            \#  $$<CR>
                            \#  <CR>
