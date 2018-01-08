@@ -550,7 +550,11 @@ cvs-adddir() {
 # Change XTerm colorscheme on-the-fly
 #
 alias dark='colman set solarized-dark'
+alias dark-ocean='colman set ocean'
+alias dark-lakeside='colman set atelier-lakeside'
+alias dark-green='colman set green-screen'
 alias light='colman set solarized-light'
+alias light-cave='colman set atelier-cave-light'
 
 # ----------------------------------------------------------------------
 # dict.org lookups
