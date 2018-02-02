@@ -52,12 +52,8 @@ set history=100
 " Do not redraw the screen while executing commands that have not been typed
 set lazyredraw
 
-" Do not enable mouse in INSERT mode when in a TMUX session
-if (&term =~ "^screen")
-        set mouse=nvc
-else
-        set mouse=a
-endif
+" Do not enable mouse in INSERT mode
+set mouse=nvc
 
 " Disable beeping (aka bell) and window flashing
 set noerrorbells visualbell t_vb=
@@ -286,15 +282,17 @@ Plugin 'https://github.com/mbbill/undotree'
 
 Plugin 'https://github.com/tpope/vim-commentary'
 
+Plugin 'https://github.com/hrj/vim-drawit'
+
 call vundle#end()
 
 " Enable extended % matching
 runtime macros/matchit.vim
 
-" Enable file type detection. Use the default filetype settings, so that mail
-" gets 'tw' set to 72, 'cindent' is on in C files, etc. Also load indent
-" files, to automatically do language-dependent indenting.
-filetype plugin indent on
+" Enable file type detection and load indent files, to automatically do
+" language-dependent indenting
+"filetype plugin indent on
+filetype plugin on
 
 " terminus
 let g:TerminusMouse = 0
@@ -773,7 +771,12 @@ inoremap <Esc>[27;5;9~ <Tab>
 
 " Scratchpad
 nmap gso :vsplit ${HOME}/.scratchpad<CR>G
-nmap gsc :vsplit ${HOME}/.scratchpad<CR>:3,$d<CR>
+nmap gsc :vsplit ${HOME}/.scratchpad<CR>
+        \:1,$d<CR>
+        \72i-<Esc>
+        \o This is the scratchpad buffer!!!<CR><Esc>
+        \72i-<Esc>
+        \o<Esc>
 vmap gsp y
         \:let headLine = "[... From: " . expand("%:p") . " ...]"<CR>
         \:vsplit ${HOME}/.scratchpad<CR>
