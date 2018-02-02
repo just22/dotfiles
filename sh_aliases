@@ -108,10 +108,12 @@ d               - Current working dir
 ff              - Recursively find files by (part of) name
 ff.             - Find files in current directory by (part of) name
 flast           - Print the last modified file or directory
+vlast           - Open the last modified file or directory
 fpath           - Print absolute pathname (with dereferenced symbolic links)
 {,e,f,x}grepc   - Colorized grep
 grepo           - Open all files after pattern match
 nowrap          - Do not wrap output of specified command
+set-title       - Set xterm title
 pid             - Process IDs matching argument
 r               - Re-execute most recent command, [-g] [old=new] [prefix]
 rs              - rsync with most common options
@@ -443,12 +445,14 @@ alias catn='cat -n'
 alias touchall='ls -tr | xargs touch'
 alias info='info --vi-keys'
 alias fpath='readlink -f'
-showpath() { echo ${1-$PATH} | tr ":" "\n"; }
-vimall() { find ${1-.} -maxdepth 1 -type f -print | xargs sh -c '</dev/tty vim "$@"' ignoreme; }
-grepo() { grep -l "$@" | xargs sh -c '</dev/tty vim "$@"' ignoreme; }
-runl() { $(head -n "+$1" "$2" | tail -n 1); }
-flast() { ls -dt "$@" | head -1; }
-nowrap() { printf '\033[?7l'; $@; printf '\033[?7h'; }
+showpath()  { echo ${1-$PATH} | tr ":" "\n"; }
+vimall()    { find ${1-.} -maxdepth 1 -type f -print | xargs sh -c '</dev/tty vim "$@"' ignoreme; }
+grepo()     { grep -l "$@" | xargs sh -c '</dev/tty vim "$@"' ignoreme; }
+runl()      { $(head -n "+$1" "$2" | tail -n 1); }
+flast()     { ls -dt "$@" | head -1; }
+vlast()     { vim $(ls -dt "$@" | head -1); }
+nowrap()    { printf '\033[?7l'; $@; printf '\033[?7h'; }
+set-title() { printf "\033]0;%s\007" "$*" ;}
 
 # ----------------------------------------------------------------------
 # Moving around
