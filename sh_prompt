@@ -1,7 +1,7 @@
 # ----------------------------------------------------------------------
 #  $Id$
 #
-# Bourne shell prompt look
+# Shell's prompt look
 # (colored when the terminal has the capability)
 # ----------------------------------------------------------------------
 
@@ -11,8 +11,29 @@ _ps1_exit_status() {
         unset es
 }
 
-# This is a general purpose function, we just take advantage of its execution
-# each time the prompt must be issued
+# Show only $1 trailing PWD components
+# Equivalent to:
+#       echo $PWD | rev | cut -d "/" -f -3 | rev
+# but without forks)
+_ps1_pwd_trim() {
+        dn="${PWD}"
+        while [ "${i-0}" -lt ${1-3} ]; do
+                let i="$i + 1"
+                tpwd="/${dn##*/}${tpwd}"
+                dn=${dn%/*}
+                if [ -z "$dn" ]; then
+                        # Too short path: leading / must be preserved
+                        # (adding a bogus one that will be removed afterward)
+                        tpwd="/${tpwd}"
+                        break
+                fi
+        done
+        # Removing leading / when path is truncated
+        echo "${tpwd#/}"
+}
+
+# This is a general purpose function, we just take advantage of its
+# execution each time the promp is issued
 _ps1_dircheck() {
         if [ -d CVS ]; then
                 echo "cvs, "
@@ -21,7 +42,7 @@ _ps1_dircheck() {
         elif git rev-parse --git-dir > /dev/null 2>&1; then
                 echo "git, "
         fi
-        ppwd=$(cat /tmp/ppwd.$$ 2>/dev/null)
+        ppwd=$(cat /tmp/${USER}.ppwd.$$ 2>/dev/null)
         if [ "$PWD" != "$ppwd" ]; then
                 [ -f "$ppwd"/.exit ] && >&2 . "$ppwd"/.exit
                 echo "$PWD" > /tmp/ppwd.$$
@@ -37,6 +58,6 @@ PS1="${PS1}[${P_HICOL}\$(_ps1_exit_status)${P_NORMCOL}"                 # Infobo
 PS1="${PS1}\${PRJ_REF:+\$PRJ_REF, }"                                    # Infobox: prj ref
 PS1="${PS1}${P_HICOL}\$(_ps1_dircheck)${P_NORMCOL}"                     # Infobox: VCS tree?; .enter/.exit cmd files?
 PS1="${PS1}\j jobs]-"                                                   # Infobox: no. of managed jobs
-PS1="${PS1}[\w]"                                                        # The current working directory
+PS1="${PS1}[\$(_ps1_pwd_trim)]"                                         # Current working directory
 PS1="${PS1}\n${P_NORMCOL}[\A]-\\$ ${RSTCOL}"                            # New line with current time and "prompt char"
 PS1="${PS1}\[\033[?7h\]"                                                # Restore line wrapping
