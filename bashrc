@@ -92,41 +92,6 @@ if ! shopt -oq posix; then
 fi
 
 # ----------------------------------------------------------------------
-# Actions to be taken on new command run
-#
-_newCmdAct()
-{
-        # Show running command in the terminal title:
-        # http://mg.pov.lt/blog/bash-prompt.html
-        case "$BASH_COMMAND" in
-        *\033]0*|*\033]1*|*\033]2*)
-                # Command is trying to set the title bar/icon name as well;
-                # this is most likely the execution of $PROMPT_COMMAND.
-                # In any case nested escapes confuse the terminal, so don't
-                # output them
-                ;;
-        fg|exit)
-                ;;
-        *)
-                case "$TERM" in
-                xterm*|rxvt-unicode*)
-                        printf "\033]0;[%s] [%s] [%s] [Running: \"%s\"]\007" "${TERM%%-*}" "${0##*/}" "$PWD" "$BASH_COMMAND"
-                        ;;
-                screen*)
-                        printf "\033]0;[%s] [%s] [Running: \"%s\"]\007" "${0##*/}" "$PWD" "$BASH_COMMAND"
-                        ;;
-                *)
-                        ;;
-                esac
-                ;;
-        esac
-
-        # Update $HISTFILE on-the-fly
-        history -a
-}
-trap _newCmdAct DEBUG
-
-# ----------------------------------------------------------------------
 # Clean-up /tmp on exit
 # Note: Commands in ~/.bash_logout are run only by login shells...
 #
@@ -141,11 +106,15 @@ trap "rm -f /tmp/*.$$" EXIT
 # ----------------------------------------------------------------------
 # Prompt look
 #
-PROMPT_DIRTRIM=3
 [ -f ~/.sh_prompt ] && source ~/.sh_prompt
 
-# If this is an xterm, then set the title
-PS1="${PS1}\[\033]0;[\s-\v] [\w] [Last cmd: \"\$(tail -1 \"$HISTFILE\")\"]\007\]"
+# Set xterm's title
+PS1="${PS1}\[\033]0;[\s-\v] [\$(_ps1_pwd_trim)] [Last cmd: \"\$(tail -1 \"$HISTFILE\")\"]\007\]"
+
+# ----------------------------------------------------------------------
+# Append last command to history file
+#
+PROMPT_COMMAND="history -a"
 
 # ----------------------------------------------------------------------
 # Aliases/functions definition
