@@ -46,9 +46,6 @@ trap "rm -f /tmp/*.$$" EXIT
 #
 [ -f ~/.sh_prompt ] && . ~/.sh_prompt
 
-# If this is an xterm, then set the title
-PS1="${PS1}\[\033]0;[\s-\v] [\w] [Last cmd: \"\$(tail -1 "$HISTFILE")\"]\007\]"
-
 # ----------------------------------------------------------------------
 # Aliases/functions definition
 #
@@ -58,6 +55,7 @@ PS1="${PS1}\[\033]0;[\s-\v] [\w] [Last cmd: \"\$(tail -1 "$HISTFILE")\"]\007\]"
 # ----------------------------------------------------------------------
 # Addenda to ~/.kshrc specific for machine/site
 #
+[ -f ~/.shrc_local ] && . ~/.shrc_local
 [ -f ~/.kshrc_local ] && . ~/.kshrc_local
 
 # ------------------------------------------------------------------
