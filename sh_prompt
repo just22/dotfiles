@@ -7,7 +7,7 @@
 
 _ps1_exit_status() {
         es="$?"
-        [ "$es" -ne 0 ] && echo "\$?=${es}, "
+        [ "$es" -ne 0 ] && echo "*${es}* "
         unset es
 }
 
@@ -30,17 +30,18 @@ _ps1_pwd_trim() {
         done
         # Removing leading / when path is truncated
         echo "${tpwd#/}"
+        unset dn i tpwd
 }
 
 # This is a general purpose function, we just take advantage of its
 # execution each time the promp is issued
 _ps1_dircheck() {
         if [ -d CVS ]; then
-                echo "cvs, "
+                echo "cvs "
         elif [ -d .SYNC ]; then
-                echo "dss, "
+                echo "dss "
         elif git rev-parse --git-dir > /dev/null 2>&1; then
-                echo "git, "
+                echo "git "
         fi
         ppwd=$(cat /tmp/${USER}.ppwd.$$ 2>/dev/null)
         if [ "$PWD" != "$ppwd" ]; then
@@ -50,14 +51,27 @@ _ps1_dircheck() {
         fi
 }
 
-# Command line prompt
-PS1="\[\033[?7l\]"                                                      # Do not wrap prompt line
-PS1="${PS1}${P_NORMCOL}\n"                                              # Empty line
-PS1="${PS1}[${P_USERCOL}\u${P_NORMCOL}@${P_HICOL}\h${P_NORMCOL}]-"      # user@hostname
-PS1="${PS1}[${P_HICOL}\$(_ps1_exit_status)${P_NORMCOL}"                 # Infobox: last command exit status
-PS1="${PS1}\${PRJ_REF:+\$PRJ_REF, }"                                    # Infobox: prj ref
-PS1="${PS1}${P_HICOL}\$(_ps1_dircheck)${P_NORMCOL}"                     # Infobox: VCS tree?; .enter/.exit cmd files?
-PS1="${PS1}\j jobs]-"                                                   # Infobox: no. of managed jobs
-PS1="${PS1}[\$(_ps1_pwd_trim)]"                                         # Current working directory
-PS1="${PS1}\n${P_NORMCOL}[\A]-\\$ ${RSTCOL}"                            # New line with current time and "prompt char"
-PS1="${PS1}\[\033[?7h\]"                                                # Restore line wrapping
+# Command line prompt:
+# if this is a POSIX shell, use a very basic prompt
+if [ -n "$SH_VERSION" ]; then
+        PS1='$USER \\$ '
+# else use a more informative multi-line prompt
+else
+        PS1="\[\033[?7l\]"                                                      # Do not wrap prompt line
+        PS1="${PS1}${P_NORMCOL}\n"                                              # Empty line
+        PS1="${PS1}[${P_USERCOL}\u${P_NORMCOL}@${P_HICOL}\h${P_NORMCOL}]-"      # user@hostname
+        PS1="${PS1}[\${PRJ_REF:+\$PRJ_REF }"                                    # Infobox: prj ref
+        PS1="${PS1}${P_HICOL}\$(_ps1_exit_status)${P_NORMCOL}"                  # Infobox: last command exit status
+        PS1="${PS1}${P_HICOL}\$(_ps1_dircheck)${P_NORMCOL}"                     # Infobox: VCS tree?; .enter/.exit cmd files?
+        PS1="${PS1}\j]-"                                                        # Infobox: no. of managed jobs
+        PS1="${PS1}[\$(_ps1_pwd_trim)]"                                         # Current working directory
+        PS1="${PS1}\n${P_NORMCOL}[\A]-\\$ ${RSTCOL}"                            # New line with current time and "prompt char"
+        PS1="${PS1}\[\033[?7h\]"                                                # Restore line wrapping
+
+        # If this is an xterm or a tmux session, then set the title
+        case "$TERM" in
+        xterm*|screen*)
+                PS1="${PS1}\[\033]0;[\s] [\W] [Last cmd: \"\$(tail -1 "$HISTFILE")\"]\007\]"
+                ;;
+        esac
+fi
