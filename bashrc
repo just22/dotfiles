@@ -108,9 +108,6 @@ trap "rm -f /tmp/*.$$" EXIT
 #
 [ -f ~/.sh_prompt ] && source ~/.sh_prompt
 
-# Set xterm's title
-PS1="${PS1}\[\033]0;[\s-\v] [\$(_ps1_pwd_trim)] [Last cmd: \"\$(tail -1 \"$HISTFILE\")\"]\007\]"
-
 # ----------------------------------------------------------------------
 # Append last command to history file
 #
@@ -125,6 +122,7 @@ PROMPT_COMMAND="history -a"
 # ----------------------------------------------------------------------
 # Addenda to ~/.bashrc specific for machine/site
 #
+[ -f ~/.shrc_local ] && source ~/.shrc_local
 [ -f ~/.bashrc_local ] && source ~/.bashrc_local
 
 # ------------------------------------------------------------------
