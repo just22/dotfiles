@@ -66,18 +66,8 @@ export MAILER="xterm -e mutt"
 export PRINTER=HP_Deskjet_1510
 
 # Interactive shells startup file
-if [ -n "$KSH_VERSION" ]; then
-        SH=ksh
-        [ -e $HOME/.kshrc ] && export ENV=$HOME/.kshrc
-elif [ -n "$BASH_VERSION" ]; then
-        SH=bash
-        [ -e $HOME/.bashrc ] && . $HOME/.bashrc
-elif [ -n "$SH_VERSION" ]; then
-        SH=sh
-else
-        SH=?
-fi
-export SH
+[ "${SHELL%/ksh}" != "$SHELL" ] || [ -n "$KSH_VERSION" ] &&
+        export ENV="$HOME/.kshrc"
 
 # CPAN local modules config
 export PERL_MB_OPT="--install_base \"${HOME}/perl5\""
