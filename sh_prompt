@@ -35,20 +35,24 @@ _ps1_pwd_trim() {
 
 # This is a general purpose function, we just take advantage of its
 # execution each time the promp is issued
-_ps1_dircheck() {
+_ps1_cmd() {
+        # VCS tree?
         if [ -d CVS ]; then
-                echo "cvs "
+                echo -n "cvs "
         elif [ -d .SYNC ]; then
-                echo "dss "
+                echo -n "dss "
         elif git rev-parse --git-dir > /dev/null 2>&1; then
-                echo "git "
+                echo -n "git "
         fi
+        # .enter/.exit cmd files?
         ppwd=$(cat /tmp/${USER}.ppwd.$$ 2>/dev/null)
         if [ "$PWD" != "$ppwd" ]; then
                 [ -f "$ppwd"/.exit ] && >&2 . "$ppwd"/.exit
                 echo "$PWD" > /tmp/ppwd.$$
                 [ -f .enter ] && >&2 . .enter
         fi
+        # Set the xterm's (or tmux pane's) title
+        set-title "[${0}] [${PWD}] [Last cmd: \"$(tail -1 "$HISTFILE")\"]"
 }
 
 # Command line prompt:
@@ -62,16 +66,9 @@ else
         PS1="${PS1}[${P_USERCOL}\u${P_NORMCOL}@${P_HICOL}\h${P_NORMCOL}]-"      # user@hostname
         PS1="${PS1}[\${PRJ_REF:+\$PRJ_REF }"                                    # Infobox: prj ref
         PS1="${PS1}${P_HICOL}\$(_ps1_exit_status)${P_NORMCOL}"                  # Infobox: last command exit status
-        PS1="${PS1}${P_HICOL}\$(_ps1_dircheck)${P_NORMCOL}"                     # Infobox: VCS tree?; .enter/.exit cmd files?
+        PS1="${PS1}\$(_ps1_cmd)"                                                # Infobox: VCS tree?; .enter/.exit cmd files?
         PS1="${PS1}\j]-"                                                        # Infobox: no. of managed jobs
         PS1="${PS1}[\$(_ps1_pwd_trim)]"                                         # Current working directory
         PS1="${PS1}\n${P_NORMCOL}[\A]-\\$ ${RSTCOL}"                            # New line with current time and "prompt char"
         PS1="${PS1}\[\033[?7h\]"                                                # Restore line wrapping
-
-        # If this is an xterm or a tmux session, then set the title
-        case "$TERM" in
-        xterm*|screen*)
-                PS1="${PS1}\[\033]0;[\s] [\W] [Last cmd: \"\$(tail -1 "$HISTFILE")\"]\007\]"
-                ;;
-        esac
 fi
