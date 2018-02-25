@@ -108,6 +108,12 @@ set expandtab
 " Number of spaces that a <Tab> in the file counts for
 set tabstop=8
 
+" In a TMUX session, set the pane (instead of xterm's) title
+if exists("$TMUX")
+        set t_ts=]2;
+        set t_fs=\\
+endif
+
 " Number of spaces to use for each step of (auto)indent
 set shiftwidth=8
 
@@ -1005,4 +1011,3 @@ try
 catch
         " Do not output any error msg in case no local vimrc exists
 endtry
-
