@@ -458,7 +458,7 @@ set-title() {
         BEL="\007"
         OSC="${ESC}]"   # Operating System Command
         if [ -n "$TMUX" ]; then
-                title_esc_seq="${OSC}2;${*}${ESC}\\\\\\"
+                title_esc_seq="${OSC}2;${*}${ESC}"'\\'
         else
                 title_esc_seq="${ESC}]0;${*}${BEL}"
         fi
