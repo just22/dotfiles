@@ -19,7 +19,7 @@ trap "clear" 0
 umask 022
 
 # Set PATH so it includes user's private bin if it exists
-PATH=/bin:/sbin:/usr/bin:/usr/sbin:/usr/X11R6/bin:/usr/games:/usr/local/bin:/usr/local/sbin:/usr/local/jre-1.7.0/bin
+PATH=/bin:/sbin:/usr/local/bin:/usr/local/sbin:/usr/X11R6/bin:/usr/bin:/usr/sbin:/usr/games:/usr/local/jre-1.7.0/bin
 if [ -d "$HOME/.local/bin" ] ; then
     PATH="$HOME/.local/bin:$PATH"
 fi
