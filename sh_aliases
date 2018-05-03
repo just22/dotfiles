@@ -98,6 +98,14 @@ o2h             - OCT to HEX converter
 pcp             - cp with progress monitor
 
 # ----------------------------------------------------------------------
+# News
+#
+bbc-news        - News from BBC
+hacker-news     - All in the name!
+tech-news       - News from Ars Technica
+weather         - Weather forecast
+
+# ----------------------------------------------------------------------
 # Various
 #
 bln             - List broken links (-l for long format)
@@ -105,6 +113,7 @@ c               - Clear screen
 catn            - cat -n
 cutf            - Select nth field of line
 d               - Current working dir
+exev            - xev with more effective output
 ff              - Recursively find files by (part of) name
 ff.             - Find files in current directory by (part of) name
 flast           - Print the last modified file or directory
@@ -432,26 +441,35 @@ alias :0='clear'
 alias pcp='rsync -avzhHp --info=progress2,name0'
 
 # ----------------------------------------------------------------------
+# News & weather
+#
+alias bbc-news='curl -s getnews.tech/bbc-news | less'
+alias hacker-news='curl -s getnews.tech/hacker-news | less'
+alias tech-news='curl -s getnews.tech/ars-technica | less'
+alias weather='curl -s wttr.in/Milan'
+
+# ----------------------------------------------------------------------
 # Various
 #
 alias c='clear'
-alias d='echo $PWD'
-alias r='fc -s'
-alias v='fc -e vim'
-alias cutf='tr -s "\t" " " | sed "s/^ //" | cut -d" " -f'
-alias rs='rsync -avzhHp --info=progress2'
-alias pid='ps axwwwww | grep -v grep | grep -E --'
 alias catn='cat -n'
-alias touchall='ls -tr | xargs touch'
-alias info='info --vi-keys'
+alias cutf='tr -s "\t" " " | sed "s/^ //" | cut -d" " -f'
+alias d='echo $PWD'
 alias fpath='readlink -f'
+alias info='info --vi-keys'
+alias pid='ps axwwwww | grep -v grep | grep -E --'
+alias r='fc -s'
+alias rs='rsync -avzhHp --info=progress2'
+alias touchall='ls -tr | xargs touch'
+alias v='fc -e vim'
+exev()      { xev | awk -F '[ )]+' '/^KeyPress/ {a[NR+2]} NR in a {printf "%-3s %s\n", $5, $8}'; }
+flast()     { ls -dt "$@" | head -1; }
+grepo()     { grep -l "$@" | xargs sh -c '</dev/tty vim "$@"' ignoreme; }
+nowrap()    { printf '\033[?7l'; $@; printf '\033[?7h'; }
+runl()      { $(head -n "+$1" "$2" | tail -n 1); }
 showpath()  { echo ${1-$PATH} | tr ":" "\n"; }
 vimall()    { find ${1-.} -maxdepth 1 -type f -print | xargs sh -c '</dev/tty vim "$@"' ignoreme; }
-grepo()     { grep -l "$@" | xargs sh -c '</dev/tty vim "$@"' ignoreme; }
-runl()      { $(head -n "+$1" "$2" | tail -n 1); }
-flast()     { ls -dt "$@" | head -1; }
 vlast()     { vim $(ls -dt "$@" | head -1); }
-nowrap()    { printf '\033[?7l'; $@; printf '\033[?7h'; }
 
 set-title() {
         ESC="\033"
@@ -574,11 +592,13 @@ alias light-cave='colman set atelier-cave-light'
 # ----------------------------------------------------------------------
 # dict.org lookups
 #
+alias enit='wr enit'
+alias iten='wr iten'
 en()     { curl -s dict://dict.org/define:$1:wn             | grep -Ev "^[0-9]+ |^\." | less -F; }
 eng()    { curl -s dict://dict.org/define:$1                | grep -Ev "^[0-9]+ |^\." | less -F; }
 lookup() { curl -s dict://dict.org/match:$1::soundex        | grep -Ev "^[0-9]+ |^\." | tr -d \" | awk '{print $2}' | less -F; }
 syn()    { curl -s dict://dict.org/define:$1:moby-thesaurus | grep -Ev "^[0-9]+ |^\." | less -F; }
-enit()   { curl -s dict://dict.org/define:$1:fd-eng-ita     | grep -Ev "^[0-9]+ |^\." | less -F; }
-iten()   { curl -s dict://dict.org/define:$1:fd-ita-eng     | grep -Ev "^[0-9]+ |^\." | less -F; }
 comp()   { curl -s dict://dict.org/define:$1:foldoc         | grep -Ev "^[0-9]+ |^\." | less -F; }
 joke()   { curl -s dict://dict.org/define:$1:devil          | grep -Ev "^[0-9]+ |^\." | less -F; }
+# enit()   { curl -s dict://dict.org/define:$1:fd-eng-ita     | grep -Ev "^[0-9]+ |^\." | less -F; }
+# iten()   { curl -s dict://dict.org/define:$1:fd-ita-eng     | grep -Ev "^[0-9]+ |^\." | less -F; }
