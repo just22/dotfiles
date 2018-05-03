@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <!--
    $Id$
 
    Openbox configuration file
 -->
-
 <openbox_config xmlns="http://openbox.org/3.4/rc" xmlns:xi="http://www.w3.org/2001/XInclude">
   <resistance>
     <strength>20</strength>
@@ -44,7 +42,7 @@
                   'Active' - where the active window is -->
   </placement>
   <theme>
-    <name>SlimOne_mod</name>
+    <name>slimOne_mod</name>
     <titleLayout>NLIMC</titleLayout>
     <!--
       available characters are NDSLIMC, each can occur at most once.
@@ -163,7 +161,7 @@
     <right>0</right>
   </margins>
   <dock>
-    <position>TopRight</position>
+    <position>TopLeft</position>
     <!-- (Top|Bottom)(Left|Right|)|Top|Bottom|Left|Right|Floating -->
     <floatingX>0</floatingX>
     <floatingY>0</floatingY>
@@ -523,7 +521,6 @@
         <height>100%</height>
       </action>
     </keybind>
-
     <!-- Change focus -->
     <keybind key="W-Tab">
       <action name="NextWindow">
@@ -534,7 +531,6 @@
         </finalactions>
       </action>
     </keybind>
-
     <!-- 2-window vertical tiling -->
     <keybind key="W-v">
       <action name="If">
@@ -597,7 +593,6 @@
       </action>
       <action name="FocusToBottom"/>
     </keybind>
-
     <!-- 3-window vertical tiling -->
     <keybind key="W-C-v">
       <action name="If">
@@ -692,7 +687,6 @@
         </finalactions>
       </action>
     </keybind>
-
     <!-- 2-window horizontal tiling -->
     <keybind key="W-h">
       <action name="If">
@@ -755,7 +749,6 @@
       </action>
       <action name="FocusToBottom"/>
     </keybind>
-
     <!-- 3-window horizontal tiling -->
     <keybind key="W-C-h">
       <action name="If">
@@ -850,14 +843,12 @@
         </finalactions>
       </action>
     </keybind>
-
     <keybind key="W-comma">
       <action name="NextWindow">
         <interactive>no</interactive>
       </action>
       <action name="FocusToBottom"/>
     </keybind>
-
     <!-- External app launchers -->
     <keybind key="W-p">
       <action name="Execute">
@@ -912,7 +903,7 @@
     </keybind>
     <keybind key="W-a">
       <action name="Execute">
-        <command>toggle-statusbar</command>
+        <command>dzen-dstat -x 165 -t</command>
       </action>
     </keybind>
     <!-- keybinds for various "actions" -->
