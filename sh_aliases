@@ -474,13 +474,11 @@ vlast()     { vim $(ls -dt "$@" | head -1); }
 set-title() {
         ESC="\033"
         BEL="\007"
-        OSC="${ESC}]"   # Operating System Command
-        if [ -n "$TMUX" ]; then
-                title_esc_seq="${OSC}2;${*}${ESC}"'\\'
-        else
-                title_esc_seq="${ESC}]0;${*}${BEL}"
-        fi
-        echo -ne "${title_esc_seq}"
+        title_esc_seq="${ESC}]0;$@${BEL}"
+
+        # Internal echo command cannot be used here because
+        # of its different behavior in ksh and bash...
+        printf "${title_esc_seq}"
 }
 
 # ----------------------------------------------------------------------
