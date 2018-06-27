@@ -1,0 +1,11 @@
+<!--
+   $Id$
+
+   Openbox configuration file - Resistance section
+-->
+
+<resistance>
+  <strength>20</strength>
+  <screen_edge_strength>50</screen_edge_strength>
+</resistance>
+

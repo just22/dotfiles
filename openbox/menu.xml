@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+   $Id$
+
+   Openbox root menu configuration file
+-->
+
+<openbox_menu xmlns="http://openbox.org/3.4/menu">
+
+<menu id="root-menu" label="Openbox 3">
+  <separator label="Quick Launchers" />
+    <item label="Terminal Emulator" icon="/usr/local/share/icons/gnome/16x16/apps/terminal.png">
+      <action name="Execute">
+        <command>xterm</command>
+        <startupnotify> <enabled>yes</enabled> </startupnotify>
+      </action>
+    </item>
+    <item label="tmux session" icon="/usr/local/share/icons/gnome/16x16/apps/terminal.png">
+      <action name="Execute">
+        <command>xterm -e tmux-launcher</command>
+        <startupnotify> <enabled>yes</enabled> </startupnotify>
+      </action>
+    </item>
+    <item label="Web Browser" icon="/usr/local/share/icons/gnome/16x16/apps/web-browser.png">
+      <action name="Execute">
+        <command>x-www-browser</command>
+        <startupnotify> <enabled>yes</enabled> </startupnotify>
+      </action>
+    </item>
+    <item label="Text Editor" icon="/usr/local/share/icons/gnome/16x16/apps/text-editor.png">
+      <action name="Execute">
+        <command>gvim</command>
+        <startupnotify> <enabled>yes</enabled> </startupnotify>
+      </action>
+    </item>
+  <separator />
+  <separator label="Applications" />
+    <menu id="applications-accessories-menu" icon="/usr/local/share/icons/gnome/16x16/categories/applications-accessories.png"/>
+    <menu id="applications-editors-menu" icon="/usr/local/share/icons/gnome/16x16/apps/accessories-text-editor.png"/>
+    <menu id="applications-games-menu" icon="/usr/local/share/icons/gnome/16x16/categories/applications-games.png"/>
+    <menu id="applications-graphics-menu" icon="/usr/local/share/icons/gnome/16x16/categories/applications-graphics.png"/>
+    <menu id="applications-multimedia-menu" icon="/usr/local/share/icons/gnome/16x16/categories/applications-multimedia.png"/>
+    <menu id="applications-internet-menu" icon="/usr/local/share/icons/gnome/16x16/categories/applications-internet.png"/>
+    <menu id="applications-office-menu" icon="/usr/local/share/icons/gnome/16x16/categories/applications-office.png"/>
+    <menu id="applications-utilities-menu" icon="/usr/local/share/icons/gnome/16x16/categories/applications-utilities.png"/>
+  <separator />
+  <separator label="System" />
+    <menu id="system-monitors-menu" icon="/usr/local/share/icons/gnome/16x16/categories/applications-system.png"/>
+    <item label="Removable Devices" icon="/usr/local/share/icons/gnome/16x16/devices/media-removable.png">
+      <action name="Execute">
+        <command>doas /usr/local/bin/amount -e /dev/sd0</command>
+        <startupnotify> <enabled>yes</enabled> </startupnotify>
+      </action>
+    </item>
+    <item label="Restart Network" icon="/usr/local/share/icons/gnome/16x16/status/network-transmit-receive.png">
+      <action name="Execute"> <command>/usr/bin/doas sh /etc/netstart</command> </action>
+    </item>
+    <menu id="system-settings-menu" icon="/usr/local/share/icons/gnome/16x16/categories/gnome-settings.png"/>
+  <separator />
+  <item label="Exit" icon="/usr/local/share/icons/gnome/16x16/actions/exit.png">
+    <action name="Execute"> <command>session-logout</command> </action>
+  </item>
+</menu>
+
+</openbox_menu>

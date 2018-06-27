@@ -1,0 +1,135 @@
+<!--
+   $Id$
+
+   Openbox system menu configuration file
+-->
+
+<openbox_menu>
+
+<menu id="system-monitors-menu" label="Monitors">
+  <item label="Logged User Info" icon="">
+    <action name="Execute"> <command>xterm -title "Logged User Info" -e "userinfo $USER; echo -n \"\nHit ENTER to quit \"; read"</command> </action>
+  </item>
+  <item label="Processes" icon="">
+    <action name="Execute"> <command>xterm -e top</command> </action>
+  </item>
+  <item label="System's Load" icon="">
+    <action name="Execute"> <command>xload -update 2</command> </action>
+  </item>
+  <item label="XConsole" icon="">
+    <action name="Execute"> <command>xconsole</command> </action>
+  </item>
+  <item label="System's log" icon="">
+    <action name="Execute"> <command>xterm -title "System's log" -e "tail -f /var/log/messages"</command> </action>
+  </item>
+</menu>
+
+<menu id="system-settings-window-manager-menu" label="Window Manager">
+  <item label="Openbox Configuration Manager">
+    <action name="Execute">
+      <command>obconf</command>
+      <startupnotify> <enabled>yes</enabled> </startupnotify>
+    </action>
+  </item>
+  <item label="Reconfigure Openbox">
+    <action name="Reconfigure" />
+  </item>
+  <separator />
+  <item label="Log Out">
+    <action name="Exit">
+      <prompt>yes</prompt>
+    </action>
+  </item>
+</menu>
+
+<menu id="system-settings-perf-menu" label="Performances">
+  <item label="Auto" icon="">
+    <action name="Execute"> <command>/usr/bin/doas /sbin/sysctl hw.perfpolicy=auto</command> </action>
+  </item>
+  <item label="High" icon="">
+    <action name="Execute"> <command>/usr/bin/doas /sbin/sysctl hw.perfpolicy=high</command> </action>
+  </item>
+</menu>
+
+<menu id="system-settings-keyboard-menu" label="Keyboard Layout">
+  <item label="Italian" icon="/home/just22/.local/share/icons/cust/16x16/flags/italy.png">
+    <action name="Execute"> <command>setxkbmap it</command> </action>
+  </item>
+  <item label="English-US" icon="/home/just22/.local/share/icons/cust/16x16/flags/usa.png">
+    <action name="Execute"> <command>setxkbmap us</command> </action>
+  </item>
+</menu>
+
+<menu id="system-settings-display-menu" label="Display Layout">
+  <item label="LVDS Only" icon="">
+    <action name="Execute"> <command>dmenu-xrandr Off</command> </action>
+  </item>
+  <item label="VGA Only" icon="">
+    <action name="Execute"> <command>dmenu-xrandr Only</command> </action>
+  </item>
+  <item label="VGA on the Left" icon="">
+    <action name="Execute"> <command>dmenu-xrandr Left</command> </action>
+  </item>
+  <item label="VGA on the Right" icon="">
+    <action name="Execute"> <command>dmenu-xrandr Right</command> </action>
+  </item>
+  <item label="VGA Below" icon="">
+    <action name="Execute"> <command>dmenu-xrandr Below</command> </action>
+  </item>
+  <item label="VGA Above" icon="">
+    <action name="Execute"> <command>dmenu-xrandr Above</command> </action>
+  </item>
+</menu>
+
+<menu id="system-settings-screensaver-menu" label="Screensaver">
+  <item label="Enable" icon="">
+    <action name="Execute"> <command>xscreensaver</command> </action>
+  </item>
+  <item label="Disable" icon="">
+    <action name="Execute"> <command>xscreensaver-command -exit</command> </action>
+  </item>
+  <item label="Lock Screen" icon="">
+    <action name="Execute"> <command>xscreensaver-command -lock</command> </action>
+  </item>
+  <item label="Restart" icon="">
+    <action name="Execute"> <command>xscreensaver-command -restart</command> </action>
+  </item>
+  <item label="Settings" icon="">
+    <action name="Execute"> <command>xscreensaver-demo</command> </action>
+  </item>
+</menu>
+
+<menu id="system-settings-colorscheme-menu" label="Colorscheme">
+  <item label="Ocean" icon="">
+    <action name="Execute"> <command>colman set ocean</command> </action>
+  </item>
+  <item label="Solarized Dark" icon="">
+    <action name="Execute"> <command>colman set solarized-dark</command> </action>
+  </item>
+  <item label="Solarized Light" icon="">
+    <action name="Execute"> <command>colman set solarized-light</command> </action>
+  </item>
+</menu>
+
+<menu id="system-settings-menu" label="Settings">
+  <menu id="system-settings-colorscheme-menu" icon="/usr/local/share/icons/gnome/16x16/apps/preferences-desktop-theme.png"/>
+  <menu id="system-settings-display-menu" icon="/usr/local/share/icons/gnome/16x16/apps/preferences-desktop-display.png"/>
+  <menu id="system-settings-keyboard-menu" icon="/usr/local/share/icons/gnome/16x16/devices/keyboard.png"/>
+  <item label="Panel Config" icon="/usr/local/share/icons/hicolor/scalable/apps/tint2.svg">
+    <action name="Execute"> <command>tint2conf</command> </action>
+  </item>
+  <menu id="system-settings-perf-menu" icon="/usr/local/share/icons/gnome/16x16/actions/system-run.png"/>
+  <item label="Reload .Xresources" icon="/usr/local/share/icons/gnome/16x16/actions/reload.png">
+    <action name="Execute"> <command>xrdb -load -I$HOME $HOME/.Xresources</command> </action>
+  </item>
+  <item label="Select Font" icon="/usr/local/share/icons/gnome/16x16/apps/preferences-desktop-font.png">
+    <action name="Execute"> <command>xfontsel</command> </action>
+  </item>
+  <menu id="system-settings-screensaver-menu" icon="/usr/local/share/icons/gnome/16x16/apps/preferences-desktop-screensaver.png"/>
+  <item label="Tune Video Mode" icon="/usr/local/share/icons/gnome/16x16/devices/display.png">
+    <action name="Execute"> <command>xvidtune</command> </action>
+  </item>
+  <menu id="system-settings-window-manager-menu" icon="/usr/local/share/icons/gnome/16x16/apps/preferences-system-windows.png"/>
+</menu>
+
+</openbox_menu>

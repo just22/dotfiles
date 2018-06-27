@@ -1,0 +1,349 @@
+<!--
+   $Id$
+
+   Openbox desktop apps menu configuration file
+-->
+
+<openbox_menu>
+
+<menu id="applications-accessories-menu" label="Accessories">
+  <item label="Calculator" icon="/usr/local/share/icons/gnome/16x16/apps/accessories-calculator.png">
+    <action name="Execute"> <command>xcalc</command> </action>
+  </item>
+  <item label="File Archiver" icon="/usr/local/share/icons/gnome/16x16/mimetypes/gnome-mime-application-x-archive.png">
+    <action name="Execute">
+      <command>xarchiver</command>
+      <startupnotify> <enabled>yes</enabled> </startupnotify>
+    </action>
+  </item>
+  <item label="CD/DVD Burning" icon="/usr/local/share/icons/gnome/16x16/devices/gnome-dev-cdrom.png">
+    <action name="Execute">
+      <command>xcdroast</command>
+      <startupnotify> <enabled>yes</enabled> </startupnotify>
+    </action>
+  </item>
+  <item label="Visual diff" icon="/usr/local/share/icons/gnome/16x16/mimetypes/txt.png">
+    <action name="Execute">
+      <command>tkdiff</command>
+      <startupnotify> <enabled>yes</enabled> </startupnotify>
+    </action>
+  </item>
+</menu>
+
+<menu id="applications-editors-menu" label="Editors">
+  <item label="emacs" icon="/usr/local/share/icons/hicolor/16x16/apps/emacs.png">
+    <action name="Execute">
+      <command>emacs</command>
+      <startupnotify> <enabled>yes</enabled> </startupnotify>
+    </action>
+  </item>
+  <item label="NEdit" icon="/usr/local/share/icons/gnome/16x16/apps/accessories-text-editor.png">
+    <action name="Execute">
+      <command>nedit</command>
+      <startupnotify> <enabled>yes</enabled> </startupnotify>
+    </action>
+  </item>
+  <item label="GVim" icon="/usr/local/share/icons/hicolor/48x48/apps/gvim.png">
+    <action name="Execute">
+      <command>gvim</command>
+      <startupnotify> <enabled>yes</enabled> </startupnotify>
+    </action>
+  </item>
+  <item label="xedit" icon="/usr/local/share/icons/gnome/16x16/apps/accessories-text-editor.png">
+    <action name="Execute"> <command></command> </action>
+  </item>
+</menu>
+
+<menu id="applications-graphics-menu" label="Graphics">
+  <item label="dia" icon="/usr/local/share/icons/hicolor/16x16/apps/dia.png">
+    <action name="Execute">
+      <command></command>
+      <startupnotify> <enabled>yes</enabled> </startupnotify>
+    </action>
+  </item>
+  <item label="Geeqie" icon="/usr/local/share/pixmaps/geeqie.png">
+    <action name="Execute">
+      <command>geeqie</command>
+      <startupnotify> <enabled>yes</enabled> </startupnotify>
+    </action>
+  </item>
+  <item label="Inkscape" icon="/usr/local/share/icons/hicolor/16x16/apps/inkscape.png">
+    <action name="Execute">
+      <command>inkscape</command>
+      <startupnotify> <enabled>yes</enabled> </startupnotify>
+    </action>
+  </item>
+  <item label="GIMP" icon="/usr/local/share/gtk-2.0/demo/gnome-gimp.png">
+    <action name="Execute">
+      <command>gimp</command>
+      <startupnotify> <enabled>yes</enabled> </startupnotify>
+    </action>
+  </item>
+  <item label="GNU Plot" icon="/home/just22/.local/share/icons/gnuplot.png">
+    <action name="Execute">
+      <command>gnuplot</command>
+      <startupnotify> <enabled>yes</enabled> </startupnotify>
+    </action>
+  </item>
+  <item label="XCircuit" icon="/home/just22/.local/share/icons/XCircuit.png">
+    <action name="Execute">
+      <command>xcircuit</command>
+      <startupnotify> <enabled>yes</enabled> </startupnotify>
+    </action>
+  </item>
+  <item label="xfig" icon="/usr/local/share/pixmaps/xfig.png">
+    <action name="Execute">
+      <command>xfig</command>
+      <startupnotify> <enabled>yes</enabled> </startupnotify>
+    </action>
+  </item>
+  <item label="xsane" icon="/usr/local/share/icons/gnome/16x16/devices/scanner.png">
+    <action name="Execute">
+      <command>xfig</command>
+      <startupnotify> <enabled>yes</enabled> </startupnotify>
+    </action>
+  </item>
+</menu>
+
+<menu id="applications-multimedia-menu" label="Multimedia">
+  <item label="DeaDBeeF" icon="/usr/local/share/icons/hicolor/16x16/apps/deadbeef.png">
+    <action name="Execute">
+      <command>deadbeef</command>
+      <startupnotify> <enabled>yes</enabled> </startupnotify>
+    </action>
+  </item>
+  <item label="Gradio" icon="/usr/local/share/icons/hicolor/16x16/apps/de.haeckerfelix.gradio.png">
+    <action name="Execute">
+      <command>gradio</command>
+      <startupnotify> <enabled>yes</enabled> </startupnotify>
+    </action>
+  </item>
+  <item label="gtkam" icon="/usr/local/share/icons/gnome/16x16/devices/camera-photo.png">
+    <action name="Execute">
+      <command>gtkam</command>
+      <startupnotify> <enabled>yes</enabled> </startupnotify>
+    </action>
+  </item>
+  <item label="Shotwell" icon="/usr/local/share/icons/hicolor/16x16/apps/shotwell.png">
+    <action name="Execute">
+      <command>shotwell</command>
+      <startupnotify> <enabled>yes</enabled> </startupnotify>
+    </action>
+  </item>
+  <item label="SMPlayer" icon="/usr/local/share/icons/hicolor/16x16/apps/smplayer.png">
+    <action name="Execute">
+      <command>smplayer</command>
+      <startupnotify> <enabled>yes</enabled> </startupnotify>
+    </action>
+  </item>
+  <item label="xcdroast" icon="/home/just22/.local/share/icons/xcdroast.png">
+    <action name="Execute">
+      <command>xcdroast</command>
+      <startupnotify> <enabled>yes</enabled> </startupnotify>
+    </action>
+  </item>
+  <item label="VLC Media Player" icon="/usr/local/share/icons/hicolor/16x16/apps/vlc.png">
+    <action name="Execute">
+      <command>vlc</command>
+      <startupnotify> <enabled>yes</enabled> </startupnotify>
+    </action>
+  </item>
+</menu>
+
+<menu id="applications-internet-menu" label="Internet">
+  <item label="Chromium" icon="/usr/local/share/icons/hicolor/22x22/apps/chrome.png">
+    <action name="Execute">
+      <command>chrome</command>
+      <startupnotify> <enabled>yes</enabled> </startupnotify>
+    </action>
+  </item>
+  <item label="Firefox" icon="/usr/local/share/pixmaps/firefox-esr.png">
+    <action name="Execute">
+      <command>firefox-esr</command>
+      <startupnotify> <enabled>yes</enabled> </startupnotify>
+    </action>
+  </item>
+  <item label="FTP" icon="/usr/local/share/icons/gnome/16x16/places/gnome-fs-ftp.png">
+    <action name="Execute">
+      <command>xterm -e ftp</command>
+      <startupnotify> <enabled>yes</enabled> </startupnotify>
+    </action>
+  </item>
+  <item label="Lynx" icon="/usr/local/share/icons/gnome/16x16/mimetypes/www.png">
+    <action name="Execute">
+      <command>xterm -e lynx</command>
+      <startupnotify> <enabled>yes</enabled> </startupnotify>
+    </action>
+  </item>
+  <item label="Mutt" icon="/usr/local/share/icons/gnome/16x16/status/mail-unread.png">
+    <action name="Execute">
+      <command>xterm -e mutt</command>
+      <startupnotify> <enabled>yes</enabled> </startupnotify>
+    </action>
+  </item>
+  <item label="Pidgin" icon="/usr/local/share/icons/hicolor/16x16/apps/pidgin.png">
+    <action name="Execute">
+      <command>pidgin</command>
+      <startupnotify> <enabled>yes</enabled> </startupnotify>
+    </action>
+  </item>
+  <item label="VNC Viewer" icon="/home/just22/.local/share/icons/vnc.png">
+    <action name="Execute">
+      <command>vncviewer</command>
+      <startupnotify> <enabled>yes</enabled> </startupnotify>
+    </action>
+  </item>
+</menu>
+
+<menu id="applications-office-menu" label="Office">
+  <item label="abook" icon="/usr/local/share/icons/gnome/16x16/mimetypes/stock_addressbook.png">
+    <action name="Execute">
+      <command>xterm -e abook</command>
+      <startupnotify> <enabled>yes</enabled> </startupnotify>
+    </action>
+  </item>
+  <item label="evince" icon="/usr/local/share/icons/hicolor/16x16/apps/evince.png">
+    <action name="Execute">
+      <command>evince</command>
+      <startupnotify> <enabled>yes</enabled> </startupnotify>
+    </action>
+  </item>
+  <item label="LibreOffice Base" icon="/usr/local/share/icons/hicolor/16x16/apps/libreoffice-base.png">
+    <action name="Execute">
+      <command>soffice -base</command>
+      <startupnotify> <enabled>yes</enabled> </startupnotify>
+    </action>
+  </item>
+  <item label="LibreOffice Calc" icon="/usr/local/share/icons/hicolor/16x16/apps/libreoffice-calc.png">
+    <action name="Execute">
+      <command>soffice -calc</command>
+      <startupnotify> <enabled>yes</enabled> </startupnotify>
+    </action>
+  </item>
+  <item label="LibreOffice Draw" icon="/usr/local/share/icons/hicolor/16x16/apps/libreoffice-draw.png">
+    <action name="Execute">
+      <command>soffice -draw</command>
+      <startupnotify> <enabled>yes</enabled> </startupnotify>
+    </action>
+  </item>
+  <item label="LibreOffice Impress" icon="/usr/local/share/icons/hicolor/16x16/apps/libreoffice-impress.png">
+    <action name="Execute">
+      <command>soffice -impress</command>
+      <startupnotify> <enabled>yes</enabled> </startupnotify>
+    </action>
+  </item>
+  <item label="LibreOffice Math" icon="/usr/local/share/icons/hicolor/16x16/apps/libreoffice-math.png">
+    <action name="Execute">
+      <command>soffice -math</command>
+      <startupnotify> <enabled>yes</enabled> </startupnotify>
+    </action>
+  </item>
+  <item label="LibreOffice Writer" icon="/usr/local/share/icons/hicolor/16x16/apps/libreoffice-writer.png">
+    <action name="Execute">
+      <command>soffice -writer</command>
+      <startupnotify> <enabled>yes</enabled> </startupnotify>
+    </action>
+  </item>
+  <item label="lyx" icon="/usr/local/share/icons/hicolor/48x48/apps/lyx.png">
+    <action name="Execute">
+      <command>lyx</command>
+      <startupnotify> <enabled>yes</enabled> </startupnotify>
+    </action>
+  </item>
+  <item label="Xpdf" icon="/home/just22/.local/share/icons/xpdf.png">
+    <action name="Execute">
+      <command>xpdf</command>
+      <startupnotify> <enabled>yes</enabled> </startupnotify>
+    </action>
+  </item>
+</menu>
+
+<menu id="applications-utilities-screenshot-menu" label="Screenshot">
+  <item label="Whole Desktop" icon="">
+    <action name="Execute"> <command>screenshot desktop</command> </action>
+  </item>
+  <item label="Select Window/Area" icon="">
+    <action name="Execute"> <command>screenshot</command> </action>
+  </item>
+</menu>
+
+<menu id="applications-utilities-timer-menu" label="Timer">
+  <item label=" 5 min">
+    <action name="Execute"> <command>timer -t "now + 5 min"</command> </action>
+  </item>
+  <item label="10 min">
+    <action name="Execute"> <command>timer -t "now + 10 min"</command> </action>
+  </item>
+  <item label="15 min">
+    <action name="Execute"> <command>timer -t "now + 15 min"</command> </action>
+  </item>
+  <item label="30 min">
+    <action name="Execute"> <command>timer -t "now + 30 min"</command> </action>
+  </item>
+  <item label="45 min">
+    <action name="Execute"> <command>timer -t "now + 45 min"</command> </action>
+  </item>
+</menu>
+
+<menu id="applications-utilities-textutils-menu" label="Text Utils">
+  <item label="GNU Info" icon="">
+    <action name="Execute"> <command>xterm -e info</command> </action>
+  </item>
+  <item label="Units" icon="">
+    <action name="Execute"> <command>xterm -e units</command> </action>
+  </item>
+</menu>
+
+<menu id="applications-utilities-xutils-menu" label="X Utils">
+  <item label="bitmap" icon="">
+    <action name="Execute"> <command>bitmap</command> </action>
+  </item>
+  <item label="X Resource Editor" icon="">
+    <action name="Execute"> <command>editres</command> </action>
+  </item>
+  <item label="Xt Class Browser" icon="">
+    <action name="Execute"> <command>viewres</command> </action>
+  </item>
+  <item label="xclipboard" icon="">
+    <action name="Execute"> <command>xclipboard</command> </action>
+  </item>
+  <item label="xcutsel" icon="">
+    <action name="Execute"> <command>xcutsel</command> </action>
+  </item>
+  <item label="(Enhanced) xev" icon="">
+    <action name="Execute"> <command>xterm -e exev</command> </action>
+  </item>
+  <item label="Xkill" icon="">
+    <action name="Execute"> <command>xkill</command> </action>
+  </item>
+  <item label="Analog Clock" icon="">
+    <action name="Execute"> <command>xclock -analog</command> </action>
+  </item>
+  <item label="Digital Clock" icon="">
+    <action name="Execute"> <command>xclock -digital -strftime "%a %b %d %Y, week %V, %T" -update 1</command> </action>
+  </item>
+  <item label="X Magnifier" icon="">
+    <action name="Execute"> <command>xmag</command> </action>
+  </item>
+  <item label="Manual Pages Browser" icon="">
+    <action name="Execute"> <command>xman</command> </action>
+  </item>
+  <item label="xbiff" icon="">
+    <action name="Execute"> <command>xbiff</command> </action>
+  </item>
+</menu>
+
+<menu id="applications-utilities-menu" label="Utilities">
+  <item label="Play URL in clipboard" icon="/usr/local/share/icons/gnome/16x16/actions/media-playback-start.png">
+    <action name="Execute">
+      <command>play-url -g -p</command>
+      <startupnotify> <enabled>yes</enabled> </startupnotify>
+    </action>
+  </item>
+  <menu id="applications-utilities-screenshot-menu" icon="/usr/local/share/icons/gnome/16x16/devices/camera-photo.png"/>
+  <menu id="applications-utilities-textutils-menu" icon="/usr/local/share/icons/gnome/16x16/mimetypes/text-x-generic.png"/>
+  <menu id="applications-utilities-timer-menu" icon="/home/just22/.local/share/icons/timer.png"/>
+  <menu id="applications-utilities-xutils-menu" icon="/home/just22/.local/share/icons/xorg.png"/>
+</menu>
+
+</openbox_menu>

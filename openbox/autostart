@@ -1,0 +1,26 @@
+#
+# These things are run when an Openbox X Session is started.
+#
+
+# Background setting
+[ -x ~/.fehbg ] && ~/.fehbg
+
+# System log
+pkill xconsole
+xterm -title "System log" -e "tail -f /var/log/messages" &
+
+# Process monitor
+(sleep 1 && xterm -title "Process monitor" -e top) &
+
+# System statistics
+(sleep 2 && xterm -title "System stats" -e systat) &
+
+# Compositor manager
+xcompmgr &
+
+# Statusbar
+dzen-dstat
+bbpager &
+
+# Panel
+tint2 &
