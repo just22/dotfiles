@@ -106,9 +106,9 @@
 </menu>
 
 <menu id="applications-multimedia-menu" label="Multimedia">
-  <item label="DeaDBeeF" icon="/usr/local/share/icons/hicolor/16x16/apps/deadbeef.png">
+  <item label="Audacious" icon="/usr/local/share/icons/hicolor/48x48/apps/audacious.png">
     <action name="Execute">
-      <command>deadbeef</command>
+      <command>audacious</command>
       <startupnotify> <enabled>yes</enabled> </startupnotify>
     </action>
   </item>
