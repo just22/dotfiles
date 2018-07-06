@@ -33,6 +33,7 @@
   </item>
   <item label="Reconfigure Openbox">
     <action name="Reconfigure" />
+    <action name="Execute"> <command>dmenu-xrandr -a</command> </action>
   </item>
   <separator />
   <item label="Log Out">
