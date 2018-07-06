@@ -166,21 +166,21 @@
 
   <!-- System -->
   <keybind key="A-C-Delete"> <action name="Execute"> <command>xscreensaver-command -lock </command> </action> </keybind>
-  <keybind key="W-C-c">      <action name="Execute"> <command>change-perfpolicy          </command> </action> </keybind>
+  <keybind key="W-C-c">      <action name="Execute"> <command>dmenu-perf</command> </action> </keybind>
   <keybind key="W-S-h">      <action name="Execute"> <command>apm -Z                     </command> </action> </keybind>
   <keybind key="W-S-s">      <action name="Execute"> <command>apm -z                     </command> </action> </keybind>
 
   <!-- Window manager goodies -->
   <keybind key="W-C-q"> <action name="Restart"/> </keybind>
   <keybind key="W-C-r"> <action name="Reconfigure"/> </keybind>
-  <keybind key="W-F1">  <action name="Execute"> <command>xterm -e man openbox</command> </action> </keybind>
-  <keybind key="W-S-q"> <action name="Execute"> <command>dmenu-session-logout</command> </action> </keybind>
-  <keybind key="W-b">   <action name="Execute"> <command>dmenu-filebrowser   </command> </action> </keybind>
-  <keybind key="W-o">   <action name="Execute"> <command>activewin_obxprop   </command> </action> </keybind>
-  <keybind key="W-p">   <action name="Execute"> <command>activewin_xprop     </command> </action> </keybind>
-  <keybind key="W-r">   <action name="Execute"> <command>dmenu-root          </command> </action> </keybind>
-  <keybind key="W-t">   <action name="Execute"> <command>tmux_pane_search    </command> </action> </keybind>
-  <keybind key="W-w">   <action name="Execute"> <command>win_search          </command> </action> </keybind>
+  <keybind key="W-F1">  <action name="Execute"> <command>x-terminal-emulator -e man openbox</command> </action> </keybind>
+  <keybind key="W-S-q"> <action name="Execute"> <command>dmenu-session-logout              </command> </action> </keybind>
+  <keybind key="W-b">   <action name="Execute"> <command>dmenu-filebrowser                 </command> </action> </keybind>
+  <keybind key="W-o">   <action name="Execute"> <command>activewin_obxprop                 </command> </action> </keybind>
+  <keybind key="W-p">   <action name="Execute"> <command>activewin_xprop                   </command> </action> </keybind>
+  <keybind key="W-r">   <action name="Execute"> <command>dmenu-root                        </command> </action> </keybind>
+  <keybind key="W-t">   <action name="Execute"> <command>tmux_pane_search                  </command> </action> </keybind>
+  <keybind key="W-w">   <action name="Execute"> <command>win_search                        </command> </action> </keybind>
 
   <!-- Multimedia keys -->
   <keybind key="4C-m">             <action name="Execute"> <command>mixerctl -q -t outputs.master.mute</command> </action> </keybind>
@@ -191,17 +191,17 @@
   <keybind key="AudioLowerVolume"> <action name="Execute"> <command>mixerctl -q outputs.master=-10    </command> </action> </keybind>
 
   <!-- External app launchers -->
-  <keybind key="W-d">        <action name="Execute"> <command>dmenu_run-cust -p Run:</command> </action> </keybind>
-  <keybind key="W-S-Return"> <action name="Execute"> <command>xterm                 </command> </action> </keybind>
-  <keybind key="W-S-b">      <action name="Execute"> <command>firefox-launcher      </command> </action> </keybind>
-  <keybind key="W-S-c">      <action name="Execute"> <command>dmenu-calc            </command> </action> </keybind>
-  <keybind key="W-S-d">      <action name="Execute"> <command>dmenu-xrandr          </command> </action> </keybind>
-  <keybind key="W-S-f">      <action name="Execute"> <command>xterm -e ranger       </command> </action> </keybind>
-  <keybind key="W-S-k">      <action name="Execute"> <command>dmenu-kbd             </command> </action> </keybind>
-  <keybind key="W-S-m">      <action name="Execute"> <command>xterm -e mutt         </command> </action> </keybind>
-  <keybind key="W-S-p">      <action name="Execute"> <command>play-url -g -d -p     </command> </action> </keybind>
-  <keybind key="W-S-r">      <action name="Execute"> <command>dmenu-timer           </command> </action> </keybind>
-  <keybind key="W-S-t">      <action name="Execute"> <command>xterm -e tmux-launcher</command> </action> </keybind>
+  <keybind key="W-d">        <action name="Execute"> <command>dmenu_run-cust -p Run:              </command> </action> </keybind>
+  <keybind key="W-S-Return"> <action name="Execute"> <command>x-terminal-emulator                 </command> </action> </keybind>
+  <keybind key="W-S-b">      <action name="Execute"> <command>x-web-browser                       </command> </action> </keybind>
+  <keybind key="W-S-c">      <action name="Execute"> <command>dmenu-calc                          </command> </action> </keybind>
+  <keybind key="W-S-d">      <action name="Execute"> <command>dmenu-xrandr                        </command> </action> </keybind>
+  <keybind key="W-S-f">      <action name="Execute"> <command>x-terminal-emulator -e ranger       </command> </action> </keybind>
+  <keybind key="W-S-k">      <action name="Execute"> <command>dmenu-kbd                           </command> </action> </keybind>
+  <keybind key="W-S-m">      <action name="Execute"> <command>x-terminal-emulator -e mutt         </command> </action> </keybind>
+  <keybind key="W-S-p">      <action name="Execute"> <command>play-url -g -d -p                   </command> </action> </keybind>
+  <keybind key="W-S-r">      <action name="Execute"> <command>dmenu-timer                         </command> </action> </keybind>
+  <keybind key="W-S-t">      <action name="Execute"> <command>x-terminal-emulator -e tmux-launcher</command> </action> </keybind>
 
 </keyboard>
 
