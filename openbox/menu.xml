@@ -23,7 +23,13 @@
     </item>
     <item label="Web Browser" icon="/usr/local/share/icons/gnome/16x16/apps/web-browser.png">
       <action name="Execute">
-        <command>x-www-browser</command>
+        <command>run_or_activate x-www-browser</command>
+        <startupnotify> <enabled>yes</enabled> </startupnotify>
+      </action>
+    </item>
+    <item label="Filemanager" icon="/usr/local/share/icons/gnome/16x16/apps/file-manager.png">
+      <action name="Execute">
+        <command>run_or_activate x-filemanager</command>
         <startupnotify> <enabled>yes</enabled> </startupnotify>
       </action>
     </item>
@@ -33,7 +39,6 @@
         <startupnotify> <enabled>yes</enabled> </startupnotify>
       </action>
     </item>
-  <separator />
   <separator label="Applications" />
     <menu id="applications-accessories-menu" icon="/usr/local/share/icons/gnome/16x16/categories/applications-accessories.png"/>
     <menu id="applications-editors-menu" icon="/usr/local/share/icons/gnome/16x16/apps/accessories-text-editor.png"/>
@@ -43,7 +48,6 @@
     <menu id="applications-internet-menu" icon="/usr/local/share/icons/gnome/16x16/categories/applications-internet.png"/>
     <menu id="applications-office-menu" icon="/usr/local/share/icons/gnome/16x16/categories/applications-office.png"/>
     <menu id="applications-utilities-menu" icon="/usr/local/share/icons/gnome/16x16/categories/applications-utilities.png"/>
-  <separator />
   <separator label="System" />
     <menu id="system-monitors-menu" icon="/usr/local/share/icons/gnome/16x16/categories/applications-system.png"/>
     <item label="Removable Devices" icon="/usr/local/share/icons/gnome/16x16/devices/media-removable.png">
