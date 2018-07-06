@@ -1,0 +1,106 @@
+# Name: Clearlooks-solarized
+# Author: John McKnight <jmcknight@gmail.com>
+# Colors modified by Alessandro DE LAURENZIS <just22@atlantide.t28.net>
+# based on the solarized color themes available at
+# <http://ethanschoonover.com/solarized>
+# Note: This is a port of the Clearlooks-Olive metacity theme to Openbox.
+
+# Menu settings
+menu.title.bg: Flat Solid
+menu.title.bg.color: #2aa198
+menu.title.text.color: #eee8d5
+menu.title.text.justify: Center
+
+menu.items.bg: Flat Solid
+menu.items.bg.color: #eee8d5
+menu.items.text.color: #073642
+menu.items.disabled.text.color: #839496
+menu.items.active.disabled.text.color: #839496
+
+menu.items.active.bg: Flat Solid
+menu.items.active.bg.color: #93a1a1
+menu.items.active.bg.border.color: #93a1a1
+menu.items.active.text.color: #eee8d5
+
+
+# Window settings (focused)
+window.active.title.bg: Flat Solid
+window.active.title.bg.color: #2aa198
+
+window.active.label.bg: Parentrelative
+window.active.label.text.color: #eee8d5
+
+window.active.handle.bg: Flat Solid
+window.active.handle.bg.color: #2aa198
+
+window.active.grip.bg: Flat Solid
+window.active.grip.bg.color: #2aa198
+
+window.active.button.unpressed.bg: Flat Solid
+window.active.button.unpressed.bg.color: #2aa198
+window.active.button.unpressed.image.color: #eee8d5
+
+window.active.button.pressed.bg: Flat Solid
+window.active.button.pressed.bg.color: #93a1a1
+window.active.button.pressed.image.color: #eee8d5
+
+window.active.button.disabled.bg: Flat Solid
+window.active.button.disabled.bg.color: #2aa198
+window.active.button.disabled.image.color: #586e75
+
+window.active.button.toggled.bg: Flat Solid
+window.active.button.toggled.bg.color: #2aa198
+window.active.button.toggled.image.color: #eee8d5
+
+
+# Window settings (unfocused)
+window.inactive.title.bg: Flat Solid
+window.inactive.title.bg.color: #839496
+
+window.inactive.label.bg: Parentrelative
+window.inactive.label.text.color: #073642
+
+window.inactive.handle.bg: Flat Solid
+window.inactive.handle.bg.color: #586e75
+
+window.inactive.grip.bg: Flat Solid
+window.inactive.grip.bg.color: #586e75
+
+window.inactive.button.unpressed.bg: Flat Solid
+window.inactive.button.unpressed.bg.color: #839496
+window.inactive.button.unpressed.image.color: #073642
+
+window.inactive.button.pressed.bg: Flat Solid
+window.inactive.button.pressed.bg.color: #657b83
+window.inactive.button.pressed.image.color: #073642
+
+window.inactive.button.disabled.bg: Flat Solid
+window.inactive.button.disabled.bg.color: #839496
+window.inactive.button.disabled.image.color: #657b83
+
+window.inactive.button.toggled.bg: Flat Solid
+window.inactive.button.toggled.bg.color: #839496
+window.inactive.button.toggled.image.color: #073642
+
+
+### On-screen displays
+osd.bg: flat solid
+osd.bg.color: #eee8d5
+osd.hilight.bg: flat solid
+osd.hilight.bg.color: #2aa198
+osd.label.text.color: #073642
+osd.border.width: 0
+osd.border.color: #073642
+osd.button.unpressed.box.color: #eee8d5
+osd.button.pressed.box.color: #eee8d5
+osd.button.focused.box.color: #eee8d5
+
+### Everything else
+border.width: 1
+padding.width: 2
+window.handle.width: 3
+window.client.padding.width: 0
+window.client.padding.height: 0
+border.color: #000000
+menu.overlap: 0
+
