@@ -1,6 +1,8 @@
+# ----------------------------------------------------------------------
+#  $Id$
 #
-# These things are run when an Openbox X Session is started.
-#
+#  openbox-session(1) startup script
+# ----------------------------------------------------------------------
 
 # Background setting
 [ -x ~/.fehbg ] && ~/.fehbg
@@ -19,8 +21,9 @@ xterm -title "System log" -e "tail -f /var/log/messages" &
 xcompmgr &
 
 # Statusbar
-dzen-dstat
-bbpager &
+pkill -x space_dapp; (sleep 1; space_dapp $((($(screen-width) - 2))) 17) &
+pkill -x dstat;      (sleep 2; dstat trunk0 | dzen2-cust) &
+pkill -x bbpager;    (sleep 3; bbpager) &
 
 # Panel
 tint2 &
