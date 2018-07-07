@@ -1,8 +1,7 @@
 [Desktop Entry]
 Version=1.0
-Name=Web Browser for X Window
-GenericName=Web Browser for X Window
-Comment=Access the Internet
+Name=Web Browser
+GenericName=Web Browser
 Exec=run_or_activate x-web-browser %U
 Terminal=false
 Icon=web-browser

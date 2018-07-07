@@ -1,7 +1,6 @@
 [Desktop Entry]
-Name=Text Editor for X Window
-GenericName=Text Editor for X Window
-Comment=Edit text files
+Name=Text Editor
+GenericName=Text Editor
 Exec=x-editor %F
 Terminal=false
 Type=Application

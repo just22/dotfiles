@@ -2,7 +2,6 @@
 Version=1.0
 Name=Window Manager Clients Menu
 GenericName=Window Manager Clients Menu
-Comment=List of open windows and their respective workspaces
 Exec=xdotool key Super_L+l
 Icon=gnome-window-manager
 Terminal=false

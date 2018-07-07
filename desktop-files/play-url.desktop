@@ -2,7 +2,6 @@
 Version=1.0
 Name=Play URL in clipboard
 GenericName=Play URL in clipboard
-Comment=Play URL in clipboard
 Exec=play-url -g -p
 Icon=media-playback-start
 Terminal=false

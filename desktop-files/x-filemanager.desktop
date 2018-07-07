@@ -1,8 +1,7 @@
 [Desktop Entry]
 Version=1.0
-Name=File Manager for X Window
-GenericName=File Manager for X Window
-Comment=File manager for X Window
+Name=File Manager
+GenericName=File Manager
 Exec=run_or_activate x-filemanager
 Icon=file-manager
 Terminal=false

@@ -2,7 +2,6 @@
 Version=1.0
 Name=Window Manager Root Menu
 GenericName=Window Manager Root Menu
-Comment=Window manager root menu
 Exec=xdotool key Super_L+space
 Icon=/home/just22/.local/share/icons/puf100X86.png
 Terminal=false
