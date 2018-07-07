@@ -1,6 +1,0 @@
-[Desktop Entry]
-Name=www-x-browser
-Comment=Internet browser
-Icon=/usr/local/share/icons/gnome/16x16/apps/web-browser.png
-Exec=xdg-open http://www.openbsd.org
-Type=Application

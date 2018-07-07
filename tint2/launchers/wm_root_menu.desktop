@@ -1,6 +1,0 @@
-[Desktop Entry]
-Name=wm_root_menu
-Comment=Window manager root menu
-Icon=/home/just22/.local/share/icons/puf100X86.png
-Exec=wm_root_menu
-Type=Application
