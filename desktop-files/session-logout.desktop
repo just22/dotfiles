@@ -1,0 +1,9 @@
+[Desktop Entry]
+Version=1.0
+Name=Session Logout
+GenericName=Session Logout
+Comment=Logout from X session
+Exec=session-logout
+Icon=exit
+Terminal=false
+Type=Application

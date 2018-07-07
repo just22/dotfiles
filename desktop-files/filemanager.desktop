@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name=File Manager for Terminal
+GenericName=File Manager for Terminal
+Comment=File manager for terminal
+Exec=filemanager
+Terminal=true
+Type=Application
+Icon=file-manager
+Categories=System;FileManager;

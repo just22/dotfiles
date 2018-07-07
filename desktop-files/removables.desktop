@@ -1,0 +1,9 @@
+[Desktop Entry]
+Version=1.0
+Name=Removable Devices
+GenericName=Removable Devices
+Comment=Manage removable devices
+Exec=doas /usr/local/bin/amount -e /dev/sd0
+Icon=media-removable
+Terminal=false
+Type=Application

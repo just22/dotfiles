@@ -1,0 +1,11 @@
+[Desktop Entry]
+Version=1.0
+Name=Terminal Emulator
+GenericName=Terminal Emulator
+Comment=Terminal Emulator
+Exec=x-terminal-emulator
+Icon=utilities-terminal
+Terminal=false
+Type=Application
+Categories=GTK;System;TerminalEmulator;
+StartupNotify=true

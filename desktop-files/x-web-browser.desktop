@@ -1,0 +1,17 @@
+[Desktop Entry]
+Version=1.0
+Name=Web Browser for X Window
+GenericName=Web Browser for X Window
+Comment=Access the Internet
+Exec=run_or_activate x-web-browser %U
+Terminal=false
+Icon=web-browser
+Type=Application
+Categories=Network;WebBrowser;
+StartupNotify=true
+Actions=NewWindow
+
+[Desktop Action NewWindow]
+Name=New Window
+Exec=run_or_activate x-web-browser
+MimeType=x-scheme-handler/unknown;x-scheme-handler/about;text/html;text/xml;application/xhtml_xml;image/webp;x-scheme-handler/http;x-scheme-handler/https;x-scheme-handler/ftp;

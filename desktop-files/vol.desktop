@@ -1,0 +1,9 @@
+[Desktop Entry]
+Version=1.0
+Name=Audio Volume Level
+GenericName=Audio Volume Level
+Comment=Audio volume level control
+Exec=vol-launcher
+Icon=audio-volume-medium
+Terminal=false
+Type=Application
