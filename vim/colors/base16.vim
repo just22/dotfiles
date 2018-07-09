@@ -92,7 +92,7 @@ call <sid>hi("VertSplit",     g:gui02, g:gui02, s:cterm02, s:cterm02, "none", ""
 call <sid>hi("ColorColumn",   "", g:gui01, "", s:cterm01, "none", "")
 call <sid>hi("CursorColumn",  "", g:gui01, "", s:cterm01, "none", "")
 call <sid>hi("CursorLine",    "", g:gui01, "", s:cterm01, "none", "")
-call <sid>hi("CursorLineNr",  g:gui04, g:gui01, s:cterm05, s:cterm01, "", "")
+call <sid>hi("CursorLineNr",  g:gui00, g:gui02, s:cterm00, s:cterm02, "", "")
 call <sid>hi("QuickFixLine",  "", g:gui01, "", s:cterm01, "none", "")
 call <sid>hi("PMenu",         g:gui05, g:gui01, s:cterm05, s:cterm01, "none", "")
 call <sid>hi("PMenuSel",      g:gui01, g:gui05, s:cterm01, s:cterm05, "", "")
