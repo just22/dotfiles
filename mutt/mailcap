@@ -1,5 +1,4 @@
-#text/html; ${HOME}/.mutt/view_attachment.sh "exo-open --launch WebBrowser" %s; sleep 1; test=test -n "$DISPLAY";
-text/html; ${HOME}/.mutt/view_attachment.sh x-www-browser %s; sleep 1; test=test -n "$DISPLAY";
+text/html; ${HOME}/.mutt/view_attachment.sh x-web-browser %s; sleep 1; test=test -n "$DISPLAY";
 text/html; lynx -dump %s; copiousoutput;
 text/plain; vim %s;
 application/pdf; ${HOME}/.mutt/view_attachment.sh xpdf %s;
