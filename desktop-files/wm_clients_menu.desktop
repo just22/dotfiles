@@ -1,7 +1,6 @@
 [Desktop Entry]
 Version=1.0
-Name=Window Manager Clients Menu
-GenericName=Window Manager Clients Menu
+Name=Workspaces
 Exec=xdotool key Super_L+l
 Icon=gnome-window-manager
 Terminal=false

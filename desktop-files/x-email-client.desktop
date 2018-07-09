@@ -1,10 +1,9 @@
 [Desktop Entry]
-Name=E-mail client
-GenericName=E-mail client
+Name=E-Mail Client
 Exec=run_or_activate x-email-client %u
 Terminal=false
 Type=Application
-Icon=stock_mail-open
+Icon=emblem-mail
 Categories=Application;Network;
 StartupNotify=true
 MimeType=text/html;text/xml;application/xhtml+xml;application/xml;application/vnd.mozilla.xul+xml;application/rss+xml;application/rdf+xml;image/gif;image/jpeg;image/png

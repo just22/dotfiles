@@ -1,7 +1,6 @@
 [Desktop Entry]
 Version=1.0
-Name=Audio Volume Level Control
-GenericName=Audio Volume Level Control
+Name=Volume Level
 Exec=vol-launcher
 Icon=audio-volume-medium
 Terminal=false

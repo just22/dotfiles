@@ -1,7 +1,6 @@
 [Desktop Entry]
 Version=1.0
-Name=Logout from X session
-GenericName=Logout from X session
+Name=Logout
 Exec=session-logout
 Icon=exit
 Terminal=false
