@@ -56,11 +56,15 @@ export PAGER LESS
 export EDITOR=vi
 export VISUAL=vi
 
-# Default browser
-export BROWSER=firefox-launcher
-
-# Default mail client
-export MAILER="xterm -e mutt"
+# Default browser and mail client
+if [ -n "$DISPLAY" ]; then
+        BROWSER=x-web-browser
+        MAILER=x-email-client
+else
+        BROWSER=web-browser
+        MAILER=email-client
+fi
+export BROWSER MAILER
 
 # Default printer
 export PRINTER=HP_Deskjet_1510
