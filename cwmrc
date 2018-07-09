@@ -1,0 +1,107 @@
+# ----------------------------------------------------------------------
+#  $Id$
+#
+#  calm window manager configuration file
+# ----------------------------------------------------------------------
+
+# Unbind all default keys
+unbind-key all
+
+# Set default Xft(3) font
+fontname "DejaVu Sans Mono:pixelsize=12:bold"
+
+# Turn on sticky-group mode
+sticky yes
+
+# Gap at the edges (t, b, l, r) of the screen
+gap 17 1 0 0
+
+# Special commands
+command term xterm
+command lock "xscreensaver-command -lock"
+
+# Menu
+command "Terminal Emulator"     xterm
+command "E-Mail Client"         "xterm -title \"Mutt E-Mail Client\" -e mutt"
+command Filemanager             "xterm -e ranger"
+command "Removable Devices"     "doas /usr/local/bin/amount"
+bind-key 4-Space        menu-window
+bind-key 4-a            menu-cmd
+bind-key 4-s            menu-ssh
+
+# Mouse bindings
+bind-mouse 4-1          window-move
+bind-mouse 4-2          window-raise
+bind-mouse 4-3          window-resize
+
+# Key bindings - Window manager control
+bind-key 4C-r           restart
+
+# Key bindings - Window management
+bind-key 4-1            group-only-1
+bind-key 4-2            group-only-2
+bind-key 4-3            group-only-3
+bind-key 4-4            group-only-4
+bind-key 4-5            group-only-5
+bind-key 4-6            group-only-6
+bind-key 4-Down         window-lower
+bind-key 4-Left         window-snap-left
+bind-key 4-Right        window-snap-right
+bind-key 4-Tab          window-cycle
+bind-key 4-Up           window-raise
+bind-key 4-f            window-fullscreen
+bind-key 4-h            window-htile
+bind-key 4-l            window-menu-label
+bind-key 4-m            window-maximize
+bind-key 4-minus        group-toggle-all
+bind-key 4-period       window-stick
+bind-key 4-underscore   window-hide
+bind-key 4-v            window-vtile
+bind-key 4-x            window-delete
+bind-key 4C-1           group-toggle-1
+bind-key 4C-2           group-toggle-2
+bind-key 4C-3           group-toggle-3
+bind-key 4C-4           group-toggle-4
+bind-key 4C-5           group-toggle-5
+bind-key 4C-6           group-toggle-6
+bind-key 4S-1           window-movetogroup-1
+bind-key 4S-2           window-movetogroup-2
+bind-key 4S-3           window-movetogroup-3
+bind-key 4S-4           window-movetogroup-4
+bind-key 4S-5           window-movetogroup-5
+bind-key 4S-6           window-movetogroup-6
+
+# Key bindings - Application launcher
+bind-key 4-d            dmenu_run-cust
+
+# Key bindings - External commands
+bind-key 4-F1           dzen-xprop
+bind-key 4-f            dmenu-filebrowser
+bind-key 4-r            dmenu-root
+bind-key 4-t            tmux_pane_search
+bind-key 4C-c           dmenu-perf
+bind-key 4S-Return      terminal
+bind-key 4S-b           firefox-esr
+bind-key 4S-c           dmenu-calc
+bind-key 4S-d           dmenu-xrandr
+bind-key 4S-f           "xterm -e ranger"
+bind-key 4S-h           ZZZ
+bind-key 4S-k           dmenu-kbd
+bind-key 4S-m           "xterm -title \"Mutt E-Mail Client\" -e mutt"
+bind-key 4S-p           "play-url -g -d -p"
+bind-key 4S-q           dmenu-session-logout
+bind-key 4S-r           dmenu-timer
+bind-key 4S-s           zzz
+bind-key 4S-t           "xterm -e tmux-launcher"
+bind-key MC-Delete      lock
+
+# Multimedia keys
+bind-key 4C-m                   "mixerctl -q -t outputs.master.mute"
+bind-key 4C-v                   "mixerctl -q outputs.master=-10"
+bind-key 4CS-v                  "mixerctl -q outputs.master=+10"
+bind-key AudioLowerVolume       "mixerctl -q outputs.master=-10"
+bind-key AudioMute              "mixerctl -q -t outputs.master.mute"
+bind-key AudioRaiseVolume       "mixerctl -q outputs.master=+10"
+
+# Auto-grouping
+autogroup 6 XConsole
