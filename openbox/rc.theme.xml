@@ -5,7 +5,7 @@
 -->
 
 <theme>
-  <name>Clearlooks</name>
+  <name>Clearlooks-solarized</name>
   <titleLayout>NLIMC</titleLayout>
   <!--
     available characters are NDSLIMC, each can occur at most once.
@@ -23,7 +23,7 @@
     <name>DejaVu Sans</name>
     <size>8</size>
     <!-- font size in points -->
-    <weight>Normal</weight>
+    <weight>Bold</weight>
     <!-- 'bold' or 'normal' -->
     <slant>Normal</slant>
     <!-- 'italic' or 'normal' -->
@@ -32,7 +32,7 @@
     <name>DejaVu Sans</name>
     <size>8</size>
     <!-- font size in points -->
-    <weight>Normal</weight>
+    <weight>Bold</weight>
     <!-- 'bold' or 'normal' -->
     <slant>Normal</slant>
     <!-- 'italic' or 'normal' -->
