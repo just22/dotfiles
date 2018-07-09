@@ -64,7 +64,7 @@ fi
 
 # Copy the file to our new spot so mutt can't delete it
 # before the app has a chance to view it
-cp ${file} ${tmpdir}
+cp ${file} ${tmpdir}/${filename}.html
 
 # Open the attachment
-${open_with} ${tmpdir}/${filename} &
+${open_with} ${tmpdir}/${filename}.html &
