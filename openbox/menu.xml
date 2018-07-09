@@ -27,6 +27,12 @@
         <startupnotify> <enabled>yes</enabled> </startupnotify>
       </action>
     </item>
+    <item label="E-mail client" icon="/usr/local/share/icons/gnome/16x16/emblems/emblem-mail.png">
+      <action name="Execute">
+        <command>run_or_activate x-email-client</command>
+        <startupnotify> <enabled>yes</enabled> </startupnotify>
+      </action>
+    </item>
     <item label="Filemanager" icon="/usr/local/share/icons/gnome/16x16/apps/file-manager.png">
       <action name="Execute">
         <command>run_or_activate x-filemanager</command>
