@@ -52,8 +52,8 @@ set history=100
 " Do not redraw the screen while executing commands that have not been typed
 set lazyredraw
 
-" Do not enable mouse in INSERT mode
-set mouse=nvc
+" Enable mouse support
+set mouse=a ttymouse=sgr
 
 " Disable beeping (aka bell) and window flashing
 set noerrorbells visualbell t_vb=
@@ -80,9 +80,6 @@ set ttimeoutlen=10
 
 " Improves smoothness of redrawing
 set ttyfast
-
-" Enable extended mouse support
-set ttymouse=sgr
 
 " On pressing 'wildchar' (usually <Tab>) to invoke completion, the possible
 " matches are shown
@@ -141,11 +138,6 @@ set smartcase
 " ----------------------------------------------------------------------------
 " Visibility and context
 " ----------------------------------------------------------------------------
-
-" Highlight the screen line of the cursor
-if exists("$DISPLAY")
-        set cursorline
-endif
 
 " Precede each line with its line number
 set number
@@ -302,6 +294,7 @@ filetype plugin on
 
 " terminus
 let g:TerminusMouse = 0
+let g:TerminusCursorShape=0
 
 " vim-slime
 if exists("$TMUX")
@@ -454,6 +447,10 @@ augroup vimrcAutoCmd
 
         autocmd!
 
+        " Highlight cursor line in INSERT mode
+        autocmd InsertEnter * if exists("$DISPLAY")  | setlocal cursorline | endif
+        autocmd InsertLeave * if !exists("b:cursorvis") | setlocal nocursorline | endif
+
         " For all text files set 'textwidth' to 78 characters
         autocmd FileType text setlocal textwidth=78
 
@@ -532,13 +529,17 @@ endif
 " ----------------------------------------------------------------------------
 
 " Toggle cursorline/cursorcolumn mode
-function! CursorColumnVisibilityToggling()
+function! CursorVisibilityToggling()
         if (&cursorcolumn)
+                unlet b:cursorvis
                 setlocal nocursorcolumn
                 setlocal colorcolumn=0
+                setlocal nocursorline
         else
+                let b:cursorvis = 1
                 setlocal cursorcolumn
                 setlocal colorcolumn=78
+                setlocal cursorline
         endif
 endfunction
 
@@ -693,7 +694,7 @@ nmap <F10> :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> tran
            \ . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">"<CR>
 
 " Toggle cursorline highlight
-nmap <silent> <C-_> :set cursorline!<CR>
+nmap <silent> <C-_> :call CursorVisibilityToggling()<CR>
 
 " Always go to the beginning of a line before doing a 'gF' operation
 nnoremap gF 0gF
@@ -958,7 +959,6 @@ nmap <silent> <leader>q :bdelete<CR>
 nmap <leader>r :source $HOME/.vimrc<CR>
 
 " ** S ** Option toggling
-nmap <silent> <leader>sc :call CursorColumnVisibilityToggling()<CR>
 nmap <leader>se :setlocal spell spelllang=en<CR>
 nmap <leader>si :setlocal spell spelllang=it<CR>
 nmap <leader>so :setlocal nospell<CR>
