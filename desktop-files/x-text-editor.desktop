@@ -1,6 +1,6 @@
 [Desktop Entry]
 Name=Text Editor
-Exec=x-editor %F
+Exec=x-text-editor %F
 Terminal=false
 Type=Application
 Keywords=Text;editor;
