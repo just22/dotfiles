@@ -1,23 +1,64 @@
-; No startup screen, please!
-(setq inhibit-startup-screen t)
+; ----------------------------------------------------------------------
+;  $Id$
+;
+;  Emacs main configuration file
+; ----------------------------------------------------------------------
+
+; ----------------------------------------------------------------------
+; General settings
+;
 
 ; Set config dir
-(add-to-list 'load-path "~/.emacs.d/config")
+(add-to-list 'load-path "~/.emacs.d/init.d")
 
-; Load config files
-(when (not (require 'packages nil t))
-        (message "Warning: config file `packages.el' not found")
+; Inhibit startup screen, toolbar, ...
+(setq inhibit-startup-screen t)
+(tool-bar-mode -1)
+(menu-bar-mode -1)
+
+; Set backup and autosave file locations
+(defvar autosave-dir (expand-file-name "~/.emacs.d/autosave/"))
+(setq auto-save-file-name-transforms `((".*" ,autosave-dir t)))
+(defvar backup-dir (expand-file-name "~/.emacs.d/backup"))
+(setq backup-directory-alist `((".*" . ,backup-dir)))
+
+; ----------------------------------------------------------------------
+; Packages
+;
+(when (not (require 'init-packages nil t))
+        (message "Warning: config file `init-packages.el' not found")
         (view-echo-area-messages))
-(when (not (require 'style nil t))
-        (message "Warning: config file `style.el' not found")
+
+; ----------------------------------------------------------------------
+; Styles
+;
+(when (not (require 'init-styles nil t))
+        (message "Warning: config file `init-styles.el' not found")
         (view-echo-area-messages))
-(when (not (require 'modes nil t))
-        (message "Warning: config file `modes.el' not found")
+
+; ----------------------------------------------------------------------
+; Modes
+;
+(when (not (require 'init-modes nil t))
+        (message "Warning: config file `init-modes.el' not found")
         (view-echo-area-messages))
-(when (not (require 'keybinds nil t))
-        (message "Warning: config file `keybinds.el' not found")
+
+; ----------------------------------------------------------------------
+; Keybinds
+;
+(when (not (require 'init-keybinds nil t))
+        (message "Warning: config file `init-keybinds.el' not found")
         (view-echo-area-messages))
+
+; ----------------------------------------------------------------------
+; Custom functions
+;
 (when (not (require 'functions nil t))
         (message "Warning: config file `functions.el' not found")
         (view-echo-area-messages))
 
+; ----------------------------------------------------------------------
+; Other customization settings (automatically saved)
+;
+(setq custom-file "~/.emacs.d/custom-settings.el")
+(load custom-file)
