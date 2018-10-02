@@ -1,14 +1,14 @@
-; ----------------------------------------------------------------------
-;  $Id$
-;
-;  Emacs packages configuration file
-; ----------------------------------------------------------------------
+;;;; --------------------------------------------------------------------
+;;;;  $Id$
+;;;;
+;;;;  Emacs packages configuration file
+;;;; --------------------------------------------------------------------
 
 (provide 'init-packages)
 
-; ----------------------------------------------------------------------
-; Default Emacs package manager
-;
+;;;
+;;; Default Emacs package manager
+;;;
 (require 'package)
 
 (add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/"))
@@ -18,9 +18,9 @@
 (setq package-enable-at-startup nil)
 (package-initialize)
 
-; ----------------------------------------------------------------------
-; use-package macro
-;
+;;;
+;;; use-package macro
+;;;
 (unless (package-installed-p 'use-package)
   (package-refresh-contents)
   (package-install 'use-package))
