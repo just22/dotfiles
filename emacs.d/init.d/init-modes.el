@@ -48,3 +48,21 @@ If no FILE is specified, reload the current buffer from disk."
         (revert-buffer bang (or bang (not (buffer-modified-p))) t)
         (read-only-mode))))
   (evil-ex-define-cmd "v[iew]" 'evil-cust-view))
+
+;;;
+;;; MultiTerm
+;;;
+(use-package multi-term
+  :ensure t
+  :config
+  (setq multi-term-program (getenv "SHELL")))
+
+;;;
+;;; undo-tree
+;;;
+(use-package undo-tree
+  :ensure t
+  :config
+  (global-undo-tree-mode t)
+  (setq undo-tree-auto-save-history t))
+

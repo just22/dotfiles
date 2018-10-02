@@ -32,6 +32,9 @@
   scroll-conservatively 10000
   scroll-preserve-screen-position 1)
 
+;; Shortening for yes/no
+(fset 'yes-or-no-p 'y-or-n-p)
+
 ;;;
 ;;; Packages
 ;;;
@@ -40,10 +43,10 @@
         (view-echo-area-messages))
 
 ;;;
-;;; Styles
+;;; Themes
 ;;;
-(when (not (require 'init-styles nil t))
-        (message "Warning: config file `init-styles.el' not found")
+(when (not (require 'init-themes nil t))
+        (message "Warning: config file `init-themes.el' not found")
         (view-echo-area-messages))
 
 ;;;

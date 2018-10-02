@@ -7,6 +7,12 @@
 (provide 'init-packages)
 
 ;;;
+;;; (Optional) proxy settings
+;;;
+(when (not (require 'init-proxy nil t))
+        (message "Info: no proxy config file found, skipping."))
+
+;;;
 ;;; Default Emacs package manager
 ;;;
 (require 'package)
