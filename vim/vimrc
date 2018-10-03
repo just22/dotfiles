@@ -455,8 +455,7 @@ augroup vimrcAutoCmd
         autocmd FileType text setlocal textwidth=78
 
         " Remove expandtab for Makefile and Python
-        autocmd BufEnter [mM]akefile*,GNUmakefile,*.mk,*.mak,*.py set noexpandtab
-        autocmd BufLeave [mM]akefile*,GNUmakefile,*.mk,*.mak,*.py set expandtab
+        autocmd BufEnter [mM]akefile*,GNUmakefile,*.mk,*.mak,*.py setlocal noexpandtab | setlocal nolist
 
         " Special mappings in diff mode
         autocmd FilterWritePre * if &diff | execute "nnoremap <C-p> [cz." | execute "nnoremap <C-n> ]cz." | endif
