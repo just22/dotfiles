@@ -82,7 +82,7 @@ alias icarus='ssh icarus'
 #
 blkid() { disklabel ${1-sd0} | egrep "/dev/|duid"; }
 long()  { set-title "[Running: $@]"; $@; }
-alias man='man -m ~/share/man'
+alias man='man -Owidth=$(($COLUMNS<80?($COLUMNS-2):78)) -m ~/share/man'
 alias xcdroast='xcdroast -n -f /dev/rcd0c'
 alias lk='clear; lock -pn'
 alias mplayer='mplayer -af volnorm'
