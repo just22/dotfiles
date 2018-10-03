@@ -34,7 +34,7 @@ _ps1_pwd_trim() {
 }
 
 # This is a general purpose function, we just take advantage of its
-# execution each time the promp is issued
+# execution each time the prompt is issued
 _ps1_cmd() {
         # VCS tree?
         if [ -d CVS ]; then
@@ -52,7 +52,13 @@ _ps1_cmd() {
                 [ -f .enter ] && >&2 . .enter
         fi
         # Set the xterm's (or tmux pane's) title
-        set-title "[${0}] [${PWD}] [Last cmd: \"$(tail -1 "$HISTFILE")\"]"
+        case "$TERM" in
+        xterm*|screen*)
+                set-title "[${0}] [${PWD}] [Last cmd: \"$(tail -1 "$HISTFILE")\"]"
+                ;;
+        *)
+                ;;
+        esac
 }
 
 # Command line prompt:
