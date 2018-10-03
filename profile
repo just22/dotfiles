@@ -78,6 +78,9 @@ export PERL_MB_OPT="--install_base \"${HOME}/perl5\""
 export PERL_MM_OPT="INSTALL_BASE=${HOME}/perl5"
 export PERL5LIB="${HOME}/perl5/lib/perl5:${HOME}/.fvwm/perllib:${PERL5LIB}"
 
+# par(1) settings
+export PARINIT="rTbgqR B=.,?_A_a Q=_s>|"
+
 # Autotools version env variables
 export AUTOMAKE_VERSION=1.14
 export AUTOCONF_VERSION=2.69
