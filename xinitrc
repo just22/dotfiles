@@ -1,4 +1,4 @@
-# ----------------------------------------------------------------------
+----------------------------------------------------------------------
 #  $Id$
 #
 #  ~/.xinitrc is executed by xinit, usually invoked by
@@ -6,10 +6,6 @@
 #  some GUI-related settings (key bindings, X resources,
 #  etc.), and launches a window (or session) manager.
 # ----------------------------------------------------------------------
-
-# Send HUP signal to all processes on exit
-# Temporary disabled: it works for login shells only...
-#set +o nohup
 
 # Set the default colorscheme and X resources
 if ! colman set solarized-dark; then
@@ -61,29 +57,35 @@ if [ -x /usr/local/bin/dbus-launch -a -z "${DBUS_SESSION_BUS_ADDRESS}" ]; then
         eval `dbus-launch --sh-syntax --exit-with-session`
 fi
 
+# Put display in a known state
+case "$(xrandr -q | grep -E "[0-9]+x[0-9]+\+[0-9]+\+[0-9]+" | head -n 1 | cut -d" " -f1)" in
+LVDS*) dmenu-xrandr Off ;;
+VGA*)  dmenu-xrandr Only ;;
+esac
+
 # Console log (launched again to match fonts and colorscheme)
 xconsole -geometry 480x130-0-0 -daemon -notify -verbose -exitOnFail &
 
 # Select the X session to start
-#DEFAULT_XSESSION_CMD=${DEFAULT_XSESSION_CMD-dwm-session}
-DEFAULT_XSESSION_CMD=${DEFAULT_XSESSION_CMD-startxfce4}
+DEFAULT_XSESSION_CMD=${DEFAULT_XSESSION_CMD-openbox-session}
 #SELECT_XSESSION=1
 
 [ x$SELECT_XSESSION != "x" ] &&
 if [ -e /usr/local/bin/Xdialog ]; then
-        XSESSION_CMD=`Xdialog --buttons-style text                                              \
-                              --no-close                                                        \
-                              --no-cancel                                                       \
-                              --no-tags                                                         \
-                              --screen-center                                                   \
-                              --stdout                                                          \
-                              --menubox                                                         \
-                                  "Select the X session"                                        \
-                                  195x135                                                       \
-                                  3                                                             \
-                                  "startxfce4"                        "Xfce4"                   \
-                                  "dwm-session"                       "dwm"                     \
-                                  "twm"                               "twm"`
+        XSESSION_CMD=`Xdialog --buttons-style text                \
+                              --no-close                          \
+                              --no-cancel                         \
+                              --no-tags                           \
+                              --screen-center                     \
+                              --stdout                            \
+                              --menubox                           \
+                                  "Select the X session"          \
+                                  195x149                         \
+                                  4                               \
+                                  "openbox-session"     "openbox" \
+                                  "startfluxbox"        "fluxbox" \
+                                  "cwm"                 "cwm"     \
+                                  "twm"                 "twm"`
 fi || XSESSION_CMD="$DEFAULT_XSESSION_CMD"
 
 # Just to play it safe...
@@ -118,8 +120,7 @@ case "$XSESSION_CMD" in
 cwm|twm)
 
         # Status bar
-        ["$XSESSION_CMD" == "cwm" ] && headup -b -v -k -l -w -d \
-                                    || headup -b -v -k -l -d
+        pkill -x dstat; (sleep 2; dstat trunk0 | dzen2-cust) &
 
         # Wallpaper setting
         [ -x ~/.fehbg ] && ~/.fehbg
