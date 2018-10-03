@@ -114,6 +114,7 @@ catn            - cat -n
 cutf            - Select nth field of line
 d               - Current working dir
 exev            - xev with more effective output
+findlic         - Search for license files
 ff              - Recursively find files by (part of) name
 ff.             - Find files in current directory by (part of) name
 flast           - Print the last modified file or directory
@@ -463,6 +464,7 @@ alias rs='rsync -avzhHp --info=progress2'
 alias touchall='ls -tr | xargs touch'
 alias v='fc -e vim'
 exev()      { xev | awk -F '[ )]+' '/^KeyPress/ {a[NR+2]} NR in a {printf "%-3s %s\n", $5, $8}'; }
+findlic()   { find ${1-.} -name "*LICENSE*" -o -name "*license*" -o -name "*copy*" -o -name "*COPY*"; }
 flast()     { ls -dt "$@" | head -1; }
 grepo()     { grep -l "$@" | xargs sh -c '</dev/tty vim "$@"' ignoreme; }
 nowrap()    { printf '\033[?7l'; $@; printf '\033[?7h'; }
