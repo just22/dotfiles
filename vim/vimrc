@@ -457,9 +457,6 @@ augroup vimrcAutoCmd
         " Remove expandtab for Makefile and Python
         autocmd BufEnter [mM]akefile*,GNUmakefile,*.mk,*.mak,*.py setlocal noexpandtab | setlocal nolist
 
-        " Special mappings in diff mode
-        autocmd FilterWritePre * if &diff | execute "nnoremap <C-p> [cz." | execute "nnoremap <C-n> ]cz." | endif
-
         " Spell check when writing commit logs
         autocmd filetype svn,*commit* setlocal spell spelllang=en
 
@@ -790,6 +787,10 @@ vmap gsp y
         \:put =headLine<CR>
         \p
         \:unlet headLine<CR>
+
+" diff mode
+nnoremap <expr> <C-p> &diff ? '[cz.' : '<Nop>'
+nnoremap <expr> <C-n> &diff ? ']cz.' : '<Nop>'
 
 
 " ----------------------------------------------------------------------------
