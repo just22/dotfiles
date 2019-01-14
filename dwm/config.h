@@ -178,7 +178,8 @@ static Key keys[] = {
 	TAGKEYS(                        XK_4,                                       3)
 	TAGKEYS(                        XK_5,                                       4)
 	TAGKEYS(                        XK_6,                                       5)
-	TAGKEYS(                        XK_0,                                       6)
+	TAGKEYS(                        XK_7,                                       6)
+	TAGKEYS(                        XK_0,                                       7)
 	{ MODKEY,                       XK_minus,      		    tag,            {.ui = 1 << 7} },
 	{ MODKEY,                       XK_plus,                    toggleview,     {.ui = 1 << 7} },
 	{ MODKEY,                       XK_q,                       quit,           {0} },
