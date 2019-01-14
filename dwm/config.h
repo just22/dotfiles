@@ -47,11 +47,15 @@ static const char selfgcolor[]      = "#fdf6e3"; // base03
 
 static const unsigned int borderpx       = 1;   /* border pixel of windows */
 static const unsigned int snap           = 32;  /* snap pixel */
+static const unsigned int systraypinning = 0;   /* 0: sloppy systray follows selected monitor, >0: pin systray to monitor X */
+static const unsigned int systrayspacing = 2;   /* systray spacing */
+static const int systraypinningfailfirst = 1;   /* 1: if pinning fails, display systray on the first monitor, 0: display systray on the last monitor*/
+static const int showsystray             = 1;   /* 0 means no systray */
 static const int showbar                 = 1;   /* 0 means no bar */
 static const int topbar                  = 1;   /* 0 means bottom bar */
 
 /* tagging */
-static const char *tags[] = { "1", "2", "3", "4", "5", "6", "S" };
+static const char *tags[] = { "1", "2", "3", "4", "5", "6", "7", "0" };
 
 static const Rule rules[] = {
 	/* xprop(1):
@@ -65,11 +69,11 @@ static const Rule rules[] = {
 	{ "Firefox",		"Places",	NULL,			1 << 4,		True,		-1 },
 	{ "Firefox",		"Toplevel",	NULL,			0,		True,		-1 },
 	{ "Claws-mail",		"claws-mail",	NULL,			1 << 3,		False,		-1 },
-	{ "XConsole",		NULL,		NULL,			1 << 5,		False,		-1 },
+	{ "XConsole",		NULL,		NULL,			1 << 6,		False,		-1 },
 	{ "Xmessage",		NULL,		NULL,			0,		True,		-1 },
-	{ "XTerm",		NULL,		"System log",		1 << 5,		False,		-1 },
-	{ "XTerm",		NULL,		"Process monitor",	1 << 5,		False,		-1 },
-	{ "XTerm",		NULL,		"System stats",		1 << 5,		False,		-1 },
+	{ "XTerm",		NULL,		"System log",		1 << 6,		False,		-1 },
+	{ "XTerm",		NULL,		"Process monitor",	1 << 6,		False,		-1 },
+	{ "XTerm",		NULL,		"System stats",		1 << 6,		False,		-1 },
 	{ "XTerm",		NULL,		"Screenshot",		0,		True,		-1 },
 	{ "XCalc",		"xcalc",	NULL,			0,		True,		-1 },
 	{ "XLoad",		"xload",	NULL,			0,		True,		-1 },
@@ -81,6 +85,7 @@ static const Rule rules[] = {
 	{ "Tkdvd",		NULL,	        NULL,			0,		True,		-1 },
 	{ "Toplevel",		NULL,	        NULL,			0,		True,		-1 },
 	{ "Pinentry-gtk-2",	NULL,	        NULL,			0,		True,		-1 },
+	{ "Sound",	        "sound",	NULL,			0,		True,		-1 },
 };
 
 /* layout(s) */
@@ -137,6 +142,7 @@ static const char *kbdlayoutcmd[]	= { "dmenu-kbd", NULL };
 static const char *rootmenucmd[]	= { "dmenu-root", NULL };
 static const char *perfpolicycmd[]	= { "dmenu-perf", NULL };
 
+/* See /usr/X11R6/include/X11/keysymdef.h */
 static Key keys[] = {
 	/* modifier                     key                         function        argument */
 	{ MODKEY,                       XK_F2,                      spawn,          {.v = dmenucmd } },
@@ -173,6 +179,8 @@ static Key keys[] = {
 	TAGKEYS(                        XK_5,                                       4)
 	TAGKEYS(                        XK_6,                                       5)
 	TAGKEYS(                        XK_0,                                       6)
+	{ MODKEY,                       XK_minus,      		    tag,            {.ui = 1 << 7} },
+	{ MODKEY,                       XK_plus,                    toggleview,     {.ui = 1 << 7} },
 	{ MODKEY,                       XK_q,                       quit,           {0} },
 	{ MODKEY|ShiftMask,             XK_q,                       spawn,          {.v = logoutcmd} },
 	{ 0,                            XF86XK_AudioLowerVolume,    spawn,          {.v = lowervolcmd} },
