@@ -88,6 +88,7 @@ alias lk='clear; lock -pn'
 alias mplayer='mplayer -af volnorm'
 alias mplayer-slow='mplayer -af volnorm -lavdopts threads=4:skiploopfilter=all:fast=1:skipframe=nonref'
 alias ctmux='LC_CTYPE= tmux'
+alias glxgears='vblank_mode=0 glxgears'
 
 # ------------------------------------------------------------------
 # Temporary WAs
