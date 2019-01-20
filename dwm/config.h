@@ -45,11 +45,11 @@ static const char selbordercolor[]  = "#dc322f"; // red
 static const char selbgcolor[]      = "#2aa198"; // base01
 static const char selfgcolor[]      = "#fdf6e3"; // base03
 
-static const unsigned int borderpx       = 1;   /* border pixel of windows */
+static const unsigned int borderpx       = 2;   /* border pixel of windows */
 static const unsigned int snap           = 32;  /* snap pixel */
 static const unsigned int systraypinning = 0;   /* 0: sloppy systray follows selected monitor, >0: pin systray to monitor X */
 static const unsigned int systrayspacing = 2;   /* systray spacing */
-static const int systraypinningfailfirst = 1;   /* 1: if pinning fails, display systray on the first monitor, 0: display systray on the last monitor*/
+static const int systraypinningfailfirst = 1;   /* 1: if pinning fails, display systray on the first monitor, 0: dis/lyay systray on the last monitor */
 static const int showsystray             = 1;   /* 0 means no systray */
 static const int showbar                 = 1;   /* 0 means no bar */
 static const int topbar                  = 1;   /* 0 means bottom bar */
@@ -75,6 +75,7 @@ static const Rule rules[] = {
 	{ "XTerm",		NULL,		"Process monitor",	1 << 6,		False,		-1 },
 	{ "XTerm",		NULL,		"System stats",		1 << 6,		False,		-1 },
 	{ "XTerm",		NULL,		"Screenshot",		0,		True,		-1 },
+	{ "XTerm",		NULL,		"cmixer",		0,		True,		-1 },
 	{ "XCalc",		"xcalc",	NULL,			0,		True,		-1 },
 	{ "XLoad",		"xload",	NULL,			0,		True,		-1 },
 	{ "XClock",		"xclock",	NULL,			0,		True,		-1 },
@@ -119,6 +120,7 @@ static const Layout layouts[] = {
 /* commands */
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
 static const char *dmenucmd[]		= { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", normbgcolor, "-nf", normfgcolor, "-sb", selbgcolor, "-sf", selfgcolor, NULL };
+static const char *launchercmd[]	= { "dmenu-launchers", NULL };
 static const char *termcmd[]		= { "xterm", NULL };
 static const char *tmuxcmd[]		= { "xterm", "-e", "tmux attach-session -d || tmux new-session", NULL };
 static const char *logoutcmd[]		= { "dmenu-session-logout", NULL };
@@ -131,9 +133,10 @@ static const char *hibernatecmd[]	= { "ZZZ", NULL };
 static const char *browsercmd[]		= { "firefox-launcher", NULL };
 static const char *mailclientcmd[]	= { "xterm", "-title", "Mutt E-Mail Client", "-e", "mutt", NULL };
 static const char *lockcmd[]		= { "xscreensaver-command", "-lock", NULL };
+static const char *xscreensavercmd[]	= { "dmenu-xscreensaver", NULL };
 static const char *filemanagercmd[]	= { "xterm", "-e", "ranger", NULL };
 static const char *filebrowsercmd[]	= { "dmenu-filebrowser", NULL };
-static const char *playercmd[]		= { "play-url", "-g", "-d", "-p", NULL };
+static const char *playercmd[]		= { "play-url", "-p", NULL };
 static const char *winsearchcmd[]	= { "win_search", NULL };
 static const char *tmuxpanesearchcmd[]	= { "tmux_pane_search", NULL };
 static const char *calccmd[]		= { "dmenu-calc", NULL };
@@ -147,6 +150,7 @@ static Key keys[] = {
 	/* modifier                     key                         function        argument */
 	{ MODKEY,                       XK_F2,                      spawn,          {.v = dmenucmd } },
 	{ MODKEY,                       XK_d,                       spawn,          {.v = dmenucmd } },
+	{ 0,                            XK_F1,                      spawn,          {.v = launchercmd } },
 	{ MODKEY|ShiftMask,             XK_Return,                  spawn,          {.v = termcmd } },
 	{ MODKEY|ShiftMask,             XK_t,                       spawn,          {.v = tmuxcmd } },
 	{ MODKEY,                       XK_a,                       togglebar,      {0} },
@@ -195,6 +199,7 @@ static Key keys[] = {
 	{ MODKEY|ShiftMask,             XK_s,                       spawn,          {.v = suspendcmd} },
 	{ MODKEY|ShiftMask,             XK_h,                       spawn,          {.v = hibernatecmd} },
 	{ Mod1Mask|ControlMask,         XK_Delete,                  spawn,          {.v = lockcmd} },
+	{ MODKEY|ShiftMask,         	XK_x,                  	    spawn,          {.v = xscreensavercmd} },
 	{ MODKEY|ShiftMask,             XK_b,                       spawn,          {.v = browsercmd} },
 	{ MODKEY|ShiftMask,             XK_m,                       spawn,          {.v = mailclientcmd} },
 	{ MODKEY|ShiftMask,             XK_f,                       spawn,          {.v = filemanagercmd} },
