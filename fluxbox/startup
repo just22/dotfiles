@@ -20,7 +20,9 @@
 # gkrellm -w &
 
 # System log
-#pkill xconsole
+xkill -id $(xwininfo -name xconsole |
+            egrep -o "Window id: 0x[0-9a-fA-F]+" |
+            cut -d: -f2)
 xterm -title "System log" -e "tail -f /var/log/messages" &
 
 # Process monitor
@@ -36,25 +38,18 @@ xcompmgr &
 fbsetroot -gradient Vertical -from rgb:07/36/42 -to rgb:58/6E/75
 fbsetbg -l
 
-# Xscreensaver
-xscreensaver &
-
-# Battery status check daemon
-#~/bin/check-batt-status &
-
 # Desktop management
 #(sleep 1; dbus-launch pcmanfm --desktop) &
 
 # Statusbar
-headup -b -v -k -l -u -p
-
-# Reserve space for statusbar
-# (Just a WA, since dzen2/bbpager don't play well with Fluxbox's slit)
-(sleep 3; space_dapp) &
+pkill -x space_dapp; (sleep 1; space_dapp $((($(screen-width) - 1))) 17) &
+(sleep 3; dbar) &
+pkill -x bbpager; (sleep 4; bbpager) &
 
 # Tray apps
-#/usr/local/libexec/tray-app/sound -i &
-hp-systray &
+radiotray &
+/usr/local/libexec/tray-app/sound -i &
+#hp-systray &
 
 
 # And last but not least we start fluxbox.

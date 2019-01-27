@@ -29,39 +29,10 @@ OnRightGrip Move1       :StartResizing bottomright
 # Cycle through windows in the current workspace
 Mod4 Tab                :NextWindow {groups} (workspace=[current]) (Minimized=no)
 
-# Application launchers
-Mod4 d                  :Exec dmenu_run -p Run:
-Mod4 F1                 :Exec (fluxbox -v; fluxbox -info | sed 1d) | xmessage -buttons OK:0 -file - -center
-Mod4 F2                 :Exec dmenu_run -p Run:
-Mod4 Shift Return       :Exec xterm
-Mod4 Shift t            :Exec xterm -e "tmux attach-session -d || tmux new-session"
-Mod4 Shift b            :Exec firefox-launcher
-Mod4 Shift d            :Exec dmenu-xrandr
-Mod4 Shift s            :Exec apm -z
-Mod4 Shift h            :Exec apm -Z
-#Mod4 Shift m            :Exec xterm -title "Mail client" -e mutt
-Mod4 Shift m            :Exec claws-mail
-Mod4 Shift f            :Exec pcmanfm
-Mod4 Shift c            :Exec dmenu-calc
-Mod1 Control Delete     :Exec xlock
-
-# Other command exec
-Mod4 a                  :Exec toggle-statusbar
-Mod4 Control c          :Exec change-perfpolicy
-
-
 # Current window commands
-Mod4 p                  :Exec activewin_xprop
-Mod4 x                  :Close
-Mod4 Control x :Kill
-Mod4 underscore         :Minimize
-Mod4 s                  :StickWindow
-Mod4 m                  :MacroCmd {Raise} {Maximize}
-Mod4 f                  :Fullscreen
-Mod4 Left               :MacroCmd {ResizeTo  50% 100%} {MoveTo 0% 0% BottomLeft}
-Mod4 Right              :MacroCmd {ResizeTo  50% 100%} {MoveTo 0% 0% BottomRight}
-Mod4 Up                 :MacroCmd {ResizeTo 100%  50%} {MoveTo 0% 0% UpperLeft}
+Mod4 Control x          :Kill
 Mod4 Down               :MacroCmd {ResizeTo 100%  50%} {MoveTo 0% 0% BottomLeft}
+Mod4 underscore         :Minimize
 Mod4 KP_1               :MacroCmd {ResizeTo  50%  67%} {MoveTo 0% 0% BottomLeft}
 Mod4 KP_2               :MacroCmd {ResizeTo 100%  33%} {MoveTo 0% 0% BottomLeft}
 Mod4 KP_3               :MacroCmd {ResizeTo  50%  67%} {MoveTo 0% 0% BottomRight}
@@ -70,21 +41,14 @@ Mod4 KP_6               :MacroCmd {ResizeTo  33% 100%} {MoveTo 0% 0% BottomRight
 Mod4 KP_7               :MacroCmd {ResizeTo  50%  67%} {MoveTo 0% 0% UpperLeft}
 Mod4 KP_8               :MacroCmd {ResizeTo 100%  33%} {MoveTo 0% 0% UpperLeft}
 Mod4 KP_9               :MacroCmd {ResizeTo  50%  67%} {MoveTo 0% 0% UpperRight}
-
-# Root/Window/Workspace menus
-Mod4 space              :RootMenu
-
-Mod4 Shift w            :WorkspaceMenu
-Mod4 w                  :Exec fb-switch-ws
-
-# Window search
-Mod4 Control w          :Exec win_search
-Mod4 Control t          :Exec tmux_pane_search
-
-# Exit, restart or reload config file
-Mod4 Shift q            :Exec dmenu-session-logout
-Mod4 Control q          :Exec wmrestart --output LVDS1 --auto
-Mod4 Control r          :Reconfigure
+Mod4 Left               :MacroCmd {ResizeTo  50% 100%} {MoveTo 0% 0% BottomLeft}
+Mod4 Right              :MacroCmd {ResizeTo  50% 100%} {MoveTo 0% 0% BottomRight}
+Mod4 Up                 :MacroCmd {ResizeTo 100%  50%} {MoveTo 0% 0% UpperLeft}
+Mod4 a                  :Fullscreen
+Mod4 m                  :MacroCmd {Raise} {Maximize}
+Mod4 p                  :Exec activewin_xprop
+Mod4 s                  :StickWindow
+Mod4 x                  :Close
 
 # Change to a specific workspace
 Mod4 1                  :Workspace 1
@@ -93,6 +57,7 @@ Mod4 3                  :Workspace 3
 Mod4 4                  :Workspace 4
 Mod4 5                  :Workspace 5
 Mod4 6                  :Workspace 6
+Mod4 7                  :Workspace 7
 
 # Send the current window to a specific workspace
 Mod4 Shift 1            :SendToWorkspace 1
@@ -108,10 +73,7 @@ Mod4 Control 4          :TakeToWorkspace 4
 Mod4 Control 5          :TakeToWorkspace 5
 Mod4 Control 6          :TakeToWorkspace 6
 
-# Toggle show desktop
-Mod4 c                  :ShowDesktop
-
-# Common tiled layouts
+# Tiling
 #Mod4 v                  :MacroCmd {ResizeTo  50% 100%} {MoveTo 0% 0% BottomLeft} {NextWindow {groups} (Workspace=[current]) (Minimized=no)} {Delay {MacroCmd {ResizeTo  50% 100%} {MoveTo 0% 0% BottomRight}} 1}
 #Mod4 h                  :MacroCmd {ResizeTo 100%  50%} {MoveTo 0% 0% BottomLeft} {NextWindow {groups} (Workspace=[current]) (Minimized=no)} {Delay {MacroCmd {ResizeTo 100%  50%} {MoveTo 0% 0% UpperLeft}} 1}
 #Mod4 Control v          :MacroCmd {ResizeTo  50%  50%} {MoveTo 0% 0% UpperRight} {NextWindow {groups} (Workspace=[current]) (Minimized=no)} {Delay {MacroCmd {ResizeTo  50%  50%} {MoveTo 0% 0% BottomRight} {NextWindow {groups} (workspace=[current])} {Delay {MacroCmd {ResizeTo  50% 100%} {MoveTo 0% 0% UpperLeft}} 1}} 1}
@@ -121,5 +83,37 @@ Mod4 c                  :ShowDesktop
 Mod4 v                  :Exec wmprocs tile v
 Mod4 h                  :Exec wmprocs tile h
 
-# Play video (URL in clipboard)
-Mod4 Shift p            :Exec play-url -g -d -p
+# Common WM actions
+Mod4 space              :RootMenu
+Mod4 F1                 :Exec (fluxbox -v; fluxbox -info | sed 1d) | xmessage -buttons OK:0 -file - -center
+Mod4 F2                 :Exec dmenu_run-cust -p Run:
+Mod4 c                  :ShowDesktop
+Mod4 f                  :Exec dmenu-filebrowser
+Mod4 t                  :Exec tmux_pane_search
+Mod4 w                  :Exec win_search
+Mod4 d                  :Exec dmenu_run-cust -p Run:
+Mod4 Control q          :Exec wmrestart Off
+Mod4 Control r          :Reconfigure
+
+# Application launchers
+Mod4 Shift Return       :Exec x-terminal-emulator
+Mod4 Shift b            :Exec x-www-browser
+Mod4 Shift c            :Exec dmenu-calc
+Mod4 Shift d            :Exec dmenu-xrandr
+Mod4 Shift f            :Exec x-terminal-emulator -e ranger
+Mod4 Shift m            :Exec x-email-client
+Mod4 Shift p            :Exec play-url -p
+Mod4 Shift q            :Exec dmenu-session-logout
+Mod4 Shift r            :Exec dmenu-timer
+Mod4 Shift t            :Exec x-terminal-emulator -e "tmux attach-session -d || tmux new-session"
+Mod4 Shift x            :Exec dmenu-xscreensaver
+
+# Heritages...
+Mod1 Control Delete     :Exec xscreensaver-command -lock
+
+# System specific
+Mod4 Control c          :Exec change-perfpolicy
+Mod4 Shift h            :Exec ZZZ
+Mod4 Shift k            :Exec dmenu-kbd
+Mod4 Shift s            :Exec zzz
+
