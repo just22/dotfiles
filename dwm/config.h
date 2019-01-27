@@ -148,34 +148,6 @@ static const char *perfpolicycmd[]	= { "dmenu-perf", NULL };
 /* See /usr/X11R6/include/X11/keysymdef.h */
 static Key keys[] = {
 	/* modifier                     key                         function        argument */
-	{ MODKEY,                       XK_F2,                      spawn,          {.v = dmenucmd } },
-	{ MODKEY,                       XK_d,                       spawn,          {.v = dmenucmd } },
-	{ 0,                            XK_F1,                      spawn,          {.v = launchercmd } },
-	{ MODKEY|ShiftMask,             XK_Return,                  spawn,          {.v = termcmd } },
-	{ MODKEY|ShiftMask,             XK_t,                       spawn,          {.v = tmuxcmd } },
-	{ MODKEY,                       XK_a,                       togglebar,      {0} },
-	{ MODKEY,                       XK_Tab,                     focusstack,     {.i = +1 } },
-	//{ MODKEY,                       XK_i,                       incnmaster,     {.i = +1 } },
-	//{ MODKEY,                       XK_d,                       incnmaster,     {.i = -1 } },
-	{ MODKEY,                       XK_Left,                    setmfact,       {.f = -0.05} },
-	{ MODKEY,                       XK_Up,                      setmfact,       {.f = -0.05} },
-	{ MODKEY,                       XK_Right,                   setmfact,       {.f = +0.05} },
-	{ MODKEY,                       XK_Down,                    setmfact,       {.f = +0.05} },
-	{ MODKEY,                       XK_Return,                  zoom,           {0} },
-	{ MODKEY,                       XK_backslash,               view,           {0} },
-	{ MODKEY,                       XK_grave,                   view,           {0} },
-	{ MODKEY,                       XK_x,                       killclient,     {0} },
-	{ MODKEY,                       XK_v,                       setlayout,      {.v = &layouts[0]} },
-	{ MODKEY,                       XK_m,                       setlayout,      {.v = &layouts[2]} },
-	{ MODKEY,                       XK_h,                       setlayout,      {.v = &layouts[3]} },
-	{ MODKEY,                       XK_o,                       setlayout,      {.v = &layouts[4]} },
-	{ MODKEY,                       XK_space,                   togglefloating, {0} },
-	{ MODKEY,                       XK_comma,                   focusmon,       {.i = -1 } },
-	{ MODKEY,                       XK_period,                  focusmon,       {.i = +1 } },
-	{ MODKEY,                       XK_agrave,                  view,           {.ui = ~0 } },
-	{ MODKEY|ShiftMask,             XK_agrave,                  tag,            {.ui = ~0 } },
-	{ MODKEY|ShiftMask,             XK_comma,                   tagmon,         {.i = -1 } },
-	{ MODKEY|ShiftMask,             XK_period,                  tagmon,         {.i = +1 } },
 	TAGKEYS(                        XK_1,                                       0)
 	TAGKEYS(                        XK_2,                                       1)
 	TAGKEYS(                        XK_3,                                       2)
@@ -184,37 +156,77 @@ static Key keys[] = {
 	TAGKEYS(                        XK_6,                                       5)
 	TAGKEYS(                        XK_7,                                       6)
 	TAGKEYS(                        XK_0,                                       7)
-	{ MODKEY,                       XK_minus,      		    tag,            {.ui = 1 << 7} },
+	{ MODKEY,                       XK_Down,                    setmfact,       {.f = +0.05} },
+	{ MODKEY,                       XK_Left,                    setmfact,       {.f = -0.05} },
+	{ MODKEY,                       XK_Return,                  zoom,           {0} },
+	{ MODKEY,                       XK_Right,                   setmfact,       {.f = +0.05} },
+	{ MODKEY,                       XK_Tab,                     focusstack,     {.i = +1 } },
+	{ MODKEY,                       XK_Up,                      setmfact,       {.f = -0.05} },
+	{ MODKEY,                       XK_agrave,                  view,           {.ui = ~0 } },
+	{ MODKEY,                       XK_backslash,               view,           {0} },
+	{ MODKEY,                       XK_comma,                   focusmon,       {.i = -1 } },
+	{ MODKEY,                       XK_grave,                   view,           {0} },
+	{ MODKEY,                       XK_minus,                   tag,            {.ui = 1 << 7} },
+	{ MODKEY,                       XK_period,                  focusmon,       {.i = +1 } },
 	{ MODKEY,                       XK_plus,                    toggleview,     {.ui = 1 << 7} },
+	{ MODKEY,                       XK_space,                   togglefloating, {0} },
+	{ MODKEY,                       XK_a,                       togglebar,      {0} },
+	{ MODKEY,                       XK_h,                       setlayout,      {.v = &layouts[3]} },
+	{ MODKEY,                       XK_m,                       setlayout,      {.v = &layouts[2]} },
+	{ MODKEY,                       XK_o,                       setlayout,      {.v = &layouts[4]} },
 	{ MODKEY,                       XK_q,                       quit,           {0} },
-	{ MODKEY|ShiftMask,             XK_q,                       spawn,          {.v = logoutcmd} },
-	{ 0,                            XF86XK_AudioLowerVolume,    spawn,          {.v = lowervolcmd} },
-	{ MODKEY|ControlMask,           XK_v,                       spawn,          {.v = lowervolcmd} },
-	{ 0,                            XF86XK_AudioMute,           spawn,          {.v = mutecmd} },
-	{ MODKEY|ControlMask,           XK_m,                       spawn,          {.v = mutecmd} },
-	{ 0,                            XF86XK_AudioRaiseVolume,    spawn,          {.v = raisevolcmd} },
-	{ MODKEY|ControlMask|ShiftMask, XK_v,                       spawn,          {.v = raisevolcmd} },
-	{ 0,                            XF86XK_Display,             spawn,          {.v = setdisplaycmd} },
-	{ MODKEY|ShiftMask,             XK_d,                       spawn,          {.v = setdisplaycmd} },
-	{ MODKEY|ShiftMask,             XK_s,                       spawn,          {.v = suspendcmd} },
-	{ MODKEY|ShiftMask,             XK_h,                       spawn,          {.v = hibernatecmd} },
-	{ Mod1Mask|ControlMask,         XK_Delete,                  spawn,          {.v = lockcmd} },
-	{ MODKEY|ShiftMask,         	XK_x,                  	    spawn,          {.v = xscreensavercmd} },
-	{ MODKEY|ShiftMask,             XK_b,                       spawn,          {.v = browsercmd} },
-	{ MODKEY|ShiftMask,             XK_m,                       spawn,          {.v = mailclientcmd} },
-	{ MODKEY|ShiftMask,             XK_f,                       spawn,          {.v = filemanagercmd} },
-	{ MODKEY|ShiftMask,             XK_c,                       spawn,          {.v = calccmd} },
-	{ MODKEY|ShiftMask,             XK_r,                       spawn,          {.v = timercmd} },
-	{ MODKEY|ShiftMask,             XK_k,                       spawn,          {.v = kbdlayoutcmd} },
+	{ MODKEY,                       XK_v,                       setlayout,      {.v = &layouts[0]} },
+	{ MODKEY,                       XK_x,                       killclient,     {0} },
+	{ MODKEY|ControlMask,           XK_d,                       incnmaster,     {.i = -1 } },
+	{ MODKEY|ControlMask,           XK_i,                       incnmaster,     {.i = +1 } },
+	{ MODKEY|ShiftMask,             XK_agrave,                  tag,            {.ui = ~0 } },
+	{ MODKEY|ShiftMask,             XK_comma,                   tagmon,         {.i = -1 } },
+	{ MODKEY|ShiftMask,             XK_period,                  tagmon,         {.i = +1 } },
+
+        /* Common WM actions */
+	{ MODKEY,                       XK_F1,                      spawn,          {.v = launchercmd } },
+	{ MODKEY,                       XK_F2,                      spawn,          {.v = dmenucmd } },
+	{ MODKEY,                       XK_d,                       spawn,          {.v = dmenucmd } },
 	{ MODKEY,                       XK_f,                       spawn,          {.v = filebrowsercmd} },
-	{ MODKEY|ShiftMask,             XK_p,                       spawn,          {.v = playercmd} },
-	{ MODKEY,                       XK_w,                       spawn,          {.v = winsearchcmd} },
-	{ MODKEY,                       XK_t,                       spawn,          {.v = tmuxpanesearchcmd} },
 	{ MODKEY,                       XK_r,                       spawn,          {.v = rootmenucmd} },
+	{ MODKEY,                       XK_t,                       spawn,          {.v = tmuxpanesearchcmd} },
+	{ MODKEY,                       XK_w,                       spawn,          {.v = winsearchcmd} },
+
+        /* External  applications */
+	{ MODKEY|ShiftMask,             XK_Return,                  spawn,          {.v = termcmd } },
+	{ MODKEY|ShiftMask,             XK_b,                       spawn,          {.v = browsercmd} },
+	{ MODKEY|ShiftMask,             XK_c,                       spawn,          {.v = calccmd} },
+	{ MODKEY|ShiftMask,             XK_d,                       spawn,          {.v = setdisplaycmd} },
+	{ MODKEY|ShiftMask,             XK_f,                       spawn,          {.v = filemanagercmd} },
+	{ MODKEY|ShiftMask,             XK_m,                       spawn,          {.v = mailclientcmd} },
+	{ MODKEY|ShiftMask,             XK_p,                       spawn,          {.v = playercmd} },
+	{ MODKEY|ShiftMask,             XK_r,                       spawn,          {.v = timercmd} },
+	{ MODKEY|ShiftMask,             XK_q,                       spawn,          {.v = logoutcmd} },
+	{ MODKEY|ShiftMask,             XK_t,                       spawn,          {.v = tmuxcmd } },
+	{ MODKEY|ShiftMask,             XK_x,                       spawn,          {.v = xscreensavercmd} },
+
+        /* Heritages... */
+	{ Mod1Mask|ControlMask,         XK_Delete,                  spawn,          {.v = lockcmd} },
+
+        /* System specific */
 	{ MODKEY|ControlMask,           XK_c,                       spawn,          {.v = perfpolicycmd} },
+	{ MODKEY|ShiftMask,             XK_h,                       spawn,          {.v = hibernatecmd} },
+	{ MODKEY|ShiftMask,             XK_k,                       spawn,          {.v = kbdlayoutcmd} },
+	{ MODKEY|ShiftMask,             XK_s,                       spawn,          {.v = suspendcmd} },
+
+        /* Volume control */
+	{ MODKEY|ControlMask,           XK_m,                       spawn,          {.v = mutecmd} },
+	{ MODKEY|ControlMask,           XK_v,                       spawn,          {.v = lowervolcmd} },
+	{ MODKEY|ControlMask|ShiftMask, XK_v,                       spawn,          {.v = raisevolcmd} },
+
+        /* Multimedia keys */
+	{ 0,                            XF86XK_AudioLowerVolume,    spawn,          {.v = lowervolcmd} },
+	{ 0,                            XF86XK_AudioMute,           spawn,          {.v = mutecmd} },
+	{ 0,                            XF86XK_AudioRaiseVolume,    spawn,          {.v = raisevolcmd} },
+	{ 0,                            XF86XK_Display,             spawn,          {.v = setdisplaycmd} },
 };
 
-/* button definitions */
+/* Mouse actions */
 /* click can be ClkLtSymbol, ClkStatusText, ClkWinTitle, ClkClientWin, or ClkRootWin */
 static Button buttons[] = {
 	/* click                event mask      button          function        argument */
