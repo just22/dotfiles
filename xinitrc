@@ -19,9 +19,9 @@ setxkbmap it
 setxkbmap -option caps:escape
 
 # Enable h/v scrolling for touchpad
-synclient VertEdgeScroll=1
-synclient HorizEdgeScroll=1
-synclient TapButton1="1"
+#synclient VertEdgeScroll=1
+#synclient HorizEdgeScroll=1
+#synclient TapButton1="1"
 
 # Grant local root user access to X server
 xhost +si:localuser:root
@@ -54,7 +54,7 @@ mkdir -m 1777 ${HOME}/tmp
 
 # Start a session bus instance of dbus-daemon
 if [ -x /usr/local/bin/dbus-launch -a -z "${DBUS_SESSION_BUS_ADDRESS}" ]; then
-        eval `dbus-launch --sh-syntax --exit-with-session`
+        eval `dbus-launch --sh-syntax --exit-with-x11`
 fi
 
 # Put display in a known state
@@ -67,7 +67,7 @@ esac
 xconsole -geometry 480x130-0-0 -daemon -notify -verbose -exitOnFail &
 
 # Select the X session to start
-DEFAULT_XSESSION_CMD=${DEFAULT_XSESSION_CMD-openbox-session}
+DEFAULT_XSESSION_CMD=${DEFAULT_XSESSION_CMD-startfluxbox}
 #SELECT_XSESSION=1
 
 [ x$SELECT_XSESSION != "x" ] &&
@@ -80,11 +80,10 @@ if [ -e /usr/local/bin/Xdialog ]; then
                               --stdout                            \
                               --menubox                           \
                                   "Select the X session"          \
-                                  195x149                         \
-                                  4                               \
-                                  "openbox-session"     "openbox" \
+                                  195x131                         \
+                                  3                               \
                                   "startfluxbox"        "fluxbox" \
-                                  "cwm"                 "cwm"     \
+                                  "dwm-session"         "dwm"     \
                                   "twm"                 "twm"`
 fi || XSESSION_CMD="$DEFAULT_XSESSION_CMD"
 
@@ -131,9 +130,6 @@ cwm|twm)
         ;;
 
 esac
-
-# Save current DISPLAY in /tmp
-echo "$DISPLAY" > /tmp/X_DISPLAY."$USER"
 
 # ...and finally start the X-Session!
 exec $XSESSION_CMD
