@@ -4,10 +4,12 @@
    Openbox configuration file - Dock section
 -->
 <dock>
-  <position>TopLeft</position>
+  <position>Top</position>
   <!-- (Top|Bottom)(Left|Right|)|Top|Bottom|Left|Right|Floating -->
+  <!--
   <floatingX>0</floatingX>
   <floatingY>0</floatingY>
+  -->
   <noStrut>no</noStrut>
   <stacking>Above</stacking>
   <!-- 'Above', 'Normal', or 'Below' -->
