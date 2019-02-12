@@ -21,12 +21,28 @@
 
 [begin] (Root Menu)
     [encoding] {UTF-8}
-        [exec] (Terminal Emulator) {xterm} </usr/local/share/icons/gnome/16x16/apps/terminal.png>
-        [exec] (tmux Session) {xterm -e "tmux attach-session -d || tmux new-session"} </usr/local/share/icons/gnome/16x16/apps/terminal.png>
-        [exec] (Web Browser) {x-www-browser} </usr/local/share/icons/gnome/16x16/apps/web-browser.png>
-        [exec] (Text Editor) {gvim} </usr/local/share/icons/gnome/16x16/apps/text-editor.png>
         [include] (~/.fluxbox/menu-quick_launchers)
-        [include] (~/.fluxbox/menu-desktop_apps)
+        [include] (~/.fluxbox/menu-xdg_apps)
+        [include] (~/.fluxbox/menu-development)
+        [include] (~/.fluxbox/menu-legacy)
+        [submenu] (Fluxbox) </home/just22/.local/share/icons/fluxbox-16x16.png>
+                [workspaces] (Workspaces)
+                [config] (Configure)
+                [submenu] (System Styles) {Choose a style...}
+                        [stylesdir] (/usr/local/share/fluxbox/styles)
+                [end]
+                [submenu] (User Styles) {Choose a style...}
+                        [stylesdir] (~/.fluxbox/styles)
+                [end]
+                [submenu] (Tools)
+                        [exec] (Window name) {xprop WM_CLASS | cut -d \" -f 2 | xmessage -buttons OK:0 -file - -center}
+                [end]
+                [commanddialog] (Fluxbox Command)
+                [reconfig] (Reload config)
+                [Restart] (Restart)
+                [exec] (About) {(fluxbox -v; fluxbox -info | sed 1d) | xmessage -buttons OK:0 -file - -center}
+        [end]
+        [separator]
         [submenu] (Take a Screenshot) </usr/local/share/icons/gnome/16x16/devices/camera-photo.png>
                 [exec] (Whole Desktop) {screenshot desktop}
                 [exec] (Select Window/Area) {screenshot}
@@ -39,47 +55,7 @@
                 [exec] (45 min) {timer -t "now + 45 min"}
         [end]
         [separator]
-        [submenu] (Colorscheme) </usr/local/share/icons/HighContrast/16x16/apps/preferences-color.png>
-                [exec] (Solarized Dark) {xrdb -merge ~/.Xresources.d/solarized-dark}
-                [exec] (Solarized Dark Desaturated) {xrdb -merge ~/.Xresources.d/solarized-dark-desaturated}
-                [exec] (Solarized Light) {xrdb -merge ~/.Xresources.d/solarized-light}
-                [exec] (Solarized Light Desaturated) {xrdb -merge ~/.Xresources.d/solarized-light-desaturated}
-        [end]
-        [submenu] (Keyboard Layout) </usr/local/share/icons/gnome/16x16/devices/keyboard.png>
-                [exec] (Italian) {setxkbmap it} </home/just22/.local/share/icons/cust/16x16/flags/italy.png>
-                [exec] (English-US) {setxkbmap us} </home/just22/.local/share/icons/cust/16x16/flags/usa.png>
-        [end]
-        [submenu] (Display Layout) </usr/local/share/icons/gnome/16x16/apps/preferences-desktop-display.png>
-                # Double setting in dual monitor config (first setting primary
-                # only, then fire complete layout) is needed in order to avoid
-                # fluxbox restart...)
-                [exec] (LVDS Only)         {wmrestart --output LVDS1 --auto --output VGA1 --off}
-                [exec] (VGA Only)          {wmrestart --output LVDS1 --off  --output VGA1 --auto}
-                [exec] (VGA on the Left)   {wmrestart --output LVDS1 --auto --primary --output VGA1 --auto --left-of  LVDS1}
-                [exec] (VGA on the Right)  {wmrestart --output LVDS1 --auto --primary --output VGA1 --auto --right-of LVDS1}
-                [exec] (VGA on the Top)    {wmrestart --output LVDS1 --auto --primary --output VGA1 --auto --above    LVDS1}
-                [exec] (VGA on the Bottom) {wmrestart --output LVDS1 --auto --primary --output VGA1 --auto --below    LVDS1}
-        [end]
-        [submenu] (Window Manager) </usr/local/share/icons/gnome/16x16/apps/preferences-system-windows.png>
-                [config] (Configure)
-                [submenu] (System Styles) {Choose a style...}
-                        [stylesdir] (~/share/fluxbox/styles)
-                [end]
-                [submenu] (User Styles) {Choose a style...}
-                        [stylesdir] (~/.fluxbox/styles)
-                [end]
-                [submenu] (Tools)
-                        [exec] (Window name) {xprop WM_CLASS | cut -d \" -f 2 | xmessage -buttons OK:0 -file - -center}
-                [end]
-                [commanddialog] (Fluxbox Command)
-                [reconfig] (Reload config)
-                [exec] (Reset Display) {wmrestart}
-                [Restart] (Restart)
-                [exec] (About) {(fluxbox -v; fluxbox -info | sed 1d) | xmessage -buttons OK:0 -file - -center}
-                [separator]
-                [workspaces] (Workspaces)
-        [end]
-        [separator]
-        [include] (~/.fluxbox/menu-quit_session)
+        [include] (~/.fluxbox/menu-system)
+        [exec] (Exit Session) {session-logout} </usr/local/share/icons/gnome/16x16/actions/exit.png>
     [endencoding]
 [end]
