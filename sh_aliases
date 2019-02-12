@@ -300,12 +300,20 @@ fi
 # Calendar
 #
 if cal -3 > /dev/null 2>&1; then
-        # GNU version
         alias cal='cal -m3'
 else
-        # BSD version
-        alias cal='cal -mw | sed -E "2,\$s/(^|[^0-9])($(date +%e))( |$)/\1$(tput rev)$(echo "\2")$(tput sgr0)\3/g"'
+        cal() {
+                pm="$(($(date +%m) - 1))"
+                [ "$pm" -lt 1 ]  && pm=12 && py="$(($(date +%Y) - 1))"
+                nm="$(($(date +%m) + 1))"
+                [ "$nm" -gt 12 ] && nm=01 && ny="$(($(date +%Y) + 1))"
+                env cal -mw "$pm" "${py-$(date +%Y)}"
+                env cal -mw |
+                sed -E "2,\$s/(^|[^0-9])($(date +%e))( |$)/\1$(tput rev)$(echo "\2")$(tput sgr0)\3/g" #> /tmp/cal_cm.$$
+                env cal -mw "$nm" "${ny-$(date +%Y)}"
+        }
 fi
+alias year='env cal -y'
 alias now='date "+%a %d %b %Y %Z (WK %V) - %H:%M"'
 
 # ----------------------------------------------------------------------
