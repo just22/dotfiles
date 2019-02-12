@@ -80,7 +80,7 @@ if [ -e /usr/local/bin/Xdialog ]; then
                               --stdout                            \
                               --menubox                           \
                                   "Select the X session"          \
-                                  195x131                         \
+                                  195x133                         \
                                   3                               \
                                   "startfluxbox"        "fluxbox" \
                                   "dwm-session"         "dwm"     \
@@ -103,7 +103,10 @@ force-mailbox-sync -q
 xsetroot -solid rgb:58/6E/75
 
 # Xscreensaver
-xscreensaver &
+#xscreensaver &
+
+# Screen locker
+xautolock -time 10 -locker slock &
 
 # xidle daemon (corner locking virtually disabled, no timeout,
 # activated by SIGUSR1)
