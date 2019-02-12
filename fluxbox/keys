@@ -19,7 +19,8 @@ OnTitlebar  Move1               :StartMoving
 OnTitlebar  Mouse1              :MacroCmd {Raise} {Focus} {ActivateTab}
 OnTitlebar  Double Mouse1       :MacroCmd {Raise} {Maximize}
 OnTitlebar  Control Mouse1      :StartTabbing
-OnTitlebar  Mouse2              :ArrangeWindowsStackRight (Title!=pcmanfm) (Title!=bbpager)
+OnTitlebar  Mouse2              :Exec wmprocs tile v
+OnTitlebar  Control Mouse2      :Exec wmprocs tile h
 OnTitlebar  Mouse3              :WindowMenu
 
 # Click on grip to resize
@@ -92,7 +93,7 @@ Mod4 f                  :Exec dmenu-filebrowser
 Mod4 t                  :Exec tmux_pane_search
 Mod4 w                  :Exec win_search
 Mod4 d                  :Exec dmenu_run-cust -p Run:
-Mod4 Control q          :Exec wmrestart Off
+Mod4 Control q          :Exec dmenu-xrandr Off
 Mod4 Control r          :Reconfigure
 
 # Application launchers
@@ -106,14 +107,27 @@ Mod4 Shift p            :Exec play-url -p
 Mod4 Shift q            :Exec dmenu-session-logout
 Mod4 Shift r            :Exec dmenu-timer
 Mod4 Shift t            :Exec x-terminal-emulator -e "tmux attach-session -d || tmux new-session"
-Mod4 Shift x            :Exec dmenu-xscreensaver
+Mod4 Shift x            :Exec dmenu-xautolock
+
+# Configurable keys (site dependent)
+Mod4 F3                 :Exec ~/.fluxbox/exec-F3
+Mod4 F4                 :Exec ~/.fluxbox/exec-F4
+Mod4 F5                 :Exec ~/.fluxbox/exec-F5
+Mod4 F6                 :Exec ~/.fluxbox/exec-F6
+Mod4 F7                 :Exec ~/.fluxbox/exec-F7
+Mod4 F8                 :Exec ~/.fluxbox/exec-F8
+Mod4 F9                 :Exec ~/.fluxbox/exec-F9
+Mod4 F10                :Exec ~/.fluxbox/exec-F10
+Mod4 F11                :Exec ~/.fluxbox/exec-F11
+Mod4 F12                :Exec ~/.fluxbox/exec-F12
 
 # Heritages...
-Mod1 Control Delete     :Exec xscreensaver-command -lock
+Mod1 Control Delete     :Exec xautolock -locknow
 
 # System specific
 Mod4 Control c          :Exec change-perfpolicy
 Mod4 Shift h            :Exec ZZZ
 Mod4 Shift k            :Exec dmenu-kbd
+Mod4 Shift l            :Exec dmenu-lpr
 Mod4 Shift s            :Exec zzz
 
