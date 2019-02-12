@@ -67,7 +67,7 @@ fi
 export BROWSER MAILER
 
 # Default printer
-export PRINTER=HP_Deskjet_1510
+export PRINTER=hp-deskjet-1510
 
 # Interactive shells startup file
 [ "${SHELL%/ksh}" != "$SHELL" ] || [ -n "$KSH_VERSION" ] &&
