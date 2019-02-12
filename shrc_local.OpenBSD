@@ -68,7 +68,10 @@ alias mka='make install clean'
 alias mki='make install'
 alias mkr='make reinstall'
 alias mku='make uninstall'
-alias mkdebug='INSTALL_STRIP= DEBUG="-O0 -g" make repackage reinstall'
+mkdebug() {
+        make clean=all
+        env DEBUG="-ggdb -O0" INSTALL_STRIP= make build repackage
+}
 
 # ----------------------------------------------------------------------
 # SSH connections
@@ -76,6 +79,7 @@ alias mkdebug='INSTALL_STRIP= DEBUG="-O0 -g" make repackage reinstall'
 alias argo='ssh argo'
 alias egeo='ssh egeo'
 alias icarus='ssh icarus'
+alias poseidon='ssh poseidon'
 
 # ------------------------------------------------------------------
 # Various
