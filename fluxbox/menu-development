@@ -1,0 +1,13 @@
+# ----------------------------------------------------------------------
+#  $Id$
+#
+#  Development menu file for fluxbox(1)
+# ----------------------------------------------------------------------
+
+[submenu] (Development) </usr/local/share/icons/gnome/16x16/categories/applications-development.png>
+        [exec] (gdb) {x-terminal-emulator -e gdb}
+        [exec] (Python2) {x-terminal-emulator -e python2}
+        [exec] (Python3) {x-terminal-emulator -e python3}
+        [exec] (TCL) {x-terminal-emulator -e wish}
+[end]
+

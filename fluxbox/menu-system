@@ -1,0 +1,21 @@
+# ----------------------------------------------------------------------
+#  $Id$
+#
+#  System menu file for fluxbox(1)
+# ----------------------------------------------------------------------
+
+[exec] (Removable Devices) {/usr/bin/doas /usr/local/bin/amount -e sd0} </usr/local/share/icons/gnome/16x16/devices/media-removable.png>
+[exec] (Print to lpr) {dmenu-lpr} </usr/local/share/icons/gnome/16x16/actions/fileprint.png>
+[submenu] (Keyboard Layout) </usr/local/share/icons/gnome/16x16/devices/keyboard.png>
+        [exec] (Italian) {setxkbmap it} </home/just22/.local/share/icons/cust/16x16/flags/italy.png>
+        [exec] (English-US) {setxkbmap us} </home/just22/.local/share/icons/cust/16x16/flags/usa.png>
+[end]
+[submenu] (Display Layout) </usr/local/share/icons/gnome/16x16/apps/preferences-desktop-display.png>
+        [exec] (LVDS Only)         {dmenu-xrandr Off}
+        [exec] (VGA Only)          {dmenu-xrandr Only}
+        [exec] (VGA on the Left)   {dmenu-xrandr Left}
+        [exec] (VGA on the Right)  {dmenu-xrandr Right}
+        [exec] (VGA Below)         {dmenu-xrandr Below}
+        [exec] (VGA Above)         {dmenu-xrandr Above}
+[end]
+[separator]

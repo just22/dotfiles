@@ -1,0 +1,101 @@
+# ----------------------------------------------------------------------
+#  $Id$
+#
+#  Legacy apps menu file for fluxbox(1)
+# ----------------------------------------------------------------------
+
+[submenu] (Legacy)
+        [submenu] (Editors)
+                [exec] (NEdit) {nedit}
+                [exec] (mg) {x-terminal-emulator -e mg}
+                [exec] (vi) {x-terminal-emulator -e vi}
+                [exec] (Xedit) {xedit}
+                [exec] (Xfw) {xfw}
+        [end]
+        [submenu] (Games)
+                [submenu] (Adventure)
+                        [exec] (Adventure) {x-terminal-emulator -e adventure}
+                        [exec] (Battlestar) {x-terminal-emulator -e battlestar}
+                        [exec] (Hack) {x-terminal-emulator -e hack}
+                        [exec] (Hunt the Wumpus) {x-terminal-emulator -e wump}
+                        [exec] (Phantasia) {x-terminal-emulator -e phantasia}
+                [end]
+                [submenu] (Amusement)
+                        [exec] (AA Fire) {aafire}
+                        [exec] (Ico) {ico}
+                        [exec] (Oclock) {oclock}
+                        [exec] (Rain) {x-terminal-emulator -e rain}
+                        [exec] (Worms) {x-terminal-emulator -e worms}
+                        [exec] (Xclock [analog]) {xclock -analog}
+                        [exec] (Xclock [digital]) {xclock -digital -update 1}
+                        [exec] (Xeyes) {xeyes}
+                        [exec] (Xgc) {xgc}
+                        [exec] (Xlogo) {xlogo}
+                [end]
+                [submenu] (Arcade)
+                        [exec] (Snake) {x-terminal-emulator -e snake}
+                        [exec] (Worm) {x-terminal-emulator -e worm}
+                [end]
+                [submenu] (Board)
+                        [exec] (Backgammon) {x-terminal-emulator -e backgammon -pb}
+                        [exec] (Gomoku) {x-terminal-emulator -e gomoku}
+                        [exec] (Monopoly) {x-terminal-emulator -e monop}
+                [end]
+                [submenu] (Card)
+                        [exec] (Canfield) {x-terminal-emulator -e canfield}
+                        [exec] (Cribbage) {x-terminal-emulator -e cribbage}
+                        [exec] (Mille Bournes) {x-terminal-emulator -e mille}
+                [end]
+                [submenu] (Education)
+                        [exec] (Arithmetic Quiz) {x-terminal-emulator -e arithmetic}
+                [end]
+                [submenu] (Puzzle)
+                        [exec] (Boggle) {x-terminal-emulator -e boggle}
+                        [exec] (Hangman) {x-terminal-emulator -e hangman}
+                [end]
+                [submenu] (Strategy)
+                        [exec] (Sail) {x-terminal-emulator -e sail}
+                [end]
+                [exec] (Robots) {x-terminal-emulator -e robots}
+                [exec] (Star Trek) {x-terminal-emulator -e trek}
+        [end]
+        [submenu] (Graphics)
+                [exec] (Bitmap) {bitmap}
+                [exec] (GraphicsMagick) {gm display logo:}
+                [exec] (scanimage) {x-terminal-emulator -e scanimage}
+                [exec] (XDvi) {xdvi}
+                [exec] (xfig) {xfig}
+        [end]
+        [submenu] (Network)
+                [exec] (FTP) {x-terminal-emulator -e ftp}
+                [exec] (Lynx) {x-terminal-emulator -e lynx}
+                [exec] (Mail) {x-terminal-emulator -e mail}
+                [exec] (Telnet) {x-terminal-emulator -e telnet}
+        [end]
+        [submenu] (Utilities)
+                [exec] (bc) {x-terminal-emulator -e bc}
+                [exec] (dc) {x-terminal-emulator -e dc}
+                [exec] (Editres) {editres}
+                [exec] (Info) {x-terminal-emulator -e info}
+                [exec] (Top) {x-terminal-emulator -e top}
+                [exec] (Units) {x-terminal-emulator -e units}
+                [exec] (User Info) {userinfo}
+                [exec] (Viewres) {viewres}
+                [exec] (Xarchiver) {xarchiver}
+                [exec] (Xcalc) {xcalc}
+                [exec] (Xclipboard) {xclipboard}
+                [exec] (Xclock [digital]) {xclock -digital}
+                [exec] (Xconsole) {xconsole}
+                [exec] (Xcutsel) {xcutsel}
+                [exec] (Xev) {x-terminal-emulator -e xev}
+                [exec] (eXev) {x-terminal-emulator -e exev}
+                [exec] (Xfontsel) {xfontsel}
+                [exec] (Xkill) {xkill}
+                [exec] (Xload) {xload}
+                [exec] (Xmag) {xmag}
+                [exec] (Xman) {xman}
+                [exec] (Xrefresh) {xrefresh}
+                [exec] (Xsetroot) {xsetroot}
+                [exec] (Xvidtune) {xvidtune}
+        [end]
+[end]
