@@ -19,17 +19,18 @@
 # idesk &
 # gkrellm -w &
 
-# System log
-xkill -id $(xwininfo -name xconsole |
-            egrep -o "Window id: 0x[0-9a-fA-F]+" |
-            cut -d: -f2)
-xterm -title "System log" -e "tail -f /var/log/messages" &
-
 # Process monitor
 xterm -title "Process monitor" -e top &
 
 # System statistics
 xterm -title "System stats" -e systat &
+
+# System log
+sleep 1
+xkill -id $(xwininfo -name xconsole |
+            egrep -o "Window id: 0x[0-9a-fA-F]+" |
+            cut -d: -f2) && \
+xterm -title "System log" -e "tail -f /var/log/messages" &
 
 # Compositor manager
 xcompmgr &
