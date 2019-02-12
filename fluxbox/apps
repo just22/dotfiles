@@ -17,25 +17,25 @@
   [Deco]	{BORDER}
   [FocusHidden]	{yes}
   [Sticky]	{yes}
-  [Layer]	{2}
+  [Layer]	{1}
 [end]
 [app] (class=XConsole)
-  [Workspace]	{5}
+  [Workspace]	{6}
   [Dimensions]	{100% 50%}
   [Position]	(UPPERLEFT)	{0% 0%}
 [end]
 [app] (class=XTerm) (title=System log) {1}
-  [Workspace]	{5}
+  [Workspace]	{6}
   [Dimensions]	{100% 50%}
   [Position]	(UPPERLEFT)	{0% 0%}
 [end]
 [app] (class=XTerm) (title=Process monitor) {1}
-  [Workspace]	{5}
+  [Workspace]	{6}
   [Dimensions]	{50% 50%}
   [Position]	(UPPERLEFT)	{0% 50%}
 [end]
 [app] (class=XTerm) (title=System stats) {1}
-  [Workspace]	{5}
+  [Workspace]	{6}
   [Dimensions]	{50% 50%}
   [Position]	(UPPERLEFT)	{50% 50%}
 [end]
@@ -57,4 +57,10 @@
 [end]
 [app] (name=xfig) (class=Fig)
   [Maximized]	{yes}
+[end]
+[app] (class=Thunderbird)
+  [Workspace]	{3}
+[end]
+[app] (class=Chromium-browser)
+  [Workspace]	{4}
 [end]
