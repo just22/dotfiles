@@ -129,6 +129,7 @@ r               - Re-execute most recent command, [-g] [old=new] [prefix]
 rs              - rsync with most common options
 runl            - Execute line \$1 from file \$2
 showpath        - Show \$PATH (or the variable provided as argument) in a readable form
+ssh             - Update SSH_AUTH_SOCK before launching ssh(1)
 touchall        - Change file access and modification times to all files in current dir
 v               - Edit last command
 vimall          - Open all files in <dir>
@@ -489,6 +490,16 @@ set-title() {
         # Internal echo command cannot be used here because
         # of its different behavior in ksh and bash...
         printf "${title_esc_seq}"
+}
+
+ssh() {
+        if [ -n "$TMUX" ]; then
+                s="$(tmux show-environment SSH_AUTH_SOCK 2>/dev/null)"
+                if [ "$?" -eq 0 ]; then
+                        eval "$s"
+                fi
+        fi
+        env ssh "$@"
 }
 
 # ----------------------------------------------------------------------
