@@ -5,7 +5,14 @@
 # ----------------------------------------------------------------------
 
 [exec] (Removable Devices) {/usr/bin/doas /usr/local/bin/amount -e sd0} </usr/local/share/icons/gnome/16x16/devices/media-removable.png>
-[exec] (Print to lpr) {dmenu-lpr} </usr/local/share/icons/gnome/16x16/actions/fileprint.png>
+[submenu] (Print to lpr) </usr/local/share/icons/gnome/16x16/actions/fileprint.png>
+        [exec] (draft)        {dmenu-lpr draft}
+        [exec] (normal)       {dmenu-lpr normal}
+        [exec] (hq)           {dmenu-lpr hq}
+        [exec] (draft-color)  {dmenu-lpr draft-color}
+        [exec] (normal-color) {dmenu-lpr normal-color}
+        [exec] (hq-color)     {dmenu-lpr hq-color}
+[end]
 [submenu] (Keyboard Layout) </usr/local/share/icons/gnome/16x16/devices/keyboard.png>
         [exec] (Italian) {setxkbmap it} </home/just22/.local/share/icons/cust/16x16/flags/italy.png>
         [exec] (English-US) {setxkbmap us} </home/just22/.local/share/icons/cust/16x16/flags/usa.png>
