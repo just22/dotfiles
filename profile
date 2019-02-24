@@ -43,6 +43,9 @@ fi
 # In X, always enable UTF-8 encoding
 [ -n "$DISPLAY" ] && export LC_CTYPE=en_US.UTF-8
 
+# Localization
+export LC_TIME=en_GB
+
 # Note: Default pager/editor/browser definitions moved here because
 #       there are applications launched from X using them
 
