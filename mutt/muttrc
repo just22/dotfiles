@@ -25,8 +25,8 @@ set text_flowed = yes                                                   # Genera
 # ----------------------------------------------------------------------
 #  Paths
 #
-set header_cache     = ~/.mutt/cache/headers
-set message_cachedir = ~/.mutt/cache/messages
+set header_cache     = ~/.mutt/cache
+set message_cachedir = ~/.mutt/cache
 set certificate_file = ~/.mutt/certificates
 set mailcap_path     = ~/.mutt/mailcap
 set tmpdir           = ~/.mutt/tmp
