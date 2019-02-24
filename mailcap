@@ -1,0 +1,18 @@
+# ----------------------------------------------------------------------
+#  $Id$
+#
+#  Mail capability file
+# ----------------------------------------------------------------------
+
+image/*; geeqie %s
+
+video/*; mpv %s
+
+application/pdf; xpdf %s
+
+text/html; x-www-browser %s
+text/plain; x-text-editor %s
+
+application/vnd.ms-excel; soffice %s
+application/vnd.ms-word; soffice %s
+application/msword; soffice %s
