@@ -51,6 +51,8 @@
                 [exec] ( 5 min) {timer -t "now +  5 min"}
                 [exec] (10 min) {timer -t "now + 10 min"}
                 [exec] (15 min) {timer -t "now + 15 min"}
+                [exec] (20 min) {timer -t "now + 20 min"}
+                [exec] (25 min) {timer -t "now + 25 min"}
                 [exec] (30 min) {timer -t "now + 30 min"}
                 [exec] (45 min) {timer -t "now + 45 min"}
         [end]
