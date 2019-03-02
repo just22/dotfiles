@@ -277,8 +277,6 @@ Plugin 'https://github.com/kien/ctrlp.vim'
 
 Plugin 'https://github.com/christoomey/vim-tmux-navigator'
 
-Plugin 'https://github.com/raimondi/delimitmate'
-
 Plugin 'https://github.com/mbbill/undotree'
 
 Plugin 'https://github.com/tpope/vim-commentary'
