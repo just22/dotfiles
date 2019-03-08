@@ -23,9 +23,17 @@ OnTitlebar  Mouse2              :Exec wmprocs tile v
 OnTitlebar  Control Mouse2      :Exec wmprocs tile h
 OnTitlebar  Mouse3              :WindowMenu
 
-# Click on grip to resize
+# Click on grip to raise/resize
+OnLeftGrip  Mouse1      :Raise
+OnRightGrip Mouse1      :Raise
+OnLeftGrip  Mouse2      :Lower
+OnRightGrip Mouse2      :Lower
 OnLeftGrip  Move1       :StartResizing bottomleft
 OnRightGrip Move1       :StartResizing bottomright
+
+# Click on window border to raise/lower
+OnWindowBorder Mouse1   :Raise
+OnWindowBorder Mouse2   :Lower
 
 # Cycle through windows in the current workspace
 Mod4 Tab                :NextWindow {groups} (workspace=[current]) (Minimized=no)
