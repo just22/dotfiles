@@ -1,39 +1,48 @@
 # ----------------------------------------------------------------------
 #  $Id$
 #
-#  Keyboard shortcuts configuration for fluxbox(1)
+#  Keyboard/mouse shortcuts configuration for fluxbox(1)
 # ----------------------------------------------------------------------
 
+# ----------------------------------------------------------------------
+#  Mouse shortcuts
+#
+
 # Click on the desktop to get menus
-OnDesktop Mouse1        :HideMenus
-OnDesktop Mouse2        :WorkspaceMenu
-OnDesktop Mouse3        :RootMenu
+OnDesktop       Mouse1          :HideMenus
+OnDesktop       Mouse2          :WorkspaceMenu
+OnDesktop       Mouse3          :RootMenu
 
 # Mod4+click on window to raise/move/lower/resize
-OnWindow Mod4 Mouse1    :MacroCmd {Raise} {Focus} {StartMoving}
-OnWindow Mod4 Mouse2    :Lower
-OnWindow Mod4 Mouse3    :MacroCmd {Raise} {Focus} {StartResizing NearestCorner}
+OnWindow        Mod4 Mouse1     :MacroCmd {Raise} {Focus} {StartMoving}
+OnWindow        Mod4 Mouse2     :Lower
+OnWindow        Mod4 Mouse3     :MacroCmd {Raise} {Focus} {StartResizing NearestCorner}
 
 # Click on titlebar to move/raise/group
-OnTitlebar  Move1               :StartMoving
-OnTitlebar  Mouse1              :MacroCmd {Raise} {Focus} {ActivateTab}
-OnTitlebar  Double Mouse1       :MacroCmd {Raise} {Maximize}
-OnTitlebar  Control Mouse1      :StartTabbing
-OnTitlebar  Mouse2              :Exec wmprocs tile v
-OnTitlebar  Control Mouse2      :Exec wmprocs tile h
-OnTitlebar  Mouse3              :WindowMenu
+OnTitlebar      Move1           :StartMoving
+OnTitlebar      Mouse1          :MacroCmd {Raise} {Focus} {ActivateTab}
+OnTitlebar      Double Mouse1   :MacroCmd {Raise} {Maximize}
+OnTitlebar      Control Mouse1  :StartTabbing
+OnTitlebar      Mouse2          :Exec wmprocs tile v
+OnTitlebar      Control Mouse2  :Exec wmprocs tile h
+OnTitlebar      Mouse3          :WindowMenu
 
 # Click on grip to raise/resize
-OnLeftGrip  Mouse1      :Raise
-OnRightGrip Mouse1      :Raise
-OnLeftGrip  Mouse2      :Lower
-OnRightGrip Mouse2      :Lower
-OnLeftGrip  Move1       :StartResizing bottomleft
-OnRightGrip Move1       :StartResizing bottomright
+OnLeftGrip      Mouse1          :Raise
+OnRightGrip     Mouse1          :Raise
+OnLeftGrip      Mouse2          :Lower
+OnRightGrip     Mouse2          :Lower
+OnLeftGrip      Move1           :StartResizing bottomleft
+OnRightGrip     Move1           :StartResizing bottomright
 
 # Click on window border to raise/lower
-OnWindowBorder Mouse1   :Raise
-OnWindowBorder Mouse2   :Lower
+OnWindowBorder  Mouse1          :Raise
+OnWindowBorder  Mouse2          :Lower
+
+
+# ----------------------------------------------------------------------
+# Keyboard shortcuts
+#
 
 # Cycle through windows in the current workspace
 Mod4 Tab                :NextWindow {groups} (workspace=[current]) (Minimized=no)
@@ -85,12 +94,6 @@ Mod4 Control 6          :TakeToWorkspace 6
 Mod4 Control 7          :TakeToWorkspace 7
 
 # Tiling
-#Mod4 v                  :MacroCmd {ResizeTo  50% 100%} {MoveTo 0% 0% BottomLeft} {NextWindow {groups} (Workspace=[current]) (Minimized=no)} {Delay {MacroCmd {ResizeTo  50% 100%} {MoveTo 0% 0% BottomRight}} 1}
-#Mod4 h                  :MacroCmd {ResizeTo 100%  50%} {MoveTo 0% 0% BottomLeft} {NextWindow {groups} (Workspace=[current]) (Minimized=no)} {Delay {MacroCmd {ResizeTo 100%  50%} {MoveTo 0% 0% UpperLeft}} 1}
-#Mod4 Control v          :MacroCmd {ResizeTo  50%  50%} {MoveTo 0% 0% UpperRight} {NextWindow {groups} (Workspace=[current]) (Minimized=no)} {Delay {MacroCmd {ResizeTo  50%  50%} {MoveTo 0% 0% BottomRight} {NextWindow {groups} (workspace=[current])} {Delay {MacroCmd {ResizeTo  50% 100%} {MoveTo 0% 0% UpperLeft}} 1}} 1}
-#Mod4 Control h          :MacroCmd {ResizeTo  50%  50%} {MoveTo 0% 0% BottomLeft} {NextWindow {groups} (Workspace=[current]) (Minimized=no)} {Delay {MacroCmd {ResizeTo  50%  50%} {MoveTo 0% 0% BottomRight} {NextWindow {groups} (workspace=[current])} {Delay {MacroCmd {ResizeTo 100%  50%} {MoveTo 0% 0% UpperLeft}} 1}} 1}
-#Mod4 v                  :ArrangeWindowsStackRight  (Title!=pcmanfm) (Title!=bbpager)
-#Mod4 h                  :ArrangeWindowsStackBottom (Title!=pcmanfm) (Title!=bbpager)
 Mod4 v                  :Exec wmprocs tile v
 Mod4 h                  :Exec wmprocs tile h
 
