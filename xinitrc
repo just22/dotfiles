@@ -15,8 +15,8 @@ fi
 # Set keyboard layout
 setxkbmap it
 
-# Make Caps Lock an additional ESC
-setxkbmap -option caps:escape
+# Disable Caps Lock
+setxkbmap -option caps:none
 
 # Enable h/v scrolling for touchpad
 #synclient VertEdgeScroll=1
