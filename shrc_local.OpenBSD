@@ -34,27 +34,39 @@ alias nfs_mount='/usr/bin/doas mount -Na'
 # Package management
 #
 alias pkgs='pkg_info -Q'
-alias pkga='/usr/bin/doas pkg_add -iv'
-alias pkgas='pkg_add -ivs'
-alias pkgar='/usr/bin/doas pkg_add -ivr'
-alias pkgau='/usr/bin/doas pkg_add -u'
-alias pkgaus='/usr/bin/doas pkg_add -vus'
+alias pkga='/usr/bin/doas pkg_add -Dsnap -iv'
+alias pkgas='pkg_add -Dsnap -ivs'
+alias pkgar='/usr/bin/doas pkg_add -Dsnap -ivr'
+alias pkgau='/usr/bin/doas pkg_add -Dsnap -u'
+alias pkgaus='/usr/bin/doas pkg_add -Dsnap -vus'
 alias pkgd='/usr/bin/doas pkg_delete -v'
 alias pkgds='pkg_delete -vs'
 alias pkgda='/usr/bin/doas pkg_delete -a'
 alias pkgdas='pkg_delete -as'
-alias pkgrdep='pkg_info -R'
-alias pkgup='/usr/bin/doas pkg_add -u'
+alias pkgrdep='pkg_info -Dsnap -R'
+alias pkgup='/usr/bin/doas pkg_add -Dsnap -u'
 
 # ------------------------------------------------------------------
 # Port management
 #
+export PATH="$PATH:/usr/ports/infrastructure/bin"
 mks() {
-    opwd="$PWD"
-    cd /usr/ports
-    make search name="$1" | egrep "Port:|Path:|Info:|^$"
-    cd "$opwd"
+        opwd="$PWD"
+        cd /usr/ports
+        make search name="$1" | egrep "Port:|Path:|Info:|^$"
+        cd "$opwd"
 }
+mkg() {
+        for f in /usr/ports/*/*/Makefile; do
+                grep -H "$1" $f
+        done
+}
+patchg() {
+        for f in /usr/ports/*/*/patches/patch-*; do
+                grep -H "$1" $f
+        done
+}
+alias cdsrc='pd $(make show=WRKSRC)'
 alias mkc='make clean'
 alias mkca='make clean=all'
 alias mkf='make fetch'
