@@ -1,0 +1,24 @@
+# ----------------------------------------------------------------------
+#  $Id$
+#
+#  Magic(1) initialization file
+# ----------------------------------------------------------------------
+
+# Tech files
+path sys +/home/just22/prj/magic-tech/current
+
+# Move selection
+macro m  "move"
+macro -  "move down"
+macro +  "move up"
+macro <  "move left"
+macro >  "move right"
+
+macro d  erase
+macro f  view
+macro F  "expand toggle"
+macro k  measure
+macro K  unmeasure
+
+macro  redo
+macro  "select clear"
