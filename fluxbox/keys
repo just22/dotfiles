@@ -137,7 +137,7 @@ Mod4 F12                :Exec ~/.fluxbox/exec-F12
 Mod1 Control Delete     :Exec xautolock -locknow
 
 # System specific
-Mod4 Control c          :Exec change-perfpolicy
+Mod4 Control c          :Exec dmenu-perf
 Mod4 Shift h            :Exec ZZZ
 Mod4 Shift k            :Exec dmenu-kbd
 Mod4 Shift l            :Exec dmenu-lpr
