@@ -3,10 +3,10 @@ session.screen0.tab.width:	64
 session.screen0.window.focus.alpha:	255
 session.screen0.window.unfocus.alpha:	255
 session.screen0.iconbar.iconTextPadding:	10
-session.screen0.iconbar.iconWidth:	128
+session.screen0.iconbar.iconWidth:	256
 session.screen0.iconbar.mode:	{static groups} (workspace)
 session.screen0.iconbar.usePixmap:	true
-session.screen0.iconbar.alignment:	Relative
+session.screen0.iconbar.alignment:	Left
 session.screen0.clientMenu.usePixmap:	true
 session.screen0.menu.alpha:	255
 session.screen0.toolbar.height:	0
