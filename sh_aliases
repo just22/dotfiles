@@ -148,6 +148,7 @@ cvs-adddir      - Recursively add directories in current path to cvs tree
 cvs-ck          - Check for modified files
 cvs-mrg         - Update with merge
 cvs-up          - Update
+cvs-diff        - Unified diff
 
 # ----------------------------------------------------------------------
 # Change XTerm colorscheme on-the-fly
@@ -472,7 +473,7 @@ alias rs='rsync -avzhHp --info=progress2'
 alias touchall='ls -tr | xargs touch'
 alias v='fc -e vim'
 exev()      { xev | awk -F '[ )]+' '/^KeyPress/ {a[NR+2]} NR in a {printf "%-3s %s\n", $5, $8}'; }
-findlic()   { find ${1-.} -name "*LICENSE*" -o -name "*license*" -o -name "*copy*" -o -name "*COPY*"; }
+findlic()   { find ${1-.} -name "*LICENSE*" -o -name "*license*" -o -name "*copy*" -o -name "*Copy*" -o -name "*COPY*"; }
 flast()     { ls -dt "$@" | head -1; }
 grepo()     { grep -l "$@" | xargs sh -c '</dev/tty vim "$@"' ignoreme; }
 nowrap()    { printf '\033[?7l'; $@; printf '\033[?7h'; }
@@ -578,9 +579,10 @@ alias glog='git log'
 # ----------------------------------------------------------------------
 # cvs
 #
-alias cvs-ck='cvs -qn update'
+alias cvs-ck='cvs -qn update -dP'
 alias cvs-up='cvs update -dP'
 alias cvs-mrg='cvs update -kk'
+alias cvs-diff='cvs diff -uNp'
 cvs-adddir() {
         find ${1-.} -type d -name CVS -prune -o -type d -exec cvs add "{}" \;
         find ${1-.} -type d -name CVS -prune -o -type f -exec cvs add "{}" \;
