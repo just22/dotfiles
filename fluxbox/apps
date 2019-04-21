@@ -8,10 +8,6 @@
   [Position]	(CENTER)	{0 0}
   [Layer]	{2}
 [end]
-[app] (name=bbpager) (class=bbtools)
-  [Position]	(CENTER)	{0 0}
-  [Layer]	{2}
-[end]
 [app] (class=Xmessage)
   [Position]	(CENTER)	{0 0}
   [Deco]	{BORDER}
@@ -61,6 +57,9 @@
 [app] (class=Thunderbird)
   [Workspace]	{3}
 [end]
-[app] (class=Chromium-browser)
+[app] (class=Chromium-browser) {1}
   [Workspace]	{4}
+[end]
+[app] (name!=bbager) (name!=dzen2) (name!=sound)
+  [Position]	(CENTER)	{0 0}
 [end]
