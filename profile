@@ -4,22 +4,17 @@
 #  ~/.profile: sh/ksh initialization
 #  Executed by the command interpreter for login shells.
 #
-#  User profile settings. This file is sourced from .xsession (which is in
-#  turn sourced by XDM and login shells) and should contain stuff that
-#  applies to your whole session, such as (non-graphycal) programs that must
-#  be executed after login and environment variable definitions
+#  User profile settings. This file is sourced from .xsession (which
+#  is in turn sourced by XDM and login shells) and should contain
+#  stuff that applies to your whole session, such as (non-graphycal)
+#  programs that must be executed after login and environment variable
+#  definitions.
 # ----------------------------------------------------------------------
 
-# Clear screen on logout
-trap "clear" 0
-
-# R/X permissions to group members, none to others
-# Note: too problematic... Temporarely switching to default
-#umask 027
-umask 022
+PATH="/usr/local/bin:/usr/local/sbin"
+PATH="$PATH:/bin:/sbin:/usr/X11R6/bin:/usr/bin:/usr/sbin:/usr/games"
 
 # Set PATH so it includes user's private bin if it exists
-PATH=/bin:/sbin:/usr/local/bin:/usr/local/sbin:/usr/X11R6/bin:/usr/bin:/usr/sbin:/usr/games:/usr/local/jre-1.7.0/bin
 if [ -d "$HOME/.local/bin" ] ; then
     PATH="$HOME/.local/bin:$PATH"
 fi
@@ -29,6 +24,7 @@ fi
 if [ "${USER}" != root ]; then
     PATH="${PATH}:."
 fi
+
 export PATH
 
 # Maximum number of processes that make may have running
@@ -94,3 +90,4 @@ export PKG_CONFIG_PATH=${HOME}/lib/pkgconfig
 # Proxy settings
 #export http_proxy="http://argo.atlantide.priv:8118"
 #export no_proxy="http://argo.atlantide.priv:8118"
+
