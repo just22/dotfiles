@@ -5,7 +5,7 @@
 # ----------------------------------------------------------------------
 
 [exec] (Terminal Emulator) {x-terminal-emulator} </usr/local/share/icons/gnome/16x16/apps/terminal.png>
-[exec] (Web Browser) {x-www-browser} </usr/local/share/icons/gnome/16x16/apps/web-browser.png>
+[exec] (Web Browser) {x-web-browser} </usr/local/share/icons/gnome/16x16/apps/web-browser.png>
 [exec] (E-Mail Client) {x-email-client} </usr/local/share/icons/gnome/16x16/emblems/emblem-mail.png>
 [exec] (Text Editor) {x-text-editor} </usr/local/share/icons/gnome/16x16/apps/text-editor.png>
 
