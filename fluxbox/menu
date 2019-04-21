@@ -56,6 +56,7 @@
                 [exec] (30 min) {timer -t "now + 30 min"}
                 [exec] (45 min) {timer -t "now + 45 min"}
         [end]
+        [exec] (Play URL in clip) {play-url -p} </usr/local/share/icons/gnome/16x16/actions/player_play.png>
         [separator]
         [include] (~/.fluxbox/menu-system)
         [exec] (Exit Session) {session-logout} </usr/local/share/icons/gnome/16x16/actions/exit.png>
