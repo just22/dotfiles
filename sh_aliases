@@ -561,7 +561,7 @@ todo() { vim -c ":Note todo"; }
 git_remote_repo() {
         if GIT_DIR="$(git rev-parse --git-dir 2>/dev/null)"; then
                 [ "$GIT_DIR" == .git ] &&
-                        REPO_NAME="$(basename $PWD)" ||
+                        REPO_NAME="${PWD##*/}" ||
                         REPO_NAME="$(basename "$(dirname "$GIT_DIR")")"
                 git "$1"
         else

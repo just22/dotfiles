@@ -53,7 +53,7 @@ mkdir -p ${tmpdir}
 rm -f ${tmpdir}/*
 
 # This gets the basic filename from the full pathname
-filename=`basename $2`
+filename="${2##*/}"
 
 if [ $debug = "yes" ]; then
     echo "Open with: " ${open_with} > ${debug_file}
