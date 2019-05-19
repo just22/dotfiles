@@ -19,7 +19,7 @@ OnWindow        Mod4 Mouse2     :Lower
 OnWindow        Mod4 Mouse3     :MacroCmd {Raise} {Focus} {StartResizing NearestCorner}
 
 # Click on titlebar to move/raise/group
-OnTitlebar      Move1           :StartMoving
+OnTitlebar      Move1           :MacroCmd {If {Matches (Maximized=yes)} {ResizeTo 100% 100%}} {StartMoving}
 OnTitlebar      Mouse1          :MacroCmd {Raise} {Focus} {ActivateTab}
 OnTitlebar      Double Mouse1   :MacroCmd {Raise} {Maximize}
 OnTitlebar      Control Mouse1  :StartTabbing
