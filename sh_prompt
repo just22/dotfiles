@@ -75,6 +75,7 @@ else
         PS1="${PS1}\$(_ps1_cmd)"                                                # Infobox: VCS tree?; .enter/.exit cmd files?
         PS1="${PS1}\j]-"                                                        # Infobox: no. of managed jobs
         PS1="${PS1}[\$(_ps1_pwd_trim)]"                                         # Current working directory
-        PS1="${PS1}\n${P_NORMCOL}[\A]-\\$ ${RSTCOL}"                            # New line with current time and "prompt char"
+        #PS1="${PS1}\n${P_NORMCOL}[\A]-\\$ ${RSTCOL}"                            # New line with current time and "prompt char"
+        PS1="${PS1}\n${P_NORMCOL}\\$ ${RSTCOL}"                                 # New line with "prompt char"
         PS1="${PS1}\[\033[?7h\]"                                                # Restore line wrapping
 fi
