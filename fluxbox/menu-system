@@ -25,4 +25,8 @@
         [exec] (VGA Below)         {dmenu-xrandr Below}
         [exec] (VGA Above)         {dmenu-xrandr Above}
 [end]
+[submenu] (Desktop) </usr/local/share/icons/gnome/16x16/places/desktop.png>
+        [exec] (Open Folder)       {x-filemanager ~/Desktop}
+        [exec] (Set Background)    {nitrogen ~/Pictures/wallpapers}
+[end]
 [separator]
