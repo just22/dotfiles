@@ -60,6 +60,9 @@
 [app] (class=Chromium-browser) {1}
   [Workspace]	{4}
 [end]
-[app] (name!=bbager) (name!=dzen2) (name!=sound)
+[app] (name=bbager)
+  [Layer]       {2}
+[end]
+[app] (name!=bbager) (class!=dzen) (name!=sound)
   [Position]	(CENTER)	{0 0}
 [end]
