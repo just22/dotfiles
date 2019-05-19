@@ -9,23 +9,10 @@
 !
 
 ! Term name
-!XTerm*termName:            xterm-256color
-
-! Fonts
-!XTerm*font:                -xos4-terminus-medium-r-normal-*-14-*-*-*-*-*-iso10646-1
-!XTerm*boldFont:            -xos4-terminus-medium-r-normal-*-14-*-*-*-*-*-iso10646-1
-!XTerm*font1:               -xos4-terminus-medium-r-normal-*-12-*-*-*-*-*-iso10646-1
-!XTerm*font2:               -xos4-terminus-medium-r-normal-*-14-*-*-*-*-*-iso10646-1
-!XTerm*font3:               -xos4-terminus-medium-r-normal-*-16-*-*-*-*-*-iso10646-1
-!XTerm*font4:               -xos4-terminus-medium-r-normal-*-18-*-*-*-*-*-iso10646-1
-!XTerm*font5:               -xos4-terminus-medium-r-normal-*-20-*-*-*-*-*-iso10646-1
-!XTerm*font6:               -xos4-terminus-medium-r-normal-*-22-*-*-*-*-*-iso10646-1
+XTerm*termName:            xterm-256color
 
 XTerm*faceName:            DejaVu Sans Mono:style=Book
 XTerm*faceSize:            10
-
-!XTerm*faceName:            Terminus
-!XTerm*faceSize:            10
 
 ! No bold fonts and colors
 XTerm*allowBoldFonts:      false
@@ -49,9 +36,6 @@ XTerm*locale:              true
 ! Pointer and cursor
 XTerm*pointerShape:        left_ptr
 XTerm*cursorBlink:         true
-
-! Sets of chars treated the same when doing cut and paste
-!XTerm*charClass: 33:48,36-47:48,58-59:48,61:48,63-64:48,95:48,126:48
 
 ! Selection behavior in response to multiple mouse clicks
 ! 3 clicks: everything separated by whitespace (useful for URLs and filenames)
