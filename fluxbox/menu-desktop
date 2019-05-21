@@ -1,0 +1,21 @@
+# ----------------------------------------------------------------------
+#  $Id$
+#
+#  Desktop menu file for fluxbox(1)
+# ----------------------------------------------------------------------
+
+[submenu] (Desktop) </usr/local/share/icons/gnome/16x16/places/desktop.png>
+        [exec] (Open Folder)       {x-filemanager ~/Desktop} </usr/local/share/icons/gnome/16x16/status/folder-open.png>
+        [submenu] (Places) </usr/local/share/icons/gnome/16x16/places/folder.png>
+                [exec] (Documents) {x-filemanager ~/Documents} </usr/local/share/icons/gnome/16x16/places/folder-documents.png>
+                [exec] (Downloads) {x-filemanager ~/Downloads} </usr/local/share/icons/gnome/16x16/places/folder-download.png>
+                [exec] (Music)     {x-filemanager ~/nfs/music} </usr/local/share/icons/gnome/16x16/places/folder-music.png>
+                [exec] (Pictures)  {geeqie ~/nfs/photos} </usr/local/share/icons/gnome/16x16/places/folder-pictures.png>
+                [exec] (Videos)    {x-filemanager ~/nfs/videos} </usr/local/share/icons/gnome/16x16/places/folder-videos.png>
+        [end]
+        [submenu] (Take a Screenshot) </usr/local/share/icons/gnome/16x16/devices/camera-photo.png>
+                [exec] (Whole Desktop) {screenshot desktop}
+                [exec] (Select Window/Area) {screenshot}
+        [end]
+        [exec] (Set Background)    {nitrogen ~/Pictures/wallpapers} </usr/local/share/icons/gnome/16x16/apps/preferences-desktop-wallpaper.png>
+[end]
