@@ -22,10 +22,25 @@
 [begin] (Root Menu)
     [encoding] {UTF-8}
         [include] (~/.fluxbox/menu-quick_launchers)
+        [separator]
         [include] (~/.fluxbox/menu-xdg_apps)
-        [include] (~/.fluxbox/menu-development)
         [include] (~/.fluxbox/menu-legacy)
-        [submenu] (Fluxbox) </home/just22/.local/share/icons/fluxbox-16x16.png>
+        [separator]
+        [submenu] (Timer) </home/just22/.local/share/icons/timer.png>
+                [exec] ( 5 min) {timer -t "now +  5 min"}
+                [exec] (10 min) {timer -t "now + 10 min"}
+                [exec] (15 min) {timer -t "now + 15 min"}
+                [exec] (20 min) {timer -t "now + 20 min"}
+                [exec] (25 min) {timer -t "now + 25 min"}
+                [exec] (30 min) {timer -t "now + 30 min"}
+                [exec] (45 min) {timer -t "now + 45 min"}
+        [end]
+        [exec] (Play URL in clip) {play-url -p} </usr/local/share/icons/HighContrast/22x22/actions/media-playback-start.png>
+        [separator]
+        [include] (~/.fluxbox/menu-system)
+        [separator]
+        [include] (~/.fluxbox/menu-desktop)
+        [submenu] (Window Manager) </usr/local/share/icons/gnome/16x16/apps/gnome-window-manager.png>
                 [workspaces] (Workspaces)
                 [config] (Configure)
                 [submenu] (System Styles) {Choose a style...}
@@ -43,22 +58,6 @@
                 [exec] (About) {(fluxbox -v; fluxbox -info | sed 1d) | xmessage -buttons OK:0 -file - -center}
         [end]
         [separator]
-        [submenu] (Take a Screenshot) </usr/local/share/icons/gnome/16x16/devices/camera-photo.png>
-                [exec] (Whole Desktop) {screenshot desktop}
-                [exec] (Select Window/Area) {screenshot}
-        [end]
-        [submenu] (Timer) </home/just22/.local/share/icons/timer.png>
-                [exec] ( 5 min) {timer -t "now +  5 min"}
-                [exec] (10 min) {timer -t "now + 10 min"}
-                [exec] (15 min) {timer -t "now + 15 min"}
-                [exec] (20 min) {timer -t "now + 20 min"}
-                [exec] (25 min) {timer -t "now + 25 min"}
-                [exec] (30 min) {timer -t "now + 30 min"}
-                [exec] (45 min) {timer -t "now + 45 min"}
-        [end]
-        [exec] (Play URL in clip) {play-url -p} </usr/local/share/icons/gnome/16x16/actions/player_play.png>
-        [separator]
-        [include] (~/.fluxbox/menu-system)
         [exec] (Exit Session) {session-logout} </usr/local/share/icons/gnome/16x16/actions/exit.png>
     [endencoding]
 [end]

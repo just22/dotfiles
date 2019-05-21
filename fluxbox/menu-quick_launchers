@@ -11,4 +11,3 @@
 [exec] (Text Editor) {x-text-editor} </usr/local/share/icons/gnome/16x16/apps/text-editor.png>
 
 [include] (~/.fluxbox/menu-quick_launchers-site)
-[separator]
