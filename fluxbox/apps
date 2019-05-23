@@ -5,64 +5,71 @@
 # ----------------------------------------------------------------------
 
 [app] (name=fbrun)
-  [Position]	(CENTER)	{0 0}
-  [Layer]	{2}
+  [Position] (Center) {0 0}
+  [Layer]    {2}
 [end]
 [app] (class=Xmessage)
-  [Position]	(CENTER)	{0 0}
-  [Deco]	{BORDER}
-  [FocusHidden]	{yes}
-  [Sticky]	{yes}
-  [Layer]	{1}
+  [Position]    (Center) {0 0}
+  [Deco]        {Border}
+  [FocusHidden] {yes}
+  [Sticky]      {yes}
+  [Layer]       {1}
 [end]
 [app] (class=XConsole)
-  [Workspace]	{6}
-  [Dimensions]	{100% 50%}
-  [Position]	(UPPERLEFT)	{0% 0%}
+  [Workspace]  {6}
+  [Dimensions] {100% 50%}
+  [Position]   (UpperLeft) {0% 0%}
 [end]
 [app] (class=XTerm) (title=System log) {1}
-  [Workspace]	{6}
-  [Dimensions]	{100% 50%}
-  [Position]	(UPPERLEFT)	{0% 0%}
+  [Workspace]  {6}
+  [Dimensions] {100% 50%}
+  [Position]   (UpperLeft) {0% 0%}
 [end]
 [app] (class=XTerm) (title=Process monitor) {1}
-  [Workspace]	{6}
-  [Dimensions]	{50% 50%}
-  [Position]	(UPPERLEFT)	{0% 50%}
+  [Workspace]  {6}
+  [Dimensions] {50% 50%}
+  [Position]   (UpperLeft) {0% 50%}
 [end]
 [app] (class=XTerm) (title=System stats) {1}
-  [Workspace]	{6}
-  [Dimensions]	{50% 50%}
-  [Position]	(UPPERLEFT)	{50% 50%}
+  [Workspace]  {6}
+  [Dimensions] {50% 50%}
+  [Position]   (UpperLeft) {50% 50%}
 [end]
 [app] (class=XTerm) (title=Screenshot)
-  [Position]	(CENTER)	{0 0}
-  [Deco]	{BORDER}
-  [FocusHidden]	{yes}
-  [Sticky]	{yes}
+  [Position]    (Center) {0 0}
+  [Deco]        {Border}
+  [FocusHidden] {yes}
+  [Sticky]      {yes}
 [end]
-[app] (name=vol) (class=Vol)
-  [Deco]	{BORDER}
-[end]
-[app] (class=Xdialog) (title=Removable volume manager)
-  [Deco]	{BORDER}
+[app] (class=XTerm) (title=cmixer)
+  [Position] (Center) {0 0}
+  [Deco]     {Border}
 [end]
 [app] (name=win) (class=Xpdf)
-  [Dimensions]	{70% 70%}
-  [Position]	(UPPERLEFT)	{15% 15%}
+  [Dimensions] {70% 70%}
+  [Position]   (Center)  {0 0}
 [end]
 [app] (name=xfig) (class=Fig)
-  [Maximized]	{yes}
+  [Maximized] {yes}
 [end]
 [app] (class=Thunderbird)
-  [Workspace]	{3}
+  [Workspace] {3}
 [end]
 [app] (class=Chromium-browser) {1}
-  [Workspace]	{4}
+  [Workspace] {4}
 [end]
 [app] (name=bbager)
-  [Layer]       {2}
+  [Layer] {2}
 [end]
-[app] (name!=bbager) (class!=dzen) (name!=sound)
-  [Position]	(CENTER)	{0 0}
+[app] (name=sound) (class=Sound)
+  [Sticky]   {yes}
+  [Position] (BottomRight) {150 1}
 [end]
+[app] (title=volctrl)
+  [Sticky] {yes}
+  [Deco]   {Border}
+[end]
+[app] (class!=dzen)
+  [Position] (Center) {0 0}
+[end]
+
