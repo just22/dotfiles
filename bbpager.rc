@@ -21,7 +21,7 @@ bbpager.withdrawn:			false
 
 !** Set the position of the bbpager window.
 !** Relevant only when bbpager.withdrawn is False.
-bbpager.position:			+0+0
+!bbpager.position:			+0+0
 
 !** Set the width and height of bbpager's model of the desktop windows.
 bbpager.desktop.width:			24
