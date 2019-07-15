@@ -31,6 +31,9 @@ set backspace=indent,eol,start
 " Number of screen lines to use for the command-line window
 set cmdwinheight=5
 
+" Highlight cursor line
+set cursorline
+
 " Ignore white spaces in diff mode
 set diffopt+=iwhite
 
@@ -267,8 +270,6 @@ Plugin 'https://github.com/vimwiki/vimwiki'
 
 Plugin 'https://github.com/godlygeek/tabular'
 
-Plugin 'https://github.com/LaTeX-Box-Team/LaTeX-Box'
-
 Plugin 'VisIncr'
 
 Plugin 'https://github.com/ervandew/supertab'
@@ -282,6 +283,15 @@ Plugin 'https://github.com/mbbill/undotree'
 Plugin 'https://github.com/tpope/vim-commentary'
 
 Plugin 'https://github.com/hrj/vim-drawit'
+
+Plugin 'https://github.com/lervag/vimtex'
+
+" { vim-snipmate
+Plugin 'https://github.com/tomtom/tlib_vim'
+Plugin 'https://github.com/MarcWeber/vim-addon-mw-utils'
+Plugin 'https://github.com/garbas/vim-snipmate'
+Plugin 'https://github.com/honza/vim-snippets'
+" }
 
 call vundle#end()
 
@@ -368,6 +378,9 @@ function! VimwikiLinkHandler(link)
         endif
 endfunction
 
+" vimtex
+" let g:vimtex_view_method = 'zathura'
+
 
 " ----------------------------------------------------------------------------
 " Syntax highlighting
@@ -449,14 +462,29 @@ augroup vimrcAutoCmd
         autocmd!
 
         " Highlight cursor line in INSERT mode
-        autocmd InsertEnter * if exists("$DISPLAY")  | setlocal cursorline | endif
-        autocmd InsertLeave * if !exists("b:cursorvis") | setlocal nocursorline | endif
+        " autocmd InsertEnter * if exists("$DISPLAY")  | setlocal cursorline | endif
+        " autocmd InsertLeave * if !exists("b:cursorvis") | setlocal nocursorline | endif
+
+        " Change cursor shape in insert/replace/normal mode
+        if &term =~ "^xterm" || &term =~ "^screen"
+                let &t_SI = "\e[6 q"
+                let &t_SR = "\e[4 q"
+                let &t_EI = "\e[2 q"
+        endif
 
         " For all text files set 'textwidth' to 78 characters
         autocmd FileType text setlocal textwidth=78
 
         " Remove expandtab for Makefile and Python
         autocmd BufEnter [mM]akefile*,GNUmakefile,*.mk,*.mak,*.py setlocal noexpandtab | setlocal nolist
+
+        " Different indentation for tex files
+        autocmd BufEnter *.tex
+            \ setlocal noexpandtab   |
+            \ setlocal nolist        |
+            \ setlocal tabstop=2     |
+            \ setlocal shiftwidth=2  |
+            \ setlocal softtabstop=0
 
         " Spell check when writing commit logs
         autocmd filetype svn,*commit* setlocal spell spelllang=en
@@ -531,12 +559,10 @@ function! CursorVisibilityToggling()
                 unlet b:cursorvis
                 setlocal nocursorcolumn
                 setlocal colorcolumn=0
-                setlocal nocursorline
         else
                 let b:cursorvis = 1
                 setlocal cursorcolumn
                 setlocal colorcolumn=78
-                setlocal cursorline
         endif
 endfunction
 
@@ -689,9 +715,6 @@ nmap <F4> :UndotreeToggle<CR>
 nmap <F10> :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans<'
            \ . synIDattr(synID(line("."),col("."),0),"name") . "> lo<"
            \ . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">"<CR>
-
-" Toggle cursorline highlight
-nmap <silent> <C-_> :call CursorVisibilityToggling()<CR>
 
 " Always go to the beginning of a line before doing a 'gF' operation
 nnoremap gF 0gF
@@ -868,6 +891,9 @@ vmap <silent> <leader>a<Space> :Tabularize / /l0<CR>
 
 " ** B ** Switch to previous buffer in list
 nmap <leader>b  :bp<CR>
+
+" ** C ** Toggle cursor position high visibility mode
+nmap <silent> <leader>c :call CursorVisibilityToggling()<CR>
 
 " ** DD ** Duplicate line, comment original
 nmap <silent> <leader>dd Ygccp
