@@ -1,0 +1,72 @@
+snippet _preamble
+	
+	%%%% *******************************************************************
+	%%%%  Document title: ${1}
+	%%%%  Purpose:        ${2}
+	%%%%  Author:         Alessandro DE LAURENZIS
+	%%%%  Starting date:  ${3}
+	%%%%  Classification: ${4}
+	%%%% *******************************************************************
+	
+	%***********************************************************************
+	% Preamble
+	%***********************************************************************
+
+	\documentclass[10pt,english]{${5:beamer}}
+	\usepackage{amsmath}
+	\usepackage{amssymb}
+	\usepackage{babel}
+	\usepackage{datetime}
+	\usepackage[T1]{fontenc}
+	\usepackage{graphicx}
+	\usepackage[latin9]{inputenc}
+
+	\newdateformat{monthyeardate}{\monthname[\THEMONTH] \THEYEAR}
+
+	\usetheme{${6:Pittsburgh}}
+	
+	\setbeamercovered{transparent}
+	
+	% Do not add roman numbers after title of frames with continuation
+	\setbeamertemplate{frametitle continuation}{}
+	
+	\AtBeginSubsection[]{
+		\frame{
+			\frametitle{Outline}
+			\tableofcontents[current]
+		}
+	}
+	
+	\begin{document}
+
+	\title[${7:ShortTitle}]{${8:Title}}
+	\subtitle[${9:ShortSubtitle}]{${10:Subtitle}}
+
+	\author[A. De Laurenzis]{Alessandro De Laurenzis}
+
+	\institute[ST / AMS / MSD]{STMicroelectronics\\
+	AMS - Analog, MEMS, Sensors\\
+	MSD - MEMS Sensors Division}
+
+	\date{\monthyeardate\today}
+
+	${0}
+
+	\end{document}
+
+snippet _section
+	%***********************************************************************
+	\section{${1:Title}}
+	%***********************************************************************
+
+snippet _subsec
+	%~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	\subsection{${1:Title}}
+	%~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+snippet _frame
+	\frame[t]{${1:Title}}
+		${0}
+	\end{frame}
+	%-----------------------------------
+
