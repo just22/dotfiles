@@ -20,12 +20,12 @@ snippet _preamble
 	\usepackage[T1]{fontenc}
 	\usepackage{graphicx}
 	\usepackage[latin9]{inputenc}
+	\usepackage{mathtools}
+	\usepackage[super]{nth}
 
 	\newdateformat{monthyeardate}{\monthname[\THEMONTH] \THEYEAR}
 
 	\usetheme{${6:Pittsburgh}}
-	
-	\setbeamercovered{transparent}
 	
 	% Do not add roman numbers after title of frames with continuation
 	\setbeamertemplate{frametitle continuation}{}
@@ -44,11 +44,19 @@ snippet _preamble
 
 	\author[A. De Laurenzis]{Alessandro De Laurenzis}
 
-	\institute[ST / AMS / MSD]{STMicroelectronics\\
-	AMS - Analog, MEMS, Sensors\\
+	\institute[ST / AMS / MSD]{STMicroelectronics\\\\
+	AMS - Analog, MEMS, Sensors\\\\
 	MSD - MEMS Sensors Division}
 
 	\date{\monthyeardate\today}
+
+	\begin{frame}
+		\titlepage
+	\end{frame}
+
+	\begin{frame}{Outline}
+		\tableofcontents[currentsection,currentsubsection]
+	\end{frame}
 
 	${0}
 
@@ -65,8 +73,9 @@ snippet _subsec
 	%~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 snippet _frame
-	\frame[t]{${1:Title}}
-		${0}
-	\end{frame}
 	%-----------------------------------
+	\frame[t]{${1:Title}}
+	%-----------------------------------
+		${0}
+	\end{frame} % $1
 
