@@ -1,0 +1,131 @@
+% ----------------------------------------------------------------------
+%  $Id$
+%
+%  Custom defs for LaTeX
+% ----------------------------------------------------------------------
+
+\ProvidesPackage{customdefs}
+
+\RequirePackage{mathtools}
+
+% ------------------------------
+% Delimiters
+% ------------------------------
+\DeclarePairedDelimiter {\p}  {(} {)}
+\DeclarePairedDelimiter {\sqb} {[} {]}
+\DeclarePairedDelimiter {\cb} {\{} {\}}
+
+\newcommand \lorig \l
+\renewcommand \l {
+	\relax
+	\ifmmode
+		\left
+	\else
+		\lorig
+	\fi
+}
+
+\newcommand \rorig \r
+\renewcommand \r {
+	\relax
+	\ifmmode
+		\right
+	\else
+		\rorig
+	\fi
+}
+
+
+% ------------------------------
+% Symbols
+% ------------------------------
+\newcommand \R {\mathbb{R}}
+\newcommand \C {\mathbb{C}}
+\newcommand \N {\mathbb{N}}
+\newcommand \F {\mathcal{F}}
+
+\let \Lorig \L
+\renewcommand \L {
+	\relax
+	\ifmmode
+		\mathcal{L}
+	\else
+		\Lorig
+	\fi
+}
+
+\renewcommand \* {
+	\relax
+	\ifmmode
+		\mathcal{\cdot}
+	\else
+		$ \bullet $
+	\fi
+}
+
+% Integrals
+\newcommand \dt {\ensuremath{\mathrm{d}t}}
+\newcommand \dx {\ensuremath{\mathrm{d}x}}
+
+\let \dorig \d
+\renewcommand \d {
+	\relax
+	\ifmmode
+		\mathrm{d}
+	\else
+	  \dorig
+	\fi
+}
+
+% ------------------------------
+% Less verbose descr/item env
+% ------------------------------
+\newcommand {\one}[1] {
+	\begin{itemize}[<+->]
+		\setlength\itemsep{0.5em}
+		\item[#1]
+}
+\newcommand {\onestarred}[1] {
+	\begin{itemize}
+		\item[#1]<.->
+}
+\newcommand {\num}[1] {\item[#1]}
+
+\newcommand {\numstarred}[1] {\item[#1]<.->}
+
+\newcommand {\zero} {\end{itemize}}
+
+\newcommand {\1} {\@ifstar \onestarred \one}
+\newcommand {\2} {\@ifstar \numstarred \num}
+\newcommand {\3} {\@ifstar \numstarred \num}
+\newcommand {\4} {\@ifstar \numstarred \num}
+\newcommand {\5} {\@ifstar \numstarred \num}
+\newcommand {\6} {\@ifstar \numstarred \num}
+\newcommand {\7} {\@ifstar \numstarred \num}
+\newcommand {\8} {\@ifstar \numstarred \num}
+\newcommand {\9} {\@ifstar \numstarred \num}
+\newcommand {\0} {\@ifstar \zero \zero}
+
+% ------------------------------
+% Text in math with spacing
+% ------------------------------
+\let \torig \t
+\renewcommand {\t} {
+	\relax
+	\ifmmode
+		\expandafter\mathrel \expandafter\text
+	\else
+		\expandafter\torig
+	\fi
+}
+
+\let \commaorig \,
+\renewcommand {\,} {
+	\relax
+	\ifmmode
+		,\;
+	\else
+		\commaorig
+	\fi
+}
+
