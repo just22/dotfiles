@@ -379,7 +379,6 @@ function! VimwikiLinkHandler(link)
 endfunction
 
 " vimtex
-" let g:vimtex_view_method = 'zathura'
 let g:vimtex_quickfix_latexlog = {
     \ 'overfull' : 0,
     \ 'underfull' : 0,
@@ -487,7 +486,7 @@ augroup vimrcAutoCmd
         autocmd BufEnter [mM]akefile*,GNUmakefile,*.mk,*.mak,*.py setlocal noexpandtab | setlocal nolist
 
         " Different indentation for tex files
-        autocmd BufEnter *.tex
+        autocmd BufEnter *.tex,*.sty
             \ setlocal noexpandtab   |
             \ setlocal nolist        |
             \ setlocal tabstop=2     |
