@@ -1,27 +1,31 @@
 snippet _preamble
 	
-	%%%% *******************************************************************
-	%%%%  Document title: ${1}
-	%%%%  Purpose:        ${2}
-	%%%%  Author:         Alessandro DE LAURENZIS
-	%%%%  Starting date:  ${3}
-	%%%%  Classification: ${4}
-	%%%% *******************************************************************
+	%***********************************************************************
+	% Document title: ${1}
+	% Purpose:        ${2}
+	% Author:         Alessandro DE LAURENZIS
+	% Starting date:  ${3}
+	% Classification: ${4}
+	%***********************************************************************
 	
 	%***********************************************************************
 	% Preamble
 	%***********************************************************************
 
-	\documentclass[10pt,english]{${5:beamer}}
+	% \documentclass[10pt,english,t,handout]{${5:beamer}}
+	\documentclass[10pt,english,t]{${5:beamer}}
 	\usepackage{amsmath}
 	\usepackage{amssymb}
+	\usepackage{appendixnumberbeamer}
 	\usepackage{babel}
 	\usepackage{datetime}
 	\usepackage[T1]{fontenc}
 	\usepackage{graphicx}
 	\usepackage[latin9]{inputenc}
-	\usepackage{mathtools}
 	\usepackage[super]{nth}
+	\usepackage{phonenumbers}
+
+	\usepackage{customdefs}
 
 	\newdateformat{monthyeardate}{\monthname[\THEMONTH] \THEYEAR}
 
@@ -30,6 +34,12 @@ snippet _preamble
 	% Do not add roman numbers after title of frames with continuation
 	\setbeamertemplate{frametitle continuation}{}
 	
+	% Back/find/forward navigation symbols
+	\setbeamertemplate{navigation symbols}{\insertbackfindforwardnavigationsymbol}
+
+	% Numbered entries in bibliography
+	\setbeamertemplate{bibliography item}{\insertbiblabel}
+
 	\AtBeginSubsection[]{
 		\frame{
 			\frametitle{Outline}
@@ -74,8 +84,31 @@ snippet _subsec
 
 snippet _frame
 	%-----------------------------------
-	\frame[t]{${1:Title}}
+	\begin{frame}{${1:Title}}
 	%-----------------------------------
 		${0}
 	\end{frame} % $1
+
+snippet _placeholder
+	\begin{frame}{Placeholder}\end{frame}
+
+snippet _appendix
+	%***********************************************************************
+	\appendix
+	%***********************************************************************
+	\renewcommand{\theequation}{A.\arabic{equation}}
+	\setcounter{equation}{0}
+
+	\begin{frame}[c]
+		\center\Huge
+		\usebeamercolor[fg]{frametitle}{Appendix}
+	\end{frame}
+	
+	%-----------------------------------
+	\begin{frame}[allowframebreaks]{References}
+	%-----------------------------------
+		\nocite{*}
+		\bibliographystyle{ieeepes}
+		\bibliography{references}
+	\end{frame} % References
 
