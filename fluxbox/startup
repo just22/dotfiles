@@ -48,8 +48,12 @@ pkill -x space_dapp; (sleep 1; space_dapp $((($(screen-width) - 1))) 17) &
 pkill -x bbpager; (sleep 4; bbpager) &
 
 # Tray apps
-vol-tray &
 radiotray &
+sleep 1; vol-tray &
+sleep 2; cal-tray &
+
+# Restart fluxbox on screen resolution changes
+pkill -x xeventbind; xeventbind resolution "fbrestart" &
 
 
 # And last but not least we start fluxbox.
@@ -60,3 +64,4 @@ radiotray &
 # Or, if you want to keep a log:
 mv -f ~/.fluxbox/fluxbox.log{,.old} 2> /dev/null
 exec fluxbox -log ~/.fluxbox/fluxbox.log
+
