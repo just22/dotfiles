@@ -122,16 +122,16 @@ Mod4 Shift t            :Exec x-terminal-emulator -e "tmux attach-session -d || 
 Mod4 Shift x            :Exec dmenu-xautolock
 
 # Configurable keys (site dependent)
-Mod4 F3                 :Exec ~/.fluxbox/exec-F3
-Mod4 F4                 :Exec ~/.fluxbox/exec-F4
-Mod4 F5                 :Exec ~/.fluxbox/exec-F5
-Mod4 F6                 :Exec ~/.fluxbox/exec-F6
-Mod4 F7                 :Exec ~/.fluxbox/exec-F7
-Mod4 F8                 :Exec ~/.fluxbox/exec-F8
-Mod4 F9                 :Exec ~/.fluxbox/exec-F9
-Mod4 F10                :Exec ~/.fluxbox/exec-F10
-Mod4 F11                :Exec ~/.fluxbox/exec-F11
-Mod4 F12                :Exec ~/.fluxbox/exec-F12
+Mod4 F3                 :Exec exec-F3
+Mod4 F4                 :Exec exec-F4
+Mod4 F5                 :Exec exec-F5
+Mod4 F6                 :Exec exec-F6
+Mod4 F7                 :Exec exec-F7
+Mod4 F8                 :Exec exec-F8
+Mod4 F9                 :Exec exec-F9
+Mod4 F10                :Exec exec-F10
+Mod4 F11                :Exec exec-F11
+Mod4 F12                :Exec exec-F12
 
 # Heritages...
 Mod1 Control Delete     :Exec xautolock -locknow
