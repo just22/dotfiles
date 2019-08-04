@@ -60,6 +60,8 @@
 [end]
 [app] (name=bbager)
   [Layer] {2}
+  [Head]  {1}
+  [Position] (UpperLeft) {1 -18}
 [end]
 [app] (name=sound) (class=Sound)
   [Sticky]   {yes}
@@ -68,6 +70,9 @@
 [app] (title=volctrl)
   [Sticky] {yes}
   [Deco]   {Border}
+[end]
+[app] (class=Gsimplecal)
+  [Position] (BottomRight) {0 0}
 [end]
 [app] (class!=dzen)
   [Position] (Center) {0 0}
