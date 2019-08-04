@@ -63,11 +63,11 @@ static const struct arg args[] = {
 	/* function format           argument */
 	{ cpu_perc,          "[P:%3s%%]  ", NULL },
 	{ ram_perc,          "[M:%3s%%]  ", NULL },
-	{ netspeed_rx,       "[Rx: %-7s ",  "trunk0" },
-	{ netspeed_tx,       "Tx: %-7s]  ", "trunk0" },
-	{ battery_state,     "[B%s:",       NULL },
-	{ battery_perc,      "%3s%% ",      NULL },
-	{ battery_remaining, "%s]  ",       NULL },
-	{ vol_perc,          "[V:%3s%%]  ", "/dev/mixer" },
-	{ datetime,          "%s",          "%a %d %b %R" },
+	{ load_avg,          "[L: %s]  ",   NULL },
+	{ netspeed_rx,       "[↓ %-7s ",    "trunk0" },
+	{ netspeed_tx,       "↑ %-7s]  ",   "trunk0" },
+	{ battery_perc,      "[B:%3s%% ",   NULL },
+	{ battery_remaining, "%s",          NULL },
+	{ battery_state,     "%s]  ",       NULL },
+	{ datetime,          "%s",          "%R" },
 };
