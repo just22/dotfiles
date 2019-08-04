@@ -26,6 +26,7 @@
         [include] (~/.fluxbox/menu-xdg_apps)
         [include] (~/.fluxbox/menu-legacy)
         [separator]
+        [exec] (Play URL in clip) {play-url -p} </usr/local/share/icons/HighContrast/22x22/actions/media-playback-start.png>
         [submenu] (Timer) </home/just22/.local/share/icons/timer.png>
                 [exec] ( 5 min) {timer -t "now +  5 min"}
                 [exec] (10 min) {timer -t "now + 10 min"}
@@ -35,7 +36,6 @@
                 [exec] (30 min) {timer -t "now + 30 min"}
                 [exec] (45 min) {timer -t "now + 45 min"}
         [end]
-        [exec] (Play URL in clip) {play-url -p} </usr/local/share/icons/HighContrast/22x22/actions/media-playback-start.png>
         [separator]
         [include] (~/.fluxbox/menu-system)
         [separator]
@@ -54,7 +54,7 @@
                 [end]
                 [commanddialog] (Fluxbox Command)
                 [reconfig] (Reload config)
-                [Restart] (Restart)
+                [exec] (Restart) {fbrestart}
                 [exec] (About) {(fluxbox -v; fluxbox -info | sed 1d) | xmessage -buttons OK:0 -file - -center}
         [end]
         [separator]
