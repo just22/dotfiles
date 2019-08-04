@@ -25,7 +25,7 @@ bbpager.withdrawn:			false
 
 !** Set the width and height of bbpager's model of the desktop windows.
 bbpager.desktop.width:			24
-bbpager.desktop.height:			13
+bbpager.desktop.height:			12
 
 !** Set the desktop orientation.
 !** Possible values: horizontal, vertical
