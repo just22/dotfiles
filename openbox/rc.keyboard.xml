@@ -203,5 +203,16 @@
   <keybind key="W-S-r">      <action name="Execute"> <command>dmenu-timer                         </command> </action> </keybind>
   <keybind key="W-S-t">      <action name="Execute"> <command>x-terminal-emulator -e tmux-launcher</command> </action> </keybind>
 
+  <!-- Configurable keys (site dependent) -->
+  <keybind key="W-F3">       <action name="Execute"> <command>exec-F3                             </command> </action> </keybind>
+  <keybind key="W-F4">       <action name="Execute"> <command>exec-F4                             </command> </action> </keybind>
+  <keybind key="W-F5">       <action name="Execute"> <command>exec-F5                             </command> </action> </keybind>
+  <keybind key="W-F6">       <action name="Execute"> <command>exec-F6                             </command> </action> </keybind>
+  <keybind key="W-F7">       <action name="Execute"> <command>exec-F7                             </command> </action> </keybind>
+  <keybind key="W-F8">       <action name="Execute"> <command>exec-F8                             </command> </action> </keybind>
+  <keybind key="W-F9">       <action name="Execute"> <command>exec-F9                             </command> </action> </keybind>
+  <keybind key="W-F10">      <action name="Execute"> <command>exec-F10                            </command> </action> </keybind>
+  <keybind key="W-F11">      <action name="Execute"> <command>exec-F11                            </command> </action> </keybind>
+  <keybind key="W-F12">      <action name="Execute"> <command>exec-F12                            </command> </action> </keybind>
 </keyboard>
 
