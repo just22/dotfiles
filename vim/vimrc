@@ -474,9 +474,9 @@ augroup vimrcAutoCmd
 
         " Change cursor shape in insert/replace/normal mode
         if &term =~ "^xterm" || &term =~ "^screen"
-                let &t_SI = "\e[6 q"
-                let &t_SR = "\e[4 q"
-                let &t_EI = "\e[2 q"
+                let &t_SI = "\<Esc>[6 q"
+                let &t_SR = "\<Esc>[4 q"
+                let &t_EI = "\<Esc>[2 q"
         endif
 
         " For all text files set 'textwidth' to 78 characters
@@ -528,6 +528,9 @@ augroup vimrcAutoCmd
 
         " If quickfix is the last window, quit
         autocmd BufEnter * call QuitIfOnlyQuickfix()
+
+        " Treat .lib files are text (and not as Cobol libraries)
+        autocmd BufNewFile,BufRead *.lib set filetype=txt
 
 augroup END
 
