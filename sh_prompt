@@ -54,7 +54,7 @@ _ps1_cmd() {
         # Set the xterm's (or tmux pane's) title
         case "$TERM" in
         xterm*|screen*)
-                set-title "[${0}] [${PWD}] [Last cmd: \"$(tail -1 "$HISTFILE")\"]"
+                set_title "[${0}] [${PWD}] [Last cmd: \"$(tail -1 "$HISTFILE")\"]"
                 ;;
         *)
                 ;;
@@ -62,9 +62,9 @@ _ps1_cmd() {
 }
 
 # Command line prompt:
-# if this is a POSIX shell, use a very basic prompt
-if [ -n "$SH_VERSION" ]; then
-        PS1='$USER \\$ '
+# if this is a POSIX shell, use the default prompt
+if [[ -n "$SH_VERSION" || "$KSH_VERSION" == *93* ]]; then
+        :
 # else use a more informative multi-line prompt
 else
         PS1="\[\033[?7l\]"                                                      # Do not wrap prompt line
