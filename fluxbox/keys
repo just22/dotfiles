@@ -105,8 +105,7 @@ Mod4 f                  :Exec dmenu-filebrowser
 Mod4 t                  :Exec tmux_pane_search
 Mod4 w                  :Exec win_search
 Mod4 d                  :Exec dmenu_run-cust -p Run:
-Mod4 Control q          :Exec dmenu-xrandr Off
-Mod4 Control r          :Reconfigure
+Mod4 Control q          :Reconfigure
 
 # Application launchers
 Mod4 Shift Return       :Exec x-terminal-emulator
