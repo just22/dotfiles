@@ -116,14 +116,14 @@ d               - Current working dir
 exev            - xev with more effective output
 findlic         - Search for license files
 ff              - Recursively find files by (part of) name
-ff.             - Find files in current directory by (part of) name
+ffd             - Find files in current directory by (part of) name
 flast           - Print the last modified file or directory
 vlast           - Open the last modified file or directory
 fpath           - Print absolute pathname (with dereferenced symbolic links)
 {,e,f,x}grepc   - Colorized grep
 grepo           - Open all files after pattern match
 nowrap          - Do not wrap output of specified command
-set-title       - Set xterm (or tmux pane) title
+set_title       - Set xterm (or tmux pane) title
 pid             - Process IDs matching argument
 r               - Re-execute most recent command, [-g] [old=new] [prefix]
 rs              - rsync with most common options
@@ -144,11 +144,11 @@ marks           - List all marks
 # ----------------------------------------------------------------------
 # cvs
 #
-cvs-adddir      - Recursively add directories in current path to cvs tree
-cvs-ck          - Check for modified files
-cvs-mrg         - Update with merge
-cvs-up          - Update
-cvs-diff        - Unified diff
+cvs_adddir      - Recursively add directories in current path to cvs tree
+cvs_ck          - Check for modified files
+cvs_mrg         - Update with merge
+cvs_up          - Update
+cvs_diff        - Unified diff
 
 # ----------------------------------------------------------------------
 # Change XTerm colorscheme on-the-fly
@@ -482,7 +482,7 @@ showpath()  { echo ${1-$PATH} | tr ":" "\n"; }
 vimall()    { find ${1-.} -maxdepth 1 -type f -print | xargs sh -c '</dev/tty vim "$@"' ignoreme; }
 vlast()     { vim $(ls -dt "$@" | head -1); }
 
-set-title() {
+set_title() {
         ESC="\033"
         BEL="\007"
         title_esc_seq="${ESC}]0;$@${BEL}"
@@ -533,7 +533,7 @@ cds() {
 
 # Find files by (part of) name
 ff() { find . -name "*${1}*" -ls; }
-ff.() { find . -maxdepth 1 -name "*${1}*" -ls; }
+ffd() { find . -maxdepth 1 -name "*${1}*" -ls; }
 
 # List broken links
 bln() {
@@ -579,11 +579,11 @@ alias glog='git log'
 # ----------------------------------------------------------------------
 # cvs
 #
-alias cvs-ck='cvs -qn update -dP'
-alias cvs-up='cvs update -dP'
-alias cvs-mrg='cvs update -kk'
-alias cvs-diff='cvs diff -uNp'
-cvs-adddir() {
+alias cvs_ck='cvs -qn update -dP'
+alias cvs_up='cvs update -dP'
+alias cvs_mrg='cvs update -kk'
+alias cvs_diff='cvs diff -uNp'
+cvs_adddir() {
         find ${1-.} -type d -name CVS -prune -o -type d -exec cvs add "{}" \;
         find ${1-.} -type d -name CVS -prune -o -type f -exec cvs add "{}" \;
         find ${1-.} -type d -name CVS -prune -o -type f -exec cvs commit -m ${2-Initial commit} "{}" \;
