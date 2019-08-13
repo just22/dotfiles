@@ -22,7 +22,7 @@ fi
 # ----------------------------------------------------------------------
 # Enable a subset of csh-style history editing using the `!' character
 #
-set -o csh-history
+[[ "$KSH_VERSION" == *PD* ]] && set -o csh-history
 
 # ----------------------------------------------------------------------
 # History settings
