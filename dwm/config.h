@@ -112,6 +112,7 @@ static const char *perfpolicycmd[]	= { "dmenu-perf", NULL };
 static const char *playercmd[]		= { "play-url", "-p", NULL };
 static const char *raisevolcmd[]	= { "mixerctl", "-q", "outputs.master=+10", NULL };
 static const char *setdisplaycmd[]	= { "dmenu-xrandr", NULL };
+static const char *setwinlabelcmd[]	= { "dmenu-setwinlabel", NULL };
 static const char *slstatuscmd[]	= { "slstatus-switch", NULL };
 static const char *suspendcmd[]		= { "zzz", NULL };
 static const char *termcmd[]		= { "xterm", NULL };
@@ -174,11 +175,11 @@ static Key keys[] = {
 
         /* Common WM actions */
 	{ MODKEY,                       XK_F1,                      spawn,          {.v = helpcmd } },
-	{ MODKEY,                       XK_F2,                      spawn,          {.v = dmenucmd } },
+	{ MODKEY,                       XK_F2,                      spawn,          {.v = launchercmd } },
 	{ MODKEY,                       XK_d,                       spawn,          {.v = dmenucmd } },
 	{ MODKEY,                       XK_f,                       spawn,          {.v = filebrowsercmd} },
+	{ MODKEY,                       XK_g,                       spawn,          {.v = setwinlabelcmd} },
 	{ MODKEY,                       XK_p,                       spawn,          {.v = xpropcmd} },
-	{ MODKEY,                       XK_r,                       spawn,          {.v = launchercmd} },
 	{ MODKEY,                       XK_s,                       spawn,          {.v = slstatuscmd} },
 	{ MODKEY,                       XK_t,                       spawn,          {.v = tmuxpanesearchcmd} },
 	{ MODKEY,                       XK_w,                       spawn,          {.v = winsearchcmd} },
