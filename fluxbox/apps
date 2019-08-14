@@ -42,7 +42,7 @@
   [Sticky]      {yes}
 [end]
 [app] (class=XTerm) (title=cmixer)
-  [Position] (Center) {0 0}
+  [Position] (BottomRight) {0 0}
   [Deco]     {Border}
 [end]
 [app] (name=win) (class=Xpdf)
