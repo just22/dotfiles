@@ -100,12 +100,14 @@ Mod4 h                  :Exec wmprocs tile h
 # Common WM actions
 Mod4 space              :RootMenu
 Mod4 F1                 :Exec (fluxbox -v; fluxbox -info | sed 1d) | xmessage -buttons OK:0 -file - -center
-Mod4 F2                 :Exec dmenu_run-cust -p Run:
+Mod4 F2                 :Exec dmenu-launchers
 Mod4 f                  :Exec dmenu-filebrowser
+Mod4 g                  :Exec dmenu-setwinlabel
 Mod4 t                  :Exec tmux_pane_search
 Mod4 w                  :Exec win_search
 Mod4 d                  :Exec dmenu_run-cust -p Run:
-Mod4 Control q          :Reconfigure
+Mod4 r                  :Reconfigure
+Mod4 q                  :Exec fbrestart
 
 # Application launchers
 Mod4 Shift Return       :Exec x-terminal-emulator
