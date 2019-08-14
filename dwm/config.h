@@ -42,6 +42,7 @@ static const Rule rules[] = {
 	{ "Firefox",		"Places",	        NULL,			1 << 4,		True,		-1 },
 	{ "Firefox",		"Toplevel",	        NULL,			0,		True,		-1 },
 	{ "Gimp",		NULL,			NULL,			0,		True,		-1 },
+	{ "Innovus",		"Qt-subapplication",	"NanoRoute",		0,		True,		-1 },
 	{ "Pinentry-gtk-2",	NULL,	        	NULL,			0,		True,		-1 },
 	{ "Sound",	        "sound",		NULL,			0,		True,		-1 },
 	{ "Toplevel",		NULL,	        	NULL,			0,		True,		-1 },
@@ -90,12 +91,22 @@ static const Layout layouts[] = {
 
 /* commands */
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
-static const char *browsercmd[]		= { "x-www-browser", NULL };
-static const char *calccmd[]		= { "dmenu-calc", NULL };
 static const char *dmenucmd[]		= { "dmenu_run", "-p", "Run:", "-m", dmenumon,
                                                 "-fn", dmenufont, "-nb", normbgcolor,
                                                 "-nf", normfgcolor, "-sb", selbgcolor,
                                                 "-sf", selfgcolor, NULL };
+static const char *browsercmd[]		= { "x-www-browser", NULL };
+static const char *calccmd[]		= { "dmenu-calc", NULL };
+static const char *execF3cmd[]		= { "exec-F3", NULL };
+static const char *execF4cmd[]		= { "exec-F4", NULL };
+static const char *execF5cmd[]		= { "exec-F5", NULL };
+static const char *execF6cmd[]		= { "exec-F6", NULL };
+static const char *execF7cmd[]		= { "exec-F7", NULL };
+static const char *execF8cmd[]		= { "exec-F8", NULL };
+static const char *execF9cmd[]		= { "exec-F9", NULL };
+static const char *execF10cmd[]		= { "exec-F10", NULL };
+static const char *execF11cmd[]		= { "exec-F11", NULL };
+static const char *execF12cmd[]		= { "exec-F12", NULL };
 static const char *filebrowsercmd[]	= { "dmenu-filebrowser", NULL };
 static const char *filemanagercmd[]	= { "xterm", "-e", "ranger", NULL };
 static const char *helpcmd[]	        = { "xterm", "-title", "dwm man page", "-e", "man -m ~/share/man dwm", NULL };
@@ -122,18 +133,8 @@ static const char *tmuxpanesearchcmd[]	= { "tmux_pane_search", NULL };
 static const char *winsearchcmd[]	= { "win_search", NULL };
 static const char *xautolockcmd[]	= { "dmenu-xautolock", NULL };
 static const char *xpropcmd[]		= { "activewin_xprop", NULL };
-static const char *execF3cmd[]		= { "exec-F3", NULL };
-static const char *execF4cmd[]		= { "exec-F4", NULL };
-static const char *execF5cmd[]		= { "exec-F5", NULL };
-static const char *execF6cmd[]		= { "exec-F6", NULL };
-static const char *execF7cmd[]		= { "exec-F7", NULL };
-static const char *execF8cmd[]		= { "exec-F8", NULL };
-static const char *execF9cmd[]		= { "exec-F9", NULL };
-static const char *execF10cmd[]		= { "exec-F10", NULL };
-static const char *execF11cmd[]		= { "exec-F11", NULL };
-static const char *execF12cmd[]		= { "exec-F12", NULL };
 
-/* See /usr/X11R6/include/X11/keysymdef.h */
+/* See /usr/X11R6/include/X11/keysymdef.h (or /usr/include/X11/keysymdef.h) */
 static Key keys[] = {
 	/* modifier                     key                         function        argument */
 	TAGKEYS(                        XK_1,                                       0)
@@ -167,6 +168,7 @@ static Key keys[] = {
 	{ MODKEY|ShiftMask,             XK_period,                  tagmon,         {.i = +1 } },
 	{ MODKEY,                       XK_a,                       togglebar,      {0} },
 	{ MODKEY,                       XK_space,                   togglefloating, {0} },
+	{ MODKEY,                       XK_equal,                   toggleview,     {.ui = 1 << 9} },
 	{ MODKEY,                       XK_plus,                    toggleview,     {.ui = 1 << 9} },
 	{ MODKEY,                       XK_agrave,                  view,           {.ui = ~0 } },
 	{ MODKEY,                       XK_grave,                   view,           {0} },
