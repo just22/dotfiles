@@ -37,7 +37,7 @@ xcompmgr &
 
 # Set the root window background & wallpaper
 fbsetroot -gradient Vertical -from rgb:07/36/42 -to rgb:58/6E/75
-nitrogen --restore
+fbsetbg -l
 
 # Desktop management
 #(sleep 1; dbus-launch pcmanfm --desktop) &
