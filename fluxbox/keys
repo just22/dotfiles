@@ -42,6 +42,7 @@ OnWindowBorder  Mouse2          :Lower
 
 # ----------------------------------------------------------------------
 # Keyboard shortcuts
+# See /usr/X11R6/include/X11/keysymdef.h or /usr/include/X11/keysymdef.h
 #
 
 # Cycle through windows in the current workspace
