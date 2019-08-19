@@ -19,3 +19,5 @@
         [end]
         [exec] (Set Background)    {nitrogen ~/Pictures/wallpapers} </usr/local/share/icons/gnome/16x16/apps/preferences-desktop-wallpaper.png>
 [end]
+
+[separator]

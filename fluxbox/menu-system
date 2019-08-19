@@ -24,3 +24,4 @@
 [end]
 [exec] (Removable Devices) {/usr/bin/doas /usr/local/bin/amount -e sd0} </usr/local/share/icons/gnome/16x16/devices/media-removable.png>
 
+[separator]
