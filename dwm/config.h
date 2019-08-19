@@ -180,11 +180,11 @@ static Key keys[] = {
 	{ MODKEY,                       XK_F2,                      spawn,          {.v = launchercmd } },
 	{ MODKEY,                       XK_d,                       spawn,          {.v = dmenucmd } },
 	{ MODKEY,                       XK_f,                       spawn,          {.v = filebrowsercmd} },
-	{ MODKEY,                       XK_g,                       spawn,          {.v = setwinlabelcmd} },
 	{ MODKEY,                       XK_p,                       spawn,          {.v = xpropcmd} },
 	{ MODKEY,                       XK_s,                       spawn,          {.v = slstatuscmd} },
 	{ MODKEY,                       XK_t,                       spawn,          {.v = tmuxpanesearchcmd} },
 	{ MODKEY,                       XK_w,                       spawn,          {.v = winsearchcmd} },
+	{ MODKEY|ShiftMask,             XK_w,                       spawn,          {.v = setwinlabelcmd} },
 
         /* External  applications */
 	{ MODKEY|ShiftMask,             XK_Return,                  spawn,          {.v = termcmd } },
