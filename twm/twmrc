@@ -1,0 +1,394 @@
+# ----------------------------------------------------------------------
+#  $Id$
+#
+#  twm (tab window manager) configuration file
+# ----------------------------------------------------------------------
+
+# ----------------------------------------------------------------------
+#  General settings
+#
+
+AutoRelativeResize      # Don't require resize to cross the borders to start
+BorderWidth 1           # Width in pixels of the windows' borders
+DecorateTransients      # Put titlebar and borders on transient windows
+NoDefaults              # Turn off default buttons
+NoGrabServer            # Don't grab server during menus, etc.
+NoHighlight             # Do not hightlight win border when focused
+NoSaveUnders            # Just repaint
+RandomPlacement         # Place windows in a pseudo-random location
+RestartPreviousState    # Re-iconify iconified windows on restart
+UsePPosition "on"       # Honor program-requested locations
+
+NoTitle {
+        "Xmessage"
+}
+
+StartIconified {
+        "XConsole"
+}
+
+
+# ----------------------------------------------------------------------
+#  Fonts
+#
+TitleFont       "-xos4-terminus-bold-r-*-*-14-*-*-*-*-*-*-*"
+ResizeFont      "-xos4-terminus-bold-r-*-*-14-*-*-*-*-*-*-*"
+MenuFont        "-xos4-terminus-bold-r-*-*-14-*-*-*-*-*-*-*"
+IconFont        "-xos4-terminus-bold-r-*-*-14-*-*-*-*-*-*-*"
+IconManagerFont "-xos4-terminus-bold-r-*-*-14-*-*-*-*-*-*-*"
+
+
+# ----------------------------------------------------------------------
+#  Colorscheme
+#
+Color
+{
+    BorderColor           "rgb:93/a1/a1"
+    DefaultBackground     "rgb:2a/a1/98"
+    DefaultForeground     "rgb:ee/e8/d5"
+    TitleBackground       "rgb:2a/a1/98"
+    TitleForeground       "rgb:ee/e8/d5"
+    MenuBorderColor       "rgb:07/36/42"
+    MenuTitleBackground   "rgb:b5/89/00"
+    MenuTitleForeground   "rgb:07/36/42"
+    MenuBackground        "rgb:ee/e8/d5"
+    MenuForeground        "rgb:07/36/42"
+    IconBorderColor       "rgb:93/a1/a1"
+    IconBackground        "rgb:2a/a1/98"
+    IconForeground        "rgb:ee/e8/d5"
+    IconManagerBackground "rgb:ee/e8/d5"
+    IconManagerForeground "rgb:07/36/42"
+}
+
+
+# ----------------------------------------------------------------------
+#  Custom functions
+#
+MoveDelta 3
+Function "move-or-lower"    { f.move f.deltastop f.lower }
+Function "move-or-raise"    { f.move f.deltastop f.raise }
+Function "move-or-iconify"  { f.move f.deltastop f.iconify }
+Function "move-or-maximize" { f.move f.deltastop f.fullzoom }
+Function "move-or-close"    { f.move f.deltastop f.delete }
+
+
+# ----------------------------------------------------------------------
+#  Mouse Bindings
+#
+IconDirectory "~/.twm/bitmaps"
+RightTitleButton "icon.xbm"  = f.function "move-or-iconify"
+RightTitleButton "max.xbm"   = f.function "move-or-maximize"
+RightTitleButton "close.xbm" = f.function "move-or-close"
+LeftTitleButton  "menu.xbm"  = f.menu "Window Ops"
+Button1 = : root : f.menu "RootMenu"
+Button3 = : root : f.showiconmgr
+Button1 = m4 : window|icon : f.function "move-or-lower"
+Button2 = m4 : window|icon : f.iconify
+Button3 = m4 : window|icon : f.resize
+Button1 = : title : f.function "move-or-raise"
+Button2 = : title : f.raiselower
+Button1 = : icon : f.function "move-or-iconify"
+Button2 = : icon : f.iconify
+
+
+# ----------------------------------------------------------------------
+#  Keyboard bindings
+#
+
+# Common WM actions
+"F1"    = m4 : all : f.exec "xterm -e man twm &"
+"F2"    = m4 : all : f.exec "dmenu-launchers &"
+"Down"  = m4 : all : f.bottomzoom
+"Left"  = m4 : all : f.leftzoom
+"Right" = m4 : all : f.rightzoom
+"Up"    = m4 : all : f.topzoom
+"Tab"   = m4 : all : f.circledown
+"d"     = m4 : all : f.exec "dmenu_run-cust -p Run: &"
+"f"     = m4 : all : f.exec "dmenu-filebrowser &"
+"m"     = m4 : all : f.fullzoom
+"q"     = m4 : all : f.restart
+"t"     = m4 : all : f.exec "tmux_pane_search &"
+"x"     = m4 : all : f.delete
+"x"     = m4 | c : all : f.destroy
+
+# Application launchers
+"Return" = m4 | s : all : f.exec "x-terminal-emulator &"
+"b"      = m4 | s : all : f.exec "x-www-browser &"
+"c"      = m4 | s : all : f.exec "dmenu-calc &"
+"d"      = m4 | s : all : f.exec "dmenu-xrandr &"
+"f"      = m4 | s : all : f.exec "x-terminal-emulator -e ranger &"
+"m"      = m4 | s : all : f.exec "x-email-client &"
+"p"      = m4 | s : all : f.exec "play-url -p &"
+"q"      = m4 | s : all : f.exec "dmenu-session-logout &"
+"r"      = m4 | s : all : f.exec "dmenu-timer &"
+"t"      = m4 | s : all : f.exec "x-terminal-emulator -e \"tmux attach-session -d || tmux new-session\" &"
+"x"      = m4 | s : all : f.exec "dmenu-xautolock &"
+
+# Configurable keys (site dependent)
+"F3"     = m4 : all : f.exec "exec-F3 &"
+"F4"     = m4 : all : f.exec "exec-F4 &"
+"F5"     = m4 : all : f.exec "exec-F5 &"
+"F6"     = m4 : all : f.exec "exec-F6 &"
+"F7"     = m4 : all : f.exec "exec-F7 &"
+"F8"     = m4 : all : f.exec "exec-F8 &"
+"F9"     = m4 : all : f.exec "exec-F9 &"
+"F10"    = m4 : all : f.exec "exec-F10 &"
+"F11"    = m4 : all : f.exec "exec-F11 &"
+"F12"    = m4 : all : f.exec "exec-F12 &"
+
+# Heritages...
+"Delete" = m | c : all : f.exec "xautolock -locknow &"
+
+# System specific
+"c"      = m4 | c : all : f.exec "dmenu-perf &"
+"h"      = m4 | s : all : f.exec "ZZZ &"
+"k"      = m4 | s : all : f.exec "dmenu-kbd &"
+"l"      = m4 | s : all : f.exec "dmenu-lpr &"
+"s"      = m4 | s : all : f.exec "zzz &"
+
+
+# ----------------------------------------------------------------------
+#  Icon manager
+#
+IconifyByUnmapping
+IconManagerGeometry "500"
+"w" = m4 : all : f.showiconmgr
+Button1 = : iconmgr : f.raise
+Button3 = : iconmgr : f.iconify
+
+
+# ----------------------------------------------------------------------
+#  Menus
+#
+
+menu "RootMenu" {
+        "Twm"           f.title
+        "Terminal"      f.exec "x-terminal-emulator &"
+        "Web Browser"   f.exec "x-web-browser &"
+        "E-mail"        f.exec "x-email-client &"
+        "Filemanager"   f.exec "x-filemanager &"
+        "Text Editor"   f.exec "x-text-editor &"
+        ""              f.nop
+        "X Apps"        f.menu "X Apps"
+        ""              f.nop
+        "Timer"         f.menu "Timer"
+        ""              f.nop
+        "Desktop"       f.menu "Desktop"
+        ""              f.nop
+        "Display"       f.exec "arandr &"
+        "Keyboard"      f.menu "Keyboard Layout"
+        "Print to lpr"  f.menu "Print to lpr"
+        "Removables"    f.exec "/usr/bin/doas /usr/local/bin/amount -e sd0 &"
+        ""              f.nop
+        "Window Ops"    f.menu "Window Ops"
+        ""              f.nop
+        "Restart twm"   f.restart
+        "Exit session"  f.menu "Exit Session"
+}
+
+menu "X Apps" {
+        "Editors"       f.menu "Editors"
+        "Games"         f.menu "Games"
+        "Graphics"      f.menu "Graphics"
+        "Network"       f.menu "Network"
+        "Utilities"     f.menu "Utilities"
+}
+
+menu "Editors" {
+        "NEdit"         f.exec "nedit &"
+        "mg"            f.exec "x-terminal-emulator -e mg &"
+        "vi"            f.exec "x-terminal-emulator -e vi &"
+        "Xedit"         f.exec "xedit &"
+        "Xfw"           f.exec "xfw &"
+}
+
+menu "Graphics" {
+        "Bitmap"        f.exec "bitmap &"
+        "scanimage"     f.exec "x-terminal-emulator -e scanimage &"
+        "XDvi"          f.exec "xdvi &"
+        "xfig"          f.exec "xfig &"
+}
+
+menu "Network" {
+        "FTP"           f.exec "x-terminal-emulator -e ftp &"
+        "Lynx"          f.exec "x-terminal-emulator -e lynx &"
+        "Mail"          f.exec "x-terminal-emulator -e mail &"
+        "Telnet"        f.exec "x-terminal-emulator -e telnet &"
+}
+
+menu "Utilities" {
+        "bc"            f.exec "x-terminal-emulator -e bc &"
+        "dc"            f.exec "x-terminal-emulator -e dc &"
+        "Editres"       f.exec "editres &"
+        "Info"          f.exec "x-terminal-emulator -e info &"
+        "Top"           f.exec "x-terminal-emulator -e top &"
+        "Units"         f.exec "x-terminal-emulator -e units &"
+        "User Info"     f.exec "userinfo &"
+        "Viewres"       f.exec "viewres &"
+        "Xarchiver"     f.exec "xarchiver &"
+        "Xcalc"         f.exec "xcalc &"
+        "Xclipboard"    f.exec "xclipboard &"
+        "Xclock"        f.exec "xclock -digital &"
+        "Xconsole"      f.exec "xconsole &"
+        "Xcutsel"       f.exec "xcutsel &"
+        "Xev"           f.exec "x-terminal-emulator -e xev &"
+        "eXev"          f.exec "x-terminal-emulator -e exev &"
+        "Xfontsel"      f.exec "xfontsel &"
+        "Xkill"         f.exec "xkill &"
+        "Xload"         f.exec "xload &"
+        "Xmag"          f.exec "xmag &"
+        "Xman"          f.exec "xman &"
+        "Xrefresh"      f.exec "xrefresh &"
+        "Xsetroot"      f.exec "xsetroot &"
+        "Xvidtune"      f.exec "xvidtune &"
+}
+
+menu "Games" {
+        "Adventure"     f.menu "Adventure"
+        "Amusement"     f.menu "Amusement"
+        "Arcade"        f.menu "Arcade"
+        "Board"         f.menu "Board"
+        "Card"          f.menu "Card"
+        "Education"     f.menu "Education"
+        "Puzzle"        f.menu "Puzzle"
+        "Strategy"      f.menu "Strategy"
+        "Robots"        f.exec "x-terminal-emulator -e robots &"
+        "Star Trek"     f.exec "x-terminal-emulator -e trek &"
+}
+
+ menu "Adventure" {
+        "Adventure"     f.exec "x-terminal-emulator -e adventure &"
+        "Battlestar"    f.exec "x-terminal-emulator -e battlestar &"
+        "Hack"          f.exec "x-terminal-emulator -e hack &"
+        "Hunt the Wumpus" f.exec "x-terminal-emulator -e wump &"
+        "Phantasia"     f.exec "x-terminal-emulator -e phantasia &"
+}
+
+ menu "Amusement" {
+        "AA Fire"       f.exec "aafire &"
+        "Ico"           f.exec "ico &"
+        "Oclock"        f.exec "oclock &"
+        "Rain"          f.exec "x-terminal-emulator -e rain &"
+        "Worms"         f.exec "x-terminal-emulator -e worms &"
+        "Xeyes"         f.exec "xeyes &"
+        "Xgc"           f.exec "xgc &"
+        "Xlogo"         f.exec "xlogo &"
+}
+
+ menu "Arcade" {
+        "Snake"         f.exec "x-terminal-emulator -e snake &"
+        "Worm"          f.exec "x-terminal-emulator -e worm &"
+}
+
+ menu "Board" {
+        "Backgammon"    f.exec "x-terminal-emulator -e backgammon -pb &"
+        "Gomoku"        f.exec "x-terminal-emulator -e gomoku &"
+        "Monopoly"      f.exec "x-terminal-emulator -e monop &"
+}
+
+ menu "Card" {
+        "Canfield"      f.exec "x-terminal-emulator -e canfield &"
+        "Cribbage"      f.exec "x-terminal-emulator -e cribbage &"
+        "Mille Bournes" f.exec "x-terminal-emulator -e mille &"
+}
+
+ menu "Education" {
+        "Arithmetic Quiz" f.exec "x-terminal-emulator -e arithmetic &"
+}
+
+ menu "Puzzle" {
+        "Boggle"        f.exec "x-terminal-emulator -e boggle &"
+        "Hangman"       f.exec "x-terminal-emulator -e hangman &"
+}
+
+ menu "Strategy" {
+        "Sail"          f.exec "x-terminal-emulator -e sail &"
+}
+
+menu "Timer" {
+        " 5 min"        f.exec "timer -t \"now +  5 min\""
+        "10 min"        f.exec "timer -t \"now + 10 min\""
+        "15 min"        f.exec "timer -t \"now + 15 min\""
+        "20 min"        f.exec "timer -t \"now + 20 min\""
+        "25 min"        f.exec "timer -t \"now + 25 min\""
+        "30 min"        f.exec "timer -t \"now + 30 min\""
+        "45 min"        f.exec "timer -t \"now + 45 min\""
+}
+
+menu "Desktop" {
+        "Open Folder"   f.exec "x-filemanager ~/Desktop &"
+        "Places"        f.menu "Places"
+        "Play URL"      f.exec "play-url -p &"
+        "Screenshot"    f.menu "Screenshot"
+        "Wallpaper"     f.exec "nitrogen ~/Pictures/wallpapers &"
+}
+
+menu "Places" {
+        "Documents"     f.exec "x-filemanager ~/Documents &"
+        "Downloads"     f.exec "x-filemanager ~/Downloads &"
+        "Music"         f.exec "x-filemanager ~/nfs/music &"
+        "Pictures"      f.exec "geeqie ~/nfs/photos &"
+        "Videos"        f.exec "x-filemanager ~/nfs/videos &"
+}
+
+menu "Screenshot" {
+        "Whole Desktop" f.exec "screenshot desktop &"
+        "Window/Area"   f.exec "screenshot &"
+}
+
+menu "Keyboard Layout" {
+        "Italian"       f.exec "setxkbmap it"
+        "English-US"    f.exec "setxkbmap us"
+}
+
+menu "Print to lpr" {
+        "draft"         f.exec "dmenu-lpr draft &"
+        "normal"        f.exec "dmenu-lpr normal &"
+        "hq"            f.exec "dmenu-lpr hq &"
+        "draft-color"   f.exec "dmenu-lpr draft-color &"
+        "normal-color"  f.exec "dmenu-lpr normal-color &"
+        "hq-color"      f.exec "dmenu-lpr hq-color &"
+}
+
+menu "Window Ops" {
+        "Iconify"       f.iconify
+        "Resize"        f.resize
+        "Move"          f.move
+        "Raise"         f.raise
+        "Lower"         f.lower
+        ""              f.nop
+        "Focus"         f.focus
+        "Unfocus"       f.unfocus
+        "Show Iconmgr"  f.showiconmgr
+        "Hide Iconmgr"  f.hideiconmgr
+        ""              f.nop
+        "Close"         f.menu "Close Window"
+}
+
+Menu "Close Window" {
+        "Delete Window" f.delete
+        "Kill Window"   f.destroy
+}
+
+menu "Restart" {
+        "Restart"       f.restart
+        ""              f.nop
+        "twm"           f.startwm "twm"
+        "fvwm"          f.startwm "fvwm"
+        "cwm"           f.startwm "cwm"
+        "wm2"           f.startwm "wm2"
+        "ctwm"          f.startwm "ctwm"
+        "mwm"           f.startwm "mwm"
+        "olwm"          f.startwm "olwm"
+        ""              f.nop
+        "dummy"         f.startwm "xterm"
+}
+
+menu "Exit Session" {
+        "Logout"        f.quit
+        "Suspend"       f.exec "/usr/bin/doas /usr/sbin/zzz"
+        "Hibernate"     f.exec "/usr/bin/doas /usr/sbin/ZZZ"
+        "Reboot"        f.exec "/usr/bin/doas /sbin/reboot"
+        "Poweroff"      f.exec "/usr/bin/doas /sbin/shutdown -p now"
+}
+
