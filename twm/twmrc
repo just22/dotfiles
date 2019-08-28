@@ -8,18 +8,23 @@
 #  General settings
 #
 
-AutoRelativeResize      # Don't require resize to cross the borders to start
-BorderWidth 1           # Width in pixels of the windows' borders
-DecorateTransients      # Put titlebar and borders on transient windows
-NoDefaults              # Turn off default buttons
-NoGrabServer            # Don't grab server during menus, etc.
-NoHighlight             # Do not hightlight win border when focused
-NoSaveUnders            # Just repaint
-RandomPlacement         # Place windows in a pseudo-random location
-RestartPreviousState    # Re-iconify iconified windows on restart
-UsePPosition "on"       # Honor program-requested locations
+AutoRelativeResize              # Don't require resize to cross the borders to start
+BorderWidth 1                   # Width in pixels of the windows' borders
+ButtonIndent 0                  # Same dimensions for window text and buttons
+DecorateTransients              # Put titlebar and borders on transient windows
+IconManagerGeometry "500x1+0+0" # Icon manager window initial geometry
+IconifyByUnmapping              # Just use icon manager, no icons
+NoDefaults                      # Turn off default buttons
+NoGrabServer                    # Don't grab server during menus, etc.
+NoHighlight                     # Do not hightlight win border when focused
+NoSaveUnders                    # Just repaint
+RandomPlacement                 # Place windows in a pseudo-random location
+RestartPreviousState            # Re-iconify iconified windows on restart
+UsePPosition "on"               # Honor program-requested locations
+
 
 NoTitle {
+        "TWM Icon Manager"
         "Xmessage"
 }
 
@@ -31,11 +36,11 @@ StartIconified {
 # ----------------------------------------------------------------------
 #  Fonts
 #
-TitleFont       "-xos4-terminus-bold-r-*-*-14-*-*-*-*-*-*-*"
-ResizeFont      "-xos4-terminus-bold-r-*-*-14-*-*-*-*-*-*-*"
-MenuFont        "-xos4-terminus-bold-r-*-*-14-*-*-*-*-*-*-*"
-IconFont        "-xos4-terminus-bold-r-*-*-14-*-*-*-*-*-*-*"
-IconManagerFont "-xos4-terminus-bold-r-*-*-14-*-*-*-*-*-*-*"
+TitleFont       "-*-fixed-bold-r-*-*-13-120-*-*-*-*-*-*"
+ResizeFont      "-*-fixed-bold-r-*-*-13-120-*-*-*-*-*-*"
+MenuFont        "-*-fixed-bold-r-*-*-13-120-*-*-*-*-*-*"
+IconFont        "-*-fixed-bold-r-*-*-13-120-*-*-*-*-*-*"
+IconManagerFont "-*-fixed-bold-r-*-*-13-120-*-*-*-*-*-*"
 
 
 # ----------------------------------------------------------------------
@@ -58,6 +63,7 @@ Color
     IconForeground        "rgb:ee/e8/d5"
     IconManagerBackground "rgb:ee/e8/d5"
     IconManagerForeground "rgb:07/36/42"
+    IconManagerHighlight  "rgb:07/36/42"
 }
 
 
@@ -70,23 +76,31 @@ Function "move-or-raise"    { f.move f.deltastop f.raise }
 Function "move-or-iconify"  { f.move f.deltastop f.iconify }
 Function "move-or-maximize" { f.move f.deltastop f.fullzoom }
 Function "move-or-close"    { f.move f.deltastop f.delete }
+Function "show-iconmgr"     { f.showiconmgr f.warptoiconmgr "" }
 
 
 # ----------------------------------------------------------------------
 #  Mouse Bindings
 #
+
 IconDirectory "~/.twm/bitmaps"
+
 RightTitleButton "icon.xbm"  = f.function "move-or-iconify"
 RightTitleButton "max.xbm"   = f.function "move-or-maximize"
 RightTitleButton "close.xbm" = f.function "move-or-close"
+
 LeftTitleButton  "menu.xbm"  = f.menu "Window Ops"
+
 Button1 = : root : f.menu "RootMenu"
-Button3 = : root : f.showiconmgr
+Button3 = : root : f.function "show-iconmgr"
+
 Button1 = m4 : window|icon : f.function "move-or-lower"
 Button2 = m4 : window|icon : f.iconify
 Button3 = m4 : window|icon : f.resize
+
 Button1 = : title : f.function "move-or-raise"
 Button2 = : title : f.raiselower
+
 Button1 = : icon : f.function "move-or-iconify"
 Button2 = : icon : f.iconify
 
@@ -98,10 +112,8 @@ Button2 = : icon : f.iconify
 # Common WM actions
 "F1"    = m4 : all : f.exec "xterm -e man twm &"
 "F2"    = m4 : all : f.exec "dmenu-launchers &"
-"Down"  = m4 : all : f.bottomzoom
 "Left"  = m4 : all : f.leftzoom
 "Right" = m4 : all : f.rightzoom
-"Up"    = m4 : all : f.topzoom
 "Tab"   = m4 : all : f.circledown
 "d"     = m4 : all : f.exec "dmenu_run-cust -p Run: &"
 "f"     = m4 : all : f.exec "dmenu-filebrowser &"
@@ -150,11 +162,16 @@ Button2 = : icon : f.iconify
 # ----------------------------------------------------------------------
 #  Icon manager
 #
-IconifyByUnmapping
-IconManagerGeometry "500"
-"w" = m4 : all : f.showiconmgr
-Button1 = : iconmgr : f.raise
-Button3 = : iconmgr : f.iconify
+
+"w"      = m4 : all : f.function "show-iconmgr"
+"Escape" = m4 : all : f.hideiconmgr
+"Return" = m4 : all : f.raise
+"Up"     = m4 : all : f.upiconmgr
+"Down"   = m4 : all : f.downiconmgr
+
+Button1 =    : iconmgr : f.raise
+Button2 =    : iconmgr : f.hideiconmgr
+Button3 =    : iconmgr : f.iconify
 
 
 # ----------------------------------------------------------------------
