@@ -104,6 +104,7 @@ Button2 = : title : f.raiselower
 Button1 = : icon : f.function "move-or-iconify"
 Button2 = : icon : f.iconify
 
+Button1 = : frame : f.resize
 
 # ----------------------------------------------------------------------
 #  Keyboard bindings
