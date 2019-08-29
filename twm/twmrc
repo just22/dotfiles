@@ -16,10 +16,11 @@ IconManagerGeometry "500x1+0+0" # Icon manager window initial geometry
 IconifyByUnmapping              # Just use icon manager, no icons
 NoDefaults                      # Turn off default buttons
 NoGrabServer                    # Don't grab server during menus, etc.
-NoHighlight                     # Do not hightlight win border when focused
+# NoHighlight                     # Do not hightlight win border when focused
 NoSaveUnders                    # Just repaint
 RandomPlacement                 # Place windows in a pseudo-random location
 RestartPreviousState            # Re-iconify iconified windows on restart
+ShowIconManager                 # Show icon manager at startup
 UsePPosition "on"               # Honor program-requested locations
 
 
@@ -76,7 +77,7 @@ Function "move-or-raise"    { f.move f.deltastop f.raise }
 Function "move-or-iconify"  { f.move f.deltastop f.iconify }
 Function "move-or-maximize" { f.move f.deltastop f.fullzoom }
 Function "move-or-close"    { f.move f.deltastop f.delete }
-Function "show-iconmgr"     { f.showiconmgr f.warptoiconmgr "" }
+Function "scroll-iconmgr"   { f.showiconmgr f.downiconmgr }
 
 
 # ----------------------------------------------------------------------
@@ -92,7 +93,8 @@ RightTitleButton "close.xbm" = f.function "move-or-close"
 LeftTitleButton  "menu.xbm"  = f.menu "Window Ops"
 
 Button1 = : root : f.menu "RootMenu"
-Button3 = : root : f.function "show-iconmgr"
+Button2 = : root : f.showiconmgr
+Button3 = : root : f.menu "Window Ops"
 
 Button1 = m4 : window|icon : f.function "move-or-lower"
 Button2 = m4 : window|icon : f.iconify
@@ -110,12 +112,16 @@ Button1 = : frame : f.resize
 #  Keyboard bindings
 #
 
+Function "circle-and-focus" { f.circledown f.focus }
+
 # Common WM actions
 "F1"    = m4 : all : f.exec "xterm -e man twm &"
 "F2"    = m4 : all : f.exec "dmenu-launchers &"
 "Left"  = m4 : all : f.leftzoom
 "Right" = m4 : all : f.rightzoom
-"Tab"   = m4 : all : f.circledown
+"grave" = m4 : all : f.circledown
+"backslash" = m4 : all : f.circledown
+"a"     = m4 : all : f.warpto "top"
 "d"     = m4 : all : f.exec "dmenu_run-cust -p Run: &"
 "f"     = m4 : all : f.exec "dmenu-filebrowser &"
 "m"     = m4 : all : f.fullzoom
@@ -125,16 +131,17 @@ Button1 = : frame : f.resize
 "x"     = m4 | c : all : f.destroy
 
 # Application launchers
-"Return" = m4 | s : all : f.exec "x-terminal-emulator &"
+"Return" = m4 | s : all : f.exec "xterm &"
+"a"      = m4 | s : all : f.exec "xterm -e top -1 -s 1 &"
 "b"      = m4 | s : all : f.exec "x-www-browser &"
 "c"      = m4 | s : all : f.exec "dmenu-calc &"
 "d"      = m4 | s : all : f.exec "dmenu-xrandr &"
-"f"      = m4 | s : all : f.exec "x-terminal-emulator -e ranger &"
+"f"      = m4 | s : all : f.exec "xterm -e ranger &"
 "m"      = m4 | s : all : f.exec "x-email-client &"
 "p"      = m4 | s : all : f.exec "play-url -p &"
 "q"      = m4 | s : all : f.exec "dmenu-session-logout &"
 "r"      = m4 | s : all : f.exec "dmenu-timer &"
-"t"      = m4 | s : all : f.exec "x-terminal-emulator -e \"tmux attach-session -d || tmux new-session\" &"
+"t"      = m4 | s : all : f.exec "xterm -e \"tmux attach-session -d || tmux new-session\" &"
 "x"      = m4 | s : all : f.exec "dmenu-xautolock &"
 
 # Configurable keys (site dependent)
@@ -164,14 +171,14 @@ Button1 = : frame : f.resize
 #  Icon manager
 #
 
-"w"      = m4 : all : f.function "show-iconmgr"
-"Escape" = m4 : all : f.hideiconmgr
-"Return" = m4 : all : f.raise
-"Up"     = m4 : all : f.upiconmgr
-"Down"   = m4 : all : f.downiconmgr
+Function "deiconify-and-raise" { f.deiconify f.raise }
+"Tab"    = m4     : all : f.function "scroll-iconmgr"
+"Return" = m4     : all : f.function "deiconify-and-raise"
+"Return" = m4 | c : all : f.iconify
+"Up"     = m4     : all : f.upiconmgr
+"Down"   = m4     : all : f.downiconmgr
 
-Button1 =    : iconmgr : f.raise
-Button2 =    : iconmgr : f.hideiconmgr
+Button1 =    : iconmgr : f.function "deiconify-and-raise"
 Button3 =    : iconmgr : f.iconify
 
 
@@ -181,7 +188,7 @@ Button3 =    : iconmgr : f.iconify
 
 menu "RootMenu" {
         "Twm"           f.title
-        "Terminal"      f.exec "x-terminal-emulator &"
+        "Terminal"      f.exec "xterm &"
         "Web Browser"   f.exec "x-web-browser &"
         "E-mail"        f.exec "x-email-client &"
         "Filemanager"   f.exec "x-filemanager &"
@@ -214,33 +221,33 @@ menu "X Apps" {
 
 menu "Editors" {
         "NEdit"         f.exec "nedit &"
-        "mg"            f.exec "x-terminal-emulator -e mg &"
-        "vi"            f.exec "x-terminal-emulator -e vi &"
+        "mg"            f.exec "xterm -e mg &"
+        "vi"            f.exec "xterm -e vi &"
         "Xedit"         f.exec "xedit &"
         "Xfw"           f.exec "xfw &"
 }
 
 menu "Graphics" {
         "Bitmap"        f.exec "bitmap &"
-        "scanimage"     f.exec "x-terminal-emulator -e scanimage &"
+        "scanimage"     f.exec "xterm -e scanimage &"
         "XDvi"          f.exec "xdvi &"
         "xfig"          f.exec "xfig &"
 }
 
 menu "Network" {
-        "FTP"           f.exec "x-terminal-emulator -e ftp &"
-        "Lynx"          f.exec "x-terminal-emulator -e lynx &"
-        "Mail"          f.exec "x-terminal-emulator -e mail &"
-        "Telnet"        f.exec "x-terminal-emulator -e telnet &"
+        "FTP"           f.exec "xterm -e ftp &"
+        "Lynx"          f.exec "xterm -e lynx &"
+        "Mail"          f.exec "xterm -e mail &"
+        "Telnet"        f.exec "xterm -e telnet &"
 }
 
 menu "Utilities" {
-        "bc"            f.exec "x-terminal-emulator -e bc &"
-        "dc"            f.exec "x-terminal-emulator -e dc &"
+        "bc"            f.exec "xterm -e bc &"
+        "dc"            f.exec "xterm -e dc &"
         "Editres"       f.exec "editres &"
-        "Info"          f.exec "x-terminal-emulator -e info &"
-        "Top"           f.exec "x-terminal-emulator -e top &"
-        "Units"         f.exec "x-terminal-emulator -e units &"
+        "Info"          f.exec "xterm -e info &"
+        "Top"           f.exec "xterm -e top &"
+        "Units"         f.exec "xterm -e units &"
         "User Info"     f.exec "userinfo &"
         "Viewres"       f.exec "viewres &"
         "Xarchiver"     f.exec "xarchiver &"
@@ -249,8 +256,8 @@ menu "Utilities" {
         "Xclock"        f.exec "xclock -digital &"
         "Xconsole"      f.exec "xconsole &"
         "Xcutsel"       f.exec "xcutsel &"
-        "Xev"           f.exec "x-terminal-emulator -e xev &"
-        "eXev"          f.exec "x-terminal-emulator -e exev &"
+        "Xev"           f.exec "xterm -e xev &"
+        "eXev"          f.exec "xterm -e exev &"
         "Xfontsel"      f.exec "xfontsel &"
         "Xkill"         f.exec "xkill &"
         "Xload"         f.exec "xload &"
@@ -270,57 +277,57 @@ menu "Games" {
         "Education"     f.menu "Education"
         "Puzzle"        f.menu "Puzzle"
         "Strategy"      f.menu "Strategy"
-        "Robots"        f.exec "x-terminal-emulator -e robots &"
-        "Star Trek"     f.exec "x-terminal-emulator -e trek &"
+        "Robots"        f.exec "xterm -e robots &"
+        "Star Trek"     f.exec "xterm -e trek &"
 }
 
  menu "Adventure" {
-        "Adventure"     f.exec "x-terminal-emulator -e adventure &"
-        "Battlestar"    f.exec "x-terminal-emulator -e battlestar &"
-        "Hack"          f.exec "x-terminal-emulator -e hack &"
-        "Hunt the Wumpus" f.exec "x-terminal-emulator -e wump &"
-        "Phantasia"     f.exec "x-terminal-emulator -e phantasia &"
+        "Adventure"     f.exec "xterm -e adventure &"
+        "Battlestar"    f.exec "xterm -e battlestar &"
+        "Hack"          f.exec "xterm -e hack &"
+        "Hunt the Wumpus" f.exec "xterm -e wump &"
+        "Phantasia"     f.exec "xterm -e phantasia &"
 }
 
  menu "Amusement" {
         "AA Fire"       f.exec "aafire &"
         "Ico"           f.exec "ico &"
         "Oclock"        f.exec "oclock &"
-        "Rain"          f.exec "x-terminal-emulator -e rain &"
-        "Worms"         f.exec "x-terminal-emulator -e worms &"
+        "Rain"          f.exec "xterm -e rain &"
+        "Worms"         f.exec "xterm -e worms &"
         "Xeyes"         f.exec "xeyes &"
         "Xgc"           f.exec "xgc &"
         "Xlogo"         f.exec "xlogo &"
 }
 
  menu "Arcade" {
-        "Snake"         f.exec "x-terminal-emulator -e snake &"
-        "Worm"          f.exec "x-terminal-emulator -e worm &"
+        "Snake"         f.exec "xterm -e snake &"
+        "Worm"          f.exec "xterm -e worm &"
 }
 
  menu "Board" {
-        "Backgammon"    f.exec "x-terminal-emulator -e backgammon -pb &"
-        "Gomoku"        f.exec "x-terminal-emulator -e gomoku &"
-        "Monopoly"      f.exec "x-terminal-emulator -e monop &"
+        "Backgammon"    f.exec "xterm -e backgammon -pb &"
+        "Gomoku"        f.exec "xterm -e gomoku &"
+        "Monopoly"      f.exec "xterm -e monop &"
 }
 
  menu "Card" {
-        "Canfield"      f.exec "x-terminal-emulator -e canfield &"
-        "Cribbage"      f.exec "x-terminal-emulator -e cribbage &"
-        "Mille Bournes" f.exec "x-terminal-emulator -e mille &"
+        "Canfield"      f.exec "xterm -e canfield &"
+        "Cribbage"      f.exec "xterm -e cribbage &"
+        "Mille Bournes" f.exec "xterm -e mille &"
 }
 
  menu "Education" {
-        "Arithmetic Quiz" f.exec "x-terminal-emulator -e arithmetic &"
+        "Arithmetic Quiz" f.exec "xterm -e arithmetic &"
 }
 
  menu "Puzzle" {
-        "Boggle"        f.exec "x-terminal-emulator -e boggle &"
-        "Hangman"       f.exec "x-terminal-emulator -e hangman &"
+        "Boggle"        f.exec "xterm -e boggle &"
+        "Hangman"       f.exec "xterm -e hangman &"
 }
 
  menu "Strategy" {
-        "Sail"          f.exec "x-terminal-emulator -e sail &"
+        "Sail"          f.exec "xterm -e sail &"
 }
 
 menu "Timer" {
@@ -370,13 +377,14 @@ menu "Print to lpr" {
 
 menu "Window Ops" {
         "Iconify"       f.iconify
+        "Maximize"      f.fullzoom
         "Resize"        f.resize
         "Move"          f.move
         "Raise"         f.raise
         "Lower"         f.lower
-        ""              f.nop
         "Focus"         f.focus
         "Unfocus"       f.unfocus
+        ""              f.nop
         "Show Iconmgr"  f.showiconmgr
         "Hide Iconmgr"  f.hideiconmgr
         ""              f.nop
