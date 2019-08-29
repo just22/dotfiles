@@ -23,8 +23,8 @@ OnTitlebar      Move1           :MacroCmd {If {Matches (Maximized=yes)} {ResizeT
 OnTitlebar      Mouse1          :MacroCmd {Raise} {Focus} {ActivateTab}
 OnTitlebar      Double Mouse1   :MacroCmd {Raise} {Maximize}
 OnTitlebar      Control Mouse1  :StartTabbing
-OnTitlebar      Mouse2          :Exec wmprocs tile v
-OnTitlebar      Control Mouse2  :Exec wmprocs tile h
+OnTitlebar      Mouse2          :ArrangeWindowsStackRight  (Name!=bbager) (Name!=dzen2)
+OnTitlebar      Control Mouse2  :ArrangeWindowsStackBottom (Name!=bbager) (Name!=dzen2)
 OnTitlebar      Mouse3          :WindowMenu
 
 # Click on grip to raise/resize
@@ -95,8 +95,11 @@ Mod4 Control 6          :TakeToWorkspace 6
 Mod4 Control 7          :TakeToWorkspace 7
 
 # Tiling
-Mod4 v                  :Exec wmprocs tile v
-Mod4 h                  :Exec wmprocs tile h
+Mod4 v                  :ArrangeWindowsStackRight  (Name!=bbager) (Name!=dzen2)
+Mod4 h                  :ArrangeWindowsStackBottom (Name!=bbager) (Name!=dzen2)
+Mod4 Control v          :ArrangeWindowsVertical    (Name!=bbager) (Name!=dzen2)
+Mod4 Control h          :ArrangeWindowsHorizontal  (Name!=bbager) (Name!=dzen2)
+
 
 # Common WM actions
 Mod4 F1                 :Exec (fluxbox -v; fluxbox -info | sed 1d) | xmessage -buttons OK:0 -file - -center
