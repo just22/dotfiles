@@ -13,6 +13,7 @@
                 [exec] (Pictures)  {geeqie ~/nfs/photos} </usr/local/share/icons/gnome/16x16/places/folder-pictures.png>
                 [exec] (Videos)    {x-filemanager ~/nfs/videos} </usr/local/share/icons/gnome/16x16/places/folder-videos.png>
         [end]
+        [exec] (Play URL in clip) {play-url -p} </usr/local/share/icons/HighContrast/22x22/actions/media-playback-start.png>
         [submenu] (Take a Screenshot) </usr/local/share/icons/gnome/16x16/devices/camera-photo.png>
                 [exec] (Whole Desktop) {screenshot desktop}
                 [exec] (Select Window/Area) {screenshot}

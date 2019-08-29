@@ -24,7 +24,6 @@
         [include] (~/.fluxbox/menu-quick_launchers)
         [include] (~/.fluxbox/menu-xdg_apps)
         [include] (~/.fluxbox/menu-legacy)
-        [exec] (Play URL in clip) {play-url -p} </usr/local/share/icons/HighContrast/22x22/actions/media-playback-start.png>
         [submenu] (Timer) </home/just22/.local/share/icons/timer.png>
                 [exec] ( 5 min) {timer -t "now +  5 min"}
                 [exec] (10 min) {timer -t "now + 10 min"}
