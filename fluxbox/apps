@@ -74,7 +74,4 @@
 [app] (class=Gsimplecal)
   [Position] (BottomRight) {0 0}
 [end]
-[app] (class!=dzen)
-  [Position] (Center) {0 0}
-[end]
 
