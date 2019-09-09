@@ -61,12 +61,9 @@ _ps1_cmd() {
         esac
 }
 
-# Command line prompt:
-# if this is a POSIX shell, use the default prompt
-if [[ -n "$SH_VERSION" || "$KSH_VERSION" == *93* ]]; then
-        :
-# else use a more informative multi-line prompt
-else
+# If this isn't a strictly POSIX shell, use an informative multi-line prompt
+if [[ -n "$KSH_VERSION" || "$SH_VERSION" == *KSH* || -n "$BASH_VERSION" ]]
+then
         PS1="\[\033[?7l\]"                                                      # Do not wrap prompt line
         PS1="${PS1}${P_NORMCOL}\n"                                              # Empty line
         PS1="${PS1}[${P_USERCOL}\u${P_NORMCOL}@${P_HICOL}\h${P_NORMCOL}]-"      # user@hostname
@@ -78,4 +75,6 @@ else
         #PS1="${PS1}\n${P_NORMCOL}[\A]-\\$ ${RSTCOL}"                            # New line with current time and "prompt char"
         PS1="${PS1}\n${P_NORMCOL}\\$ ${RSTCOL}"                                 # New line with "prompt char"
         PS1="${PS1}\[\033[?7h\]"                                                # Restore line wrapping
+        PS2=">> "                                                               # Secondary prompt string (more input needed)
 fi
+
