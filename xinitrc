@@ -12,11 +12,8 @@ if ! colman set solarized-dark; then
         xrdb -load -I${HOME} ~/.Xresources
 fi
 
-# Set keyboard layout
-setxkbmap it
-
-# Disable Caps Lock
-setxkbmap -option caps:none
+# Set keyboard layout, setxkbmap -option caps:none
+setxkbmap -layout it,us -option grp:shift_caps_toggle -option caps:none
 
 # Enable h/v scrolling for touchpad
 #synclient VertEdgeScroll=1
