@@ -16,7 +16,6 @@ IconManagerGeometry "500x1+0+0" # Icon manager window initial geometry
 IconifyByUnmapping              # Just use icon manager, no icons
 NoDefaults                      # Turn off default buttons
 NoGrabServer                    # Don't grab server during menus, etc.
-# NoHighlight                     # Do not hightlight win border when focused
 NoSaveUnders                    # Just repaint
 RandomPlacement                 # Place windows in a pseudo-random location
 RestartPreviousState            # Re-iconify iconified windows on restart
@@ -27,6 +26,8 @@ UsePPosition "on"               # Honor program-requested locations
 NoTitle {
         "TWM Icon Manager"
         "Xmessage"
+        "dzen2"
+        "stalonetray"
 }
 
 StartIconified {
@@ -49,9 +50,11 @@ IconManagerFont "-*-fixed-bold-r-*-*-13-120-*-*-*-*-*-*"
 #
 Color
 {
-    BorderColor           "rgb:93/a1/a1"
     DefaultBackground     "rgb:2a/a1/98"
     DefaultForeground     "rgb:ee/e8/d5"
+    BorderColor           "rgb:93/a1/a1"
+    BorderTileBackground  "rgb:93/a1/a1"
+    BorderTileForeground  "rgb:93/a1/a1"
     TitleBackground       "rgb:2a/a1/98"
     TitleForeground       "rgb:ee/e8/d5"
     MenuBorderColor       "rgb:07/36/42"
@@ -72,25 +75,28 @@ Color
 #  Custom functions
 #
 MoveDelta 3
-Function "move-or-lower"    { f.move f.deltastop f.lower }
-Function "move-or-raise"    { f.move f.deltastop f.raise }
-Function "move-or-iconify"  { f.move f.deltastop f.iconify }
-Function "move-or-maximize" { f.move f.deltastop f.fullzoom }
-Function "move-or-close"    { f.move f.deltastop f.delete }
-Function "scroll-iconmgr"   { f.showiconmgr f.downiconmgr }
+Function "move-or-lower"        { f.move f.deltastop f.lower }
+Function "move-or-raise"        { f.move f.deltastop f.raise }
+Function "move-or-iconify"      { f.move f.deltastop f.iconify }
+Function "move-or-maximize"     { f.move f.deltastop f.fullzoom }
+Function "move-or-close"        { f.move f.deltastop f.delete }
+Function "scroll-iconmgr"       { f.showiconmgr f.downiconmgr }
+Function "deiconify-raise"      { f.deiconify f.raise }
+
+
+# ----------------------------------------------------------------------
+#  Buttons
+#
+IconDirectory "~/.twm/bitmaps"
+RightTitleButton "icon.xbm"  = f.function "move-or-iconify"
+RightTitleButton "max.xbm"   = f.function "move-or-maximize"
+RightTitleButton "close.xbm" = f.function "move-or-close"
+LeftTitleButton  "menu.xbm"  = f.menu "RootMenu"
 
 
 # ----------------------------------------------------------------------
 #  Mouse Bindings
 #
-
-IconDirectory "~/.twm/bitmaps"
-
-RightTitleButton "icon.xbm"  = f.function "move-or-iconify"
-RightTitleButton "max.xbm"   = f.function "move-or-maximize"
-RightTitleButton "close.xbm" = f.function "move-or-close"
-
-LeftTitleButton  "menu.xbm"  = f.menu "Window Ops"
 
 Button1 = : root : f.menu "RootMenu"
 Button2 = : root : f.showiconmgr
@@ -102,26 +108,43 @@ Button3 = m4 : window|icon : f.resize
 
 Button1 = : title : f.function "move-or-raise"
 Button2 = : title : f.raiselower
+Button3 = : title : f.resize
 
 Button1 = : icon : f.function "move-or-iconify"
 Button2 = : icon : f.iconify
 
 Button1 = : frame : f.resize
 
+
+# ----------------------------------------------------------------------
+#  Icon manager
+#
+
+"w"      = m4 : all     : f.warptoiconmgr ""
+# "Return" =    : iconmgr : f.function "deiconify-raise"
+# "Return" = c  : iconmgr : f.iconify
+# "Up"     =    : iconmgr : f.upiconmgr
+# "Down"   =    : iconmgr : f.downiconmgr
+
+Button1 = : iconmgr : f.function "deiconify-raise"
+Button2 = : iconmgr : f.raise
+Button3 = : iconmgr : f.iconify
+
+
 # ----------------------------------------------------------------------
 #  Keyboard bindings
 #
-
-Function "circle-and-focus" { f.circledown f.focus }
 
 # Common WM actions
 "F1"    = m4 : all : f.exec "xterm -e man twm &"
 "F2"    = m4 : all : f.exec "dmenu-launchers &"
 "Left"  = m4 : all : f.leftzoom
 "Right" = m4 : all : f.rightzoom
-"grave" = m4 : all : f.circledown
+"Up"    = m4 : all : f.topzoom
+"Down"  = m4 : all : f.bottomzoom
+"Tab"   = m4 : all : f.circledown
 "backslash" = m4 : all : f.circledown
-"a"     = m4 : all : f.warpto "top"
+"a"     = m4 : all : f.warpto "slstatus"
 "d"     = m4 : all : f.exec "dmenu_run-cust -p Run: &"
 "f"     = m4 : all : f.exec "dmenu-filebrowser &"
 "m"     = m4 : all : f.fullzoom
@@ -136,7 +159,7 @@ Function "circle-and-focus" { f.circledown f.focus }
 "b"      = m4 | s : all : f.exec "x-www-browser &"
 "c"      = m4 | s : all : f.exec "dmenu-calc &"
 "d"      = m4 | s : all : f.exec "dmenu-xrandr &"
-"f"      = m4 | s : all : f.exec "xterm -e ranger &"
+"f"      = m4 | s : all : f.exec "x-filemanager &"
 "m"      = m4 | s : all : f.exec "x-email-client &"
 "p"      = m4 | s : all : f.exec "play-url -p &"
 "q"      = m4 | s : all : f.exec "dmenu-session-logout &"
@@ -165,21 +188,6 @@ Function "circle-and-focus" { f.circledown f.focus }
 "k"      = m4 | s : all : f.exec "dmenu-kbd &"
 "l"      = m4 | s : all : f.exec "dmenu-lpr &"
 "s"      = m4 | s : all : f.exec "zzz &"
-
-
-# ----------------------------------------------------------------------
-#  Icon manager
-#
-
-Function "deiconify-and-raise" { f.deiconify f.raise }
-"Tab"    = m4     : all : f.function "scroll-iconmgr"
-"Return" = m4     : all : f.function "deiconify-and-raise"
-"Return" = m4 | c : all : f.iconify
-"Up"     = m4     : all : f.upiconmgr
-"Down"   = m4     : all : f.downiconmgr
-
-Button1 =    : iconmgr : f.function "deiconify-and-raise"
-Button3 =    : iconmgr : f.iconify
 
 
 # ----------------------------------------------------------------------
@@ -394,20 +402,6 @@ menu "Window Ops" {
 Menu "Close Window" {
         "Delete Window" f.delete
         "Kill Window"   f.destroy
-}
-
-menu "Restart" {
-        "Restart"       f.restart
-        ""              f.nop
-        "twm"           f.startwm "twm"
-        "fvwm"          f.startwm "fvwm"
-        "cwm"           f.startwm "cwm"
-        "wm2"           f.startwm "wm2"
-        "ctwm"          f.startwm "ctwm"
-        "mwm"           f.startwm "mwm"
-        "olwm"          f.startwm "olwm"
-        ""              f.nop
-        "dummy"         f.startwm "xterm"
 }
 
 menu "Exit Session" {
