@@ -783,24 +783,9 @@ nmap <silent> <C-w>o :call ZoomWin()<CR>
 " Omni-completion function (when available)
 inoremap @@ <C-x><C-o>
 
-" Use <Space>/<C-Space> for scrolling
-nnoremap <Space> 
-nnoremap <C-@> 
-vnoremap <Space> 
-vnoremap <C-@> 
-
 " Keep selected text when fixing indentation
 vnoremap < <gv
 vnoremap > >gv
-
-" Map ENTER and BACKSPACE in NORMAL/VISUAL mode to move among paragraphs
-nnoremap <BS> {z.
-onoremap <BS> {
-vnoremap <BS> {
-
-nnoremap <expr> <CR> empty(&buftype) ? '}z.' : '<CR>'
-onoremap <expr> <CR> empty(&buftype) ? '}' : '<CR>'
-vnoremap <CR> }
 
 " Map <C-Tab> to <Tab> to allow inserting a tab character not at the beginning
 " of the line (when g:SuperTabMappingForward is set to '<tab>')
@@ -926,11 +911,13 @@ nmap <leader>gf :e <cfile><CR>
 
 " ** I ** Insert specific elements
 "
-" Attribution line: author, date
-nmap <silent> <leader>ia oAdL, <Esc>:r !date +\%Y-\%m-\%d<CR>kJgcc$
+" Attribution line: author, date [: <note>]
+nmap <silent> <leader>ia :set paste<CR>oAdL, <Esc>
+                        \:set nopaste<CR>:r !date +\%Y-\%m-\%d:\ <CR>kJgccA
 "
 " Copyright line
-nmap <silent> <leader>ic O(C) <Esc>:r !date +\%Y<CR>kJA Alessandro De Laurenzis <just22.adl@gmail.com><Esc>gcc
+nmap <silent> <leader>ic o(C) <Esc>
+                        \:r !date +\%Y<CR>kJA Alessandro De Laurenzis <just22.adl@gmail.com><Esc>gcc
 "
 " File header
 nmap <silent> <leader>ih 1GO#!/bin/sh<CR><CR>
@@ -970,12 +957,9 @@ map <silent> <leader>il :set paste<CR>o
                         \OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.<CR><Esc>
                         \mz:set nopaste<CR>V`wgc`z
 "
-" Note
-nmap <silent> <leader>in oAdL: <Esc>gccA
-"
 " Snip lines
 nmap <silent> <leader>is o[...]<Esc>j0
-nmap <silent> <leader>iS o[....................snip....................]<Esc>j0
+nmap <silent> <leader>iS o[................... snip ...................]<Esc>j0
 
 " ** K ** See killall keybind in autocmd section
 
