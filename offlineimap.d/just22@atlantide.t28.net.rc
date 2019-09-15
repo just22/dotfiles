@@ -1,0 +1,36 @@
+# Offlineimap config file
+
+[general]
+metadata = ~/.offlineimap
+pythonfile = ~/.offlineimaprc.d/offlineimap.py
+maxsyncaccounts = 1
+accounts = just22@atlantide.t28.net
+ui = TTYUI
+socktimeout = 60
+
+[Account just22@atlantide.t28.net]
+localrepository = just22@atlantide.t28.net-local
+remoterepository = just22@atlantide.t28.net-remote
+autorefresh = 1
+quick = 9
+
+[Repository just22@atlantide.t28.net-local]
+type = Maildir
+localfolders = ~/mail/just22@atlantide.t28.net
+sep = /
+
+[Repository just22@atlantide.t28.net-remote]
+type = IMAP
+remotehost = atlantide.t28.net
+ssl = yes
+cert_fingerprint = 0B5D032A11C8046FD18ED02BAEAFB34A699513A8
+remoteuser = just22@atlantide.t28.net
+remotepasseval = imap_passwd("just22@atlantide.t28.net")
+maxconnections = 5
+holdconnectionopen = yes
+singlethreadperfolder = yes
+idlefolders = ['INBOX',
+               'Mailing lists/OpenBSD/bugs',
+               'Mailing lists/OpenBSD/misc',
+               'Mailing lists/OpenBSD/ports',
+               'Mailing lists/OpenBSD/tech']

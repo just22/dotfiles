@@ -1,0 +1,46 @@
+# Offlineimap config file
+
+[general]
+metadata = ~/.offlineimap
+pythonfile = ~/.offlineimaprc.d/offlineimap.py
+maxsyncaccounts = 1
+accounts = sandro.delaurenzis@gmail.com
+ui = TTYUI
+socktimeout = 60
+
+[Account sandro.delaurenzis@gmail.com]
+localrepository = sandro.delaurenzis@gmail.com-local
+remoterepository = sandro.delaurenzis@gmail.com-remote
+synclabels = yes
+autorefresh = 1
+quick = 9
+
+[Repository sandro.delaurenzis@gmail.com-local]
+type = GmailMaildir
+localfolders = ~/mail/sandro.delaurenzis@gmail.com
+nametrans = lambda folder: {'Drafts':  '[Gmail]/Drafts',
+                            'Sent':    '[Gmail]/Sent Mail',
+                            'Trash':   '[Gmail]/Trash',
+                            'Junk':    '[Gmail]/Spam',
+                            }.get(folder, folder)
+
+[Repository sandro.delaurenzis@gmail.com-remote]
+type = Gmail
+ssl = yes
+sslcacertfile = /etc/ssl/cert.pem
+remoteuser = sandro.delaurenzis@gmail.com
+remotepasseval = imap_passwd("sandro.delaurenzis@gmail.com")
+nametrans = lambda folder: {'[Gmail]/Drafts':    'Drafts',
+                            '[Gmail]/Sent Mail': 'Sent',
+                            '[Gmail]/Trash':     'Trash',
+                            '[Gmail]/Spam':      'Junk',
+                           }.get(folder, folder)
+folderfilter = lambda folder: \
+                    folder not in ['[Gmail]/Starred',
+                                   '[Gmail]/Important',
+                                   '[Gmail]/All Mail',
+                                  ]
+maxconnections = 1
+holdconnectionopen = yes
+singlethreadperfolder = yes
+idlefolders = ['INBOX']
