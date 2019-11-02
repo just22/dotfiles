@@ -7,9 +7,10 @@
 # ----------------------------------------------------------------------
 # Global variables
 #
-PipeRead 'echo InfostoreAdd max_xdim $(($[vp.width]-4))'
-#PipeRead 'echo InfostoreAdd max_xdim $(($(~/bin/getPrimaryMonitorRes -w)-4))'
-PipeRead 'echo InfostoreAdd systray_xdim $(($[infostore.max_xdim]-1050))'
+# PipeRead 'echo InfostoreAdd max_xdim $(($[vp.width]-2))'
+PipeRead 'echo InfostoreAdd max_xdim $(($(screen-width)))'
+PipeRead 'echo InfostoreAdd taskbar_xdim $(($[infostore.max_xdim] - 480))'
+PipeRead 'echo InfostoreAdd statusbar_xdim $(($[infostore.max_xdim] - 480))'
 SetEnv FVWM_SCRIPTS $[FVWM_USERDIR]/scripts
 ModulePath $[FVWM_USERDIR]/modules:+
 
@@ -68,13 +69,16 @@ Style "*" MwmButtons
 # ----------------------------------------------------------------------
 # Virtual desktops
 #
-DesktopSize    1x1
-DesktopName    0 Term
-DesktopName    1 GUI
-DesktopName    2 Aux
-DesktopName    3 Mail
-DesktopName    4 Web
-DesktopName    5 Adm
+DesktopSize    5x1
+# DesktopName    0 Term
+# DesktopName    1 GUI
+# DesktopName    2 Aux
+# DesktopName    3 Mail
+# DesktopName    4 Web
+# DesktopName    5 Adm
+DesktopName    0 Prj1
+DesktopName    1 Prj2
+DesktopName    2 Prj3
 EdgeScroll     0 0
 
 
@@ -89,7 +93,7 @@ Style * SloppyFocus, MouseFocusClickRaisesOff
 # ----------------------------------------------------------------------
 # Working area definition
 #
-EwmhBaseStruts 0 0 22 22
+# EwmhBaseStruts 0 0 0 22
 
 
 # ----------------------------------------------------------------------
@@ -151,8 +155,7 @@ Style Transmission !Iconifiable, StaysOnTop, Sticky, WindowListSkip, CirculateSk
 DestroyFunc StartFunction
 AddToFunc   StartFunction
 + I Module FvwmCommandS
-+ I Module FvwmTaskBar
-+ I Module FvwmButtons -g $[infostore.max_xdim]x17 upperStatusLine
++ I Module FvwmButtons -g $[infostore.max_xdim]x54+0-0@p panel
 + I Module FvwmPiazza
 + I Test (Init) Exec exec conky -c ${HOME}/.config/conky/conkyrc-rwin
 + I Exec exec xsetroot -solid rgb:07/36/42
@@ -161,40 +164,40 @@ AddToFunc   StartFunction
 # ----------------------------------------------------------------------
 # Functions binded to window's buttons
 #
-DestroyFunc CustFuncDeleteOrDestroy
-AddToFunc   CustFuncDeleteOrDestroy
+DestroyFunc CustDeleteOrDestroy
+AddToFunc   CustDeleteOrDestroy
 + I Nop
 + H Nop
 + M Nop
 + C Delete
 + D Destroy
 
-DestroyFunc CustFuncIconifyOrShade
-AddToFunc   CustFuncIconifyOrShade
+DestroyFunc CustIconifyOrShade
+AddToFunc   CustIconifyOrShade
 + I Nop
 + H Nop
 + M Nop
 + C Iconify
 + D WindowShade
 
-DestroyFunc CustFuncMaximize
-AddToFunc   CustFuncMaximize
+DestroyFunc CustMaximize
+AddToFunc   CustMaximize
 + I Nop
 + H Nop
 + M Nop
 + C Maximize $0 $1
 + D Nop
 
-DestroyFunc CustFuncMoveDrag
-AddToFunc   CustFuncMoveDrag
+DestroyFunc CustMoveDrag
+AddToFunc   CustMoveDrag
 + I Nop
 + H Move
 + M Nop
 + C Nop
 + D Nop
 
-DestroyFunc CustFuncWindowShade
-AddToFunc   CustFuncWindowShade
+DestroyFunc CustWindowShade
+AddToFunc   CustWindowShade
 + I Nop
 + H Nop
 + M Nop
@@ -206,77 +209,76 @@ AddToFunc   CustFuncWindowShade
 # Custom functions
 #
 
-DestroyDecor CustFuncDeiconifyRaiseAndFocus
-AddToFunc    CustFuncDeiconifyRaiseAndFocus
+DestroyDecor CustDeiconifyRaiseAndFocus
+AddToFunc    CustDeiconifyRaiseAndFocus
 + I Iconify off
 + I Raise
 + I Focus
 
-DestroyDecor CustFuncTaskBarAction
-AddToFunc    CustFuncTaskBarAction
-+ I ThisWindow (!Raised) CustFuncDeiconifyRaiseAndFocus
+DestroyDecor CustTaskBarAction
+AddToFunc    CustTaskBarAction
++ I ThisWindow (!Raised) CustDeiconifyRaiseAndFocus
 + I TestRc (Match) Break
-+ I ThisWindow (!Focused) CustFuncDeiconifyRaiseAndFocus
++ I ThisWindow (!Focused) CustDeiconifyRaiseAndFocus
 + I TestRc (Match) Break
 + I ThisWindow (!Iconic) Iconify on
 + I TestRc (Match) Break
-+ I CustFuncDeiconifyRaiseAndFocus
++ I CustDeiconifyRaiseAndFocus
 
-DestroyDecor CustFuncMoveToDeskAndSwitch
-AddToFunc    CustFuncMoveToDeskAndSwitch
+DestroyDecor CustMoveToDeskAndSwitch
+AddToFunc    CustMoveToDeskAndSwitch
 + I MoveToDesk $0 $1
 + I GotoDesk   $0 $1
 + I Raise
 + I Focus
 #+ I WarpToWindow 50 50
 
-DestroyDecor CustFuncMoveToDeskAndUnfocus
-AddToFunc    CustFuncMoveToDeskAndUnfocus
+DestroyDecor CustMoveToDeskAndUnfocus
+AddToFunc    CustMoveToDeskAndUnfocus
 + I MoveToDesk $0 $1
 + I Next (AcceptsFocus, CurrentDesk) Focus
 #+ I WarpToWindow 50 50
 
-DestroyDecor CustFuncNextSwitchFocusAndRaise
-AddToFunc    CustFuncNextSwitchFocusAndRaise
+DestroyDecor CustNextSwitchFocusAndRaise
+AddToFunc    CustNextSwitchFocusAndRaise
 + I Next (AcceptsFocus, CurrentDesk) Iconify Off
 + I Next (AcceptsFocus, CurrentDesk) Raise
 + I Next (AcceptsFocus, CurrentDesk) Focus
 
-DestroyDecor CustFuncPrevSwitchFocusAndRaise
-AddToFunc    CustFuncPrevSwitchFocusAndRaise
+DestroyDecor CustPrevSwitchFocusAndRaise
+AddToFunc    CustPrevSwitchFocusAndRaise
 + I Prev (AcceptsFocus) Iconify Off
 + I Prev (AcceptsFocus) Raise
 + I Prev (AcceptsFocus) Focus
 
-DestroyFunc CustFuncUniqueInstLauncher
-AddToFunc   CustFuncUniqueInstLauncher
+DestroyFunc CustWarpOrExec
+AddToFunc   CustWarpOrExec
 + I Next ("$0") Iconify off
 + I Next ("$0") Raise
 + I Next ("$0") Focus
 + I Next ("$0") WarpToWindow 50 50
 + I TestRc (NoMatch) Exec exec $1
-#+ I TestRc (NoMatch) None ($0) Exec exec $1
 
-DestroyFunc CustFuncOpenURL
-AddToFunc   CustFuncOpenURL
+DestroyFunc CustOpenURL
+AddToFunc   CustOpenURL
 + I Exec exec $[FVWM_BROWSER] $1
 + I Next ("$0") Iconify off
 + I Next ("$0") Raise
 + I Next ("$0") Focus
 + I Next ("$0") WarpToWindow 50 50
 
-DestroyFunc CustFuncMaximizeMove
-AddToFunc   CustFuncMaximizeMove
+DestroyFunc CustMaximizeMove
+AddToFunc   CustMaximizeMove
 + I Maximize on $0 $1
 + I Move $2 $3
 + I WarpToWindow 50 50
 
-DestroyFunc CustFuncCloseAll
-AddToFunc   CustFuncCloseAll
+DestroyFunc CustCloseAll
+AddToFunc   CustCloseAll
 + I All (CurrentDesk, AcceptsFocus) Close
 
-DestroyFunc CustFuncShowDesktop
-AddToFunc   CustFuncShowDesktop
+DestroyFunc CustShowDesktop
+AddToFunc   CustShowDesktop
 + I All (CurrentDesk, !Iconic, AcceptsFocus) Iconify
 
 
@@ -306,11 +308,11 @@ AddToMenu   FvwmWindowCtrlMenu
 # Mouse buttons bindings
 #
 Mouse 0 1 A Nop
-Mouse 1 2 A CustFuncDeleteOrDestroy
+Mouse 1 2 A CustDeleteOrDestroy
 Mouse 3 T A Menu FvwmWindowCtrlMenu
-Mouse 1 4 A CustFuncMaximize 100 100
-Mouse 1 6 A CustFuncIconifyOrShade
-Mouse 1 A 4 CustFuncMoveDrag
+Mouse 1 4 A CustMaximize 100 100
+Mouse 1 6 A CustIconifyOrShade
+Mouse 1 A 4 CustMoveDrag
 
 
 # ----------------------------------------------------------------------
@@ -326,9 +328,9 @@ Mouse 1 A 4 CustFuncMoveDrag
 # 7 = Hilight colors
 # 8 = Alternate colors
 #
-Colorset 0 fg rgb:EE/E8/D5, bg rgb:58/6E/75
-Colorset 1 fg rgb:07/36/42, bg rgb:83/94/96
-Colorset 2 fg rgb:EE/E8/D5, bg rgb:83/94/96
+Colorset 0 fg rgb:07/36/42, bg rgb:ee/e8/d5
+Colorset 1 fg rgb:EE/E8/D5, bg rgb:58/6E/75
+Colorset 2 fg rgb:07/36/42, bg rgb:ee/e8/d5
 Colorset 3 fg rgb:EE/E8/D5, bg rgb:58/6E/75
 Colorset 4 fg rgb:EE/E8/D5, bg rgb:83/94/96
 Colorset 5 bg rgb:83/94/96
@@ -373,8 +375,8 @@ AddToDecor   defaultWinDecor
 + ButtonStyle 6 - Clear MWMDecorMin
 
 Style * UseDecor defaultWinDecor
-#Style * Font "xft:DejaVu Sans Mono:size=8"
-Style * Font -*-terminus-medium-*-*-*-12-*-*-*-*-*-iso8859-1
+Style * Font "xft:DejaVu Sans:size=8"
+# Style * Font -*-terminus-medium-*-*-*-12-*-*-*-*-*-iso8859-1
 Style * MWMBorder
 Style * BorderWidth 2
 Style * HandleWidth 3
@@ -396,48 +398,77 @@ CursorStyle MENU    left_ptr
 # FvwmTaskBar
 #
 
-Style FvwmTaskBar NoTitle
-Style FvwmTaskBar !Handles
-Style FvwmTaskBar !Borders
-Style FvwmTaskBar Sticky
-Style FvwmTaskBar WindowListSkip
-Style FvwmTaskBar CirculateSkip
-Style FvwmTaskBar StaysOnTop
-Style FvwmTaskBar FixedPosition
-Style FvwmTaskBar FixedSize
-Style FvwmTaskBar !Iconifiable
-Style FvwmTaskBar NeverFocus
+#Style FvwmTaskBar NoTitle
+#Style FvwmTaskBar !Handles
+#Style FvwmTaskBar !Borders
+#Style FvwmTaskBar Sticky
+#Style FvwmTaskBar WindowListSkip
+#Style FvwmTaskBar CirculateSkip
+#Style FvwmTaskBar StaysOnTop
+#Style FvwmTaskBar FixedPosition
+#Style FvwmTaskBar FixedSize
+#Style FvwmTaskBar !Iconifiable
+#Style FvwmTaskBar NeverFocus
 
-DestroyModuleConfig FvwmTaskBar: *
-*FvwmTaskBar: Geometry +0-0@p
-*FvwmTaskBar: Rows 1
-*FvwmTaskBar: Pad 1
-#*FvwmTaskBar: Font "xft:DejaVu Sans Mono:size=8"
-*FvwmTaskBar: Font -*-terminus-medium-*-*-*-12-*-*-*-*-*-iso8859-1
-#*FvwmTaskBar: SelFont "xft:DejaVu Sans Mono:size=8"
-*FvwmTaskBar: SelFont -*-terminus-medium-*-*-*-12-*-*-*-*-*-iso8859-1
-#*FvwmTaskBar: StatusFont "xft:DejaVu Sans Mono:size=8"
-*FvwmTaskBar: StatusFont -*-terminus-medium-*-*-*-12-*-*-*-*-*-iso8859-1
-*FvwmTaskBar: Colorset 0
-*FvwmTaskBar: IconColorset 0
-*FvwmTaskBar: FocusColorset 0
-#*FvwmTaskBar: TipsColorset 9
-*FvwmTaskBar: UseSkipList
-#*FvwmTaskBar: UseIconNames
-*FvwmTaskBar: ShowTips
-*FvwmTaskBar: DeskOnly
-*FvwmTaskBar: Action Click1 CustFuncTaskBarAction
-*FvwmTaskBar: Action Click2 FvwmIdent
-*FvwmTaskBar: StartName Start
-*FvwmTaskBar: StartIcon /usr/local/share/icons/gnome/16x16/actions/system-run.png
-*FvwmTaskBar: StartMenu FvwmRootMenu
-*FvwmTaskBar: ClockFormat %a %d/%m (%V) %R
-*FvwmTaskBar: MailBox None
-*FvwmTaskBar: NoDefaultStartButton
-*FvwmTaskBar: NoBrightFocus
-*FvwmTaskBar: 3DFvwm
-#*FvwmTaskBar: WindowButtonsRightMargin 124
+#DestroyModuleConfig FvwmTaskBar: *
+#*FvwmTaskBar: Geometry +0-0@p
+#*FvwmTaskBar: Rows 1
+#*FvwmTaskBar: Pad 1
+#*FvwmTaskBar: Colorset 0
+#*FvwmTaskBar: IconColorset 0
+#*FvwmTaskBar: FocusColorset 0
+##*FvwmTaskBar: TipsColorset 9
+#*FvwmTaskBar: UseSkipList
+##*FvwmTaskBar: UseIconNames
+#*FvwmTaskBar: ShowTips
+#*FvwmTaskBar: DeskOnly
+#*FvwmTaskBar: Action Click1 CustTaskBarAction
+#*FvwmTaskBar: Action Click2 FvwmIdent
+#*FvwmTaskBar: StartName Start
+#*FvwmTaskBar: StartIcon /usr/local/share/icons/gnome/16x16/actions/system-run.png
+#*FvwmTaskBar: StartMenu FvwmRootMenu
+#*FvwmTaskBar: ClockFormat %a %d/%m (%V) %R
+#*FvwmTaskBar: MailBox None
+#*FvwmTaskBar: NoDefaultStartButton
+#*FvwmTaskBar: NoBrightFocus
+#*FvwmTaskBar: 3DFvwm
+##*FvwmTaskBar: WindowButtonsRightMargin 124
 
+# ----------------------------------------------------------------------
+# TaskBarIcons
+#
+DestroyModuleConfig TaskBarIcons: *
+*TaskBarIcons: IconName TaskBarIcons
+*TaskBarIcons: UseWinList true
+*TaskBarIcons: Resolution page
+# *TaskBarIcons: Tips needed
+*TaskBarIcons: Title ""
+*TaskBarIcons: Font "xft:DejaVu Sans:size=8:antialias=True"
+
+# Size
+*TaskBarIcons: ButtonGeometry 120x27
+*TaskBarIcons: MaxButtonWidth 120
+*TaskBarIcons: ManagerGeometry 1x1
+
+# Button Styles
+*TaskBarIcons: DrawIcons always
+*TaskBarIcons: ReliefThickness 1
+*TaskBarIcons: Format "%t"
+*TaskBarIcons: IconButton down
+*TaskBarIcons: IconAndSelectButton down
+*TaskBarIcons: SelectButton up
+*TaskBarIcons: Background rgb:ee/e8/d5
+*TaskBarIcons: Foreground rgb:07/36/42
+# *TaskBarIcons: PlainColorset 15
+# *TaskBarIcons: FocusColorset 16
+# *TaskBarIcons: FocusAndSelectColorset 16
+# *TaskBarIcons: SelectColorset 16
+# *TaskBarIcons: IconAndSelectColorset 16
+
+# Button Actions
+*TaskBarIcons: Action Mouse 1 A sendcommand "CustTaskBarAction"
+*TaskBarIcons: Action Mouse 2 A sendcommand "FvwmIdent"
+*TaskBarIcons: Action Mouse 3 A sendcommand "Menu MenuIconOps Mouse 0 o100"
 
 # ----------------------------------------------------------------------
 # FvwmPager
@@ -447,20 +478,23 @@ Style FvwmPager NoTitle,  Sticky, WindowListSkip, CirculateSkipIcon
 Style FvwmPager CirculateSkip, NoHandles, BorderWidth 0
 
 DestroyModuleConfig FvwmPager: *
-*FvwmPager: Colorset * 8
-*FvwmPager: Rows 1
-*FvwmPager: Hilight rgb:EE/E8/D5
+*FvwmPager: Rows 3
+*FvwmPager: Fore rgb:07/36/42
+*FvwmPager: Back rgb:ee/e8/d5
+*FvwmPager: Hilight rgb:2a/a1/98
+*FvwmPager: WindowColors rgb:93/a1/a1 rgb:93/a1/a1 rgb:dc/32/2f rgb:dc/32/2f
 *FvwmPager: Font None
 *FvwmPager: SmallFont None
+*FvwmPager: BalloonFore rgb:07/36/42
+*FvwmPager: BalloonBack rgb:EE/E8/D5
 *FvwmPager: Balloons All
-#*FvwmPager: BalloonFont "xft:DejaVu Sans Mono:size=8"
-*FvwmPager: BalloonFont -*-terminus-medium-*-*-*-12-*-*-*-*-*-iso8859-1
 *FvwmPager: BalloonYOffset +2
 *FvwmPager: BalloonBorderWidth 1
+*FvwmPager: BalloonFont "xft:DejaVu Sans:size=8"
 *FvwmPager: UseSkipList
 *FvwmPager: MoveThreshold 3
 *FvwmPager: WindowLabelFormat ""
-*FvwmPager: MiniIcons
+# *FvwmPager: MiniIcons
 
 
 # ----------------------------------------------------------------------
@@ -468,49 +502,80 @@ DestroyModuleConfig FvwmPager: *
 #
 DestroyModuleConfig FvwmScript
 *FvwmScript: DefaultColorset 0
-#*FvwmScript: DefaultFont "xft:DejaVu Sans Mono:size=8"
-*FvwmScript: DefaultFont -*-terminus-medium-*-*-*-12-*-*-*-*-*-iso8859-1
 
 
 # ----------------------------------------------------------------------
 # Upper status line
 #
 
-DestroyModuleConfig upperStatusLine: *
-*upperStatusLine: Columns $[infostore.max_xdim]
-*upperStatusLine: Rows 1
-*upperStatusLine: Colorset 0
-*upperStatusLine: BoxSize smart
-*upperStatusLine: (205x1, Swallow "FvwmPager" "FvwmPager 0 5")
-*upperStatusLine: ( 70x1, Swallow "FvwmApplet-cpu"     'Module FvwmScript $[FVWM_SCRIPTS]/FvwmApplet-cpu', \
-                          Action (Mouse 1) CustFuncUniqueInstLauncher 'Process monitor' '$[FVWM_TERM] -title "Process monitor" -e top')
-*upperStatusLine: ( 70x1, Swallow "FvwmApplet-ram"     'Module FvwmScript $[FVWM_SCRIPTS]/FvwmApplet-ram')
-*upperStatusLine: ( 95x1, Swallow "FvwmApplet-io"      'Module FvwmScript $[FVWM_SCRIPTS]/FvwmApplet-io')
-*upperStatusLine: (175x1, Swallow "FvwmApplet-if"      'Module FvwmScript $[FVWM_SCRIPTS]/FvwmApplet-if')
-*upperStatusLine: ( 70x1, Swallow "FvwmApplet-vol"     'Module FvwmScript $[FVWM_SCRIPTS]/FvwmApplet-vol')
-*upperStatusLine: ( 95x1, Swallow "FvwmApplet-batt"    'Module FvwmScript $[FVWM_SCRIPTS]/FvwmApplet-batt')
-*upperStatusLine: (125x1, Swallow "FvwmApplet-fs"      'Module FvwmScript $[FVWM_SCRIPTS]/FvwmApplet-fs')
-*upperStatusLine: ( 95x1, Swallow "FvwmApplet-mbox"    'Module FvwmScript $[FVWM_SCRIPTS]/FvwmApplet-mbox', \
-                          Action (Mouse 1) CustFuncUniqueInstLauncher 'E-mail client' '$[FVWM_TERM] -title "E-mail client" -e $[FVWM_MAILER]')
-*upperStatusLine: ( 50x1, Swallow "FvwmApplet-weather" 'Module FvwmScript $[FVWM_SCRIPTS]/FvwmApplet-weather', \
-                          Action (Mouse 1) CustFuncOpenURL '*Seamonkey' 'http://openweathermap.org/city/3173435')
-*upperStatusLine: (Right, $[infostore.systray_xdim]x1, swallow "stalonetray" 'Exec exec stalonetray -bg rgb:58/6E/75 --icon-size 16 --slot-size 20')
-#*upperStatusLine: (145x1, swallow "xclock" 'Exec exec xclock -digital -face "DejaVu Sans Mono:size=8" -render -fg rgb:EA/EB/EC -bg rgb:07/36/42 -padding 0 -strftime "%a %d/%m (%V) %R"')
-*upperStatusLine: Frame 1
-#*upperStatusLine: Font "xft:DejaVu Sans Mono:size=8"
-*upperStatusLine: Font -*-terminus-medium-*-*-*-12-*-*-*-*-*-iso8859-1
+DestroyModuleConfig panel: *
+*panel: Colorset 0
+*panel: Frame 1
+*panel: Rows 54
+*panel: Columns $[infostore.max_xdim]
+*panel: BoxSize fixed
 
-Style upperStatusLine StartsOnScreen c
-Style upperStatusLine NoTitle
-Style upperStatusLine !Handles
-Style upperStatusLine Sticky
-Style upperStatusLine WindowListSkip
-Style upperStatusLine CirculateSkip
-Style upperStatusLine StaysOnTop
-Style upperStatusLine FixedPosition
-Style upperStatusLine FixedSize
-Style upperStatusLine !Iconifiable
-Style upperStatusLine NeverFocus
+# Launchers
+*panel  ( 30x27, \
+          Icon /usr/local/share/icons/gnome/16x16/apps/terminal.png, \
+          Action `Exec exec xterm`)
+*panel  ( 30x27, \
+          Icon /usr/local/share/icons/gnome/16x16/apps/web-browser.png, \
+          Action `CustWarpOrExec 'Chromium-browser' 'chrome'`)
+*panel  ( 30x27, \
+          Icon /usr/local/share/icons/gnome/16x16/emblems/emblem-mail.png, \
+          Action `Exec exec x-email-client`)
+*panel  ( 30x27, \
+          Icon /usr/local/share/icons/gnome/16x16/apps/file-manager.png, \
+          Action `Exec exec x-filemanager`)
+*panel  ( 30x27, \
+          Icon /usr/local/share/icons/gnome/16x16/apps/text-editor.png, \
+          Action `Exec exec x-text-editor`)
+
+# Taskbar
+*panel  ($[infostore.taskbar_xdim]x27, Left, \
+         Swallow TaskBarIcons 'Module FvwmIconMan TaskBarIcons')
+
+# Systray
+*panel: (120x27, \
+         swallow (NoClose,UseOld) "stalonetray" 'Exec exec stalonetray --geometry 5x1')
+
+# Pager
+*panel: (210x54, Swallow "FvwmPager" "FvwmPager 0 2")
+
+# Root menu
+*panel: ( 60x27, \
+          Icon /usr/local/share/icons/gnome/16x16/actions/system-run.png, \
+          Title (Side) "Start", \
+          Font "xft:DejaVu Sans:size=8", \
+          Action `Menu FvwmRootMenu`)
+
+# Win menu
+*panel  ( 30x27 )
+*panel  ( 30x27 )
+*panel  ( 30x27 )
+
+# Statusbar
+*panel  ( $[infostore.statusbar_xdim]x27, \
+          swallow 'dbar' 'Exec exec dbar -expand right -h 27 -fn "DejaVu Sans Mono:size=8"')
+
+# Clock
+*panel: (120x27, swallow "xclock" 'Exec exec xclock -digital -face "DejaVu Sans Mono:size=8" -render -fg rgb:07/36/42 -bg rgb:ee/e8/d5 -padding 7 -strftime "%a %b %d, %R"')
+
+Style panel StartsOnScreen p
+Style panel NoTitle
+Style panel !Handles
+Style panel Sticky
+Style panel WindowListSkip
+Style panel CirculateSkip
+Style panel StaysOnTop
+Style panel FixedPosition
+Style panel FixedSize
+Style panel !Iconifiable
+Style panel NeverFocus
+Style panel BorderWidth 0
+
+# Style dzen2 !Title, !Borders, Sticky, NeverFocus, StaysOnBottom, !Handles
 
 
 # ----------------------------------------------------------------------
@@ -522,12 +587,17 @@ Key q A S4 Quit
 # ----------------------------------------------------------------------
 # Desktop switching
 #
-Key 1 A 4 GotoDesk 0 0
-Key 2 A 4 GotoDesk 0 1
-Key 3 A 4 GotoDesk 0 2
-Key 4 A 4 GotoDesk 0 3
-Key 5 A 4 GotoDesk 0 4
-Key 6 A 4 GotoDesk 0 5
+# Key 1 A 4 GotoDesk 0 0
+# Key 2 A 4 GotoDesk 0 1
+# Key 3 A 4 GotoDesk 0 2
+# Key 4 A 4 GotoDesk 0 3
+# Key 5 A 4 GotoDesk 0 4
+# Key 6 A 4 GotoDesk 0 5
+Key 1 A 4 GotoPage 0 0p
+Key 2 A 4 GotoPage 1 0p
+Key 3 A 4 GotoPage 2 0p
+Key 4 A 4 GotoPage 3 0p
+Key 5 A 4 GotoPage 4 0p
 
 
 # ----------------------------------------------------------------------
@@ -535,50 +605,50 @@ Key 6 A 4 GotoDesk 0 5
 #
 Key m          A  4 Maximize 100 100
 Key underscore A  4 Iconify on
-Key 1          A S4 CustFuncMoveToDeskAndUnfocus 0 0
-Key 2          A S4 CustFuncMoveToDeskAndUnfocus 0 1
-Key 3          A S4 CustFuncMoveToDeskAndUnfocus 0 2
-Key 4          A S4 CustFuncMoveToDeskAndUnfocus 0 3
-Key 5          A S4 CustFuncMoveToDeskAndUnfocus 0 4
-Key 6          A S4 CustFuncMoveToDeskAndUnfocus 0 5
-Key 1          A C4 CustFuncMoveToDeskAndSwitch 0 0
-Key 2          A C4 CustFuncMoveToDeskAndSwitch 0 1
-Key 3          A C4 CustFuncMoveToDeskAndSwitch 0 2
-Key 4          A C4 CustFuncMoveToDeskAndSwitch 0 3
-Key 5          A C4 CustFuncMoveToDeskAndSwitch 0 4
-Key 6          A C4 CustFuncMoveToDeskAndSwitch 0 5
+Key 1          A S4 CustMoveToDeskAndUnfocus 0 0
+Key 2          A S4 CustMoveToDeskAndUnfocus 0 1
+Key 3          A S4 CustMoveToDeskAndUnfocus 0 2
+Key 4          A S4 CustMoveToDeskAndUnfocus 0 3
+Key 5          A S4 CustMoveToDeskAndUnfocus 0 4
+Key 6          A S4 CustMoveToDeskAndUnfocus 0 5
+Key 1          A C4 CustMoveToDeskAndSwitch 0 0
+Key 2          A C4 CustMoveToDeskAndSwitch 0 1
+Key 3          A C4 CustMoveToDeskAndSwitch 0 2
+Key 4          A C4 CustMoveToDeskAndSwitch 0 3
+Key 5          A C4 CustMoveToDeskAndSwitch 0 4
+Key 6          A C4 CustMoveToDeskAndSwitch 0 5
 Key Tab        A  4 RaiseLower
-Key n          A  4 CustFuncNextSwitchFocusAndRaise
-Key p          A  4 CustFuncPrevSwitchFocusAndRaise
+Key n          A  4 CustNextSwitchFocusAndRaise
+Key p          A  4 CustPrevSwitchFocusAndRaise
 Key z          A  4 Next (AcceptsFocus, CurrentDesk, !Iconic, Visible) Focus
 Key Right      A  4 Maximize on growright 0
 Key Left       A  4 Maximize on growleft  0
 Key Up         A  4 Maximize on 0 growup
 Key Down       A  4 Maximize on 0 growdown
-Key Right      A C4 CustFuncMaximizeMove  50 100 50  0
-Key Left       A C4 CustFuncMaximizeMove  50 100  0  0
-Key Up         A C4 CustFuncMaximizeMove 100  50  0  0
-Key Down       A C4 CustFuncMaximizeMove 100  50  0 50
-Key j          A  4 CustFuncMaximizeMove 33 33  0 -0
-Key k          A  4 CustFuncMaximizeMove 33 33 33 -0
-Key l          A  4 CustFuncMaximizeMove 33 33 66 -0
-Key u          A  4 CustFuncMaximizeMove 33 33  0 -33
-Key i          A  4 CustFuncMaximizeMove 33 33 33 -33
-Key o          A  4 CustFuncMaximizeMove 33 33 66 -33
-Key 7          A  4 CustFuncMaximizeMove 33 33  0  1
-Key 8          A  4 CustFuncMaximizeMove 33 33 33  1
-Key 9          A  4 CustFuncMaximizeMove 33 33 66  1
-Key KP_End     A  4 CustFuncMaximizeMove 33 33  0 -0
-Key KP_Down    A  4 CustFuncMaximizeMove 33 33 33 -0
-Key KP_Next    A  4 CustFuncMaximizeMove 33 33 66 -0
-Key KP_Left    A  4 CustFuncMaximizeMove 33 33  0 -33
-Key KP_Begin   A  4 CustFuncMaximizeMove 33 33 33 -33
-Key KP_Right   A  4 CustFuncMaximizeMove 33 33 66 -33
-Key KP_Home    A  4 CustFuncMaximizeMove 33 33  0  1
-Key KP_Up      A  4 CustFuncMaximizeMove 33 33 33  1
-Key KP_Prior   A  4 CustFuncMaximizeMove 33 33 66  1
-Key q          A  4 CustFuncCloseAll
-Key d          A  4 CustFuncShowDesktop
+Key Right      A C4 CustMaximizeMove  50 100 50  0
+Key Left       A C4 CustMaximizeMove  50 100  0  0
+Key Up         A C4 CustMaximizeMove 100  50  0  0
+Key Down       A C4 CustMaximizeMove 100  50  0 50
+Key j          A  4 CustMaximizeMove 33 33  0 -0
+Key k          A  4 CustMaximizeMove 33 33 33 -0
+Key l          A  4 CustMaximizeMove 33 33 66 -0
+Key u          A  4 CustMaximizeMove 33 33  0 -33
+Key i          A  4 CustMaximizeMove 33 33 33 -33
+Key o          A  4 CustMaximizeMove 33 33 66 -33
+Key 7          A  4 CustMaximizeMove 33 33  0  1
+Key 8          A  4 CustMaximizeMove 33 33 33  1
+Key 9          A  4 CustMaximizeMove 33 33 66  1
+Key KP_End     A  4 CustMaximizeMove 33 33  0 -0
+Key KP_Down    A  4 CustMaximizeMove 33 33 33 -0
+Key KP_Next    A  4 CustMaximizeMove 33 33 66 -0
+Key KP_Left    A  4 CustMaximizeMove 33 33  0 -33
+Key KP_Begin   A  4 CustMaximizeMove 33 33 33 -33
+Key KP_Right   A  4 CustMaximizeMove 33 33 66 -33
+Key KP_Home    A  4 CustMaximizeMove 33 33  0  1
+Key KP_Up      A  4 CustMaximizeMove 33 33 33  1
+Key KP_Prior   A  4 CustMaximizeMove 33 33 66  1
+Key q          A  4 CustCloseAll
+Key d          A  4 CustShowDesktop
 
 
 # ----------------------------------------------------------------------
@@ -586,13 +656,13 @@ Key d          A  4 CustFuncShowDesktop
 #
 Key Return A S4 Exec exec $[FVWM_TERM]
 Key t      A S4 Exec exec $[FVWM_TERM] -e "tmux attach-session -d || tmux new-session"
-Key b      A S4 CustFuncUniqueInstLauncher '*Seamonkey' $[FVWM_BROWSER]
-Key m      A S4 CustFuncUniqueInstLauncher 'E-mail client' '$[FVWM_TERM] -title "E-mail client" -e $[FVWM_MAILER]'
+Key b      A S4 CustWarpOrExec '*Seamonkey' $[FVWM_BROWSER]
+Key m      A S4 CustWarpOrExec 'E-mail client' '$[FVWM_TERM] -title "E-mail client" -e $[FVWM_MAILER]'
 Key d      A S4 Exec exec /usr/local/bin/arandr
 Key s      A S4 Exec exec /usr/sbin/apm -z
 #Key h      A S4 Exec exec /usr/sbin/apm -Z
-#Key f      A S4 CustFuncUniqueInstLauncher 'File manager' '$[FVWM_TERM] -title "File manager" -e mc'
-Key f      A S4 CustFuncUniqueInstLauncher 'Xfe - *' 'xfe'
+#Key f      A S4 CustWarpOrExec 'File manager' '$[FVWM_TERM] -title "File manager" -e mc'
+Key f      A S4 CustWarpOrExec 'Xfe - *' 'xfe'
 Key p      A S4 Exec exec /usr/local/bin/transmission-gtk
 Key v      A S4 Exec exec $[FVWM_PLAYER]
 Key Delete A C1 Exec exec $[FVWM_LOCKER]
@@ -636,8 +706,6 @@ MenuStyle * PopupDelayed
 MenuStyle * PopupDelay 0
 MenuStyle * PopupActiveArea 100
 MenuStyle * PopdownImmediately
-#MenuStyle * Font "xft:DejaVu Sans Mono:size=8"
-MenuStyle * Font -*-terminus-medium-r-*-*-12-*-*-*-*-*-*-1
 MenuStyle * TrianglesRelief
 MenuStyle * VerticalItemSpacing 2 2
 MenuStyle * VerticalTitleSpacing 3 3
@@ -721,10 +789,10 @@ AddToMenu   FvwmRootMenu "Root Menu" Title
 + "Terminal"      Exec exec $[FVWM_TERM]
 + "FVWM Console"  Module FvwmConsole
 + ""              Nop
-+ "Web browser"   CustFuncUniqueInstLauncher '*Seamonkey' $[FVWM_BROWSER] 
-+ "E-mail client" CustFuncUniqueInstLauncher 'E-mail client' '$[FVWM_TERM] -title "E-mail client" -e $[FVWM_MAILER]'
-+ "Filemanager"   CustFuncUniqueInstLauncher 'Xfe - *' 'xfe'
-+ "Midnight Commander" CustFuncUniqueInstLauncher 'File manager' '$[FVWM_TERM] -title "File manager" -e mc'
++ "Web browser"   CustWarpOrExec '*Seamonkey' $[FVWM_BROWSER] 
++ "E-mail client" CustWarpOrExec 'E-mail client' '$[FVWM_TERM] -title "E-mail client" -e $[FVWM_MAILER]'
++ "Filemanager"   CustWarpOrExec 'Xfe - *' 'xfe'
++ "Midnight Commander" CustWarpOrExec 'File manager' '$[FVWM_TERM] -title "File manager" -e mc'
 + ""              Nop
 + "File browser"  Popup FvwmFileBrowserMenu
 #+ ""              Nop
@@ -750,28 +818,27 @@ Style Xfe*     MiniIcon "file-manager.png"
 # ----------------------------------------------------------------------
 # Special windows initial positioning
 #
-Style "Process monitor" StartsOnDesk 5
-Style xconsole          StartsOnDesk 5
-Style "E-mail client"   StartsOnDesk 3
-Style "*Seamonkey"      StartsOnDesk 4
+Style "Process monitor" StartsOnPage 0 0 0
+Style xconsole          StartsOnPage 0 0 0
+Style "E-mail client"   StartsOnPage 4 0
 
 
 # ----------------------------------------------------------------------
 # Windows swapping
 #
 
-DestroyFunc CustFuncSwapWinGetIdAndGeom
-AddToFunc   CustFuncSwapWinGetIdAndGeom
+DestroyFunc CustSwapWinGetIdAndGeom
+AddToFunc   CustSwapWinGetIdAndGeom
 + I ThisWindow (AcceptsFocus, !Iconic) SetEnv win$0-x $[w.x]
 + I TestRc (Match) SetEnv win$0-y $[w.y]
 + I TestRc (Match) SetEnv win$0-w $[w.width]
 + I TestRc (Match) SetEnv win$0-h $[w.height]
 + I TestRc (Match) SetEnv win$0-id $[w.id]
 
-DestroyFunc CustFuncSwapWin
-AddToFunc   CustFuncSwapWin
-+ I CustFuncSwapWinGetIdAndGeom Curr
-+ I Next (!Iconic, CurrentPage) CustFuncSwapWinGetIdAndGeom Next
+DestroyFunc CustSwapWin
+AddToFunc   CustSwapWin
++ I CustSwapWinGetIdAndGeom Curr
++ I Next (!Iconic, CurrentPage) CustSwapWinGetIdAndGeom Next
 + I Test (EnvIsSet winCurr-id, EnvIsSet winNext-id) WindowId $[winCurr-id] ResizeMove frame $[winNext-w]p $[winNext-h]p $[winNext-x]p $[winNext-y]p ewmhiwa
 + I TestRc (Match) WindowId $[winNext-id] ResizeMove frame $[winCurr-w]p $[winCurr-h]p $[winCurr-x]p $[winCurr-y]p ewmhiwa
 + I UnsetEnv winCurr-x
@@ -785,4 +852,29 @@ AddToFunc   CustFuncSwapWin
 + I UnsetEnv winNext-h
 + I UnsetEnv winNext-id
 
-Key Return A C4 Pick CustFuncSwapWin
+Key Return A C4 Pick CustSwapWin
+
+# The autohiding functions
+DestroyFunc autohide
+AddToFunc autohide
++ I ThisWindow ($0) Deschedule $[w.id]
++ I ThisWindow ($0) KeepRc ThisWindow (shaded) WindowShade off
++ I TestRc (!Match) All ($0, !shaded) autohide_hide $1 $2
+
+DestroyFunc autohide_hide
+AddToFunc autohide_hide
++ I Schedule $0 $[w.id] WindowShade $1
++ I Schedule $0 $[w.id] Deschedule $[w.id]
+
+# Start FvwmAuto
+AddToFunc StartFunction
++ I Module FvwmAuto 1 -menter enter_handler
+
+# Add the windows you want to autohide
+DestroyFunc enter_handler
+AddToFunc enter_handler
++ I autohide panel 500 S
+#            ^           ^   ^
+#            |           |   |___  Shade direction (optional)
+#            |           |_______  Hide delay (milliseconds)
+#            |___________________  Unique window name/resource
