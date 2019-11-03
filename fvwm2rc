@@ -7,33 +7,47 @@
 # ----------------------------------------------------------------------
 # Global variables
 #
+SetEnv FVWM_SCRIPTS $[FVWM_USERDIR]/scripts
 ModulePath $[FVWM_USERDIR]/modules:+
 
 PipeRead 'echo InfostoreAdd scr_xdim     $(($(screen-width)))'
 PipeRead 'echo InfostoreAdd taskbar_xdim $(($[infostore.scr_xdim] - 495))'
 PipeRead 'echo InfostoreAdd sbar_xdim    $(($[infostore.scr_xdim] - 435))'
 
-SetEnv FVWM_SCRIPTS $[FVWM_USERDIR]/scripts
-SetEnv FVWM_BROWSER /usr/local/bin/seamonkey
-SetEnv FVWM_TERM    /usr/X11R6/bin/xterm
-SetEnv FVWM_MAILER  /usr/local/bin/mutt
-SetEnv FVWM_PLAYER  /usr/local/bin/smplayer
+# Default apps
+SetEnv FVWM_TERM    xterm
+SetEnv FVWM_EDITOR  gvim
 SetEnv FVWM_LOCKER  "xautolock -locknow"
 
+SetEnv FVWM_BROWSER chrome
+SetEnv FVWM_BROWSER_WARPSTRING Chromium-browser
 
-# ----------------------------------------------------------------------
+SetEnv FVWM_MAILER  '$[FVWM_TERM] -title "E-mail client" -e mutt'
+SetEnv FVWM_MAILER_WARPSTRING "E-mail client"
+
+SetEnv FVWM_FILEMGR xfe
+SetEnv FVWM_FILEMGR_WARPSTRING 'Xfe - *'
+
+SetEnv FVWM_CALC gnome-calculator
+SetEnv FVWM_CALC_WARPSTRING Calculator
+
 # Icons path
-#
 SetEnv FVWM_ICONS /usr/local/share/icons/gnome/16x16
-ImagePath +:$[FVWM_ICONS]/actions;.png
-ImagePath +:$[FVWM_ICONS]/apps;.png
-ImagePath +:$[FVWM_ICONS]/categories;.png
-ImagePath +:$[FVWM_ICONS]/devices;.png
-ImagePath +:$[FVWM_ICONS]/emblems;.png
-ImagePath +:$[FVWM_ICONS]/emotes;.png
-ImagePath +:$[FVWM_ICONS]/mimetypes;.png
-ImagePath +:$[FVWM_ICONS]/places;.png
-ImagePath +:$[FVWM_ICONS]/status;.png
+ImagePath $[FVWM_ICONS]/actions;.png:+
+ImagePath $[FVWM_ICONS]/apps;.png:+
+ImagePath $[FVWM_ICONS]/categories;.png:+
+ImagePath $[FVWM_ICONS]/devices;.png:+
+ImagePath $[FVWM_ICONS]/emblems;.png:+
+ImagePath $[FVWM_ICONS]/emotes;.png:+
+ImagePath $[FVWM_ICONS]/mimetypes;.png:+
+ImagePath $[FVWM_ICONS]/places;.png:+
+ImagePath $[FVWM_ICONS]/status;.png:+
+
+ImagePath $[HOME]/.local/share/icons;.png:+
+ImagePath $[FVWM_USERDIR]/icons;.png:+
+
+# Any of the above definitions can be changed through $[FVWM_USERDIR]/FvwmLocalDefs
+Read $[FVWM_USERDIR]/FvwmLocalDefs Quiet
 
 
 # ----------------------------------------------------------------------
@@ -140,20 +154,21 @@ Style FvwmIdent    !Iconifiable, StaysOnTop, WindowListSkip, CirculateSkip, NoTi
 # ----------------------------------------------------------------------
 # Init functions
 #
+DestroyFunc InitFunction
+AddToFunc   InitFunction
++ I Exec exec 'pkill -x xeventbind; xeventbind resolution fvwmrestart'
++ I Exec exec $[FVWM_TERM] -title "Process monitor" -e top
++ I Exec exec $[FVWM_TERM] -title "System stats" -e systat
++ I Exec exec $[FVWM_TERM] -title "System log" -e "tail -f /var/log/messages"
++ I Exec exec radiotray
++ I Exec exec vol-tray
+
 DestroyFunc StartFunction
 AddToFunc   StartFunction
 + I Module FvwmCommandS
 + I Module FvwmButtons -g $[infostore.scr_xdim]x54+0-0@p panel
 + I Exec exec xsetroot -solid rgb:58/6E/75
 + I Exec exec nitrogen --restore
-
-DestroyFunc InitFunction
-AddToFunc   InitFunction
-+ I Exec exec $[FVWM_TERM] -title "Process monitor" -e top
-+ I Exec exec $[FVWM_TERM] -title "System stats" -e systat
-+ I Exec exec $[FVWM_TERM] -title "System log" -e "tail -f /var/log/messages"
-+ I Exec exec radiotray
-+ I Exec exec vol-tray
 
 
 # ----------------------------------------------------------------------
@@ -223,19 +238,12 @@ AddToFunc   MyMoveToDeskAndSwitch
 DestroyFunc MyMoveToPageAndUnfocus
 AddToFunc   MyMoveToPageAndUnfocus
 + I MoveToPage $0 $1
-+ I Next (AcceptsFocus, CurrentDesk) Focus
++ I Next (AcceptsFocus, CurrentPage) Focus
 
-DestroyFunc MyNextSwitchFocusAndRaise
-AddToFunc   MyNextSwitchFocusAndRaise
-+ I Next (AcceptsFocus, CurrentDesk) Iconify Off
-+ I Next (AcceptsFocus, CurrentDesk) Raise
-+ I Next (AcceptsFocus, CurrentDesk) Focus
-
-DestroyFunc MyPrevSwitchFocusAndRaise
-AddToFunc   MyPrevSwitchFocusAndRaise
-+ I Prev (AcceptsFocus) Iconify Off
-+ I Prev (AcceptsFocus) Raise
-+ I Prev (AcceptsFocus) Focus
+DestroyFunc MyRaiseAndFocusNext
+AddToFunc   MyRaiseAndFocusNext
++ I Next (AcceptsFocus, CurrentPage, !Iconic, Visible) Raise
++ I Next (AcceptsFocus, CurrentPage, !Iconic, Visible) Focus
 
 DestroyFunc MyWarpOrExec
 AddToFunc   MyWarpOrExec
@@ -267,35 +275,71 @@ DestroyFunc MyShowDesktop
 AddToFunc   MyShowDesktop
 + I All (CurrentPage, !Iconic, AcceptsFocus) Iconify
 
+DestroyFunc MyMoveToPrevPage
+AddToFunc   MyMoveToPrevPage
++ I MoveToPage prev
++ I GoToPage prev
+
+DestroyFunc MyGetIdAndGeom
+AddToFunc   MyGetIdAndGeom
++ I ThisWindow (AcceptsFocus, !Iconic) SetEnv win$0-x $[w.x]
++ I TestRc (Match) SetEnv win$0-y $[w.y]
++ I TestRc (Match) SetEnv win$0-w $[w.width]
++ I TestRc (Match) SetEnv win$0-h $[w.height]
++ I TestRc (Match) SetEnv win$0-id $[w.id]
+
+DestroyFunc MySwapWin
+AddToFunc   MySwapWin
++ I MyGetIdAndGeom Curr
++ I Next (!Iconic, CurrentPage) MyGetIdAndGeom Next
++ I Test (EnvIsSet winCurr-id, EnvIsSet winNext-id) WindowId $[winCurr-id] \
+    ResizeMove frame $[winNext-w]p $[winNext-h]p $[winNext-x]p $[winNext-y]p ewmhiwa
++ I TestRc (Match) WindowId $[winNext-id] \
+    ResizeMove frame $[winCurr-w]p $[winCurr-h]p $[winCurr-x]p $[winCurr-y]p ewmhiwa
++ I UnsetEnv winCurr-x
++ I UnsetEnv winCurr-y
++ I UnsetEnv winCurr-w
++ I UnsetEnv winCurr-h
++ I UnsetEnv winCurr-id
++ I UnsetEnv winNext-x
++ I UnsetEnv winNext-y
++ I UnsetEnv winNext-w
++ I UnsetEnv winNext-h
++ I UnsetEnv winNext-id
+
 
 # ----------------------------------------------------------------------
-# Window controls menu
+# Autohiding functions
 #
-DestroyMenu FvwmWindowCtrlMenu
-AddToMenu   FvwmWindowCtrlMenu
-+   "Iconify"  Pick Iconify
-+   "Maximize" Pick Maximize 100 100
-+   ""         Nop
-+   "Resize"   Pick Resize
-+   "Move"     Pick Move
-+   ""         Nop
-+   "Shade"    Pick WindowShade Toggle
-+   ""         Nop
-+   "Stick"    Pick Stick toggle
-+   "Scroll"   Pick Module FvwmScroll
-+   "Refresh"  Pick RefreshWindow
-+   ""         Nop
-+   "Identify" Pick Module FvwmIdent
-+   "Zoom"     Pick Exec exec xmag -source $[w.width]x$[w.height]+$[w.x]+$[w.y] -mag 2
-+   ""         Nop
-+   "Close"    Pick Close
-+   "Destroy"  Pick Destroy
+DestroyFunc autohide
+AddToFunc autohide
++ I ThisWindow ($0) Deschedule $[w.id]
++ I ThisWindow ($0) KeepRc ThisWindow (shaded) WindowShade off
++ I TestRc (!Match) All ($0, !shaded) autohide_hide $1 $2
+
+DestroyFunc autohide_hide
+AddToFunc autohide_hide
++ I Schedule $0 $[w.id] WindowShade $1
++ I Schedule $0 $[w.id] Deschedule $[w.id]
+
+# Start FvwmAuto
+AddToFunc StartFunction
++ I Module FvwmAuto 1 -menter enter_handler
+
+# Add the windows you want to autohide
+DestroyFunc enter_handler
+AddToFunc enter_handler
++ I autohide panel 500 S
+#            ^      ^  ^
+#            |      |  |___  Shade direction (optional)
+#            |      |_______  Hide delay (milliseconds)
+#            |___________________  Unique window name/resource
 
 
 # ----------------------------------------------------------------------
 # Mouse bindings
 #
-Mouse 1 1 A Menu FvwmWindowCtrlMenu
+Mouse 1 1 A Menu WindowOptsMenu
 Mouse 1 2 A MyDeleteOrDestroy
 Mouse 1 4 A MyMaximize 100 100
 Mouse 1 6 A MyIconifyOrShade
@@ -308,7 +352,7 @@ Mouse 2 T C Exec exec wmprocs tile h
 
 Mouse 1 R A Nop
 Mouse 2 R A WindowList
-Mouse 3 R A Menu FvwmRootMenu
+Mouse 3 R A Menu RootMenu
 
 
 # ----------------------------------------------------------------------
@@ -364,7 +408,7 @@ AddToDecor   defaultWinDecor
 + ButtonStyle 6 - Clear MWMDecorMin
 
 Style * UseDecor defaultWinDecor
-Style * Font "xft:DejaVu Sans:size=9"
+Style * Font "xft:DejaVu Sans:bold:size=9:antialias=True"
 Style * MWMBorder
 Style * BorderWidth 2
 Style * HandleWidth 3
@@ -389,9 +433,10 @@ DestroyModuleConfig TaskBarIcons: *
 *TaskBarIcons: IconName TaskBarIcons
 *TaskBarIcons: UseWinList true
 *TaskBarIcons: Resolution page
-# *TaskBarIcons: Tips needed
+*TaskBarIcons: Tips needed
 *TaskBarIcons: Title ""
 *TaskBarIcons: Font "xft:DejaVu Sans:size=9:antialias=True"
+*TaskBarIcons: TipsFont "xft:DejaVu Sans:size=9:antialias=True"
 
 # Size
 *TaskBarIcons: ButtonGeometry 120x27
@@ -436,7 +481,7 @@ DestroyModuleConfig FvwmPager: *
 *FvwmPager: Balloons All
 *FvwmPager: BalloonYOffset +2
 *FvwmPager: BalloonBorderWidth 1
-*FvwmPager: BalloonFont "xft:DejaVu Sans:size=8"
+*FvwmPager: BalloonFont "xft:DejaVu Sans:size=8:antialias=True"
 *FvwmPager: UseSkipList
 *FvwmPager: MoveThreshold 3
 *FvwmPager: WindowLabelFormat ""
@@ -463,19 +508,19 @@ DestroyModuleConfig panel: *
 # Launchers
 *panel  (30x27, \
          Icon terminal, \
-         Action `Exec exec xterm`)
+         Action `Exec exec $[FVWM_TERM]`)
 *panel  (30x27, \
          Icon web-browser, \
-         Action `MyWarpOrExec 'Chromium-browser' 'chrome'`)
+         Action `MyWarpOrExec '$[FVWM_BROWSER_WARPSTRING]' '$[FVWM_BROWSER]'`)
 *panel  (30x27, \
          Icon emblem-mail, \
-         Action `Exec exec x-email-client`)
+         Action `MyWarpOrExec '$[FVWM_MAILER_WARPSTRING]' '$[FVWM_MAILER]'`)
 *panel  (30x27, \
          Icon file-manager, \
-         Action `Exec exec x-filemanager`)
+         Action `MyWarpOrExec '$[FVWM_FILEMGR_WARPSTRING]' '$[FVWM_FILEMGR]'`)
 *panel  (30x27, \
-         Icon text-editor, \
-         Action `Exec exec x-text-editor`)
+         Icon calc, \
+         Action `MyWarpOrExec '$[FVWM_CALC_WARPSTRING]' '$[FVWM_CALC]'`)
 
 # Taskbar
 *panel  ($[infostore.taskbar_xdim]x27, Left, \
@@ -483,17 +528,17 @@ DestroyModuleConfig panel: *
 
 # Systray
 *panel: (135x27, \
-         swallow (NoClose,UseOld) "stalonetray" 'Exec exec stalonetray --geometry 5x1')
+         Swallow (NoClose,UseOld) stalonetray 'Exec exec stalonetray --geometry 5x1')
 
 # Pager
-*panel: (210x54, Swallow "FvwmPager" "FvwmPager 0 2")
+*panel: (210x54, Swallow FvwmPager "FvwmPager 0 2")
 
 # Root menu
 *panel: (60x27, \
          Icon system-run, \
          Title (Side) "Root", \
-         Font "xft:DejaVu Sans:size=9", \
-         Action `Menu FvwmRootMenu`)
+         Font "xft:DejaVu Sans:size=9:antialias=True", \
+         Action `Menu RootMenu`)
 
 # Window list
 *panel  (30x27, \
@@ -502,12 +547,14 @@ DestroyModuleConfig panel: *
 
 # Statusbar
 *panel  ($[infostore.sbar_xdim]x27, \
-         swallow 'dbar' 'Exec exec dbar -expand right -h 27 -fn "DejaVu Sans Mono:size=9"')
+         Swallow dbar 'Exec exec dbar -expand right -h 27 -fn "DejaVu Sans Mono:size=9"')
 
 # Clock
-*panel: (135x27, swallow "xclock" 'Exec exec xclock -digital -face "DejaVu Sans Mono:size=9" \
-                                                -render -fg rgb:07/36/42 -bg rgb:ee/e8/d5 \
-                                                -padding 6 -strftime "%a %b %d, %R"')
+*panel: (135x27, \
+         Swallow xclock 'Exec exec xclock -digital -face "DejaVu Sans Mono:size=9" \
+                                        -render -fg rgb:07/36/42 -bg rgb:ee/e8/d5 \
+                                        -padding 6 -strftime "%a %b %d, %R"', \
+         Action `Exec exec gsimplecal`)
 
 Style panel StartsOnScreen p
 Style panel NoTitle
@@ -528,8 +575,10 @@ Style panel BorderWidth 0
 # See /usr/X11R6/include/X11/keysymdef.h or /usr/include/X11/keysymdef.h
 #
 
-# Cycle through windows in the current workspace
-Key Tab        A  4 RaiseLower
+# Cycle through windows in the current page
+Key Tab        A  4 MyRaiseAndFocusNext
+Key backslash  A  4 RaiseLower
+Key grave      A  4 RaiseLower
 
 # Fvwm restart/quit
 Key r          A  4 Restart
@@ -545,6 +594,7 @@ Key 4          A  4 GotoPage 3 0p
 Key 5          A  4 GotoPage 4 0p
 
 # Actions on active window
+Key Return     A  4 Pick MySwapWin
 Key h          A  4 Exec exec wmprocs tile h
 Key m          A  4 Maximize 100 100
 Key p          A  4 Exec exec activewin_xprop
@@ -552,6 +602,7 @@ Key underscore A  4 Iconify on
 Key v          A  4 Exec exec wmprocs tile v
 Key x          A  4 Close
 Key x          A C4 Destroy
+Key BackSpace  A  4 MyMoveToPrevPage
 Key 1          A S4 MyMoveToPageAndUnfocus 0 0p
 Key 2          A S4 MyMoveToPageAndUnfocus 1 0p
 Key 3          A S4 MyMoveToPageAndUnfocus 2 0p
@@ -560,7 +611,6 @@ Key 5          A S4 MyMoveToPageAndUnfocus 4 0p
 Key 1          A C4 MyMoveToDeskAndSwitch 0 0
 Key 2          A C4 MyMoveToDeskAndSwitch 0 1
 Key 3          A C4 MyMoveToDeskAndSwitch 0 2
-Key z          A  4 Next (AcceptsFocus, CurrentDesk, !Iconic, Visible) Focus
 Key Right      A  4 MyMaximizeMove  50 100 50  0
 Key Left       A  4 MyMaximizeMove  50 100  0  0
 Key Up         A  4 MyMaximizeMove 100  50  0  0
@@ -589,20 +639,19 @@ Key F1         A  4 Exec exec $[FVWM_TERM] -e man fvwm2
 Key F2         A  4 Exec exec dmenu-launchers
 Key d          A  4 Exec exec dmenu_run-cust -p Run:
 Key f          A  4 Exec exec dmenu-filebrowser
-Key space      A  4 Exec `Menu FvwmRootMenu`
+Key space      A  4 Menu RootMenu
 Key t          A  4 Exec exec tmux_pane_search
 Key w          A  4 Exec exec win_search -z
 Key w          A S4 Exec exec dmenu-setwinlabel
-Key w          A C4 WindowList
 
 # Application launchers
 Key Return     A S4 Exec exec $[FVWM_TERM]
 Key t          A S4 Exec exec $[FVWM_TERM] -e "tmux attach-session -d || tmux new-session"
-Key b          A S4 MyWarpOrExec 'Chromium-browser' chrome
+Key b          A S4 MyWarpOrExec '$[FVWM_BROWSER_WARPSTRING]' '$[FVWM_BROWSER]'
 Key c          A S4 Exec exec dmenu-calc
 Key d          A S4 Exec exec arandr
-Key f          A S4 Exec exec $[FVWM_TERM] -e ranger
-Key m          A S4 MyWarpOrExec 'E-mail client' '$[FVWM_TERM] -title "E-mail client" -e $[FVWM_MAILER]'
+Key f          A S4 MyWarpOrExec '$[FVWM_FILEMGR_WARPSTRING]' '$[FVWM_FILEMGR]'
+Key m          A S4 MyWarpOrExec '$[FVWM_MAILER_WARPSTRING]' $[FVWM_MAILER]
 Key p          A S4 Exec exec play-url -p
 Key r          A S4 Exec exec dmenu-timer
 Key x          A S4 Exec exec dmenu-xautolock
@@ -630,10 +679,10 @@ Key s          A S4 Exec exec zzz
 
 
 # ----------------------------------------------------------------------
-# FvwmRootMenu
+# Menus
 #
 MenuStyle * Fvwm
-MenuStyle * Font "xft:DejeVu Sans:size=9"
+MenuStyle * Font "xft:DejeVu Sans:size=9:antialias=True"
 MenuStyle * !Animation
 MenuStyle * Hilight3DOff
 MenuStyle * ActiveFore
@@ -651,40 +700,109 @@ MenuStyle * TrianglesRelief
 MenuStyle * VerticalItemSpacing 5 5
 MenuStyle * VerticalTitleSpacing 5 5
 
-DestroyMenu FvwmXutilsMenu
-AddToMenu   FvwmXutilsMenu "X-utils" Title
-+ "xfontsel"           Exec exec /usr/X11R6/bin/xfontsel
-+ "Reload Xresources"  Exec exec xrdb -load ${HOME}/.Xresources
-+ "Solarized dark"     Exec exec xrdb -merge ${HOME}/.Xresources.solarized_dark
-+ "Solarized light"    Exec exec xrdb -merge ${HOME}/.Xresources.solarized_light
+# Window options
+DestroyMenu WindowOptsMenu
+AddToMenu   WindowOptsMenu
++ "Window Opts"                                   Title
++ "Move"                                          Pick Move
++ "Resize"                                        Pick Resize
++ "Iconify"                                       Pick Iconify
++ ""                                              Nop
++ "(Un)Maximize"                                  Pick Maximize 100 100
++ "(Un)Stick"                                     Pick Stick toggle
++ "(Un)Shade"                                     Pick WindowShade Toggle
++ ""                                              Nop
++ "Scroll"                                        Pick Module FvwmScroll
++ "Refresh"                                       Pick RefreshWindow
++ ""                                              Nop
++ "Identify"                                      Pick Module FvwmIdent
++ "Zoom"                                          Pick Exec exec xmag -source $[w.width]x$[w.height]+$[w.x]+$[w.y] -mag 2
++ ""                                              Nop
++ "Delete"                                        Pick Delete
++ "Close"                                         Pick Close
++ "Destroy"                                       Pick Destroy
 
-DestroyFunc FuncFvwmMenuDirectory
-AddToFunc   FuncFvwmMenuDirectory
-+ I PipeRead "fvwm-menu-directory -d '$0' --check-subdir --exec-file vim -all"
+DestroyMenu TimerMenu
+AddToMenu   TimerMenu
++ "Timer"                                         Title
++ " 5 min"                                        Exec exec timer -t "now +  5 min"
++ "10 min"                                        Exec exec timer -t "now + 10 min"
++ "15 min"                                        Exec exec timer -t "now + 15 min"
++ "20 min"                                        Exec exec timer -t "now + 20 min"
++ "25 min"                                        Exec exec timer -t "now + 25 min"
++ "30 min"                                        Exec exec timer -t "now + 30 min"
++ "45 min"                                        Exec exec timer -t "now + 45 min"
 
-DestroyMenu FvwmFileBrowserMenu
-AddToMenu FvwmFileBrowserMenu MissingSubmenuFunction FuncFvwmMenuDirectory
-AddToMenu FvwmFileBrowserMenu "File browser" Title
-+ "Home" Popup $[HOME]
+DestroyMenu DisplayMenu
+AddToMenu   DisplayMenu
++ "Display Settings"                              Title
++ "Study"                                         Exec exec "dmenu-xrandr Left; setxkbmap us"
++ "LVSD Only"                                     Exec exec dmenu-xrandr Off
++ "VGA Only"                                      Exec exec dmenu-xrandr Only
++ "Screen Layout"                                 Exec exec arandr
 
-DestroyMenu FvwmRootMenu
-AddToMenu   FvwmRootMenu "Root Menu" Title
-+ "Terminal"      Exec exec $[FVWM_TERM]
-+ "FVWM Console"  Module FvwmConsole
-+ ""              Nop
-+ "Web browser"   MyWarpOrExec '*Seamonkey' $[FVWM_BROWSER] 
-+ "E-mail client" MyWarpOrExec 'E-mail client' '$[FVWM_TERM] -title "E-mail client" -e $[FVWM_MAILER]'
-+ "Filemanager"   MyWarpOrExec 'Xfe - *' 'xfe'
-+ "Midnight Commander" MyWarpOrExec 'File manager' '$[FVWM_TERM] -title "File manager" -e mc'
-+ ""              Nop
-+ "File browser"  Popup FvwmFileBrowserMenu
-+ ""              Nop
-+ "X-utils"       Popup FvwmXutilsMenu
-+ ""              Nop
-+ "Restart FVWM"  Restart
-+ "Quit FVWM"     Quit
+DestroyMenu KbdMenu
+AddToMenu   KbdMenu
++ "Keyboard Layout"                               Title
++ "Italian%cust/16x16/flags/italy.png%"           Exec exec setxkbmap it
++ "English-US%cust/16x16/flags/usa.png%"          Exec exec setxkbmap us
 
-Key space  A  4 Menu FvwmRootMenu
+DestroyMenu PlacesMenu
+AddToMenu   PlacesMenu
++ "Places"                                        Title
++ "Documents%folder-documents%"                   Exec exec x-filemanager ~/Documents
++ "Downloads%folder-download%"                    Exec exec x-filemanager ~/Downloads
++ "Music%folder-music%"                           Exec exec x-filemanager ~/Music
++ "Pictues%folder-pictures%"                      Exec exec x-filemanager ~/Pictures
++ "Videos%folder-pictures%"                       Exec exec x-filemanager ~/Videos
+
+DestroyMenu ScreenshotMenu
+AddToMenu   ScreenshotMenu
++ "Take a screenschot"                            Title
++ "Whole Desktop"                                 Exec exec screenshot desktop
++ "Select Window/Area"                            Exec exec screenshot
+
+DestroyMenu DesktopMenu
+AddToMenu   DesktopMenu
++ "Desktop"                                       Title
++ "Open Folder%folder-open%"                      Exec exec x-filemanager ~/Desktop
++ "Places%folder%"                                Popup PlacesMenu
++ "Play URL in clip%media-playback-start%"        Exec exec play-url -p
++ "Take a screenschot%camera-photo%"              Popup ScreenshotMenu
++ "Set Background%preferences-desktop-wallpaper%" Exec exec nitrogen ~/Pictures/wallpapers
+
+DestroyMenu WMMenu
+AddToMenu   WMMenu
++ "Window Manager"                                Title
++ "Window List"                                   WindowList
++ "Fvwm Console"                                  Module FvwmConsole
++ "Fvwm Man Page"                                 Exec exec $[FVWM_TERM] -e "man fvwm2"
++ "Restart Fvwm"                                  Restart
++ ""                                              Nop
+
+DestroyMenu RootMenu
+AddToMenu   RootMenu
++ "Root Menu"                                     Title
++ "Terminal Emulator%terminal%"                   Exec exec $[FVWM_TERM]
++ "Web Browser%web-browser%"                      MyWarpOrExec '$[FVWM_BROWSER_WARPSTRING]' '$[FVWM_BROWSER]'
++ "E-mail client%emblem-mail%"                    MyWarpOrExec '$[FVWM_MAILER_WARPSTRING]' '$[FVWM_MAILER]'
++ "Filemanager%file-manager%"                     MyWarpOrExec '$[FVWM_FILEMGR_WARPSTRING]' '$[FVWM_FILEMGR]'
++ "Text Editor%text-editor%"                      Exec exec $[FVWM_EDITOR]
++ "Calculator%calc%"                              MyWarpOrExec '$[FVWM_CALC_WARPSTRING]' '$[FVWM_CALC]'
++ ""                                              Nop
++ "Desktop Apps"                                  Nop
++ "Legacy Apps"                                   Nop
++ ""                                              Nop
++ "Timer%timer%"                                  Popup TimerMenu
++ ""                                              Nop
++ "Display Settings%preferences-desktop-display%" Popup DisplayMenu
++ "Keyboard Layout%keyboard%"                     Popup KbdMenu
++ "Removable Devices%media-removable%"            Exec exec /usr/bin/doas /usr/local/bin/amount -e sd0
++ ""                                              Nop
++ "Desktop%desktop%"                              Popup DesktopMenu
++ "Window Manager%gnome-window-manager%"          Popup WMMenu
++ ""                                              Nop
++ "Exit Session%exit%"                            Exec exec session-logout
 
 
 # ----------------------------------------------------------------------
@@ -699,66 +817,7 @@ Style Xfe*     MiniIcon "file-manager.png"
 # ----------------------------------------------------------------------
 # Special windows initial positioning
 #
-Style "Process monitor" StartsOnPage 0 0 0
-Style xconsole          StartsOnPage 0 0 0
-Style "E-mail client"   StartsOnPage 4 0
+Style "System log"      StartsOnPage 0 4 0, MinOverlapPlacement, SkipMapping
+Style "Process monitor" StartsOnPage 0 4 0, MinOverlapPlacement, SkipMapping
+Style "System stats"    StartsOnPage 0 4 0, MinOverlapPlacement, SkipMapping
 
-
-# ----------------------------------------------------------------------
-# Windows swapping
-#
-
-DestroyFunc MySwapWinGetIdAndGeom
-AddToFunc   MySwapWinGetIdAndGeom
-+ I ThisWindow (AcceptsFocus, !Iconic) SetEnv win$0-x $[w.x]
-+ I TestRc (Match) SetEnv win$0-y $[w.y]
-+ I TestRc (Match) SetEnv win$0-w $[w.width]
-+ I TestRc (Match) SetEnv win$0-h $[w.height]
-+ I TestRc (Match) SetEnv win$0-id $[w.id]
-
-DestroyFunc MySwapWin
-AddToFunc   MySwapWin
-+ I MySwapWinGetIdAndGeom Curr
-+ I Next (!Iconic, CurrentPage) MySwapWinGetIdAndGeom Next
-+ I Test (EnvIsSet winCurr-id, EnvIsSet winNext-id) WindowId $[winCurr-id] ResizeMove frame $[winNext-w]p $[winNext-h]p $[winNext-x]p $[winNext-y]p ewmhiwa
-+ I TestRc (Match) WindowId $[winNext-id] ResizeMove frame $[winCurr-w]p $[winCurr-h]p $[winCurr-x]p $[winCurr-y]p ewmhiwa
-+ I UnsetEnv winCurr-x
-+ I UnsetEnv winCurr-y
-+ I UnsetEnv winCurr-w
-+ I UnsetEnv winCurr-h
-+ I UnsetEnv winCurr-id
-+ I UnsetEnv winNext-x
-+ I UnsetEnv winNext-y
-+ I UnsetEnv winNext-w
-+ I UnsetEnv winNext-h
-+ I UnsetEnv winNext-id
-
-Key Return A C4 Pick MySwapWin
-
-
-# ----------------------------------------------------------------------
-# Autohiding functions
-#
-DestroyFunc autohide
-AddToFunc autohide
-+ I ThisWindow ($0) Deschedule $[w.id]
-+ I ThisWindow ($0) KeepRc ThisWindow (shaded) WindowShade off
-+ I TestRc (!Match) All ($0, !shaded) autohide_hide $1 $2
-
-DestroyFunc autohide_hide
-AddToFunc autohide_hide
-+ I Schedule $0 $[w.id] WindowShade $1
-+ I Schedule $0 $[w.id] Deschedule $[w.id]
-
-# Start FvwmAuto
-AddToFunc StartFunction
-+ I Module FvwmAuto 1 -menter enter_handler
-
-# Add the windows you want to autohide
-DestroyFunc enter_handler
-AddToFunc enter_handler
-+ I autohide panel 500 S
-#            ^           ^   ^
-#            |           |   |___  Shade direction (optional)
-#            |           |_______  Hide delay (milliseconds)
-#            |___________________  Unique window name/resource
