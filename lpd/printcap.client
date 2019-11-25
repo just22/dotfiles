@@ -1,0 +1,49 @@
+lp|dj|hp-deskjet-1510:\
+	:lp=:\
+	:rm=argo.atlantide.priv:\
+	:rp=lp:\
+	:sd=/var/spool/output/lpd:\
+	:lf=/var/log/lpd-errs:
+
+lp-draft|dj-draft|hp-deskjet-1510-draft:\
+	:lp=:\
+	:rm=argo.atlantide.priv:\
+	:rp=lp-draft:\
+	:sd=/var/spool/output/lpd:\
+	:lf=/var/log/lpd-errs:
+
+lp-normal|dj-normal|hp-deskjet-1510-normal:\
+	:lp=:\
+	:rm=argo.atlantide.priv:\
+	:rp=lp-normal:\
+	:sd=/var/spool/output/lpd:\
+	:lf=/var/log/lpd-errs:
+
+lp-hq|dj-hq|hp-deskjet-1510-hq:\
+	:lp=:\
+	:rm=argo.atlantide.priv:\
+	:rp=lp-hq:\
+	:sd=/var/spool/output/lpd:\
+	:lf=/var/log/lpd-errs:
+
+lp-draft-color|dj-draft-color|hp-deskjet-1510-draft-color:\
+	:lp=:\
+	:rm=argo.atlantide.priv:\
+	:rp=lp-draft-color:\
+	:sd=/var/spool/output/lpd:\
+	:lf=/var/log/lpd-errs:
+
+lp-normal-color|dj-normal-color|hp-deskjet-1510-normal-color:\
+	:lp=:\
+	:rm=argo.atlantide.priv:\
+	:rp=lp-normal-color:\
+	:sd=/var/spool/output/lpd:\
+	:lf=/var/log/lpd-errs:
+
+lp-hq-color|dj-hq-color|hp-deskjet-1510-hq-color:\
+	:lp=:\
+	:rm=argo.atlantide.priv:\
+	:rp=lp-hq-color:\
+	:sd=/var/spool/output/lpd:\
+	:lf=/var/log/lpd-errs:
+

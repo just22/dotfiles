@@ -1,0 +1,49 @@
+lp|dj|hp-deskjet-1510:\
+	:lp=/dev/ulpt0:\
+	:if=/etc/foomatic/direct/a2ps-foomatic-rip-draft-gray:\
+	:sd=/var/spool/output/lpd:\
+	:lf=/var/log/lpd-errs:\
+	:sh:
+
+lp-draft|dj-draft|hp-deskjet-1510-draft:\
+	:lp=/dev/ulpt0:\
+	:if=/etc/foomatic/direct/a2ps-foomatic-rip-draft-gray:\
+	:sd=/var/spool/output/lpd:\
+	:lf=/var/log/lpd-errs:\
+	:sh:
+
+lp-normal|dj-normal|hp-deskjet-1510-normal:\
+	:lp=/dev/ulpt0:\
+	:if=/etc/foomatic/direct/a2ps-foomatic-rip-normal-gray:\
+	:sd=/var/spool/output/lpd:\
+	:lf=/var/log/lpd-errs:\
+	:sh:
+
+lp-hq|dj-hq|hp-deskjet-1510-hq:\
+	:lp=/dev/ulpt0:\
+	:if=/etc/foomatic/direct/a2ps-foomatic-rip-hq-gray:\
+	:sd=/var/spool/output/lpd:\
+	:lf=/var/log/lpd-errs:\
+	:sh:
+
+lp-draft-color|dj-draft-color|hp-deskjet-1510-draft-color:\
+	:lp=/dev/ulpt0:\
+	:if=/etc/foomatic/direct/a2ps-foomatic-rip-draft-color:\
+	:sd=/var/spool/output/lpd:\
+	:lf=/var/log/lpd-errs:\
+	:sh:
+
+lp-normal-color|dj-normal-color|hp-deskjet-1510-normal-color:\
+	:lp=/dev/ulpt0:\
+	:if=/etc/foomatic/direct/a2ps-foomatic-rip-normal-color:\
+	:sd=/var/spool/output/lpd:\
+	:lf=/var/log/lpd-errs:\
+	:sh:
+
+lp-hq-color|dj-hq-color|hp-deskjet-1510-hq-color:\
+	:lp=/dev/ulpt0:\
+	:if=/etc/foomatic/direct/a2ps-foomatic-rip-hq-color:\
+	:sd=/var/spool/output/lpd:\
+	:lf=/var/log/lpd-errs:\
+	:sh:
+
