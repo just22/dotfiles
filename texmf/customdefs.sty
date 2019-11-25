@@ -53,6 +53,7 @@
 		\Lorig
 	\fi
 }
+\newcommand \Linv {\mathcal{L}^{-1}}
 
 \renewcommand \* {
 	\relax
@@ -79,6 +80,12 @@
 
 % ------------------------------
 % Less verbose descr/item env
+%
+% Examples:
+%     \1{}    - Pause after each item, no bullet
+%     \1{\*}  - Pause after each item, with bullet (or whatever)
+%     \1*{}   - No pause, no bullet
+%     \1*{\*} - No pause, with bullet (or whatever)
 % ------------------------------
 \newcommand {\one}[1] {
 	\begin{itemize}[<+->]
