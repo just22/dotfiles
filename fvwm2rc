@@ -528,7 +528,7 @@ DestroyModuleConfig panel: *
 
 # Systray
 *panel: (135x27, \
-         Swallow (NoClose,UseOld) stalonetray 'Exec exec stalonetray --geometry 5x1')
+         Swallow (NoClose,UseOld) stalonetray 'Exec exec stalonetray --geometry 7x1')
 
 # Pager
 *panel: (210x54, Swallow FvwmPager "FvwmPager 0 2")
