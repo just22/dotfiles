@@ -1,62 +1,175 @@
 # ----------------------------------------------------------------------
 #  $Id$
 #
-#  isync configuration file
+#  mbsync configuration file
 # ----------------------------------------------------------------------
 
-# ---------------------------------------------------------------------
-# Stores
+# ----------------------------------------------------------------------
+#  just22@atlantide.mooo.com
 #
-IMAPStore       gmail-just22-server
+
+# IMAP stores
+IMAPStore       just22-atlantide-remote
+Host            atlantide.mooo.com
+User            just22@atlantide.mooo.com
+PassCmd         "get_passwd just22@atlantide.mooo.com"
+SSLType         IMAPS
+CertificateFile ~/.mbsync.atlantide_mooo_com.crt
+
+IMAPStore       sandro.delaurenzis-gmail-remote
 Host            imap.gmail.com
-User            just22.adl@gmail.com
-Pass            just4Gmail
-UseIMAPS        yes
-RequireSSL      yes
-CertificateFile /etc/ssl/cert.pem
+User            sandro.delaurenzis@gmail.com
+PassCmd         "get_passwd sandro.delaurenzis@gmail.com"
+SSLType         IMAPS
+Timeout         0
 
-MaildirStore    gmail-just22-local
-Path            ~/mail/gmail-just22/
-Inbox           ~/mail/gmail-just22/INBOX
 
-# ---------------------------------------------------------------------
+# Maildir stores
+MaildirStore    just22-atlantide-local
+Path            ~/mail/just22-atlantide/
+Inbox           ~/mail/just22-atlantide/INBOX
+Subfolders      Verbatim
+
+MaildirStore    sandro.delaurenzis-gmail-local
+Path            ~/mail/sandro.delaurenzis-gmail/
+Inbox           ~/mail/sandro.delaurenzis-gmail/INBOX
+Subfolders      Verbatim
+
+
 # Channels
-#
-Channel   gmail-just22-inbox
-Master    ":gmail-just22-server:INBOX"
-Slave     ":gmail-just22-local:INBOX"
-Create    Both
-SyncState *
+Channel         sync-just22-atlantide-INBOX
+Master          :just22-atlantide-remote:INBOX
+Slave           :just22-atlantide-local:INBOX
+Create          Both
+Remove          Both
+Expunge         Both
+Sync            All
+SyncState       *
 
-Channel   gmail-just22-drafts
-Master    ":gmail-just22-server:[Gmail]/Drafts"
-Slave     ":gmail-just22-local:drafts"
-Create    Both
-SyncState *
+Channel         sync-just22-atlantide-obsd-bugs
+Master          :just22-atlantide-remote:"lists/OpenBSD/bugs"
+Slave           :just22-atlantide-local:"lists/OpenBSD/bugs"
+Create          Both
+Remove          Both
+Expunge         Both
+Sync            All
+SyncState       *
 
-Channel   gmail-just22-sent
-Master    ":gmail-just22-server:[Gmail]/Sent Mail"
-Slave     ":gmail-just22-local:sent"
-Create    Both
-SyncState *
+Channel         sync-just22-atlantide-obsd-misc
+Master          :just22-atlantide-remote:"lists/OpenBSD/misc"
+Slave           :just22-atlantide-local:"lists/OpenBSD/misc"
+Create          Both
+Remove          Both
+Expunge         Both
+Sync            All
+SyncState       *
 
-Channel   gmail-just22-trash
-Master    ":gmail-just22-server:[Gmail]/Trash"
-Slave     ":gmail-just22-local:trash"
-Create    Both
-SyncState *
+Channel         sync-just22-atlantide-obsd-ports
+Master          :just22-atlantide-remote:"lists/OpenBSD/ports"
+Slave           :just22-atlantide-local:"lists/OpenBSD/ports"
+Create          Both
+Remove          Both
+Expunge         Both
+Sync            All
+SyncState       *
 
-# ---------------------------------------------------------------------
+Channel         sync-just22-atlantide-obsd-tech
+Master          :just22-atlantide-remote:"lists/OpenBSD/tech"
+Slave           :just22-atlantide-local:"lists/OpenBSD/tech"
+Create          Both
+Remove          Both
+Expunge         Both
+Sync            All
+SyncState       *
+
+Channel         sync-just22-atlantide-others
+Master          :just22-atlantide-remote:
+Slave           :just22-atlantide-local:
+Patterns        *
+Patterns        !INBOX
+Patterns        !"lists/OpenBSD/bugs"
+Patterns        !"lists/OpenBSD/misc"
+Patterns        !"lists/OpenBSD/ports"
+Patterns        !"lists/OpenBSD/tech"
+Create          Both
+Remove          Both
+Expunge         Both
+Sync            All
+SyncState       *
+
+Channel         sync-sandro.delaurenzis-gmail-INBOX
+Master          :sandro.delaurenzis-gmail-remote:INBOX
+Slave           :sandro.delaurenzis-gmail-local:INBOX
+Create          Slave
+Expunge         Both
+Sync            All
+SyncState       *
+
+Channel         sync-sandro.delaurenzis-gmail-Sent
+Master          :sandro.delaurenzis-gmail-remote:"[Gmail]/Sent Mail"
+Slave           :sandro.delaurenzis-gmail-local:Sent
+Create          Slave
+Expunge         Both
+Sync            All
+SyncState       *
+
+Channel         sync-sandro.delaurenzis-gmail-Drafts
+Master          :sandro.delaurenzis-gmail-remote:"[Gmail]/Drafts"
+Slave           :sandro.delaurenzis-gmail-local:Drafts
+Create          Slave
+Expunge         Both
+Sync            All
+SyncState       *
+
+Channel         sync-sandro.delaurenzis-gmail-Trash
+Master          :sandro.delaurenzis-gmail-remote:"[Gmail]/Trash"
+Slave           :sandro.delaurenzis-gmail-local:Trash
+Create          Slave
+Expunge         Both
+Sync            All
+SyncState       *
+
+Channel         sync-sandro.delaurenzis-gmail-Junk
+Master          :sandro.delaurenzis-gmail-remote:"[Gmail]/Spam"
+Slave           :sandro.delaurenzis-gmail-local:Junk
+Create          Slave
+Expunge         Both
+Sync            All
+SyncState       *
+
+Channel         sync-sandro.delaurenzis-gmail-others
+Master          :sandro.delaurenzis-gmail-remote:
+Slave           :sandro.delaurenzis-gmail-local:
+Patterns        *
+Patterns        !INBOX ![Gmail]* !Sent !Drafts !Trash !Junk
+Create          Both
+Remove          Both
+Expunge         Both
+Sync            All
+SyncState       *
+
+
 # Groups
-#
-Group   gmail-just22
-Channel gmail-just22-trash
-Channel gmail-just22-inbox
-Channel gmail-just22-drafts
-Channel gmail-just22-sent
+Group           sync-just22-atlantide-mailboxes
+Channel         sync-just22-atlantide-INBOX
+Channel         sync-just22-atlantide-obsd-bugs
+Channel         sync-just22-atlantide-obsd-misc
+Channel         sync-just22-atlantide-obsd-ports
+Channel         sync-just22-atlantide-obsd-tech
 
-# ---------------------------------------------------------------------
-# Global settings
-#
-Sync All
-Expunge Both
+Group           sync-just22-atlantide-all
+Channel         sync-just22-atlantide-INBOX
+Channel         sync-just22-atlantide-obsd-bugs
+Channel         sync-just22-atlantide-obsd-misc
+Channel         sync-just22-atlantide-obsd-ports
+Channel         sync-just22-atlantide-obsd-tech
+Channel         sync-just22-atlantide-others
+
+Group           sync-sandro.delaurenzis-gmail-all
+Channel         sync-sandro.delaurenzis-gmail-INBOX
+Channel         sync-sandro.delaurenzis-gmail-Sent
+Channel         sync-sandro.delaurenzis-gmail-Drafts
+Channel         sync-sandro.delaurenzis-gmail-Trash
+Channel         sync-sandro.delaurenzis-gmail-Junk
+Channel         sync-sandro.delaurenzis-gmail-others
+
