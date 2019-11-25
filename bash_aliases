@@ -5,7 +5,7 @@
 # ----------------------------------------------------------------------
 
 # Update tmux(1) env variables in current panel
-tmux-upenv() {
+tmux_upenv() {
         if [ -n "$TMUX" ]; then
                 while read vline; do
                         case "$vline" in
