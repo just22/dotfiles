@@ -12,8 +12,8 @@ snippet _preamble
 	% Preamble
 	%***********************************************************************
 
-	% \documentclass[10pt,english,t,handout]{${5:beamer}}
-	\documentclass[10pt,english,t]{${5:beamer}}
+	% \documentclass[9pt,english,t,handout]{${5:beamer}}
+	\documentclass[9pt,english,t]{${5:beamer}}
 	\usepackage{amsmath}
 	\usepackage{amssymb}
 	\usepackage{appendixnumberbeamer}
@@ -111,4 +111,36 @@ snippet _appendix
 		\bibliographystyle{ieeepes}
 		\bibliography{references}
 	\end{frame} % References
+
+snippet _layout21
+		\begin{minipage}[c][0.4\textheight][c]{\linewidth}
+			\begin{columns}
+				\column{0.4\textwidth}
+					\includegraphics[scale=0.25]{${1}}
+				\column{0.4\textwidth}
+					\includegraphics[scale=0.25]{${2}}
+			\end{columns}
+		\end{minipage}
+		\begin{minipage}[c][0.4\textheight][c]{\linewidth}
+			${3}
+		\end{minipage}
+
+snippet _layout22
+		\begin{minipage}[c][0.4\textheight][c]{\linewidth}
+			\begin{columns}
+				\column{0.4\textwidth}
+					\includegraphics[scale=0.25]{${1}}
+				\column{0.4\textwidth}
+					\includegraphics[scale=0.25]{${2}}
+			\end{columns}
+		\end{minipage}
+	
+		\begin{minipage}[c][0.4\textheight][c]{\linewidth}
+			\begin{columns}
+				\column{0.4\textwidth}
+					\includegraphics[scale=0.25]{${3}}
+				\column{0.4\textwidth}
+					\includegraphics[scale=0.25]{${4}}
+			\end{columns}
+		\end{minipage}
 
