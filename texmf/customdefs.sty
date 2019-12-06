@@ -7,6 +7,8 @@
 \ProvidesPackage{customdefs}
 
 \RequirePackage{mathtools}
+\RequirePackage{circuitikz}
+
 
 % ------------------------------
 % Delimiters
@@ -78,6 +80,7 @@
 	\fi
 }
 
+
 % ------------------------------
 % Less verbose descr/item env
 %
@@ -89,7 +92,7 @@
 % ------------------------------
 \newcommand {\one}[1] {
 	\begin{itemize}[<+->]
-		\setlength\itemsep{0.5em}
+		\setlength\itemsep{1.0em}
 		\item[#1]
 }
 \newcommand {\onestarred}[1] {
@@ -100,7 +103,10 @@
 
 \newcommand {\numstarred}[1] {\item[#1]<.->}
 
-\newcommand {\zero} {\end{itemize}}
+\newcommand {\zero} {
+	\end{itemize}
+	\vspace{0.5em}
+}
 
 \newcommand {\1} {\@ifstar \onestarred \one}
 \newcommand {\2} {\@ifstar \numstarred \num}
@@ -112,6 +118,7 @@
 \newcommand {\8} {\@ifstar \numstarred \num}
 \newcommand {\9} {\@ifstar \numstarred \num}
 \newcommand {\0} {\@ifstar \zero \zero}
+
 
 % ------------------------------
 % Text in math with spacing
@@ -135,4 +142,40 @@
 		\commaorig
 	\fi
 }
+
+
+% ------------------------------
+% Reference footnotes
+% ------------------------------
+\newcommand {\refnote}[1] {
+	\begingroup
+		\renewcommand {\thefootnote}{} \footnote{\hspace{15pt}Ref: #1} %
+		\addtocounter {footnote} {-1} %
+	\endgroup
+}
+
+
+% ------------------------------
+% Circuit elements
+% ------------------------------
+\ctikzset{bipoles/length=0.5cm}
+\newcommand {\ecir}[1] {
+	\begin{circuitikz}
+		\draw (0,0) to [#1] (0.75,0);
+	\end{circuitikz}
+}
+\newcommand {\resistor} { 
+	\ecir{resistor}
+}
+\newcommand {\capacitor} { 
+	\ecir{capacitor}
+}
+\newcommand {\diode} { 
+	\ecir{diode}
+}
+
+% ------------------------------
+% Command abbreviations
+% ------------------------------
+\newcommand {\e} {\emph}
 
