@@ -113,34 +113,53 @@ snippet _appendix
 	\end{frame} % References
 
 snippet _layout21
-		\begin{minipage}[c][0.4\textheight][c]{\linewidth}
-			\begin{columns}
-				\column{0.4\textwidth}
-					\includegraphics[scale=0.25]{${1}}
-				\column{0.4\textwidth}
-					\includegraphics[scale=0.25]{${2}}
-			\end{columns}
-		\end{minipage}
-		\begin{minipage}[c][0.4\textheight][c]{\linewidth}
-			${3}
-		\end{minipage}
+	\noindent
+	\begin{minipage}[l][\dimexpr 0.4\textheight\relax][c]{\dimexpr 0.495\textwidth\relax}
+		\center
+		\includegraphics[width=\textwidth,keepaspectratio]{${1}}
+	\end{minipage}
+	\hfill
+	\begin{minipage}[r][\dimexpr 0.4\textheight\relax][c]{\dimexpr 0.495\textwidth\relax}%
+		${2}
+	\end{minipage}
+	\vfill
+	\noindent
+	\begin{minipage}[l][\dimexpr 0.4\textheight\relax][c]{\textwidth\relax}%
+		${3}
+	\end{minipage}
+
+snippet _layout12
+	\noindent
+	\begin{minipage}[l][\dimexpr 0.4\textheight\relax][c]{\textwidth\relax}
+		${1}
+	\end{minipage}
+	\vfill
+	\noindent
+	\begin{minipage}[l][\dimexpr 0.4\textheight\relax][c]{\dimexpr 0.495\textwidth\relax}%
+		\center
+		\includegraphics[width=\textwidth,keepaspectratio]{${2}}
+	\end{minipage}
+	\hfill
+	\begin{minipage}[r][\dimexpr 0.4\textheight\relax][c]{\dimexpr 0.495\textwidth\relax}%
+		${3}
+	\end{minipage}
 
 snippet _layout22
-		\begin{minipage}[c][0.4\textheight][c]{\linewidth}
-			\begin{columns}
-				\column{0.4\textwidth}
-					\includegraphics[scale=0.25]{${1}}
-				\column{0.4\textwidth}
-					\includegraphics[scale=0.25]{${2}}
-			\end{columns}
-		\end{minipage}
-	
-		\begin{minipage}[c][0.4\textheight][c]{\linewidth}
-			\begin{columns}
-				\column{0.4\textwidth}
-					\includegraphics[scale=0.25]{${3}}
-				\column{0.4\textwidth}
-					\includegraphics[scale=0.25]{${4}}
-			\end{columns}
-		\end{minipage}
-
+	\noindent
+	\begin{minipage}[l][\dimexpr 0.4\textheight\relax][c]{\dimexpr 0.495\textwidth\relax}
+		\center
+		\includegraphics[width=\textwidth,keepaspectratio]{${1}}
+	\end{minipage}
+	\hfill
+	\begin{minipage}[r][\dimexpr 0.4\textheight\relax][c]{\dimexpr 0.495\textwidth\relax}%
+		${2}
+	\end{minipage}
+	\vfill
+	\noindent
+	\begin{minipage}[l][\dimexpr 0.4\textheight\relax][c]{\dimexpr 0.495\textwidth\relax}%
+		${3}
+	\end{minipage}
+	\hfill
+	\begin{minipage}[r][\dimexpr 0.4\textheight\relax][c]{\dimexpr 0.495\textwidth\relax}%
+		${4}
+	\end{minipage}
