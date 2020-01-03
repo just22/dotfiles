@@ -74,6 +74,22 @@ fi
 # Launch "Today's reminders" daemon
 remind-today &
 
+# Reload the gpg-agent (reset cached GnuPG credentials)
+gpg-connect-agent reloadagent /bye
+
+# Start IMAP IDLE connections and new msg notifications
+pkill -KILL -fl imap-watcher
+pkill -KILL -fl imap-idle.pl
+imap-watcher &
+
+pkill -KILL inotifywait
+dir-watch -c notify-new-msg -d ~/mail/sandro.delaurenzis-gmail/INBOX/new &
+dir-watch -c notify-new-msg -d ~/mail/just22-atlantide/INBOX/new &
+dir-watch -c notify-new-msg -d ~/mail/just22-atlantide/lists/OpenBSD/bugs/new &
+dir-watch -c notify-new-msg -d ~/mail/just22-atlantide/lists/OpenBSD/misc/new &
+dir-watch -c notify-new-msg -d ~/mail/just22-atlantide/lists/OpenBSD/ports/new &
+dir-watch -c notify-new-msg -d ~/mail/just22-atlantide/lists/OpenBSD/tech/new &
+
 # ...and finally start the X-Session!
 [ -x ~/.start-xsession ] && exec ~/.start-xsession || exec twm
 
