@@ -568,7 +568,7 @@ git_remote_repo() {
                 echo "Not in a git tree"
         fi
 }
-gclone() { git clone https://just22@atlantide.t28.net/git/$1; }
+gclone() { git clone https://just22@atlantide.mooo.com/git/$1; }
 alias gpush='git_remote_repo push'
 alias gpull='git_remote_repo pull'
 alias gfetch='git_remote_repo fetch'
