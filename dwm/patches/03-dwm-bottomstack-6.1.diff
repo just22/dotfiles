@@ -32,12 +32,11 @@ index 0362114..c313b5e 100644
 +static void bstackhoriz(Monitor *m);
  
  /* variables */
- static const char broken[] = "broken";
-@@ -2139,3 +2141,65 @@ main(int argc, char *argv[])
- 	XCloseDisplay(dpy);
- 	return EXIT_SUCCESS;
+ static Systray *systray = NULL;
+@@ -2457,6 +2459,68 @@
+ 	pop(c);
  }
-+
+ 
 +static void
 +bstack(Monitor *m) {
 +	int w, h, mh, mx, tx, ty, tw;
@@ -99,3 +98,7 @@ index 0362114..c313b5e 100644
 +		}
 +	}
 +}
++
+ int
+ main(int argc, char *argv[])
+ {
