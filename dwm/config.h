@@ -42,7 +42,6 @@ static const Rule rules[] = {
 	{ "Firefox",		"Places",	        NULL,			1 << 4,		True,		-1 },
 	{ "Firefox",		"Toplevel",	        NULL,			0,		True,		-1 },
 	{ "Gimp",		NULL,			NULL,			0,		True,		-1 },
-	{ "Innovus",		"Qt-subapplication",	"NanoRoute",		0,		True,		-1 },
 	{ "Pinentry-gtk-2",	NULL,	        	NULL,			0,		True,		-1 },
 	{ "Sound",	        "sound",		NULL,			0,		True,		-1 },
 	{ "Toplevel",		NULL,	        	NULL,			0,		True,		-1 },
@@ -59,6 +58,7 @@ static const Rule rules[] = {
 	{ "XTerm",		NULL,			"cmixer",		0,		True,		-1 },
 	{ "Xdialog",		"Xdialog",		NULL,			0,		True,		-1 },
 	{ "Xmessage",		NULL,			NULL,			0,		True,		-1 },
+	{ NULL,		        "Qt-subapplication",	NULL,			0,		True,		-1 },
 };
 
 /* layout(s) */
@@ -109,7 +109,7 @@ static const char *execF11cmd[]		= { "exec-F11", NULL };
 static const char *execF12cmd[]		= { "exec-F12", NULL };
 static const char *filebrowsercmd[]	= { "dmenu-filebrowser", NULL };
 static const char *filemanagercmd[]	= { "xterm", "-e", "ranger", NULL };
-static const char *helpcmd[]	        = { "xterm", "-title", "dwm man page", "-e", "man -m ~/share/man dwm", NULL };
+static const char *helpcmd[]	        = { "xterm", "-title", "dwm man page", "-e", "man dwm", NULL };
 static const char *hibernatecmd[]	= { "ZZZ", NULL };
 static const char *kbdlayoutcmd[]	= { "dmenu-kbd", NULL };
 static const char *launchercmd[]	= { "dmenu-launchers", NULL };
@@ -162,14 +162,12 @@ static Key keys[] = {
 	{ MODKEY,                       XK_o,                       setlayout,      {.v = &layouts[4]} },
 	{ MODKEY,                       XK_v,                       setlayout,      {.v = &layouts[0]} },
 	{ MODKEY,                       XK_q,                       quit,           {0} },
-	{ MODKEY,                       XK_minus,                   tag,            {.ui = 1 << 9} },
+	{ MODKEY,                       XK_minus,                   lowerfloat,     {} },
 	{ MODKEY|ShiftMask,             XK_agrave,                  tag,            {.ui = ~0 } },
 	{ MODKEY|ShiftMask,             XK_comma,                   tagmon,         {.i = -1 } },
 	{ MODKEY|ShiftMask,             XK_period,                  tagmon,         {.i = +1 } },
 	{ MODKEY,                       XK_a,                       togglebar,      {0} },
 	{ MODKEY,                       XK_space,                   togglefloating, {0} },
-	{ MODKEY,                       XK_equal,                   toggleview,     {.ui = 1 << 9} },
-	{ MODKEY,                       XK_plus,                    toggleview,     {.ui = 1 << 9} },
 	{ MODKEY,                       XK_agrave,                  view,           {.ui = ~0 } },
 	{ MODKEY,                       XK_grave,                   view,           {0} },
 	{ MODKEY,                       XK_backslash,               view,           {0} },
@@ -222,13 +220,13 @@ static Key keys[] = {
 	{ MODKEY|ShiftMask,             XK_s,                       spawn,          {.v = suspendcmd} },
 
         /* Volume control */
-	{ MODKEY|ControlMask,           XK_m,                       spawn,          {.v = mutecmd} },
-	{ MODKEY|ControlMask,           XK_v,                       spawn,          {.v = lowervolcmd} },
-	{ MODKEY|ControlMask|ShiftMask, XK_v,                       spawn,          {.v = raisevolcmd} },
+	{ MODKEY,                       XK_KP_0,                    spawn,          {.v = mutecmd} },
+	{ MODKEY,                       XK_KP_Subtract,             spawn,          {.v = lowervolcmd} },
+	{ MODKEY,                       XK_KP_Add,                  spawn,          {.v = raisevolcmd} },
 
         /* Multimedia keys */
-	{ 0,                            XF86XK_AudioLowerVolume,    spawn,          {.v = lowervolcmd} },
 	{ 0,                            XF86XK_AudioMute,           spawn,          {.v = mutecmd} },
+	{ 0,                            XF86XK_AudioLowerVolume,    spawn,          {.v = lowervolcmd} },
 	{ 0,                            XF86XK_AudioRaiseVolume,    spawn,          {.v = raisevolcmd} },
 	{ 0,                            XF86XK_Display,             spawn,          {.v = setdisplaycmd} },
 };
