@@ -1,0 +1,27 @@
+--- ./dwm.c.orig	2020-02-07 15:32:07.163145439 +0100
++++ ./dwm.c	2020-02-07 10:54:52.227376280 +0100
+@@ -306,6 +306,8 @@
+ static Monitor *mons, *selmon;
+ static Window root;
+ 
++void lowerfloat (void);
++
+ /* configuration, allows nested code to access above variables */
+ #include "config.h"
+ 
+@@ -2521,6 +2523,15 @@
+ 	}
+ }
+ 
++void
++lowerfloat (void) {
++	if (!selmon->sel)
++		return;
++	if (selmon->lt[selmon->sellt]->arrange && !selmon->sel->isfloating)
++		return;
++	XLowerWindow(dpy, selmon->sel->win);
++}
++
+ int
+ main(int argc, char *argv[])
+ {
