@@ -7,7 +7,7 @@ static const char *fonts[] = {
 static const char dmenufont[]       = "DejaVu Sans Mono:size=9";
 
 /* Solarized light color scheme */
-static const char normbordercolor[] = "#eee8d5"; // base02
+static const char normbordercolor[] = "#839496"; // base0
 static const char normbgcolor[]     = "#eee8d5"; // base2
 static const char normfgcolor[]     = "#293a1a"; // cyan
 static const char selbordercolor[]  = "#dc322f"; // red
