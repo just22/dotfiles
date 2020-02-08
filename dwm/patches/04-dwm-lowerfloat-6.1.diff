@@ -4,7 +4,7 @@
  static Monitor *mons, *selmon;
  static Window root;
  
-+void lowerfloat (void);
++void lowerfloat (const Arg *arg);
 +
  /* configuration, allows nested code to access above variables */
  #include "config.h"
@@ -14,7 +14,7 @@
  }
  
 +void
-+lowerfloat (void) {
++lowerfloat (const Arg *arg) {
 +	if (!selmon->sel)
 +		return;
 +	if (selmon->lt[selmon->sellt]->arrange && !selmon->sel->isfloating)
