@@ -4,11 +4,12 @@
 #  System menu file for fluxbox(1)
 # ----------------------------------------------------------------------
 
-[submenu] (Display Settings) {arandr} </usr/local/share/icons/gnome/16x16/apps/preferences-desktop-display.png>
-        [exec] (Study)                 {dmenu-xrandr Left; setxkbmap us}
-        [exec] (LVDS Only)             {dmenu-xrandr Off}
-        [exec] (VGA Only)              {dmenu-xrandr Only}
-        [exec] (Change Display Layout) {arandr}
+[submenu] (Display Settings) </usr/local/share/icons/gnome/16x16/apps/preferences-desktop-display.png>
+        [exec] (Study)          {dmenu-xrandr study-2head; setxkbmap us}
+        [exec] (LVDS Only)      {dmenu-xrandr LVDS}
+        [exec] (VGA Only)       {dmenu-xrandr VGA}
+        [exec] (DP Only)        {dmenu-xrandr DP}
+        [exec] (Custom)         {arandr}
 [end]
 [submenu] (Keyboard Layout) </usr/local/share/icons/gnome/16x16/devices/keyboard.png>
         [exec] (Italian) {setxkbmap it} </home/just22/.local/share/icons/cust/16x16/flags/italy.png>
