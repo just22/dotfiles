@@ -33,7 +33,8 @@ if [ $# != 2 ]; then
 fi
 
 # Tmp directory
-tmpdir="${HOME}/.mutt/tmp/view_attachment.workdir"
+# tmpdir="${HOME}/.mutt/tmp/view_attachment.workdir"
+tmpdir="/tmp"
 
 # Name of the debug file if debugging is turned on
 debug_file=${tmpdir}/view_attachment.debug
