@@ -49,7 +49,7 @@ pkill -x bbpager; (sleep 4; bbpager) &
 
 # Tray apps
 radiotray &
-sleep 1; vol-tray &
+sleep 1; /usr/local/libexec/tray-app/sound -i &
 sleep 2; cal-tray &
 
 # Restart fluxbox on screen resolution changes
