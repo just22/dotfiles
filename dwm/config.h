@@ -33,32 +33,34 @@ static const Rule rules[] = {
 	 *	WM_CLASS(STRING) = instance, class
 	 *	WM_NAME(STRING) = title
 	 */
-	/* class		instance		title	                tags mask	isfloating	monitor */
-	{ "Arandr",             NULL,	        	NULL,			0,		True,		-1 },
-	{ "Clock",		"oclock",		NULL,			0,		True,		-1 },
-	{ "Dialog",	        "__tk__messagebox",	"SimVision Exit",	0,		True,		-1 },
-	{ "Firefox",		"Browser",	        NULL,			1 << 4,		True,		-1 },
-	{ "Firefox",		"Navigator",	        NULL,			1 << 4,		False,		-1 },
-	{ "Firefox",		"Places",	        NULL,			1 << 4,		True,		-1 },
-	{ "Firefox",		"Toplevel",	        NULL,			0,		True,		-1 },
-	{ "Gimp",		NULL,			NULL,			0,		True,		-1 },
-	{ "Pinentry-gtk-2",	NULL,	        	NULL,			0,		True,		-1 },
-	{ "Sound",	        "sound",		NULL,			0,		True,		-1 },
-	{ "Toplevel",		NULL,	        	NULL,			0,		True,		-1 },
-	{ "XBiff",		"xbiff",		NULL,			0,		True,		-1 },
-	{ "XCalc",		"xcalc",		NULL,			0,		True,		-1 },
-	{ "XClock",		"xclock",		NULL,			0,		True,		-1 },
-	{ "XConsole",		NULL,			NULL,			1 << 8,		False,		-1 },
-	{ "XLoad",		"xload",		NULL,			0,		True,		-1 },
-	{ "XTerm",		NULL,			"Process monitor",	1 << 8,		False,		-1 },
-	{ "XTerm",		NULL,			"Screenshot",		0,		True,		-1 },
-	{ "XTerm",		NULL,			"System log",		1 << 8,		False,		-1 },
-	{ "XTerm",		NULL,			"System stats",		1 << 8,		False,		-1 },
-	{ "XTerm",		NULL,			"Window's properties",	0,		True,		-1 },
-	{ "XTerm",		NULL,			"cmixer",		0,		True,		-1 },
-	{ "Xdialog",		"Xdialog",		NULL,			0,		True,		-1 },
-	{ "Xmessage",		NULL,			NULL,			0,		True,		-1 },
-	{ NULL,		        "Qt-subapplication",	NULL,			0,		True,		-1 },
+	/* class		instance		title			tags mask	isfloating	position	monitor */
+	{ "Arandr",             NULL,	        	NULL,			0,		True,		5,		-1 },
+	{ "Clock",		"oclock",		NULL,			0,		True,		5,		-1 },
+	{ "Dialog",	        "__tk__messagebox",	"SimVision Exit",	0,		True,		5,		-1 },
+	{ "Firefox",		"Browser",	        NULL,			1 << 4,		True,		5,		-1 },
+	{ "Firefox",		"Navigator",	        NULL,			1 << 4,		False,		5,		-1 },
+	{ "Firefox",		"Places",	        NULL,			1 << 4,		True,		5,		-1 },
+	{ "Firefox",		"Toplevel",	        NULL,			0,		True,		5,		-1 },
+	{ "Gimp",		NULL,			NULL,			0,		True,		5,		-1 },
+	{ "Pinentry-gtk-2",	NULL,	        	NULL,			0,		True,		5,		-1 },
+	{ "Sound",	        "sound",		NULL,			0,		True,		3,		-1 },
+	{ "Toplevel",		NULL,	        	NULL,			0,		True,		5,		-1 },
+	{ "XBiff",		NULL,			NULL,			0,		True,		5,		-1 },
+	{ "XCalc",		NULL,			NULL,			0,		True,		5,		-1 },
+	{ "XClock",		NULL,			NULL,			0,		True,		5,		-1 },
+	{ "XConsole",		NULL,			NULL,			1 << 8,		False,		5,		-1 },
+	{ "XLoad",		NULL,			NULL,			0,		True,		5,		-1 },
+	{ "XTerm",		NULL,			"Process monitor",	1 << 8,		False,		5,		-1 },
+	{ "XTerm",		NULL,			"Screenshot",		0,		True,		5,		-1 },
+	{ "XTerm",		NULL,			"System log",		1 << 8,		False,		5,		-1 },
+	{ "XTerm",		NULL,			"System stats",		1 << 8,		False,		5,		-1 },
+	{ "XTerm",		NULL,			"Window's properties",	0,		True,		5,		-1 },
+	{ "XTerm",		NULL,			"cmixer",		0,		True,		5,		-1 },
+	{ "Xdialog",		NULL,			NULL,			0,		True,		5,		-1 },
+	{ "Xmessage",		NULL,			NULL,			0,		True,		5,		-1 },
+	{ NULL,		        "Qt-subapplication",	NULL,			0,		True,		5,		-1 },
+	{ NULL,			NULL,			"Event Tester",		0,		True,		5,		-1 },
+	{ "Gsimplecal",		NULL,			NULL,			0,		True,		9,		-1 },
 };
 
 /* layout(s) */
@@ -221,6 +223,7 @@ static Key keys[] = {
 
         /* Volume control */
 	{ MODKEY,                       XK_KP_0,                    spawn,          {.v = mutecmd} },
+	{ MODKEY,                       XK_KP_Insert,               spawn,          {.v = mutecmd} },
 	{ MODKEY,                       XK_KP_Subtract,             spawn,          {.v = lowervolcmd} },
 	{ MODKEY,                       XK_KP_Add,                  spawn,          {.v = raisevolcmd} },
 
