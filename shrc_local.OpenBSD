@@ -34,17 +34,24 @@ alias nfs_mount='/usr/bin/doas mount -Na'
 # Package management
 #
 alias pkgs='pkg_info -Q'
-alias pkga='/usr/bin/doas pkg_add -Dsnap -iv'
-alias pkgas='pkg_add -Dsnap -ivs'
-alias pkgar='/usr/bin/doas pkg_add -Dsnap -ivr'
-alias pkgau='/usr/bin/doas pkg_add -Dsnap -u'
-alias pkgaus='/usr/bin/doas pkg_add -Dsnap -vus'
+alias pkga='/usr/bin/doas pkg_add -iv'
+alias snapa='/usr/bin/doas pkg_add -Dsnap -iv'
+alias pkgas='pkg_add -ivs'
+alias snapas='pkg_add -Dsnap -ivs'
+alias pkgar='/usr/bin/doas pkg_add -ivr'
+alias snapar='/usr/bin/doas pkg_add -Dsnap -ivr'
+alias pkgau='/usr/bin/doas pkg_add -u'
+alias snapau='/usr/bin/doas pkg_add -Dsnap -u'
+alias snapaus='/usr/bin/doas pkg_add -Dsnap -vus'
+alias pkgaus='/usr/bin/doas pkg_add -vus'
 alias pkgd='/usr/bin/doas pkg_delete -v'
 alias pkgds='pkg_delete -vs'
 alias pkgda='/usr/bin/doas pkg_delete -a'
 alias pkgdas='pkg_delete -as'
-alias pkgrdep='pkg_info -Dsnap -R'
-alias pkgup='/usr/bin/doas pkg_add -Dsnap -u'
+alias pkgrdep='pkg_info -R'
+alias snaprdep='pkg_info -Dsnap -R'
+alias pkgup='/usr/bin/doas pkg_add -u'
+alias snapup='/usr/bin/doas pkg_add -Dsnap -u'
 
 # ------------------------------------------------------------------
 # Port management
@@ -98,7 +105,7 @@ alias poseidon='ssh poseidon'
 #
 blkid() { disklabel ${1-sd0} | egrep "/dev/|duid"; }
 long()  { set-title "[Running: $@]"; $@; }
-alias man='man -Owidth=$(($COLUMNS<80?($COLUMNS-2):78)) -m ~/share/man'
+alias man='man -Owidth=$(($COLUMNS<80?($COLUMNS-2):78))'
 alias xcdroast='xcdroast -n -f /dev/rcd0c'
 alias lk='clear; lock -pn'
 alias mplayer='mplayer -af volnorm'

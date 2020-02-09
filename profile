@@ -87,6 +87,9 @@ export AUTOCONF_VERSION=2.69
 # Custom libraries
 export PKG_CONFIG_PATH=${HOME}/lib/pkgconfig
 
+# Append custom man paths to the standard ones
+export MANPATH=:~/share/man
+
 # Proxy settings
 #export http_proxy="http://argo.atlantide.priv:8118"
 #export no_proxy="http://argo.atlantide.priv:8118"
