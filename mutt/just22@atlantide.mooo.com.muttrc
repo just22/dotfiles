@@ -1,0 +1,47 @@
+# ----------------------------------------------------------------------
+#  just22@atlantide.mooo.com account settings
+#
+
+set folder     = "~/mail/just22-atlantide"
+
+set my_user = "just22@atlantide.mooo.com"
+source 'printf "set my_smtp_pass = "; get_passwd just22@atlantide.mooo.com |'
+set smtp_url = "smtp://$my_user:$my_smtp_pass@atlantide.mooo.com:587"
+
+# Mailboxes to monitor for new mail (and listed in the sidebar)
+unmailboxes *
+mailboxes `find ~/mail/just22-atlantide \
+               -type d -name cur -prune -o \
+               -type d -name tmp -prune -o \
+               -type d -name new -prune -o \
+               -mindepth 1 -type d -print | sed 's/^/"/; s/$/"/' | tr '\n' ' '`
+
+# Standard mailboxes
+set spoolfile  = "+INBOX"       # Unfiltered incoming messages
+set postponed  = "+Drafts"      # Postponed messages
+set record     = "+Sent"        # Outgoing messages
+set trash      = "+Trash"       # Deleted messages
+
+# Identity
+set realname = "Alessandro De Laurenzis"
+set from     = "just22@atlantide.mooo.com"
+alternates ""
+
+# Synchronization
+macro index <tab> "<sync-mailbox><shell-escape>mbsync sync-just22-atlantide-all >/dev/null &<enter>" \
+                  "Synchronize local and remote mailboxes"
+
+# Signature
+set signature = "~/.mutt/just22@atlantide.mooo.com.signature"
+
+#  Update status bar
+set status_format = "---%>-\
+[ $my_user ]---\
+[ %f %r ]---\
+[ %m msg ]\
+%?n?---[ %n new ]?\
+%?d?---[ %d deleted ]?\
+%?t?---[ %t tagged ]?\
+%?p?---[ %p postponed ]?\
+---"
+
