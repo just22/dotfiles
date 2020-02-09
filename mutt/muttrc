@@ -10,7 +10,7 @@
 set mbox_type=Maildir
 set send_charset = "utf-8"                                              # Character set on sent messages
 set assumed_charset = "iso-8859-1"                                      # If there is no character set given on incoming messages, windows is assumed
-set editor = "vim -c 'set syntax=mail ft=mail enc=utf-8 fo+=aw'"        # Make sure Vim knows mutt is a mail client and that we compose UTF-8 encoded messages
+set editor = "vim -c 'set syntax=mail ft=mail enc=utf-8 fo+=aw'"        # Preferred editor
 set menu_scroll = yes                                                   # Just scroll one line instead of full page
 set menu_context = 15                                                   # Lines of context that are given when scrolling through menus
 set pager_index_lines = 15                                              # Lines of a mini-index which is shown in the pager
@@ -21,6 +21,9 @@ set beep_new = yes                                                      # Beep w
 set mail_check_stats = yes                                              # Periodically calculate the unread, flagged, and total message counts
 set mail_check_stats_interval = 0
 set text_flowed = yes                                                   # Generate "format=flowed" bodies (needs support in text editor)
+set include = yes                                                       # Always quote original message
+set fast_reply = yes                                                    # Skip initial prompt for recipients and subject when replying to/forwarding messages
+
 
 # ----------------------------------------------------------------------
 #  Paths
@@ -31,19 +34,21 @@ set certificate_file = ~/.mutt/certificates
 set mailcap_path     = ~/.mutt/mailcap
 set tmpdir           = ~/.mutt/tmp
 
+
 # ----------------------------------------------------------------------
 #  Basic Options
 #
-unset wait_key              # Shut up...
-set timeout = 3             # Idle time before scanning
-set mail_check = 0          # Minimum time between scans
-set delete                  # Don't ask, just do
-set quit = ask-yes          # Ask for confirmation before exiting
-unset mark_old              # Read/New is good enough...
-set pipe_decode             # Strip headers and eval mimes when piping
-set thorough_search         # Strip headers and eval mimes before searching
-unset move                  # Gmail does that
-unset confirmappend         # Don't ask, just do!
+unset wait_key          # Shut up...
+set   timeout = 3       # Idle time before scanning
+set   mail_check = 0    # Minimum time between scans
+set   delete            # Don't ask, just do
+set   quit = ask-yes    # Ask for confirmation before exiting
+unset mark_old          # Read/New is good enough...
+set   pipe_decode       # Strip headers and eval mimes when piping
+set   thorough_search   # Strip headers and eval mimes before searching
+unset move              # Do not move read message from spool mailbox
+unset confirmappend     # Don't ask for confirmation when moving messages
+
 
 # ----------------------------------------------------------------------
 #  Sidebar
@@ -56,11 +61,17 @@ bind index,pager \Cn sidebar-next
 bind index,pager \Ce sidebar-open
 macro index,pager b '<enter-command>toggle sidebar_visible<enter>'
 
+
 # ----------------------------------------------------------------------
-#  Status Bar
+#  Status bar (status_format is folder-specific)
 #
 set status_chars  = "-*%A"
-set status_format = "───%>─[ $my_folderName Mbox: %f %r ]───[ %m msg ]%?n?───[ %n new ]?%?d?───[ %d deleted ]?%?t?───[ %t tagged ]?%?p?───[ %p postponed ]?───"
+
+# Show spam score (from SpamAssassin only) when reading a message
+spam "X-Spam-Score: ([0-9\\.]+).*" "SA: %1"
+
+set pager_format = " %C - %[%a, %b %d, %Y at %R], %F, %s%* %?H? [%H] ?"
+
 
 # ----------------------------------------------------------------------
 #  Header Options
@@ -70,21 +81,18 @@ unignore from: to: cc: date: subject:   # Show only these
 unhdr_order *
 hdr_order from: to: cc: date: subject:
 
+
 # ----------------------------------------------------------------------
 #  Index View Options
 #
-set date_format = "%a %d/%m/%Y %R"
+set date_format = "!%d/%m/%Y - %R"
 set index_format = "%4C %?M?[%2M msg]&        ? [%Z] %?X?[%2X att]&        ?  %D  %-25.25F  %s"
 set sort = "threads"                    # Order messages per thread, last date received first
 set sort_browser="reverse-date"
 set sort_aux = "last-date-received"
-set strict_threads = "yes"              # Threading will only make use of the “In-Reply-To” and
-                                        # “References:” fields
-#set sort_re                            # Threading based on regex (less "drastic" way wrt
-                                        # "strict_threads"
+set strict_threads = "yes"              # Threading will only make use of "In-Reply-To" "References:"
 set uncollapse_jump                     # Don't collapse on an unread message
 set reply_regexp = "^(([Rr][Ee]?(\[[0-9]+\])?: *)?(\[[^]]+\] *)?)*"
-
 
 # Show some MIME types inline
 auto_view text/html
@@ -98,10 +106,6 @@ alternative_order text/plain text/html text/enriched text/*
 # Make default search pattern to search in To, Cc and Subject
 set simple_search="~f %s | ~C %s | ~s %s"
 
-# Show spam score (from SpamAssassin only) when reading a message
-spam "X-Spam-Score: ([0-9\\.]+).*" "SA: %1"
-set pager_format = " %C - %[%H:%M] %.20v, %s%* %?H? [%H] ?"
-
 # Show only most significant headers
 ignore          *
 unignore        From To Cc Bcc Date Subject
@@ -109,7 +113,6 @@ unhdr_order     *
 hdr_order       From: To: Cc: Bcc: Date: Subject:
 
 # Color scheme
-#source ~/.mutt/mutt-colors-solarized-master/mutt-colors-solarized-dark-16.muttrc
 source ~/.mutt/colorscheme.muttrc
 
 # Collapse all threads by default
@@ -123,26 +126,30 @@ macro pager \Cb "|urlview<enter>" "Call urlview to follow links"
 
 
 # ----------------------------------------------------------------------
-#  Aliases (address book)
+#  Aliases / abook
 #
-set alias_file = ~/.mutt/aliases
-set sort_alias = alias
-set reverse_alias = yes
-source $alias_file
+
+# set alias_file    = ~/.mutt/aliases
+# set sort_alias    = alias
+# set reverse_alias = yes
+# source $alias_file
+
+set query_command= "abook --mutt-query '%s'"
+macro index,pager A "<pipe-message>abook --add-email-quiet<return>" \
+    "Add sender address to abook"
 
 
 # ----------------------------------------------------------------------
 #  Account settings
 #
-macro index,pager <f9>  "<change-folder>~/mail/sandro.delaurenzis@gmail.com/INBOX<enter>"
-macro index,pager <f10> "<change-folder>~/mail/just22@atlantide.t28.net/INBOX<enter>"
-macro index,pager <f11> "<change-folder>~/mail/just22-poseidon/INBOX<enter>"
-macro index,pager <f12> "<shell-escape>force-mailbox-sync<enter>" "Full sync of all mail accounts"
-macro index,pager <f4>  "<shell-escape>force-mailbox-sync -q<enter>" "Restart mail account sync daemons"
+source 'printf "set my_hostname = "; hostname -s |'
+macro index,pager <f10> "<change-folder>~/mail/sandro.delaurenzis-gmail/INBOX<enter>"
+macro index,pager <f11> "<change-folder>~/mail/just22-atlantide/INBOX<enter>"
+macro index,pager <f12> "<change-folder>~/mail/just22-$my_hostname/INBOX<enter>"
 
-folder-hook '~/mail/sandro.delaurenzis@gmail.com/INBOX' 'source ~/.mutt/sandro.delaurenzis@gmail.com.muttrc'
-folder-hook '~/mail/just22@atlantide.t28.net/INBOX'     'source ~/.mutt/just22@atlantide.t28.net.muttrc'
-folder-hook '~/mail/just22-poseidon/INBOX'              'source ~/.mutt/local.muttrc'
+folder-hook ~/mail/sandro.delaurenzis-gmail/INBOX 'source ~/.mutt/sandro.delaurenzis@gmail.com.muttrc'
+folder-hook ~/mail/just22-atlantide/INBOX         'source ~/.mutt/just22@atlantide.mooo.com.muttrc'
+folder-hook ~/mail/just22-$my_hostname/INBOX      'source ~/.mutt/local.muttrc'
 
 # Switch to default account on startup
 source ~/.mutt/sandro.delaurenzis@gmail.com.muttrc
@@ -157,14 +164,16 @@ bind  attach <return> view-mailcap   # View attachments properly
 bind  index gg      first-entry
 bind  index G       last-entry
 bind  index R       group-reply
-bind  index <tab>   sync-mailbox
 bind  index <space> collapse-thread
-bind  index k       previous-entry
-bind  index j       next-entry
+bind  index,pager k previous-entry
+bind  index,pager j next-entry
+bind  index <up>    previous-entry
+bind  index <down>  next-entry
 bind  index -       collapse-thread
 bind  index _       collapse-all
+bind  index T       tag-thread
 
-macro index \Cr     "T~U<enter><tag-prefix><clear-flag>N<untag-pattern>.<enter>" "mark all messages as read"
+macro index \Cr     "<tag-pattern>~U<enter><tag-prefix><clear-flag>N<untag-pattern>.<enter>" "mark all messages as read"
 macro index C       "<copy-message>?<toggle-mailboxes>" "copy a message to a mailbox"
 macro index M       "<save-message>?<toggle-mailboxes>" "move a message to a mailbox"
 
@@ -195,3 +204,4 @@ subscribe ^bugs@openbsd.org$ ^misc@openbsd.org$ ^ports@openbsd.org$ ^tech@openbs
 set followup_to = yes                           # Prevent receiving duplicate copies of replies to messages sent to mailing lists
                                                 # Get a reply separately for any messages sent to known but not subscribed lists
 set honor_followup_to = yes                     # Honor Mail-Followup-To header when group-replying to a message
+
