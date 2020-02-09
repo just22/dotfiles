@@ -1,3 +1,5 @@
+#!/bin/sh
+
 # ----------------------------------------------------------------------
 #  $Id$
 #
@@ -8,11 +10,12 @@
 # ----------------------------------------------------------------------
 
 if [ "$1" == -h ]; then
-    echo "Usage: mutt-abook <maildir>"
-    exit 0
+    echo "Usage: ${0##*/} [<maildir>]"
+    exit
 fi
 
 egrep -Rihs "^(from|to|cc): .+ <[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}>$" "${1-.}" |
-sed -E -e "s/^.+: //; s/[\"']//g;" |
-sort -t "<" -k2 -u |
-awk -F ' <|>$' '{alias=$1; gsub(/[ ,.]/, "_", alias); printf "alias %s %s <%s>\n", tolower(alias), $1, $2}'
+    sed -E -e "s/^.+: //; s/[\"']//g;" |
+    sort -t "<" -k2 -u |
+    awk -F ' <|>$' '{alias=$1; gsub(/[ ,.]/, "_", alias); printf "alias %s %s <%s>\n", tolower(alias), $1, $2}'
+
