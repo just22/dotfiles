@@ -137,7 +137,6 @@
 
 \newcommand {\zero} {
 	\end{itemize}
-	\vspace{0.5em}
 }
 
 \newcommand {\1} {\@ifstar \onestarred \one}
@@ -195,7 +194,7 @@
 }
 
 \newcommand {\clnode}[3] {
-	\node[cloud, draw,cloud puffs=10,cloud puff arc=120,
+	\node[cloud, draw, cloud puffs=10, cloud puff arc=120,
 		aspect=2, font=\small, inner ysep=0.5em]
 		({#1}) at ({#2}) {{#3}}
 }
@@ -210,7 +209,7 @@
 		;
 }
 
-\tikzset{
+\tikzset {
 	dly/.pic = {
 		\coordinate (cBF0) at (-0.5,0);
 		\coordinate (cBF1) at (0,0);
@@ -239,6 +238,22 @@
 		\draw[dashed]
 			(-1.25,0) -- ([shift={(0,0.5)}]cBF21)
 			(-1.25,0) -- ([shift={(0,-0.5)}]cBF23)
+			;
+	},
+	combl/.pic = {
+		\node[
+			draw,
+			cloud,
+			cloud puffs=10,
+			cloud puff arc=120,
+			aspect=2, font=\small, inner ysep=0.5em]
+				() at (0,0) {};
+	},
+	reg/.pic = {
+		\node[dff, align=center, text width=1.8cm] (-FF) at (0,0) {};
+		\draw[thick]
+			(-0.55,1) -- ++(0,0.2) -- ++(1.5, 0) -- ++(0,-2) -- ++(-0.2,0)
+			(-0.35,1.2) -- ++(0,0.2) -- ++(1.5, 0) -- ++(0,-2) -- ++(-0.2,0)
 			;
 	}
 }
