@@ -76,3 +76,7 @@
   [Position] (BottomRight) {0 0}
 [end]
 
+[app] (name=Qt-subapplication)
+  [Position] (Center) {0 0}
+[end]
+
