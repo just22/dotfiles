@@ -44,7 +44,7 @@ nitrogen --restore || fbsetbg -l
 
 # Statusbar
 pkill -x space_dapp; (sleep 1; space_dapp $((($(screen-width) - 1))) 17) &
-(sleep 3; dbar) &
+(sleep 3; dbar -geometry +0+1 -xs "${xs:-1}") &
 pkill -x bbpager; (sleep 4; bbpager) &
 
 # Tray apps
