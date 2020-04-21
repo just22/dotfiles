@@ -60,7 +60,6 @@
   [Workspace] {4}
 [end]
 [app] (name=bbager)
-  [Layer] {2}
   [Head]  {1}
   [Position] (UpperLeft) {1 -18}
 [end]
