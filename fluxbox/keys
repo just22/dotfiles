@@ -23,10 +23,10 @@ OnTitlebar      Move1           :MacroCmd {If {Matches (Maximized=yes)} {ResizeT
 OnTitlebar      Mouse1          :MacroCmd {Raise} {Focus} {ActivateTab}
 OnTitlebar      Double Mouse1   :MacroCmd {Raise} {Maximize}
 OnTitlebar      Control Mouse1  :StartTabbing
-OnTitlebar      Mouse2          :ArrangeWindowsStackRight  (Name!=bbager) (Name!=dzen2)
-OnTitlebar      Control Mouse2  :ArrangeWindowsStackBottom (Name!=bbager) (Name!=dzen2)
-# OnTitlebar      Mouse2          :Exec wmprocs tile v
-# OnTitlebar      Control Mouse2  :Exec wmprocs tile h
+# OnTitlebar      Mouse2          :ArrangeWindowsStackRight  (Name!=bbager) (Name!=dzen2)
+# OnTitlebar      Control Mouse2  :ArrangeWindowsStackBottom (Name!=bbager) (Name!=dzen2)
+OnTitlebar      Mouse2          :Exec wmprocs tile v
+OnTitlebar      Control Mouse2  :Exec wmprocs tile h
 OnTitlebar      Mouse3          :WindowMenu
 
 # Click on grip to raise/resize
@@ -71,7 +71,7 @@ Mod4 p                  :Exec activewin_xprop
 Mod4 s                  :StickWindow
 Mod4 x                  :Close
 
-# Change to a specific workspace
+# Switch to a specific workspace
 Mod4 1                  :Workspace 1
 Mod4 2                  :Workspace 2
 Mod4 3                  :Workspace 3
@@ -96,11 +96,15 @@ Mod4 Control 5          :TakeToWorkspace 5
 Mod4 Control 6          :TakeToWorkspace 6
 Mod4 Control 7          :TakeToWorkspace 7
 
+# Send the current window to a specific monitor
+Mod4 comma              :SendToPrevHead
+Mod4 period             :SendToNextHead
+
 # Tiling
-Mod4 v                  :ArrangeWindowsStackRight  (Name!=bbager) (Name!=dzen2)
-Mod4 h                  :ArrangeWindowsStackBottom (Name!=bbager) (Name!=dzen2)
-# Mod4 v                  :Exec wmprocs tile v
-# Mod4 h                  :Exec wmprocs tile h
+# Mod4 v                  :ArrangeWindowsStackRight  (Name!=bbager) (Name!=dzen2)
+# Mod4 h                  :ArrangeWindowsStackBottom (Name!=bbager) (Name!=dzen2)
+Mod4 v                  :Exec wmprocs tile v
+Mod4 h                  :Exec wmprocs tile h
 Mod4 Control v          :ArrangeWindowsVertical    (Name!=bbager) (Name!=dzen2)
 Mod4 Control h          :ArrangeWindowsHorizontal  (Name!=bbager) (Name!=dzen2)
 
@@ -152,3 +156,7 @@ Mod4 Shift k            :Exec dmenu-kbd
 Mod4 Shift l            :Exec dmenu-lpr
 Mod4 Shift s            :Exec zzz
 
+# Multimedia
+Mod4 KP_Subtract        :Exec sndioctl output.level=-0.1
+Mod4 KP_Add             :Exec sndioctl output.level=+0.1
+Mod4 KP_0               :Exec sndioctl output.mute=!
