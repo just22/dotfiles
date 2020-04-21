@@ -154,6 +154,9 @@ map!  mpz.`pa
 " Kill the current file's content
 map 	k :w! /tmp/$USER.vi.killed:%dZZ
 "
+" Copy from clipboard
+map 	p :r! xclip -o
+"
 "
 " ----------------------------------------------------------------------
 "  ABBREVIATIONS
