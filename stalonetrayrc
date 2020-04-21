@@ -4,6 +4,8 @@
 #  stalonetray config file
 # ----------------------------------------------------------------------
 
-background "#eee8d5"
-geometry   1x1+0+1
-icon_size  16
+background      "#eee8d5"
+window_type     dock
+geometry        1x1+0+1
+icon_size       15
+slot_size       17
