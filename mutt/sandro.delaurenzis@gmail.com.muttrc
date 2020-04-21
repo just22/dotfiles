@@ -1,26 +1,47 @@
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-#  sandro.delaurenzis@gmail.com account settings
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# ----------------------------------------------------------------------
+#  just22@atlantide.mooo.com account settings
+#
 
-set folder = "$HOME/mail/sandro.delaurenzis@gmail.com"
-set status_format = "───%>─[ sandro.delaurenzis@gmail.com ]───[ %f %r ]───[ %m msg ]%?n?───[ %n new ]?%?d?───[ %d deleted ]?%?t?───[ %t tagged ]?%?p?───[ %p postponed ]?───"
+set folder     = "~/mail/sandro.delaurenzis-gmail"
+
+set my_user = "sandro.delaurenzis@gmail.com"
+source 'printf "set my_smtp_pass = "; get_passwd sandro.delaurenzis@gmail.com |'
+set smtp_url = "smtp://$my_user:$my_smtp_pass@smtp.gmail.com:587"
 
 # Mailboxes to monitor for new mail (and listed in the sidebar)
 unmailboxes *
-mailboxes `find $HOME/mail/sandro.delaurenzis@gmail.com -type d -a -name cur -prune -o -type d -a -name new -prune -o -type d -a -name tmp -prune -o -mindepth 1 -type d -print | awk '{gsub(/[\47 ]/, "\\\\&", $0); print $0}' | tr "\n" " "`
+mailboxes `find ~/mail/sandro.delaurenzis-gmail \
+               -type d -name cur -prune -o \
+               -type d -name tmp -prune -o \
+               -type d -name new -prune -o \
+               -mindepth 1 -type d -print | sed 's/^/"/; s/$/"/' | tr '\n' ' '`
 
-set spoolfile  = +INBOX     # Go there when started
-set postponed  = +Drafts    # Save postponed messages in Gmail's "system" draft folder
-set record     = +Sent      # Append outgoing messages to "sent" folder
-set trash      = +Trash     # This is the Gmail's "system" trash, messages are automatically removed after 30 days
-set mail_check = 10
+# Standard mailboxes
+set spoolfile  = "+INBOX"       # Unfiltered incoming messages
+set postponed  = "+Drafts"      # Postponed messages
+set record     = "+Sent"        # Outgoing messages
+set trash      = "+Trash"       # Deleted messages
 
-set realname = "Alessandro DE LAURENZIS"
-set from = "sandro.delaurenzis@gmail.com"
+# Identity
+set realname = "Alessandro De Laurenzis"
+set from     = "sandro.delaurenzis@gmail.com"
 alternates ""
 
-set smtp_url = "smtp://sandro.delaurenzis@gmail.com@smtp.gmail.com:587"
-source "gpg2 -d ~/.mutt/sandro.delaurenzis@gmail.com.credentials.gpg |"
+# Synchronization
+macro index <tab> "<sync-mailbox><shell-escape>mbsync sync-sandro.delaurenzis-gmail-all >/dev/null &<enter>" \
+                  "Synchronize local and remote mailboxes"
 
 # Signature
-set signature= ~/.mutt/sandro.delaurenzis@gmail.com.signature
+set signature = "~/.mutt/sandro.delaurenzis@gmail.com.signature"
+
+#  Update status bar
+set status_format = "---%>-\
+[ $my_user ]---\
+[ %f %r ]---\
+[ %m msg ]\
+%?n?---[ %n new ]?\
+%?d?---[ %d deleted ]?\
+%?t?---[ %t tagged ]?\
+%?p?---[ %p postponed ]?\
+---"
+
