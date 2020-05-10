@@ -33,25 +33,17 @@ alias nfs_mount='/usr/bin/doas mount -Na'
 # ------------------------------------------------------------------
 # Package management
 #
-alias pkgs='pkg_info -Q'
-alias pkga='/usr/bin/doas pkg_add -iv'
-alias snapa='/usr/bin/doas pkg_add -Dsnap -iv'
-alias pkgas='pkg_add -ivs'
-alias snapas='pkg_add -Dsnap -ivs'
-alias pkgar='/usr/bin/doas pkg_add -ivr'
-alias snapar='/usr/bin/doas pkg_add -Dsnap -ivr'
-alias pkgau='/usr/bin/doas pkg_add -u'
-alias snapau='/usr/bin/doas pkg_add -Dsnap -u'
-alias snapaus='/usr/bin/doas pkg_add -Dsnap -vus'
-alias pkgaus='/usr/bin/doas pkg_add -vus'
+alias pkgs='pkg_info $PKGOPT -Q'
+alias pkga='/usr/bin/doas pkg_add $PKGOPT -iv'
+alias pkgas='pkg_add $PKGOPT -ivs'
+alias pkgar='/usr/bin/doas pkg_add $PKGOPT -ivr'
+alias pkgaus='/usr/bin/doas pkg_add $PKGOPT -vus'
 alias pkgd='/usr/bin/doas pkg_delete -v'
 alias pkgds='pkg_delete -vs'
 alias pkgda='/usr/bin/doas pkg_delete -a'
 alias pkgdas='pkg_delete -as'
-alias pkgrdep='pkg_info -R'
-alias snaprdep='pkg_info -Dsnap -R'
-alias pkgup='/usr/bin/doas pkg_add -u'
-alias snapup='/usr/bin/doas pkg_add -Dsnap -u'
+alias pkgrdep='pkg_info $PKGOPT -R'
+alias pkgup='/usr/bin/doas pkg_add $PKGOPT -u'
 
 # ------------------------------------------------------------------
 # Port management
