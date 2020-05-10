@@ -94,3 +94,8 @@ export MANPATH=:~/share/man
 #export http_proxy="http://argo.atlantide.priv:8118"
 #export no_proxy="http://argo.atlantide.priv:8118"
 
+# ----------------------------------------------------------------------
+# Addenda to ~/.profile specific for machine/site
+#
+[ -f ~/.profile_local ] && . ~/.profile_local
+
