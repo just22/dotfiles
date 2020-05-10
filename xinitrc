@@ -55,7 +55,6 @@ fi
 
 # Console log (launched again to match fonts and colorscheme)
 # xconsole -geometry 480x130-0-0 -daemon -notify -verbose -exitOnFail &
-pkill xconsole
 
 # Remind daemon
 if ! pgrep -x remind; then
