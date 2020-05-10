@@ -13,7 +13,7 @@
   [Deco]        {Border}
   [FocusHidden] {yes}
   [Sticky]      {yes}
-  [Layer]       {1}
+  [Layer]       {2}
 [end]
 [app] (class=XConsole)
   [Workspace]  {6}
@@ -72,9 +72,14 @@
   [Deco]   {Border}
 [end]
 [app] (class=Gsimplecal)
+  [Head]     {1}
   [Position] (BottomRight) {0 0}
 [end]
-
+[app] (class=dzen) (name=dzen2)
+  [Head]     {1}
+  [Position] (UpperLeft) {0 0}
+  [Layer]    10
+[end]
 [app] (name=Qt-subapplication)
   [Position] (Center) {0 0}
 [end]
