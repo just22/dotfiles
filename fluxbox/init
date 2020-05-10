@@ -31,7 +31,7 @@ session.screen0.tab.width:	64
 session.screen0.menu.alpha:	255
 session.screen0.window.focus.alpha:	255
 session.screen0.window.unfocus.alpha:	255
-session.screen0.workspaceNames:	, 1 (A1) , 2 (A2) , 3 (A3) , 4 (B1) , 5 (B2) , 6 (B3), 7 (Mon),
+session.screen0.workspaceNames:	, 1 (A1) , 2 (A2) , 3 (A3) , 4 (B1) , 5 (B2) , 6 (B3) , 7 (Mon) ,
 session.screen0.demandsAttentionTimeout:	500
 session.screen0.showwindowposition:	false
 session.screen0.maxDisableMove:	false
