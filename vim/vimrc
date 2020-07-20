@@ -8,14 +8,21 @@
 " Preliminary settings
 " ----------------------------------------------------------------------------
 
-" Use Vim rather than Vi settings (much better!)
-" This must be first, because it changes other options as a side effect
-set nocompatible
-
 " When started as "evim" (Easy Vim, setup for modeless editing), end here
 if v:progname =~? "evim"
         finish
 endif
+
+" Use Vim rather than Vi settings (much better!)
+" This must be first, because it changes other options as a side effect
+if &compatible
+        set nocompatible
+endif
+" When the +eval feature is missing, the set command above will be skipped.
+" Use a trick to reset compatible only when the +eval feature is missing.
+silent! while 0
+        set nocompatible
+silent! endwhile
 
 
 " ----------------------------------------------------------------------------
@@ -49,20 +56,32 @@ set formatoptions+=j
 " Make a buffer hidden when it is |abandon|ed (instead of unloading it)
 set hidden
 
-" Keep 100 lines of command line history
-set history=100
+" Keep 200 lines of command line history
+set history=200
 
-" Do not redraw the screen while executing commands that have not been typed
+" Do not redraw the screen while executing commands that have not
+" been typed
 set lazyredraw
 
 " Enable mouse support
-set mouse=a ttymouse=sgr
+" In many terminal emulators the mouse works just fine. By enabling it
+" you can position the cursor, visually select and scroll with the mouse.
+" Only xterm can grab the mouse events when using the shift key, for other
+" terminals use ":", select text and press Esc.
+if has('mouse')
+        if &term =~ 'xterm'
+                set mouse=a
+                set ttymouse=sgr
+        else
+                set mouse=nvi
+        endif
+endif
 
 " Disable beeping (aka bell) and window flashing
 set noerrorbells visualbell t_vb=
 
-" Switch off automatically setting options by means of modelines (to prevent
-" some security exploits)
+" Switch off automatically setting options by means of modelines (to
+" prevent some security exploits)
 set nomodeline
 
 " Paste mode
@@ -79,13 +98,14 @@ set timeoutlen=500
 "set notitle
 
 " The time in milliseconds that is waited for a key code
+set ttimeout
 set ttimeoutlen=10
 
 " Improves smoothness of redrawing
 set ttyfast
 
-" On pressing 'wildchar' (usually <Tab>) to invoke completion, the possible
-" matches are shown
+" On pressing 'wildchar' (usually <Tab>) to invoke completion, the
+" possible matches are shown
 set wildmenu
 
 " When more than one match, complete till longest common string
@@ -132,7 +152,9 @@ set hlsearch
 set ignorecase
 
 " While typing a search command, show where the pattern matches
-set incsearch
+if has('reltime')
+        set incsearch
+endif
 
 " If a pattern contains an uppercase letter, it is case sensitive, otherwise, it is not
 set smartcase
@@ -150,7 +172,7 @@ if exists("+relativenumber")
         set norelativenumber
 endif
 
-" Show the cursor position all the time
+" Do not show the cursor position all the time
 set noruler
 
 " Minimal number of screen lines to keep above and below the cursor
@@ -266,15 +288,16 @@ Plugin 'https://github.com/AndrewRadev/linediff.vim'
 
 Plugin 'https://github.com/chrisbra/csv.vim'
 
+" { vimwiki
+Plugin 'https://github.com/mattn/calendar-vim'
 Plugin 'https://github.com/vimwiki/vimwiki'
+" }
 
 Plugin 'https://github.com/godlygeek/tabular'
 
 Plugin 'VisIncr'
 
 Plugin 'https://github.com/ervandew/supertab'
-
-Plugin 'https://github.com/kien/ctrlp.vim'
 
 Plugin 'https://github.com/christoomey/vim-tmux-navigator'
 
@@ -286,11 +309,17 @@ Plugin 'https://github.com/hrj/vim-drawit'
 
 Plugin 'https://github.com/lervag/vimtex'
 
+Plugin 'https://github.com/junegunn/fzf.vim'
+
 " { vim-snipmate
 Plugin 'https://github.com/tomtom/tlib_vim'
 Plugin 'https://github.com/MarcWeber/vim-addon-mw-utils'
 Plugin 'https://github.com/garbas/vim-snipmate'
 Plugin 'https://github.com/honza/vim-snippets'
+" }
+
+" { Useful for gvim (and when colman cannot be used)
+Plugin 'https://github.com/chriskempson/base16-vim'
 " }
 
 call vundle#end()
@@ -329,15 +358,6 @@ let g:SuperTabMappingBackward = "<S-F1>"
 set completeopt=longest,menuone
 inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
 
-" ctrlp
-let g:ctrlp_map = '<leader>p'
-let g:ctrlp_use_caching = 1
-let g:ctrlp_clear_cache_on_exit = 0
-let g:ctrlp_cache_dir = $HOME.'/.vim/cache/ctrlp'
-let g:ctrlp_root_markers = ['.vim_ctrlp_root']
-let g:ctrlp_working_path_mode = 'ra'
-let g:ctrlp_custom_ignore = '\v[\/](.git|.hg|.svn|CVS|.SYNC)$'
-
 " vim-tmux-navigator
 let g:tmux_navigator_no_mappings = 1
 nmap <silent> <Esc>[1;5A :TmuxNavigateUp<CR>
@@ -353,14 +373,16 @@ nmap <silent> <C-\>      :TmuxNavigatePrevious<CR>
 " netrw (see http://ivanbrennan.nyc/blog/2014/01/16/rigging-vims-netrw)
 let g:netrw_liststyle = 3         " 0: thin view; 3: tree view
 let g:netrw_banner = 0            " No banner
-let g:netrw_altv = 1              " Open files shown on the right
-let g:netrw_browse_split = 4      " Open files in previous window
-"let g:netrw_preview = 1          " Preview window shown in a vertically split
-augroup NetrwGroup
-        autocmd! BufEnter * call NormalizeWidths()
-augroup END
 
 " vimwiki
+" let g:vimwiki_list = [{'path': '~/notes/',
+"                      \ 'syntax': 'markdown', 'ext': '.md'}]
+" let g:vimwiki_global_ext = 0
+
+let g:vimwiki_list = [{'path': '~/notes/'}]
+
+let g:vimwiki_listsyms = ' .X'
+
 function! VimwikiLinkHandler(link)
         " Use Vim to open external files with the 'file:' scheme.  E.g.:
         let link = a:link
@@ -473,26 +495,27 @@ augroup vimrcAutoCmd
         " autocmd InsertEnter * if exists("$DISPLAY")  | setlocal cursorline | endif
         " autocmd InsertLeave * if !exists("b:cursorvis") | setlocal nocursorline | endif
 
-        " Change cursor shape in insert/replace/normal mode
-        if &term =~ "^xterm" || &term =~ "^screen"
-                let &t_SI = "\<Esc>[6 q"
-                let &t_SR = "\<Esc>[4 q"
-                let &t_EI = "\<Esc>[2 q"
-        endif
+        " " Change cursor shape in insert/replace/normal mode
+        " if &term =~ "^xterm" || &term =~ "^screen"
+        "         let &t_SI = "\<Esc>[6 q"
+        "         let &t_SR = "\<Esc>[4 q"
+        "         let &t_EI = "\<Esc>[2 q"
+        " endif
 
         " For all text files set 'textwidth' to 78 characters
         autocmd FileType text setlocal textwidth=78
 
         " Remove expandtab for Makefile and Python
-        autocmd BufEnter [mM]akefile*,GNUmakefile,*.mk,*.mak,*.py setlocal noexpandtab | setlocal nolist
+        autocmd BufEnter [mM]akefile*,GNUmakefile,*.mk,*.mak,*.py
+            \ setlocal noexpandtab nolist
 
-        " Different indentation for tex files
-        autocmd BufEnter *.tex,*.sty
-            \ setlocal noexpandtab   |
-            \ setlocal nolist        |
-            \ setlocal tabstop=2     |
-            \ setlocal shiftwidth=2  |
-            \ setlocal softtabstop=0
+        " Different indentation for tex and wiki files
+        autocmd BufEnter *.tex,*.sty,*.wiki
+            \ setlocal noexpandtab
+            \          nolist
+            \          tabstop=2
+            \          shiftwidth=2
+            \          softtabstop=0
 
         " Spell check when writing commit logs
         autocmd filetype svn,*commit* setlocal spell spelllang=en
@@ -501,13 +524,16 @@ augroup vimrcAutoCmd
         " not already exist for that filetype)
         if exists("+omnifunc")
                 autocmd Filetype *
-                        \ if &omnifunc == "" |
-                        \       setlocal omnifunc=syntaxcomplete#Complete |
-                        \ endif
+                        \  if &omnifunc == ""
+                        \|       setlocal omnifunc=syntaxcomplete#Complete
+                        \| endif
         endif
 
-        " In mutt: 72-char per line max, set en spell checker
+        " In mutt/claws-mail/thunderbird (external editor):
+        " 72-char per line max, set en spell checker
         autocmd BufRead ~/.mutt/tmp/mutt-* :source ~/.vim/mutt.vim
+        autocmd BufRead ~/.claws-mail/tmp/tmpmsg.* :source ~/.vim/claws-mail.vimrc
+        autocmd BufRead /tmp/*.eml :source ~/.vim/mutt.vim
 
         " For tmp files, map a killall keybind
         autocmd BufRead /tmp/* nnoremap <silent> <leader>k :1,$d<CR>ZZ
@@ -533,6 +559,15 @@ augroup vimrcAutoCmd
         " Treat .lib files are text (and not as Cobol libraries)
         autocmd BufNewFile,BufRead *.lib set filetype=txt
 
+        " When editing a file, always jump to the last known cursor position.
+        " Don't do it when the position is invalid, when inside an event handler
+        " (happens when dropping a file on gvim) and for a commit message (it's
+        " likely a different one than last time).
+        autocmd BufReadPost *
+            \  if line("'\"") >= 1 && line("'\"") <= line("$") && &ft !~# 'commit'
+            \|     exe "normal! g`\""
+            \| endif
+
 augroup END
 
 " Remove overheads for large files
@@ -545,9 +580,33 @@ augroup END
 let g:LargeFile = 1024 * 1024 * 100
 augroup LargeFile
         autocmd!
-        autocmd BufReadPre * let f = expand("<afile>") | if getfsize(f) > g:LargeFile | set eventignore+=FileType | setlocal noswapfile bufhidden=unload buftype=nowrite undolevels=-1 | else | set eventignore-=FileType | endif
+        autocmd BufReadPre *  let f = expand("<afile>")
+                           \| if getfsize(f) > g:LargeFile
+                           \|     set eventignore+=FileType
+                           \|     setlocal noswapfile
+                           \               bufhidden=unload
+                           \               buftype=nowrite
+                           \               undolevels=-1
+                           \| else
+                           \|     set eventignore-=FileType
+                           \| endif
 augroup END
 
+" Open help in vertical split
+augroup VimHelp
+        autocmd!
+        autocmd BufEnter *.txt if &buftype == 'help' | wincmd L | endif
+augroup END
+
+" Vimwiki specific mappings
+augroup Vimwiki
+        autocmd!
+        autocmd FileType vimwiki
+            \  nmap <buffer> <Esc>[1;3C <Plug>VimwikiIncreaseLvlSingleItem
+            \| inoremap <buffer> <Esc>[1;3C <C-t>
+            \| nmap <buffer> <Esc>[1;3D <Plug>VimwikiDecreaseLvlSingleItem
+            \| inoremap <buffer> <Esc>[1;3D <C-d>
+augroup END
 
 " ----------------------------------------------------------------------------
 " Colorscheme
@@ -556,7 +615,11 @@ if exists("$DISPLAY")
         set t_Co=256
         if filereadable(expand("$HOME/.vim/colors/base16.vim"))
                 colorscheme base16
+        else
+                colorscheme default
         endif
+else
+        colorscheme default
 endif
 
 
@@ -592,47 +655,6 @@ command! -nargs=+ Occur
         \ execute "lcd " . currFileDir |
         \ unlet currFileDir |
         \ redraw!
-
-" netrw helpers (see http://ivanbrennan.nyc/blog/2014/01/16/rigging-vims-netrw)
-function! VexToggle(dir)
-        if exists("t:vex_buf_nr")
-                call VexClose()
-        else
-                call VexOpen(a:dir)
-        endif
-endfunction
-
-function! VexOpen(dir)
-        let vex_width = 50
-        execute "Vexplore " . a:dir
-        let t:vex_buf_nr = bufnr("%")
-        wincmd H
-        call VexSize(vex_width)
-endfunction
-
-function! VexClose()
-        let curr_win_nr = winnr()
-        let target_win_nr = (curr_win_nr == 1) ? winnr("#") : curr_win_nr
-        1wincmd w
-        close
-        unlet t:vex_buf_nr
-        execute (target_win_nr-1) . "wincmd w"
-        call NormalizeWidths()
-endfunction
-
-function! VexSize(vex_width)
-        execute "vertical resize" . a:vex_width
-        set winfixwidth
-        call NormalizeWidths()
-endfunction
-
-function! NormalizeWidths()
-        let eadirection_backup = &eadirection
-        set eadirection=hor
-        set equalalways! equalalways!
-        let &eadirection = eadirection_backup
-        unlet eadirection_backup
-endfunction
 
 " Remove trailing spaces
 function! RemoveTrailingSpaces()
@@ -708,6 +730,11 @@ function! QuitIfOnlyQuickfix()
         endif
 endfunction
 
+" Show the changes to the current buffer since the last save
+command DiffOrig
+    \  leftabove vert new | set bt=nofile | r ++edit # | 0d_ | diffthis
+    \| wincmd p | diffthis
+
 " ----------------------------------------------------------------------------
 " Normal mappings
 " ----------------------------------------------------------------------------
@@ -745,9 +772,12 @@ nnoremap j  gj
 nnoremap k  gk
 
 " Emacs style keybindings in INSERT mode
-inoremap <C-d> <C-o>x
 inoremap <C-a> <C-o>I
 inoremap <C-e> <C-o>A
+inoremap <C-d> <C-o>D
+inoremap <Esc>d <C-o>dw
+inoremap <Esc>[1;3C <C-o>w
+inoremap <Esc>[1;3D <C-o>b
 
 " Move effectively among tabs
 nnoremap <silent> <C-t>l        :tabnext<CR>
@@ -848,10 +878,6 @@ vmap <leader>- :II -1 ''<CR>
 nmap <leader>- o<Esc>72i-<Esc>gcc73\|D
 " ----------------------------------------------------------------------
 
-" ** ., ** netrw windows
-map <silent> <leader>, :call VexToggle(getcwd())<CR>
-map <silent> <leader>. :call VexToggle("")<CR>
-
 " ** <Up>/<Down> ** Move current line up/down
 nnoremap <leader><Up>   :m -2<CR>
 nnoremap <leader><Down> :m +1<CR>
@@ -918,7 +944,7 @@ nmap <silent> <leader>ia :set paste<CR>oAdL, <Esc>
 "
 " Copyright line
 nmap <silent> <leader>ic o(C) <Esc>
-                        \:r !date +\%Y<CR>kJA Alessandro De Laurenzis <just22.adl@gmail.com><Esc>gcc
+    \:r !date +\%Y<CR>kJA Alessandro De Laurenzis <just22@atlantide.mooo.com><Esc>gcc
 "
 " File header
 nmap <silent> <leader>ih 1GO#!/bin/sh<CR><CR>
@@ -927,7 +953,7 @@ nmap <silent> <leader>ih 1GO#!/bin/sh<CR><CR>
                            \#  <CR>
                            \# <Esc>70a-<Esc>kA
 "
-" 3-clausole BSD license
+" 2-clause BSD license
 map <silent> <leader>il :set paste<CR>o
                         \(C) <Esc>mw:r !date +\%Y<CR>kJA Alessandro DE LAURENZIS <just22.adl@gmail.com><CR>
                         \All Rights Reserved<CR><CR>
@@ -940,10 +966,6 @@ map <silent> <leader>il :set paste<CR>o
                         \2. Redistributions in binary form must reproduce the above copyright<CR>
                         \   notice, this list of conditions and the following disclaimer in the<CR>
                         \   documentation and/or other materials provided with the distribution.<CR>
-                        \<CR>
-                        \3. Neither the name of the copyright holder nor the names of its<CR>
-                        \   contributors may be used to endorse or promote products derived<CR>
-                        \   from this software without specific prior written permission.<CR>
                         \<CR>
                         \THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS<CR>
                         \"AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT<CR>
@@ -989,6 +1011,10 @@ nmap <silent> <leader>sn :set number!<CR>
 nmap <silent> <leader>sr :set relativenumber!<CR>
 nmap <silent> <leader>st :set expandtab!<CR>:retab!<CR>:set expandtab?<CR>
 nmap <silent> <leader>sw :set wrap!<CR>:set wrap?<CR>
+
+" ** T ** Explore directory of current file
+nmap <silent> <leader>t :Explore<CR>
+nmap <silent> <leader>T :Vexplore!<CR>
 
 " ** U ** Underline
 nmap <leader>u yypVr=
