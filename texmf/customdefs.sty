@@ -411,10 +411,10 @@
     \pgftext[left,base,at={\pgfpoint{\pgf@x}{\pgf@y}},x=\pgfshapeinnerxsep]{\raisebox{-0.75ex}{D}}
 
     \pgf@anchor@dff@Q
-    \pgftext[right,base,at={\pgfpoint{\pgf@x}{\pgf@y}},x=-\pgfshapeinnerxsep]{\raisebox{-.75ex}{Q}}
+    \pgftext[right,base,at={\pgfpoint{\pgf@x}{\pgf@y}},x=-\pgfshapeinnerxsep]{\raisebox{-0.75ex}{Q}}
 
     \pgf@anchor@dff@Qn
-    \pgftext[right,base,at={\pgfpoint{\pgf@x}{\pgf@y}},x=-\pgfshapeinnerxsep]{\raisebox{-.75ex}{$\overline{\mbox{Q}}$}}
+    \pgftext[right,base,at={\pgfpoint{\pgf@x}{\pgf@y}},x=-\pgfshapeinnerxsep]{\raisebox{-0.75ex}{$\overline{\mbox{Q}}$}}
 
     \pgf@anchor@dff@CD
     \pgftext[top,at={\pgfpoint{\pgf@x}{\pgf@y}},y=-\pgfshapeinnerysep]{$\overline{\mbox{CD}}$}
@@ -429,11 +429,11 @@
 \tikzset{add font/.code={\expandafter\def\expandafter\tikz@textfont\expandafter{\tikz@textfont#1}}} 
 
 % Define default style for this node
-\tikzset{flip flop/port labels/.style={font=\sffamily\small}}
+\tikzset{flip flop/port labels/.style={font=\sffamily\tiny}}
 \tikzset{every dff node/.style={
 	draw,
-	minimum width=1.5cm,
-	minimum height=2cm,
+	minimum width=1cm,
+	minimum height=1.5cm,
 	thick,
 	inner sep=1mm,
 	outer sep=0pt,
