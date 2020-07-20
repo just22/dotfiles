@@ -125,7 +125,7 @@ PROMPT_COMMAND="history -a"
 [ -f ~/.shrc_local ] && source ~/.shrc_local
 [ -f ~/.bashrc_local ] && source ~/.bashrc_local
 
-# ------------------------------------------------------------------
+# ----------------------------------------------------------------------
 # Print a random, hopefully interesting, adage
 #
 if which fortune > /dev/null 2>&1; then
