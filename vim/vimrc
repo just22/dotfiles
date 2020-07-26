@@ -606,6 +606,10 @@ augroup Vimwiki
             \| inoremap <buffer> <Esc>[1;3C <C-t>
             \| nmap <buffer> <Esc>[1;3D <Plug>VimwikiDecreaseLvlSingleItem
             \| inoremap <buffer> <Esc>[1;3D <C-d>
+        autocmd BufNewFile ~/notes/diary/*
+            \  silent execute
+            \  "0r !~/bin/vw-diary-tmpl" . " " . expand('%:t:r')
+            \| normal G
 augroup END
 
 " ----------------------------------------------------------------------------
@@ -734,6 +738,9 @@ endfunction
 command DiffOrig
     \  leftabove vert new | set bt=nofile | r ++edit # | 0d_ | diffthis
     \| wincmd p | diffthis
+
+" Read a file and insert its content at cursor position
+command! -complete=file -nargs=1 R .-1r <args>
 
 " ----------------------------------------------------------------------------
 " Normal mappings
