@@ -19,6 +19,20 @@
 # idesk &
 # gkrellm -w &
 
+# Screen locker
+xautolock -time 10 -locker slock &
+
+# Start a session bus instance of dbus-daemon
+if [ -x /usr/local/bin/dbus-launch -a -z "${DBUS_SESSION_BUS_ADDRESS}" ]; then
+        eval `dbus-launch --sh-syntax --exit-with-x11`
+fi
+
+# dunst notification system
+mkdir -p "${XDG_DATA_HOME:-$HOME/.local/share}/dbus-1/services"
+ln -sf \
+    "/usr/local/share/dbus-1/services/org.knopwob.dunst.service" \
+    "${XDG_DATA_HOME:-$HOME/.local/share}/dbus-1/services/org.freedesktop.Notifications.service"
+
 # Process monitor
 xterm -title "Process monitor" -e top &
 
@@ -44,7 +58,8 @@ nitrogen --restore || fbsetbg -l
 
 # Statusbar
 pkill -x space_dapp; (sleep 1; space_dapp $((($(screen-width) - 1))) 17) &
-(sleep 3; dbar -geometry +0+1 -expand left -xs "${xs:-1}") &
+dbar -k
+(sleep 3; dbar -- -geometry +0+1 -expand left -dock -xs "${xs:-1}") &
 pkill -x bbpager; (sleep 6; bbpager) &
 
 # Tray apps

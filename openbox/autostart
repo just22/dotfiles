@@ -4,12 +4,19 @@
 #  openbox-session(1) startup script
 # ----------------------------------------------------------------------
 
-# Background setting
-[ -x ~/.fehbg ] && ~/.fehbg
+# Screen locker
+xautolock -time 10 -locker slock &
 
-# System log
-pkill xconsole
-xterm -title "System log" -e "tail -f /var/log/messages" &
+# dunst notification system
+mkdir -p "${XDG_DATA_HOME:-$HOME/.local/share}/dbus-1/services"
+ln -sf \
+    "/usr/local/share/dbus-1/services/org.knopwob.dunst.service" \
+    "${XDG_DATA_HOME:-$HOME/.local/share}/dbus-1/services/org.freedesktop.Notifications.service"
+
+# Start a session bus instance of dbus-daemon
+if [ -x /usr/local/bin/dbus-launch -a -z "${DBUS_SESSION_BUS_ADDRESS}" ]; then
+        eval `dbus-launch --sh-syntax --exit-with-x11`
+fi
 
 # Process monitor
 (sleep 1 && xterm -title "Process monitor" -e top) &
@@ -17,13 +24,29 @@ xterm -title "System log" -e "tail -f /var/log/messages" &
 # System statistics
 (sleep 2 && xterm -title "System stats" -e systat) &
 
+# System log
+xkill -id $(xwininfo -name xconsole |
+    egrep -o "Window id: 0x[0-9a-fA-F]+" |
+    cut -d: -f2) && \
+xterm -title "System log" -e "tail -f /var/log/messages" &
+
 # Compositor manager
 xcompmgr &
 
-# Statusbar
-pkill -x space_dapp; (sleep 1; space_dapp $((($(screen-width) - 2))) 17) &
-pkill -x dstat;      (sleep 2; dstat trunk0 | dzen2-cust) &
-pkill -x bbpager;    (sleep 3; bbpager) &
+# Background setting
+nitrogen --restore
 
-# Panel
-tint2 &
+# Desktop management
+#(sleep 1; dbus-launch pcmanfm --desktop) &
+
+# Statusbar
+dbar -k
+dbar -m cpu_mem -m load -m sd0 -m trunk0 -m mixer -m batt -m time \
+     -- -ta r -xs 1 -dock
+pkill netwmpager; (sleep 3; netwmpager) &
+# pkill stalonetray; (sleep 3; stalonetray) & --geometry 1x1+190+0 &
+
+# Tray apps
+# radiotray &
+/usr/local/libexec/tray-app/sound -i &
+

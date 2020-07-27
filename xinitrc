@@ -48,13 +48,12 @@ xset b off
 rm -rf ${HOME}/tmp
 mkdir -m 1777 ${HOME}/tmp
 
-# Start a session bus instance of dbus-daemon
-if [ -x /usr/local/bin/dbus-launch -a -z "${DBUS_SESSION_BUS_ADDRESS}" ]; then
-        eval `dbus-launch --sh-syntax --exit-with-x11`
-fi
-
 # Console log (launched again to match fonts and colorscheme)
 # xconsole -geometry 480x130-0-0 -daemon -notify -verbose -exitOnFail &
+
+# Reset notification system (change it in the DE session)
+pkill -x dunst xfce4-notifyd >/dev/null 2>&1
+rm -f "${XDG_DATA_HOME:-$HOME/.local/share}/dbus-1/services/org.freedesktop.Notifications.service"
 
 # Remind daemon
 if ! pgrep -x remind; then
@@ -62,12 +61,9 @@ if ! pgrep -x remind; then
         remind -z -k'remind-notify %s' ~/.reminders &
 fi
 
-# Screen locker
-xautolock -time 10 -locker slock &
-
 # xidle daemon (corner locking virtually disabled, no timeout,
 # activated by SIGUSR1)
-if ! pgrep -u $UID -x xidle > /dev/null 2>&1; then
+if ! pgrep -u $UID -x xidle >/dev/null 2>&1; then
         xidle -delay 86400 -program ${HOME}/bin/xsession-lock &
 fi
 
@@ -76,19 +72,6 @@ remind-today &
 
 # Reload the gpg-agent (reset cached GnuPG credentials)
 gpg-connect-agent reloadagent /bye
-
-# Start IMAP IDLE connections and new msg notifications
-pkill -KILL -fl imap-watcher
-pkill -KILL -fl imap-idle.pl
-imap-watcher &
-
-pkill -KILL inotifywait
-dir-watch -c notify-new-msg -d ~/mail/sandro.delaurenzis-gmail/INBOX/new &
-dir-watch -c notify-new-msg -d ~/mail/just22-atlantide/INBOX/new &
-dir-watch -c notify-new-msg -d ~/mail/just22-atlantide/lists/OpenBSD/bugs/new &
-dir-watch -c notify-new-msg -d ~/mail/just22-atlantide/lists/OpenBSD/misc/new &
-dir-watch -c notify-new-msg -d ~/mail/just22-atlantide/lists/OpenBSD/ports/new &
-dir-watch -c notify-new-msg -d ~/mail/just22-atlantide/lists/OpenBSD/tech/new &
 
 # ...and finally start the X-Session!
 [ -x ~/.start-xsession ] && exec ~/.start-xsession || exec twm
