@@ -25,15 +25,11 @@
 </menu>
 
 <menu id="system-settings-window-manager-menu" label="Window Manager">
-  <item label="Openbox Configuration Manager">
-    <action name="Execute">
-      <command>obconf</command>
-      <startupnotify> <enabled>yes</enabled> </startupnotify>
-    </action>
-  </item>
   <item label="Reconfigure Openbox">
     <action name="Reconfigure" />
-    <action name="Execute"> <command>dmenu-xrandr -a</command> </action>
+  </item>
+  <item label="Restart Openbox">
+    <action name="Restart" />
   </item>
   <separator />
   <item label="Log Out">
