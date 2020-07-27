@@ -33,16 +33,17 @@ alias nfs_mount='/usr/bin/doas mount -Na'
 # ------------------------------------------------------------------
 # Package management
 #
-alias pkgs='pkg_info $PKGOPT -Q'
 alias pkga='/usr/bin/doas pkg_add $PKGOPT -iv'
-alias pkgas='pkg_add $PKGOPT -ivs'
 alias pkgar='/usr/bin/doas pkg_add $PKGOPT -ivr'
+alias pkgas='pkg_add $PKGOPT -ivs'
 alias pkgaus='/usr/bin/doas pkg_add $PKGOPT -vus'
 alias pkgd='/usr/bin/doas pkg_delete -v'
-alias pkgds='pkg_delete -vs'
 alias pkgda='/usr/bin/doas pkg_delete -a'
 alias pkgdas='pkg_delete -as'
+alias pkgds='pkg_delete -vs'
+alias pkgi='pkg_info $PKGOPT'
 alias pkgrdep='pkg_info $PKGOPT -R'
+alias pkgs='pkg_info $PKGOPT -Q'
 alias pkgup='/usr/bin/doas pkg_add $PKGOPT -u'
 
 # ------------------------------------------------------------------
