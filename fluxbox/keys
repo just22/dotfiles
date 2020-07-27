@@ -129,7 +129,7 @@ Mod4 Shift d            :Exec dmenu-xrandr
 Mod4 Shift f            :Exec x-terminal-emulator -e ranger
 Mod4 Shift m            :Exec x-email-client
 Mod4 Shift p            :Exec play-url -p
-Mod4 Shift q            :Exec dmenu-session-logout
+Mod4 Shift q            :Exec x-session-logout
 Mod4 Shift r            :Exec dmenu-timer
 Mod4 Shift t            :Exec x-terminal-emulator -e "tmux attach-session -d || tmux new-session"
 Mod4 Shift x            :Exec dmenu-xautolock

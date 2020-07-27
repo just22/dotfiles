@@ -105,7 +105,7 @@ bind-key 4S-f           x-filemanager
 bind-key 4S-k           dmenu-kbd
 bind-key 4S-m           x-email-client
 bind-key 4S-p           "play-url -p"
-bind-key 4S-q           dmenu-session-logout
+bind-key 4S-q           x-session-logout
 bind-key 4S-r           dmenu-timer
 bind-key 4S-t           "xterm -e tmux-launcher"
 bind-key 4S-x           dmenu-xautolock

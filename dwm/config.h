@@ -116,7 +116,7 @@ static const char *hibernatecmd[]	= { "ZZZ", NULL };
 static const char *kbdlayoutcmd[]	= { "dmenu-kbd", NULL };
 static const char *launchercmd[]	= { "dmenu-launchers", NULL };
 static const char *lockcmd[]		= { "slock", NULL };
-static const char *logoutcmd[]		= { "dmenu-session-logout", NULL };
+static const char *logoutcmd[]		= { "x-session-logout", NULL };
 static const char *lowervolcmd[]	= { "sndioctl", "-q", "output.level=-0.1", NULL };
 static const char *lprcmd[]		= { "dmenu-lpr", NULL };
 static const char *mailclientcmd[]	= { "x-email-client", NULL };
