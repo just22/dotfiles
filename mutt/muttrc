@@ -8,21 +8,30 @@
 #  General settings
 #
 set mbox_type=Maildir
-set send_charset = "utf-8"                                              # Character set on sent messages
-set assumed_charset = "iso-8859-1"                                      # If there is no character set given on incoming messages, windows is assumed
-set editor = "vim -c 'set syntax=mail ft=mail enc=utf-8 fo+=aw'"        # Preferred editor
-set menu_scroll = yes                                                   # Just scroll one line instead of full page
-set menu_context = 15                                                   # Lines of context that are given when scrolling through menus
-set pager_index_lines = 15                                              # Lines of a mini-index which is shown in the pager
-set forward_format = "Fw:[%s]"                                          # Default subject when forwarding a message
-set mime_forward = ask-no                                               # By default, forward messages inline
-set folder_format = "%2C %t %N [Last mod: %d] %f"                       # File browser display
-set beep_new = yes                                                      # Beep whenever new mail messages arrive
-set mail_check_stats = yes                                              # Periodically calculate the unread, flagged, and total message counts
+set send_charset = "utf-8"              # Character set on sent messages
+set assumed_charset = "iso-8859-1"      # If there is no character set given on
+                                        # incoming messages, windows is assumed
+set editor = "vim -c 'set syntax=mail ft=mail enc=utf-8 fo+=aw'"
+                                        # Preferred editor
+set menu_scroll = yes                   # Just scroll one line instead of full page
+set menu_context = 15                   # Lines of context that are given when scrolling
+                                        # through menus
+set pager_index_lines = 15              # Lines of a mini-index which is shown in the pager
+set forward_format = "Fw:[%s]"          # Default subject when forwarding a message
+set mime_forward = ask-no               # By default, forward messages inline
+set folder_format = "%2C %t %N [Last mod: %d] %f"
+                                        # File browser display
+set beep_new = yes                      # Beep whenever new mail messages arrive
+set mail_check_stats = yes              # Periodically calculate the unread, flagged,
+                                        # and total message counts
 set mail_check_stats_interval = 0
-set text_flowed = yes                                                   # Generate "format=flowed" bodies (needs support in text editor)
-set include = yes                                                       # Always quote original message
-set fast_reply = yes                                                    # Skip initial prompt for recipients and subject when replying to/forwarding messages
+set text_flowed = yes                   # Generate "format=flowed" bodies (needs support
+                                        # in text editor)
+set include = yes                       # Always quote original message
+set fast_reply = yes                    # Skip initial prompt for recipients and subject
+                                        # when replying to/forwarding messages
+set pager_stop = yes                    # Do not move to the next message when <next-page>
+                                        # is invoked at the end of a message
 
 
 # ----------------------------------------------------------------------
@@ -59,7 +68,7 @@ set sidebar_format = "%B%?F? [%F]?%* %?N?%N/?%S"
 bind index,pager \Cp sidebar-prev
 bind index,pager \Cn sidebar-next
 bind index,pager \Ce sidebar-open
-macro index,pager b '<enter-command>toggle sidebar_visible<enter>'
+macro index,pager b '<enter-command>toggle sidebar_visible<Return>'
 
 
 # ----------------------------------------------------------------------
@@ -122,7 +131,7 @@ folder-hook . "exec collapse-all"
 #macro pager d '<delete-message><exit>'
 
 # Follow links with urlview
-macro pager \Cb "|urlview<enter>" "Call urlview to follow links"
+macro pager \Cb "|urlview<Return>" "Call urlview to follow links"
 
 
 # ----------------------------------------------------------------------
@@ -143,9 +152,14 @@ macro index,pager A "<pipe-message>abook --add-email-quiet<return>" \
 #  Account settings
 #
 source 'printf "set my_hostname = "; hostname -s |'
-macro index,pager <f10> "<change-folder>~/mail/sandro.delaurenzis-gmail/INBOX<enter>"
-macro index,pager <f11> "<change-folder>~/mail/just22-atlantide/INBOX<enter>"
-macro index,pager <f12> "<change-folder>~/mail/just22-$my_hostname/INBOX<enter>"
+macro index,pager <F9>  "<shell-escape>pkill -USR1 -fl imap-watcher<Return>" \
+                                "force restart of IMAP IDLE connections"
+macro index,pager <F10> "<change-folder>~/mail/sandro.delaurenzis-gmail/INBOX<Return>" \
+                                "Gmail account"
+macro index,pager <F11> "<change-folder>~/mail/just22-atlantide/INBOX<Return>" \
+                                "Atlantide account"
+macro index,pager <F12> "<change-folder>~/mail/just22-$my_hostname/INBOX<Return>" \
+                                "Local mailbox"
 
 folder-hook ~/mail/sandro.delaurenzis-gmail/INBOX 'source ~/.mutt/sandro.delaurenzis@gmail.com.muttrc'
 folder-hook ~/mail/just22-atlantide/INBOX         'source ~/.mutt/just22@atlantide.mooo.com.muttrc'
@@ -159,42 +173,51 @@ source ~/.mutt/sandro.delaurenzis@gmail.com.muttrc
 #  Keybindings
 #
 
-bind  attach <return> view-mailcap   # View attachments properly
+bind  attach <Return>   view-mailcap   # View attachments properly
 
-bind  index gg      first-entry
-bind  index G       last-entry
-bind  index R       group-reply
-bind  index <space> collapse-thread
-bind  index,pager k previous-entry
-bind  index,pager j next-entry
-bind  index <up>    previous-entry
-bind  index <down>  next-entry
-bind  index -       collapse-thread
-bind  index _       collapse-all
-bind  index T       tag-thread
+bind  index  gg         first-entry
+bind  index  G          last-entry
+bind  index  R          group-reply
+bind  index  <Space>    collapse-thread
+bind  index  <Up>       previous-entry
+bind  index  <Down>     next-entry
+bind  index  -          collapse-thread
+bind  index  _          collapse-all
+bind  index  T          tag-thread
 
-macro index \Cr     "<tag-pattern>~U<enter><tag-prefix><clear-flag>N<untag-pattern>.<enter>" "mark all messages as read"
-macro index C       "<copy-message>?<toggle-mailboxes>" "copy a message to a mailbox"
-macro index M       "<save-message>?<toggle-mailboxes>" "move a message to a mailbox"
+macro index  \Cr        "<tag-pattern>~U<Return><tag-prefix><clear-flag>N<untag-pattern>.<Return>" \
+                            "mark all messages as read"
 
-bind  pager gg      top
-bind  pager G       bottom
-bind  pager R       group-reply
-bind  pager <up>    previous-line
-bind  pager <down>  next-line
+bind  pager  gg         top
+bind  pager  G          bottom
+bind  pager  R          group-reply
+bind  pager  <Up>       previous-line
+bind  pager  <Down>     next-line
 
-macro index,pager c    "<change-folder>?<toggle-mailboxes>" "open a different folder"
-macro index,pager <f1> "<shell-escape>less /usr/local/share/doc/mutt/manual.txt<enter>" "Mutt documentation"
-macro index,pager <f2> "<shell-escape>man mutt<enter>" "Mutt manual page"
-macro index,pager @    "| ~/.mutt/sender_alias.sh<enter>" "add sender address to aliases file"
+bind  index,pager k     previous-entry
+bind  index,pager j     next-entry
+macro index,pager c     "<change-folder>?<toggle-mailboxes>" \
+                            "open a different folder"
+macro index,pager <F1>  "<shell-escape>less /usr/local/share/doc/mutt/manual.txt<Return>" \
+                            "Mutt documentation"
+macro index,pager <F2>  "<shell-escape>man mutt<Return>" \
+                            "Mutt manual page"
+macro index,pager @     "| ~/.mutt/sender_alias.sh<Return>" \
+                            "add sender address to aliases file"
+macro index,pager C     "<copy-message>?<toggle-mailboxes>" \
+                            "copy message to mailbox (show list)"
+macro index,pager S     "<save-message>?<toggle-mailboxes>" \
+                            "save message to mailbox (show list)"
 
 
 # ----------------------------------------------------------------------
 #  abook integration
 #
 set query_command = "abook --mutt-query '%s'"
-macro generic,index,pager \ca "<shell-escape>abook<return>" "launch abook"
-macro index,pager A "<pipe-message>abook --add-email<return>" "add the sender address to abook"
+macro generic,index,pager \ca "<shell-escape>abook<return>" \
+          "launch abook"
+macro index,pager A "<pipe-message>abook --add-email<return>" \
+          "add the sender address to abook"
 
 
 # ----------------------------------------------------------------------
@@ -204,4 +227,12 @@ subscribe ^bugs@openbsd.org$ ^misc@openbsd.org$ ^ports@openbsd.org$ ^tech@openbs
 set followup_to = yes                           # Prevent receiving duplicate copies of replies to messages sent to mailing lists
                                                 # Get a reply separately for any messages sent to known but not subscribed lists
 set honor_followup_to = yes                     # Honor Mail-Followup-To header when group-replying to a message
+
+# ----------------------------------------------------------------------
+# The 'forgotten-attachment' feature alerts the user if the message body
+# contains a certain regex but there are# no attachments added
+#
+set abort_noattach = ask-yes
+# set abort_noattach_regexp = "attach(|ed|ments?)|enclosed|allegato"
+set abort_noattach_regexp = "attach|attached|attachment|attachments|enclosed|allegato"
 
