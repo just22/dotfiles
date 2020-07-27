@@ -83,4 +83,7 @@
 [app] (name=Qt-subapplication)
   [Position] (Center) {0 0}
 [end]
+[app] (class=Claws-mail)
+  [Layer]       {8}
+[end]
 
