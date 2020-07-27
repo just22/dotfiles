@@ -5,3 +5,6 @@
 #  (OpenBSD stuff)
 # ----------------------------------------------------------------------
 
+# Fuzzy finder integration
+source /usr/local/share/fzf/bash/key-bindings.bash
+source /usr/local/share/fzf/bash/completion.bash
