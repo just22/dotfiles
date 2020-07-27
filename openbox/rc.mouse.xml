@@ -324,14 +324,14 @@
   -->
   <context name="Root">
     <!-- Menus -->
-    <mousebind button="Middle" action="Press">
+    <mousebind button="Left" action="Press">
       <action name="ShowMenu">
-        <menu>client-list-combined-menu</menu>
+        <menu>root-menu</menu>
       </action>
     </mousebind>
     <mousebind button="Right" action="Press">
       <action name="ShowMenu">
-        <menu>root-menu</menu>
+        <menu>client-list-combined-menu</menu>
       </action>
     </mousebind>
   </context>
