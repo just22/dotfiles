@@ -166,29 +166,29 @@
 
   <!-- System -->
   <keybind key="A-C-Delete"> <action name="Execute"> <command>xscreensaver-command -lock </command> </action> </keybind>
-  <keybind key="W-C-c">      <action name="Execute"> <command>dmenu-perf</command> </action> </keybind>
+  <keybind key="W-C-c">      <action name="Execute"> <command>dmenu-perf                 </command> </action> </keybind>
   <keybind key="W-S-h">      <action name="Execute"> <command>apm -Z                     </command> </action> </keybind>
   <keybind key="W-S-s">      <action name="Execute"> <command>apm -z                     </command> </action> </keybind>
 
   <!-- Window manager goodies -->
-  <keybind key="W-C-q"> <action name="Restart"/> </keybind>
   <keybind key="W-C-r"> <action name="Reconfigure"/> </keybind>
   <keybind key="W-F1">  <action name="Execute"> <command>x-terminal-emulator -e man openbox</command> </action> </keybind>
-  <keybind key="W-S-q"> <action name="Execute"> <command>dmenu-session-logout              </command> </action> </keybind>
+  <keybind key="W-S-q"> <action name="Execute"> <command>x-session-logout                  </command> </action> </keybind>
   <keybind key="W-b">   <action name="Execute"> <command>dmenu-filebrowser                 </command> </action> </keybind>
   <keybind key="W-o">   <action name="Execute"> <command>activewin_obxprop                 </command> </action> </keybind>
   <keybind key="W-p">   <action name="Execute"> <command>activewin_xprop                   </command> </action> </keybind>
+  <keybind key="W-q">   <action name="Execute"> <command>obrestart                         </command> </action> </keybind>
   <keybind key="W-r">   <action name="Execute"> <command>dmenu-root                        </command> </action> </keybind>
   <keybind key="W-t">   <action name="Execute"> <command>tmux_pane_search                  </command> </action> </keybind>
-  <keybind key="W-w">   <action name="Execute"> <command>win_search                        </command> </action> </keybind>
+  <keybind key="W-w">   <action name="Execute"> <command>win_search -z                     </command> </action> </keybind>
 
   <!-- Multimedia keys -->
-  <keybind key="4C-m">             <action name="Execute"> <command>mixerctl -q -t outputs.master.mute</command> </action> </keybind>
-  <keybind key="AudioMute">        <action name="Execute"> <command>mixerctl -q -t outputs.master.mute</command> </action> </keybind>
-  <keybind key="4CS-v">            <action name="Execute"> <command>mixerctl -q outputs.master=+10    </command> </action> </keybind>
-  <keybind key="AudioRaiseVolume"> <action name="Execute"> <command>mixerctl -q outputs.master=+10    </command> </action> </keybind>
-  <keybind key="4C-v">             <action name="Execute"> <command>mixerctl -q outputs.master=-10    </command> </action> </keybind>
-  <keybind key="AudioLowerVolume"> <action name="Execute"> <command>mixerctl -q outputs.master=-10    </command> </action> </keybind>
+  <keybind key="W-KP_Subtract">    <action name="Execute"> <command>sndioctl output.level=-0.1</command> </action> </keybind>
+  <keybind key="AudioLowerVolume"> <action name="Execute"> <command>sndioctl output.level=-0.1</command> </action> </keybind>
+  <keybind key="W-KP_Add">         <action name="Execute"> <command>sndioctl output.level=+0.1</command> </action> </keybind>
+  <keybind key="AudioRaiseVolume"> <action name="Execute"> <command>sndioctl output.level=+0.1</command> </action> </keybind>
+  <keybind key="W-KP_Insert">      <action name="Execute"> <command>sndioctl output.mute=!    </command> </action> </keybind>
+  <keybind key="AudioMute">        <action name="Execute"> <command>sndioctl output.mute=!    </command> </action> </keybind>
 
   <!-- External app launchers -->
   <keybind key="W-d">        <action name="Execute"> <command>dmenu_run-cust -p Run:              </command> </action> </keybind>
@@ -204,15 +204,15 @@
   <keybind key="W-S-t">      <action name="Execute"> <command>x-terminal-emulator -e tmux-launcher</command> </action> </keybind>
 
   <!-- Configurable keys (site dependent) -->
-  <keybind key="W-F3">       <action name="Execute"> <command>exec-F3                             </command> </action> </keybind>
-  <keybind key="W-F4">       <action name="Execute"> <command>exec-F4                             </command> </action> </keybind>
-  <keybind key="W-F5">       <action name="Execute"> <command>exec-F5                             </command> </action> </keybind>
-  <keybind key="W-F6">       <action name="Execute"> <command>exec-F6                             </command> </action> </keybind>
-  <keybind key="W-F7">       <action name="Execute"> <command>exec-F7                             </command> </action> </keybind>
-  <keybind key="W-F8">       <action name="Execute"> <command>exec-F8                             </command> </action> </keybind>
-  <keybind key="W-F9">       <action name="Execute"> <command>exec-F9                             </command> </action> </keybind>
-  <keybind key="W-F10">      <action name="Execute"> <command>exec-F10                            </command> </action> </keybind>
-  <keybind key="W-F11">      <action name="Execute"> <command>exec-F11                            </command> </action> </keybind>
-  <keybind key="W-F12">      <action name="Execute"> <command>exec-F12                            </command> </action> </keybind>
+  <keybind key="W-F3">       <action name="Execute"> <command>exec-F3 </command> </action> </keybind>
+  <keybind key="W-F4">       <action name="Execute"> <command>exec-F4 </command> </action> </keybind>
+  <keybind key="W-F5">       <action name="Execute"> <command>exec-F5 </command> </action> </keybind>
+  <keybind key="W-F6">       <action name="Execute"> <command>exec-F6 </command> </action> </keybind>
+  <keybind key="W-F7">       <action name="Execute"> <command>exec-F7 </command> </action> </keybind>
+  <keybind key="W-F8">       <action name="Execute"> <command>exec-F8 </command> </action> </keybind>
+  <keybind key="W-F9">       <action name="Execute"> <command>exec-F9 </command> </action> </keybind>
+  <keybind key="W-F10">      <action name="Execute"> <command>exec-F10</command> </action> </keybind>
+  <keybind key="W-F11">      <action name="Execute"> <command>exec-F11</command> </action> </keybind>
+  <keybind key="W-F12">      <action name="Execute"> <command>exec-F12</command> </action> </keybind>
 </keyboard>
 
