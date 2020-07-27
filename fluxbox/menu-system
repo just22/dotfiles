@@ -24,5 +24,9 @@
         [exec] (hq-color)     {dmenu-lpr hq-color}
 [end]
 [exec] (Removable Devices) {/usr/bin/doas /usr/local/bin/amount -e sd0} </usr/local/share/icons/gnome/16x16/devices/media-removable.png>
+[submenu] (Samba Shares) </usr/local/share/icons/gnome/16x16/places/gnome-fs-smb.png>
+        [exec] (Mount all)    {smb-mount}
+        [exec] (Unmount all)  {smb-mount -u}
+[end]
 
 [separator]
