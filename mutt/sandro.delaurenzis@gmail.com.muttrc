@@ -10,11 +10,17 @@ set smtp_url = "smtp://$my_user:$my_smtp_pass@smtp.gmail.com:587"
 
 # Mailboxes to monitor for new mail (and listed in the sidebar)
 unmailboxes *
-mailboxes `find ~/mail/sandro.delaurenzis-gmail \
-               -type d -name cur -prune -o \
-               -type d -name tmp -prune -o \
-               -type d -name new -prune -o \
-               -mindepth 1 -type d -print | sed 's/^/"/; s/$/"/' | tr '\n' ' '`
+mailboxes "+INBOX" "+Drafts" "+Sent" "+Trash" \
+    `find ~/mail/sandro.delaurenzis-gmail \
+         -type d -name cur    -prune -o \
+         -type d -name tmp    -prune -o \
+         -type d -name new    -prune -o \
+         -type d -name INBOX  -prune -o \
+         -type d -name Sent   -prune -o \
+         -type d -name Drafts -prune -o \
+         -type d -name Trash  -prune -o \
+         -mindepth 1 -type d  -print | \
+     sort -f | sed 's/^/"/; s/$/"/' | tr '\n' ' '`
 
 # Standard mailboxes
 set spoolfile  = "+INBOX"       # Unfiltered incoming messages
