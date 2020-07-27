@@ -36,11 +36,22 @@ if [ "${TERM}" == "vt220" ]; then
     console-logout &
 fi
 
-# In X, always enable UTF-8 encoding
-[ -n "$DISPLAY" ] && export LC_CTYPE=en_US.UTF-8
-
-# Localization
-export LC_TIME=en_GB
+# Localization (in X, always enable UTF-8 encoding)
+if [ -n "$DISPLAY" ]; then
+        export LC_CTYPE="en_US.UTF-8"
+        export LC_NUMERIC="en_GB.UTF-8"
+        export LC_TIME="en_GB.UTF-8"
+        export LC_COLLATE="en_GB.UTF-8"
+        export LC_MONETARY="en_GB.UTF-8"
+        export LC_MESSAGES="en_GB.UTF-8"
+        export LC_PAPER="en_GB.UTF-8"
+        export LC_NAME="en_GB.UTF-8"
+        export LC_ADDRESS="en_GB.UTF-8"
+        export LC_TELEPHONE="en_GB.UTF-8"
+        export LC_MEASUREMENT="en_GB.UTF-8"
+        export LC_IDENTIFICATION="en_GB.UTF-8"
+        export LC_ALL=
+fi
 
 # Note: Default pager/editor/browser definitions moved here because
 #       there are applications launched from X using them
@@ -66,7 +77,7 @@ fi
 export BROWSER MAILER
 
 # Default printer
-export PRINTER=HP_Deskjet_1510_ipp
+export PRINTER=HP_Deskjet_1510
 
 # Interactive shells startup file
 [ "${SHELL%/ksh}" != "$SHELL" ] || [ -n "$KSH_VERSION" ] &&
@@ -88,7 +99,7 @@ export AUTOCONF_VERSION=2.69
 export PKG_CONFIG_PATH=${HOME}/lib/pkgconfig
 
 # Append custom man paths to the standard ones
-export MANPATH=:~/share/man
+export MANPATH=~/share/man:/usr/local/man:
 
 # Proxy settings
 #export http_proxy="http://argo.atlantide.priv:8118"
