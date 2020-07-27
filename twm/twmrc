@@ -8,23 +8,22 @@
 #  General settings
 #
 
-AutoRelativeResize              # Don't require resize to cross the borders to start
-BorderWidth 1                   # Width in pixels of the windows' borders
-ButtonIndent 0                  # Same dimensions for window text and buttons
-DecorateTransients              # Put titlebar and borders on transient windows
-IconManagerGeometry "500x1+0+0" # Icon manager window initial geometry
-IconifyByUnmapping              # Just use icon manager, no icons
-NoDefaults                      # Turn off default buttons
-NoGrabServer                    # Don't grab server during menus, etc.
-NoSaveUnders                    # Just repaint
-RandomPlacement                 # Place windows in a pseudo-random location
-RestartPreviousState            # Re-iconify iconified windows on restart
-ShowIconManager                 # Show icon manager at startup
-UsePPosition "on"               # Honor program-requested locations
+AutoRelativeResize               # Don't require resize to cross the borders to start
+BorderWidth 1                    # Width in pixels of the windows' borders
+ButtonIndent 0                   # Same dimensions for window text and buttons
+DecorateTransients               # Put titlebar and borders on transient windows
+DefaultFunction "f.nop"            # Ignore event for which no binding is provided
+IconManagerGeometry "500x1+0+18" # Icon manager window initial geometry
+IconifyByUnmapping               # Just use icon manager, no icons
+NoDefaults                       # Turn off default buttons
+NoGrabServer                     # Don't grab server during menus, etc.
+NoSaveUnders                     # Just repaint
+RandomPlacement                  # Place windows in a pseudo-random location
+RestartPreviousState             # Re-iconify iconified windows on restart
+UsePPosition "on"                # Honor program-requested locations
 
 
 NoTitle {
-        "TWM Icon Manager"
         "Xmessage"
         "dzen2"
         "stalonetray"
@@ -38,11 +37,11 @@ StartIconified {
 # ----------------------------------------------------------------------
 #  Fonts
 #
-TitleFont       "-*-fixed-bold-r-*-*-13-120-*-*-*-*-*-*"
-ResizeFont      "-*-fixed-bold-r-*-*-13-120-*-*-*-*-*-*"
-MenuFont        "-*-fixed-bold-r-*-*-13-120-*-*-*-*-*-*"
-IconFont        "-*-fixed-bold-r-*-*-13-120-*-*-*-*-*-*"
-IconManagerFont "-*-fixed-bold-r-*-*-13-120-*-*-*-*-*-*"
+TitleFont       "-*-fixed-bold-*-*-*-13-*-*-*-*-*-iso8859-*"
+ResizeFont      "-*-fixed-bold-*-*-*-13-*-*-*-*-*-iso8859-*"
+MenuFont        "-*-fixed-bold-*-*-*-13-*-*-*-*-*-iso8859-*"
+IconFont        "-*-fixed-bold-*-*-*-13-*-*-*-*-*-iso8859-*"
+IconManagerFont "-*-fixed-bold-*-*-*-13-*-*-*-*-*-iso8859-*"
 
 
 # ----------------------------------------------------------------------
@@ -80,8 +79,8 @@ Function "move-or-raise"        { f.move f.deltastop f.raise }
 Function "move-or-iconify"      { f.move f.deltastop f.iconify }
 Function "move-or-maximize"     { f.move f.deltastop f.fullzoom }
 Function "move-or-close"        { f.move f.deltastop f.delete }
-Function "scroll-iconmgr"       { f.showiconmgr f.downiconmgr }
 Function "deiconify-raise"      { f.deiconify f.raise }
+Function "show-iconmgr"         { f.showiconmgr f.warptoiconmgr "" }
 
 
 # ----------------------------------------------------------------------
@@ -91,67 +90,54 @@ IconDirectory "~/.twm/bitmaps"
 RightTitleButton "icon.xbm"  = f.function "move-or-iconify"
 RightTitleButton "max.xbm"   = f.function "move-or-maximize"
 RightTitleButton "close.xbm" = f.function "move-or-close"
-LeftTitleButton  "menu.xbm"  = f.menu "RootMenu"
+LeftTitleButton  "menu.xbm"  = f.menu "Window Ops"
 
 
 # ----------------------------------------------------------------------
 #  Mouse Bindings
 #
 
-Button1 = : root : f.menu "RootMenu"
-Button2 = : root : f.showiconmgr
-Button3 = : root : f.menu "Window Ops"
+Button1 =    : root : f.menu "RootMenu"
+Button3 =    : root : f.menu "TwmWindows"
 
-Button1 = m4 : window|icon : f.function "move-or-lower"
-Button2 = m4 : window|icon : f.iconify
-Button3 = m4 : window|icon : f.resize
+Button1 = m4 : window | icon : f.function "move-or-lower"
+Button2 = m4 : window | icon : f.circleup
+Button3 = m4 : window | icon : f.resize
 
-Button1 = : title : f.function "move-or-raise"
-Button2 = : title : f.raiselower
-Button3 = : title : f.resize
+Button1 =    : title : f.function "move-or-raise"
+Button2 =    : title : f.raiselower
+Button3 =    : title : f.menu "TwmWindows"
 
-Button1 = : icon : f.function "move-or-iconify"
-Button2 = : icon : f.iconify
-
-Button1 = : frame : f.resize
+Button1 =    : frame : f.resize
 
 
 # ----------------------------------------------------------------------
 #  Icon manager
 #
-
-"w"      = m4 : all     : f.warptoiconmgr ""
-# "Return" =    : iconmgr : f.function "deiconify-raise"
-# "Return" = c  : iconmgr : f.iconify
-# "Up"     =    : iconmgr : f.upiconmgr
-# "Down"   =    : iconmgr : f.downiconmgr
-
-Button1 = : iconmgr : f.function "deiconify-raise"
-Button2 = : iconmgr : f.raise
-Button3 = : iconmgr : f.iconify
-
+"w"     = m4 : all : f.function "show-iconmgr"
+Button1 =    : iconmgr : f.function "deiconify-raise"
+Button2 =    : iconmgr : f.delete
+Button3 =    : iconmgr : f.iconify
 
 # ----------------------------------------------------------------------
 #  Keyboard bindings
 #
 
 # Common WM actions
-"F1"    = m4 : all : f.exec "xterm -e man twm &"
-"F2"    = m4 : all : f.exec "dmenu-launchers &"
-"Left"  = m4 : all : f.leftzoom
-"Right" = m4 : all : f.rightzoom
-"Up"    = m4 : all : f.topzoom
-"Down"  = m4 : all : f.bottomzoom
-"Tab"   = m4 : all : f.circledown
-"backslash" = m4 : all : f.circledown
-"a"     = m4 : all : f.warpto "slstatus"
-"d"     = m4 : all : f.exec "dmenu_run-cust -p Run: &"
-"f"     = m4 : all : f.exec "dmenu-filebrowser &"
-"m"     = m4 : all : f.fullzoom
-"q"     = m4 : all : f.restart
-"t"     = m4 : all : f.exec "tmux_pane_search &"
-"x"     = m4 : all : f.delete
-"x"     = m4 | c : all : f.destroy
+"F1"     = m4     : all : f.exec "xterm -e man twm &"
+"F2"     = m4     : all : f.exec "dmenu-launchers &"
+"Left"   = m4     : all : f.leftzoom
+"Right"  = m4     : all : f.rightzoom
+"Up"     = m4     : all : f.topzoom
+"Down"   = m4     : all : f.bottomzoom
+"Tab"    = m4     : all : f.raiselower
+"d"      = m4     : all : f.exec "dmenu_run-cust -p Run: &"
+"f"      = m4     : all : f.exec "dmenu-filebrowser &"
+"m"      = m4     : all : f.fullzoom
+"q"      = m4     : all : f.restart
+"t"      = m4     : all : f.exec "tmux_pane_search &"
+"x"      = m4     : all : f.delete
+"x"      = m4 | c : all : f.destroy
 
 # Application launchers
 "Return" = m4 | s : all : f.exec "xterm &"
@@ -162,32 +148,36 @@ Button3 = : iconmgr : f.iconify
 "f"      = m4 | s : all : f.exec "x-filemanager &"
 "m"      = m4 | s : all : f.exec "x-email-client &"
 "p"      = m4 | s : all : f.exec "play-url -p &"
-"q"      = m4 | s : all : f.exec "dmenu-session-logout &"
+"q"      = m4 | s : all : f.exec "x-session-logout &"
 "r"      = m4 | s : all : f.exec "dmenu-timer &"
 "t"      = m4 | s : all : f.exec "xterm -e \"tmux attach-session -d || tmux new-session\" &"
 "x"      = m4 | s : all : f.exec "dmenu-xautolock &"
 
 # Configurable keys (site dependent)
-"F3"     = m4 : all : f.exec "exec-F3 &"
-"F4"     = m4 : all : f.exec "exec-F4 &"
-"F5"     = m4 : all : f.exec "exec-F5 &"
-"F6"     = m4 : all : f.exec "exec-F6 &"
-"F7"     = m4 : all : f.exec "exec-F7 &"
-"F8"     = m4 : all : f.exec "exec-F8 &"
-"F9"     = m4 : all : f.exec "exec-F9 &"
-"F10"    = m4 : all : f.exec "exec-F10 &"
-"F11"    = m4 : all : f.exec "exec-F11 &"
-"F12"    = m4 : all : f.exec "exec-F12 &"
+"F3"     = m4     : all : f.exec "exec-F3 &"
+"F4"     = m4     : all : f.exec "exec-F4 &"
+"F5"     = m4     : all : f.exec "exec-F5 &"
+"F6"     = m4     : all : f.exec "exec-F6 &"
+"F7"     = m4     : all : f.exec "exec-F7 &"
+"F8"     = m4     : all : f.exec "exec-F8 &"
+"F9"     = m4     : all : f.exec "exec-F9 &"
+"F10"    = m4     : all : f.exec "exec-F10 &"
+"F11"    = m4     : all : f.exec "exec-F11 &"
+"F12"    = m4     : all : f.exec "exec-F12 &"
 
 # Heritages...
-"Delete" = m | c : all : f.exec "xautolock -locknow &"
+"Delete" = m | c  : all : f.exec "xautolock -locknow &"
 
 # System specific
 "c"      = m4 | c : all : f.exec "dmenu-perf &"
 "h"      = m4 | s : all : f.exec "ZZZ &"
 "k"      = m4 | s : all : f.exec "dmenu-kbd &"
-"l"      = m4 | s : all : f.exec "dmenu-lpr &"
 "s"      = m4 | s : all : f.exec "zzz &"
+
+# Multimedia
+"KP_Subtract" = m4 : all : f.exec "sndioctl output.level=-0.1"
+"KP_Add"      = m4 : all : f.exec "sndioctl output.level=+0.1"
+"KP_Insert"   = m4 : all : f.exec "sndioctl output.mute=!"
 
 
 # ----------------------------------------------------------------------
@@ -210,7 +200,6 @@ menu "RootMenu" {
         ""              f.nop
         "Display"       f.exec "arandr &"
         "Keyboard"      f.menu "Keyboard Layout"
-        "Print to lpr"  f.menu "Print to lpr"
         "Removables"    f.exec "/usr/bin/doas /usr/local/bin/amount -e sd0 &"
         ""              f.nop
         "Window Ops"    f.menu "Window Ops"
@@ -289,7 +278,7 @@ menu "Games" {
         "Star Trek"     f.exec "xterm -e trek &"
 }
 
- menu "Adventure" {
+menu "Adventure" {
         "Adventure"     f.exec "xterm -e adventure &"
         "Battlestar"    f.exec "xterm -e battlestar &"
         "Hack"          f.exec "xterm -e hack &"
@@ -297,7 +286,7 @@ menu "Games" {
         "Phantasia"     f.exec "xterm -e phantasia &"
 }
 
- menu "Amusement" {
+menu "Amusement" {
         "AA Fire"       f.exec "aafire &"
         "Ico"           f.exec "ico &"
         "Oclock"        f.exec "oclock &"
@@ -308,33 +297,33 @@ menu "Games" {
         "Xlogo"         f.exec "xlogo &"
 }
 
- menu "Arcade" {
+menu "Arcade" {
         "Snake"         f.exec "xterm -e snake &"
         "Worm"          f.exec "xterm -e worm &"
 }
 
- menu "Board" {
+menu "Board" {
         "Backgammon"    f.exec "xterm -e backgammon -pb &"
         "Gomoku"        f.exec "xterm -e gomoku &"
         "Monopoly"      f.exec "xterm -e monop &"
 }
 
- menu "Card" {
+menu "Card" {
         "Canfield"      f.exec "xterm -e canfield &"
         "Cribbage"      f.exec "xterm -e cribbage &"
         "Mille Bournes" f.exec "xterm -e mille &"
 }
 
- menu "Education" {
+menu "Education" {
         "Arithmetic Quiz" f.exec "xterm -e arithmetic &"
 }
 
- menu "Puzzle" {
+menu "Puzzle" {
         "Boggle"        f.exec "xterm -e boggle &"
         "Hangman"       f.exec "xterm -e hangman &"
 }
 
- menu "Strategy" {
+menu "Strategy" {
         "Sail"          f.exec "xterm -e sail &"
 }
 
@@ -374,15 +363,6 @@ menu "Keyboard Layout" {
         "English-US"    f.exec "setxkbmap us"
 }
 
-menu "Print to lpr" {
-        "draft"         f.exec "dmenu-lpr draft &"
-        "normal"        f.exec "dmenu-lpr normal &"
-        "hq"            f.exec "dmenu-lpr hq &"
-        "draft-color"   f.exec "dmenu-lpr draft-color &"
-        "normal-color"  f.exec "dmenu-lpr normal-color &"
-        "hq-color"      f.exec "dmenu-lpr hq-color &"
-}
-
 menu "Window Ops" {
         "Iconify"       f.iconify
         "Maximize"      f.fullzoom
@@ -397,6 +377,8 @@ menu "Window Ops" {
         "Hide Iconmgr"  f.hideiconmgr
         ""              f.nop
         "Close"         f.menu "Close Window"
+        ""              f.nop
+        "Window List"   f.menu "TwmWindows"
 }
 
 Menu "Close Window" {
