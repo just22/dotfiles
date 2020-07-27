@@ -165,15 +165,10 @@
   </application>
 
   <application class="dzen" name="dzen2">
-    <skip_pager>yes</skip_pager>
-  </application>
-
-  <application class="Bar" name="lemonbar">
-    <skip_pager>yes</skip_pager>
-  </application>
-
-  <application class="netwmpager" name="netwmpager">
-    <desktop>all</desktop>
+    <position force="yes">
+      <x>0</x> <y>0</y>
+      <monitor>1</monitor>
+    </position>
     <skip_pager>yes</skip_pager>
   </application>
 
@@ -199,6 +194,39 @@
     <layer>above</layer>
     <skip_pager>yes</skip_pager>
     <skip_taskbar>yes</skip_taskbar>
+  </application>
+
+  <application class="stalonetray" name="stalonetray">
+    <position force="yes">
+      <x>590</x> <y>0</y>
+      <monitor>1</monitor>
+    </position>
+    <layer>above</layer>
+    <skip_pager>yes</skip_pager>
+    <skip_taskbar>yes</skip_taskbar>
+  </application>
+
+  <application name="bbager">
+    <position force="yes">
+      <monitor>1</monitor>
+      <x>0</x> <y>1</y>
+    </position>
+    <layer>above</layer>
+  </application>
+
+  <application class="netwmpager">
+    <position force="yes">
+      <x>-0</x> <y>1</y>
+      <monitor>1</monitor>
+    </position>
+    <layer>above</layer>
+  </application>
+
+  <application class="Gsimplecal" name="gsimplecal">
+    <position force="yes">
+      <x>65</x> <y>430</y>
+    </position>
+    <layer>above</layer>
   </application>
 
 </applications>
