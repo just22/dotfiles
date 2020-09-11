@@ -400,14 +400,15 @@ function! VimwikiLinkHandler(link)
         endif
 endfunction
 
-" vimtex
-let g:vimtex_quickfix_latexlog = {
-    \ 'overfull' : 0,
-    \ 'underfull' : 0,
-    \ 'packages' : {
-        \ 'default' : 0,
-    \ },
-\}
+let g:tex_flavor = 'latex'
+let g:vimtex_quickfix_ignore_filters = [
+    \ 'Overfull',
+    \ 'Underfull',
+    \ 'setting the option has no effect',
+    \ 'functionality may be reduced/unavailable',
+    \ 'Token not allowed in a PDF string',
+\]
+let g:Tex_MultipleCompileFormats = 'pdf,bibtex,pdf'
 let g:vimtex_quickfix_autoclose_after_keystrokes = 1
 let g:vimtex_view_method = 'mupdf'
 
@@ -481,6 +482,18 @@ else
         call MinimalSyntaxToggle()
 endif
 
+" Add custom equation delimiters to syntax highlighting.
+autocmd FileType tex syn region texMathZoneZ matchgroup=texStatement
+    \ start="\\eqn{"
+    \ start="\\eqn\*{"
+    \ start="\\eqnml{"
+    \ start="\\eqnml\*{"
+    \ start="\\eqna{"
+    \ start="\\eqna\*{"
+    \ matchgroup=texStatement
+    \ end="}"
+    \ contains=@texMathZoneGroup
+
 
 " ----------------------------------------------------------------------------
 " Autocommands
@@ -491,9 +504,14 @@ augroup vimrcAutoCmd
 
         autocmd!
 
-        " Highlight cursor line in INSERT mode
-        " autocmd InsertEnter * if exists("$DISPLAY")  | setlocal cursorline | endif
-        " autocmd InsertLeave * if !exists("b:cursorvis") | setlocal nocursorline | endif
+        " Highlight cursor line number in INSERT/REPLACE mode
+        autocmd InsertEnter *
+        \  let b:CursorLineNrBG = synIDattr(synIDtrans(hlID('CursorLineNr')), 'bg')
+        \| let b:CursorLineNrFG = synIDattr(synIDtrans(hlID('CursorLineNr')), 'fg')
+        \| hi CursorLineNr ctermbg=1
+        \| hi CursorLineNr ctermfg=0
+        autocmd InsertLeave *
+        \  exe 'hi CursorLineNr ctermbg=' . b:CursorLineNrBG . ' ctermfg=' . b:CursorLineNrFG
 
         " " Change cursor shape in insert/replace/normal mode
         " if &term =~ "^xterm" || &term =~ "^screen"
@@ -1043,15 +1061,15 @@ nmap <silent> <leader>yy :let @* = expand("%:p")<CR>
 " Abbreviations
 " ----------------------------------------------------------------------------
 
-cabbrev f    find
-cabbrev sf   sfind
-cabbrev vsf  vertical sfind
+" cabbrev f    find
+" cabbrev sf   sfind
+" cabbrev vsf  vertical sfind
 
-" Mail
-iabbrev     _h   Hello
-iabbrev     _br  Best regards
-iabbrev     _all All the best
-iabbrev     _t   Thanks in advance
+" " Mail
+" iabbrev     _h   Hello
+" iabbrev     _br  Best regards
+" iabbrev     _all All the best
+" iabbrev     _t   Thanks in advance
 
 " Copy/paste between sessions
 cabbrev _y w! /tmp/$USER.vi.yank
