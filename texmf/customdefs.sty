@@ -38,6 +38,31 @@
 \RequirePackage{tikz-timing}
 	\usetikztiminglibrary[arrow tip=latex]{clockarrows}
 
+\RequirePackage{appendixnumberbeamer}
+\RequirePackage{babel}
+\RequirePackage[backend=bibtex,style=alphabetic,sorting=none]{biblatex}
+\RequirePackage[font=tiny,skip=0pt]{caption}
+\RequirePackage{datetime}
+\RequirePackage[T1]{fontenc}
+\RequirePackage{graphicx}
+\RequirePackage[utf8]{inputenc}
+\RequirePackage{csquotes}
+\RequirePackage[super]{nth}
+\RequirePackage{stackrel}
+\RequirePackage{sverb}
+\RequirePackage{xparse}
+\RequirePackage{xstring}
+
+% Font setup
+% \RequirePackage{bookman}
+\RequirePackage{cmbright}
+
+% Link setup
+\hypersetup{
+	colorlinks=true,
+	linkcolor=cyan,
+	urlcolor=cyan,
+}
 
 % ------------------------------
 % Delimiters
@@ -115,40 +140,38 @@
 
 % ------------------------------
 % Less verbose descr/item env
-%
-% Examples:
-%     \1{}    - Pause after each item, no bullet
-%     \1{\*}  - Pause after each item, with bullet (or whatever)
-%     \1*{}   - No pause, no bullet
-%     \1*{\*} - No pause, with bullet (or whatever)
+% (starred = enumerate)
 % ------------------------------
-\newcommand {\one}[1] {
-	\begin{itemize}[<+->]
-		\setlength\itemsep{1.0em}
-		\item[#1]
-}
-\newcommand {\onestarred}[1] {
+\newcommand {\one} {%
 	\begin{itemize}
-		\item[#1]<.->
+		\item
 }
-\newcommand {\num}[1] {\item[#1]}
+\newcommand {\onestarred} {%
+	\begin{enumerate}
+		\item
+}
+\newcommand {\num} {\item}
 
-\newcommand {\numstarred}[1] {\item[#1]<.->}
+\newcommand {\numstarred} {\item}
 
-\newcommand {\zero} {
+\newcommand {\zero} {%
 	\end{itemize}
 }
 
-\newcommand {\1} {\@ifstar \onestarred \one}
-\newcommand {\2} {\@ifstar \numstarred \num}
-\newcommand {\3} {\@ifstar \numstarred \num}
-\newcommand {\4} {\@ifstar \numstarred \num}
-\newcommand {\5} {\@ifstar \numstarred \num}
-\newcommand {\6} {\@ifstar \numstarred \num}
-\newcommand {\7} {\@ifstar \numstarred \num}
-\newcommand {\8} {\@ifstar \numstarred \num}
-\newcommand {\9} {\@ifstar \numstarred \num}
-\newcommand {\0} {\@ifstar \zero \zero}
+\newcommand {\zerostarred} {%
+	\end{enumerate}
+}
+
+\newcommand{\1} {\@ifstar \onestarred  \one}
+\newcommand{\2} {\@ifstar \numstarred  \num}
+\newcommand{\3} {\@ifstar \numstarred  \num}
+\newcommand{\4} {\@ifstar \numstarred  \num}
+\newcommand{\5} {\@ifstar \numstarred  \num}
+\newcommand{\6} {\@ifstar \numstarred  \num}
+\newcommand{\7} {\@ifstar \numstarred  \num}
+\newcommand{\8} {\@ifstar \numstarred  \num}
+\newcommand{\9} {\@ifstar \numstarred  \num}
+\newcommand{\0} {\@ifstar \zerostarred \zero}
 
 
 % ------------------------------
@@ -176,14 +199,11 @@
 
 
 % ------------------------------
-% Reference footnotes
+% Slide reference in footnote
 % ------------------------------
-\newcommand {\refnote}[1] {
-	\begingroup
-		\renewcommand {\thefootnote}{} \footnote{\hspace{15pt}Ref: #1} %
-		\addtocounter {footnote} {-1} %
-	\endgroup
-}
+\makeatletter
+\def\slideref{\vspace{\fill}\gdef\@thefnmark{}\@footnotetext}
+\makeatother
 
 
 % ------------------------------
@@ -596,5 +616,445 @@
 % ------------------------------
 % Command abbreviations
 % ------------------------------
-\newcommand {\e} {\emph}
+\newcommand{\e}{\emph}
+
+\newcommand{\ee}{\alert}
+
+\newcommand{\red}[1]{\textcolor{lightviolet}{#1}}
+\newcommand{\green}[1]{\textcolor{green}{#1}}
+\newcommand{\blue}[1]{\textcolor{blue}{#1}}
+
+\newcommand{\sep}{\vspace{5pt}}
+\newcommand{\bsep}{\vspace{10pt}}
+
+\newcommand{\wmail}{
+	\href{mailto:alessandro.de-laurenzis@st.com}{alessandro.de-laurenzis@st.com}
+}
+
+\newcommand{\pmail}{
+	\href{mailto:sandro.delaurenzis@gmail.com}{sandro.delaurenzis@gmail.com}
+}
+
+\newcommand{\amail}{
+	\href{mailto:just22@atlantide.mooo.com}{just22@atlantide.mooo.com}
+}
+
+\newcommand{\linkedin}{
+	\href{https://www.linkedin.com/in/delaurenzis}
+			 {https://www.linkedin.com/in/delaurenzis}
+}
+
+\newcommand{\vcentering}[1]{
+	\topskip0pt
+	\vspace*{\fill}
+	#1
+	\vspace*{\fill}
+}
+
+\newcommand{\quoting}[2][]{
+	\begin{quote}
+		#2
+		\ifthenelse{\equal{#1}{}}
+			{}
+			{\par\hfill(#1)}
+	\end{quote}
+}
+
+\newcommand{\first}{\nth{1}}
+\newcommand{\second}{\nth{2}}
+\newcommand{\third}{\nth{3}}
+
+% Only on slide / Overprint
+\newcommand{\vis}[3][1] {%
+	\visible<#2|handout:#1>{#3}
+}
+
+\newcommand{\onstep}[3][1] {%
+	\onslide<#2|handout:#1>
+		#3
+}
+
+\newcommand{\overprn}[1] {%
+	\begin{overprint}
+		#1
+	\end{overprint}
+}
+
+% Equations
+\NewDocumentCommand{\eqn}{s m}{%
+	\IfBooleanTF{#1}
+		{
+			\begin{equation}
+				#2
+		 \end{equation}
+		}
+		{
+			\begin{equation*}
+				#2
+		 	\end{equation*}
+		}
+}
+
+\NewDocumentCommand{\eqnml}{s m}{%
+	\IfBooleanTF{#1}
+		{
+			\begin{multline}
+				#2
+		 \end{multline}
+		}
+		{
+			\begin{multline*}
+				#2
+		 	\end{multline*}
+		}
+}
+
+\NewDocumentCommand{\eqna}{s m}{%
+	\IfBooleanTF{#1}
+		{
+			\begin{align}
+				#2
+			\end{align}
+		}
+		{
+			\begin{align*}
+				#2
+		 	\end{align*}
+		}
+}
+
+% Circuits
+\NewDocumentCommand{\circuit}{O{} m}{%
+	\begin{circuitikz}[#1]
+		#2
+	\end{circuitikz}
+}
+
+
+% ------------------------------
+% Variable-size block environment
+% ------------------------------
+\newenvironment<>{varblock}[2][.99]{
+	\begin{center}
+		\vspace{-3mm}
+    \begin{minipage}{#1\textwidth}
+    	% \setlength{\textwidth}{#1\textwidth}
+      \begin{actionenv}#3
+      	\def\insertblocktitle{#2}
+        \par
+        \usebeamertemplate{block begin}}
+      {\par
+      	\usebeamertemplate{block end}
+      \end{actionenv}
+    \end{minipage}
+  \end{center}}
+
+
+% ------------------------------
+% Beamer settings
+% ------------------------------
+\newdateformat{monthyeardate}{\monthname[\THEMONTH] \THEYEAR}
+
+\usetheme{STM}
+
+% Do not add roman numbers after title of frames with continuation
+\setbeamertemplate{frametitle continuation}{}
+
+% Back/find/forward navigation symbols
+% \setbeamertemplate{navigation symbols}{\insertbackfindforwardnavigationsymbol}
+% ...or, no navigation symbols at all!
+\beamertemplatenavigationsymbolsempty
+
+% Numbered entries in bibliography
+\setbeamertemplate{bibliography item}{\insertbiblabel}
+
+% No "Figure:"/"Table:"/etc. in caption
+\setbeamertemplate{caption}{\raggedright\insertcaption\par}
+
+% Reduce caption spacing
+\setlength{\abovecaptionskip}{0pt}
+
+% Reduce spacing between ToC items in Beamer
+\makeatletter
+\patchcmd{\beamer@sectionintoc}
+  {\vfill}
+	{\vspace{10pt}}
+	{}
+	{}
+\makeatother
+
+% Always use bullets for itemize items
+\setbeamertemplate{itemize item}[circle]
+\setbeamertemplate{itemize subitem}[circle]
+\setbeamertemplate{itemize subsubitem}[circle]
+
+% Add a label close to the equation (doesn't work in align environments)
+\newcommand\Clabel[1]{%
+	\qquad\refstepcounter{equation}(\theequation)\label{#1}
+}
+
+% TOC settings
+% \setbeamertemplate{section in toc}[sections numbered]
+% \setbeamertemplate{subsection in toc}[subsections numbered]
+\setbeamertemplate{section in toc}[ball unnumbered]
+\setbeamertemplate{subsection in toc}[ball unnumbered]
+
+
+% ------------------------------
+% Code readability
+% ------------------------------
+\newcommand {\cover}[2][] {
+	\title[#1]{#2}
+	
+	\author[A. De Laurenzis]{Alessandro De Laurenzis}
+	
+	\institute[ST / AMS / MSD]{STMicroelectronics\\
+	AMS - Analog, MEMS, Sensors\\
+	MSD - MEMS Sensors Division}
+	
+	\date{\monthyeardate\today}
+
+	\begin{frame} \titlepage \end{frame}
+}
+
+
+\NewDocumentCommand{\fig}{o m O{1} O{} O{}} {%
+	\ifthenelse{\equal{#5}{}}
+		{\ifthenelse{\equal{#1}{v}}
+			{\newcommand\hval{.80}}
+			{\ifthenelse{\equal{#1}{h}}
+				{\newcommand\hval{.35}}
+				{\ifthenelse{\equal{#1}{q}}
+					{\newcommand\hval{.35}}
+					{\newcommand\hval{.80}}}}}
+		{\newcommand\hval{#5}}
+	\ifthenelse{\equal{#4}{}}
+		{\newcommand\wval{1}}
+		{\newcommand\wval{#4}}
+	\begin{center}
+		\includegraphics[width=\wval\textwidth,
+										 height=\hval\textheight,
+										 keepaspectratio,
+										 page=#3]{#2}
+	\end{center}
+}
+
+
+\NewDocumentCommand{\mpage}{O{1} O{1} +m} {%
+	\begin{minipage}[c][#2\textheight][t]{#1\textwidth}
+		#3
+	\end{minipage}%
+}
+
+
+\NewDocumentCommand{\quadbox}{s O{.46} O{.39} +m} {%
+	\IfBooleanTF{#1}
+		{\colorlet{bordercolor}{.}}
+		{\colorlet{bordercolor}{white}}
+	\fcolorbox{bordercolor}{white}{
+		\mpage[#2][#3]{#4}%
+	}%
+	\vspace{2pt}%
+}
+
+\NewDocumentCommand{\hhalfbox}{s +m} {%
+	\IfBooleanTF{#1}
+		{\colorlet{bordercolor}{.}}
+		{\colorlet{bordercolor}{white}}
+	\fcolorbox{bordercolor}{white}{
+		\mpage[.964][.39]{#2}%
+	}%
+	\vspace{4pt}%
+}
+
+\NewDocumentCommand{\vhalfbox}{s +m} {%
+	\IfBooleanTF{#1}
+		{\colorlet{bordercolor}{.}}
+		{\colorlet{bordercolor}{white}}
+	\fcolorbox{bordercolor}{white}{
+		\mpage[.46][.825]{#2}%
+	}%
+}
+
+\NewDocumentCommand{\pagebox}{s +m} {%
+	\IfBooleanTF{#1}
+		{\colorlet{bordercolor}{.}}
+		{\colorlet{bordercolor}{white}}
+	\fcolorbox{bordercolor}{white}{
+		\mpage[.964][.825]{#2}%
+	}%
+}
+
+
+\NewDocumentCommand{\codefile}{O{.99} m} {%
+		\center
+		\begin{varblock}[#1]{}
+			\verbinput{#2}
+		\end{varblock}
+}
+
+
+% Slide divided in 4 parts
+\NewDocumentCommand{\qqqq}{o o o o +m +m +m +m} {%
+	\ifthenelse{\equal{#1}{b}}
+		{\quadbox*{#5}}
+		{\quadbox{#5}}
+	\ifthenelse{\equal{#2}{b}}
+		{\quadbox*{#6}}
+		{\quadbox{#6}}
+
+	\ifthenelse{\equal{#3}{b}}
+		{\quadbox*{#7}}
+		{\quadbox{#7}}
+	\ifthenelse{\equal{#4}{b}}
+		{\quadbox*{#8}}
+		{\quadbox{#8}}
+}
+
+% Slide divided in 2 parts (horizontally)
+\NewDocumentCommand{\hhhh}{o o +m +m} {%
+	\ifthenelse{\equal{#1}{b}}
+		{\hhalfbox*{#3}}
+		{\hhalfbox{#3}}
+
+	\ifthenelse{\equal{#2}{b}}
+		{\hhalfbox*{#4}}
+		{\hhalfbox{#4}}
+}
+
+% Slide divided in 2 parts (vertically)
+\NewDocumentCommand{\vhvh}{o o +m +m} {%
+	\ifthenelse{\equal{#1}{b}}
+		{\vhalfbox*{#3}}
+		{\vhalfbox{#3}}
+	\ifthenelse{\equal{#2}{b}}
+		{\vhalfbox*{#4}}
+		{\vhalfbox{#4}}
+}
+
+% Slide divided in 3 parts (horizontal half + 2 quarters)
+\NewDocumentCommand{\hhqq}{o o o +m +m +m} {%
+	\ifthenelse{\equal{#1}{b}}
+		{\hhalfbox*{#4}}
+		{\hhalfbox{#4}}
+
+	\ifthenelse{\equal{#2}{b}}
+		{\quadbox*{#5}}
+		{\quadbox{#5}}
+	\ifthenelse{\equal{#3}{b}}
+		{\quadbox*{#6}}
+		{\quadbox{#6}}
+}
+
+% Slide divided in 3 parts (2 quarters + horizontal half)
+\NewDocumentCommand{\qqhh}{o o o +m +m +m} {%
+	\ifthenelse{\equal{#1}{b}}
+		{\quadbox*{#4}}
+		{\quadbox{#4}}
+	\ifthenelse{\equal{#2}{b}}
+		{\quadbox*{#5}}
+		{\quadbox{#5}}
+
+	\ifthenelse{\equal{#3}{b}}
+		{\hhalfbox*{#6}}
+		{\hhalfbox{#6}}
+}
+
+% Slide divided in 3 parts (Vertical half + 2 quarters)
+\NewDocumentCommand{\vhqq}{o o o +m +m +m} {%
+	\ifthenelse{\equal{#1}{b}}
+		{\vhalfbox*{#4}}
+		{\vhalfbox{#4}}
+	\hspace{.01pt}
+	\mpage[.46][.85]{
+		\vspace{-0.1pt}
+		\ifthenelse{\equal{#2}{b}}
+			{\quadbox*[1][.39]{#5}}%
+			{\quadbox[1][.39]{#5}}%
+		\vspace{2pt}
+		\ifthenelse{\equal{#3}{b}}
+			{\quadbox*[1][.39]{#6}}
+			{\quadbox[1][.39]{#6}}
+	}
+}
+
+% Slide divided in 3 parts (2 quarters + vertical half)
+\NewDocumentCommand{\qqvh}{o o o +m +m +m} {%
+	\mpage[.46][.85]{
+		\vspace{-0.1pt}
+		\ifthenelse{\equal{#1}{b}}
+			{\quadbox*[1][.39]{#4}}%
+			{\quadbox[1][.39]{#4}}%
+		\vspace{2pt}
+		\ifthenelse{\equal{#2}{b}}
+			{\quadbox*[1][.39]{#5}}
+			{\quadbox[1][.39]{#5}}
+	}
+	\hspace{6.8pt}
+	\ifthenelse{\equal{#3}{b}}
+		{\vhalfbox*{#6}}
+		{\vhalfbox{#6}}
+}
+
+
+\NewDocumentCommand{\slide}{o O{} m +G{} +G{} +G{} +G{}}{%
+	% Options:
+	%   o - page layout
+	%   o - [bbbb] (boxed)
+	%   m - slide title
+	%   m - slide content
+	\begin{frame}{#3}
+		\StrChar{#1}{1}[\Pboxed]
+		\StrChar{#2}{1}[\Aboxed]
+		\StrChar{#2}{2}[\Bboxed]
+		\StrChar{#2}{3}[\Cboxed]
+		\StrChar{#2}{4}[\Dboxed]
+		\ifthenelse{\equal{#1}{qqqq}}
+			{\qqqq[\Aboxed][\Bboxed][\Cboxed][\Dboxed]{#4}{#5}{#6}{#7}}
+			{\ifthenelse{\equal{#1}{hhhh}}
+				{\hhhh[\Aboxed][\Bboxed]{#4}{#5}}
+				{\ifthenelse{\equal{#1}{vhvh}}
+					{\vhvh[\Aboxed][\Bboxed]{#4}{#5}}
+					{\ifthenelse{\equal{#1}{hhqq}}
+						{\hhqq[\Aboxed][\Bboxed][\Cboxed]{#4}{#5}{#6}}
+						{\ifthenelse{\equal{#1}{qqhh}}
+							{\qqhh[\Aboxed][\Bboxed][\Cboxed]{#4}{#5}{#6}}
+							{\ifthenelse{\equal{#1}{vhqq}}
+								{\vhqq[\Aboxed][\Bboxed][\Cboxed]{#4}{#5}{#6}}
+								{\ifthenelse{\equal{#1}{qqvh}}
+									{\qqvh[\Aboxed][\Bboxed][\Cboxed]{#4}{#5}{#6}}
+									{\ifthenelse{\equal{\Pboxed}{b}}
+										{\pagebox*{#4}}
+										{\pagebox{#4}}}}}}}}}
+	\end{frame}
+}
+
+
+% Appendix
+\newcommand{\setappendix}{
+	\renewcommand{\theequation}{A.\arabic{equation}}
+	\setcounter{equation}{0}
+
+	\slide{}{
+		\vcentering{
+			\centering\Huge
+			\usebeamercolor[fg]{frametitle}{Appendix}
+		}
+	}
+}
+
+% TOC Slide
+\newcommand{\tocslide}[1][] {
+	\slide{Outline}{
+			\tableofcontents[#1]
+	}
+}
+
+% Reference slide
+\NewDocumentCommand{\refslide}{O{References} O{}} {%
+	\slide{#1}{
+		\nocite{*}
+		\printbibliography[#2]
+	}
+}
 
