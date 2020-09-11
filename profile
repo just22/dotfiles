@@ -84,9 +84,7 @@ export PRINTER=HP_Deskjet_1510
         export ENV="$HOME/.kshrc"
 
 # CPAN local modules config
-export PERL_MB_OPT="--install_base \"${HOME}/perl5\""
-export PERL_MM_OPT="INSTALL_BASE=${HOME}/perl5"
-export PERL5LIB="${HOME}/perl5/lib/perl5:${HOME}/.fvwm/perllib:${PERL5LIB}"
+eval "$(perl -I$HOME/perl5/lib/perl5 -Mlocal::lib)"
 
 # par(1) settings
 export PARINIT="rTbgqR B=.,?_A_a Q=_s>|"
@@ -99,7 +97,7 @@ export AUTOCONF_VERSION=2.69
 export PKG_CONFIG_PATH=${HOME}/lib/pkgconfig
 
 # Append custom man paths to the standard ones
-export MANPATH=~/share/man:/usr/local/man:
+export MANPATH=~/share/man:/usr/local/man:~/perl5/man:
 
 # Proxy settings
 #export http_proxy="http://argo.atlantide.priv:8118"
