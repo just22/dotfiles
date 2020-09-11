@@ -8,67 +8,24 @@ snippet _preamble
 	% Classification: ${4}
 	%***********************************************************************
 	
-	%***********************************************************************
-	% Preamble
-	%***********************************************************************
-
-	% \documentclass[9pt,english,t,handout]{${5:beamer}}
-	\documentclass[9pt,english,t]{${5:beamer}}
-	\usepackage{amsmath}
-	\usepackage{amssymb}
-	\usepackage{appendixnumberbeamer}
-	\usepackage{babel}
-	\usepackage{datetime}
-	\usepackage[T1]{fontenc}
-	\usepackage{graphicx}
-	\usepackage[latin9]{inputenc}
-	\usepackage[super]{nth}
-	\usepackage{phonenumbers}
-
+	% \documentclass[8pt,english,t,usenames,dvipsnames,handout]{${5:beamer}}
+	\documentclass[8pt,english,t,usenames,dvipsnames]{${5:beamer}}
 	\usepackage{customdefs}
+	\setbeamer
 
-	\newdateformat{monthyeardate}{\monthname[\THEMONTH] \THEYEAR}
+	\bibliography{${6:files/references.bib}}
 
-	\usetheme{${6:Pittsburgh}}
-	
-	% Do not add roman numbers after title of frames with continuation
-	\setbeamertemplate{frametitle continuation}{}
-	
-	% Back/find/forward navigation symbols
-	\setbeamertemplate{navigation symbols}{\insertbackfindforwardnavigationsymbol}
-
-	% Numbered entries in bibliography
-	\setbeamertemplate{bibliography item}{\insertbiblabel}
-
-	\AtBeginSubsection[]{
-		\frame{
-			\frametitle{Outline}
-			\tableofcontents[current]
-		}
-	}
-	
 	\begin{document}
 
-	\title[${7:ShortTitle}]{${8:Title}}
-	\subtitle[${9:ShortSubtitle}]{${10:Subtitle}}
+	\cover[${7:ShortTitle}]{${8:Title}}
 
-	\author[A. De Laurenzis]{Alessandro De Laurenzis}
-
-	\institute[ST / AMS / MSD]{STMicroelectronics\\\\
-	AMS - Analog, MEMS, Sensors\\\\
-	MSD - MEMS Sensors Division}
-
-	\date{\monthyeardate\today}
-
-	\begin{frame}
-		\titlepage
-	\end{frame}
-
-	\begin{frame}{Outline}
-		\tableofcontents[currentsection,currentsubsection]
-	\end{frame}
+	\tocslide
 
 	${0}
+
+	%***********************************************************************
+	\refslide % References
+	%***********************************************************************
 
 	\end{document}
 
@@ -76,90 +33,43 @@ snippet _section
 	%***********************************************************************
 	\section{${1:Title}}
 	%***********************************************************************
+	\tocslide[currentsection]
 
 snippet _subsec
 	%~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	\subsection{${1:Title}}
 	%~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	\tocslide[currentsection,currentsubsection]
 
-snippet _frame
+snippet _slide
 	%-----------------------------------
-	\begin{frame}{${1:Title}}
+	\slide{${1:Title}}{
 	%-----------------------------------
 		${0}
-	\end{frame} % $1
+	} % $1
 
 snippet _placeholder
-	\begin{frame}{Placeholder}\end{frame}
+	\slide{Placeholder}\endslide
 
 snippet _appendix
 	%***********************************************************************
 	\appendix
 	%***********************************************************************
-	\renewcommand{\theequation}{A.\arabic{equation}}
-	\setcounter{equation}{0}
-
-	\begin{frame}[c]
-		\center\Huge
-		\usebeamercolor[fg]{frametitle}{Appendix}
-	\end{frame}
+	\setappendix
 	
 	%-----------------------------------
-	\begin{frame}[allowframebreaks]{References}
+	\slide{${1:Title}}
 	%-----------------------------------
-		\nocite{*}
-		\bibliographystyle{ieeepes}
-		\bibliography{references}
-	\end{frame} % References
+		$0
+	\endslide % $1
 
-snippet _layout21
-	\noindent
-	\begin{minipage}[l][\dimexpr 0.4\textheight\relax][c]{\dimexpr 0.495\textwidth\relax}
-		\center
-		\includegraphics[width=\textwidth,keepaspectratio]{${1}}
-	\end{minipage}
-	\hfill
-	\begin{minipage}[r][\dimexpr 0.4\textheight\relax][c]{\dimexpr 0.495\textwidth\relax}%
-		${2}
-	\end{minipage}
-	\vfill
-	\noindent
-	\begin{minipage}[l][\dimexpr 0.4\textheight\relax][c]{\textwidth\relax}%
-		${3}
-	\end{minipage}
+snippet _ref
+	%***********************************************************************
+	\slide{References}
+	%***********************************************************************
+		\pagebox{
+			\nocite{*}
+			\printbibliography
+		}
+	\endslide % References
 
-snippet _layout12
-	\noindent
-	\begin{minipage}[l][\dimexpr 0.4\textheight\relax][c]{\textwidth\relax}
-		${1}
-	\end{minipage}
-	\vfill
-	\noindent
-	\begin{minipage}[l][\dimexpr 0.4\textheight\relax][c]{\dimexpr 0.495\textwidth\relax}%
-		\center
-		\includegraphics[width=\textwidth,keepaspectratio]{${2}}
-	\end{minipage}
-	\hfill
-	\begin{minipage}[r][\dimexpr 0.4\textheight\relax][c]{\dimexpr 0.495\textwidth\relax}%
-		${3}
-	\end{minipage}
-
-snippet _layout22
-	\noindent
-	\begin{minipage}[l][\dimexpr 0.4\textheight\relax][c]{\dimexpr 0.495\textwidth\relax}
-		\center
-		\includegraphics[width=\textwidth,keepaspectratio]{${1}}
-	\end{minipage}
-	\hfill
-	\begin{minipage}[r][\dimexpr 0.4\textheight\relax][c]{\dimexpr 0.495\textwidth\relax}%
-		${2}
-	\end{minipage}
-	\vfill
-	\noindent
-	\begin{minipage}[l][\dimexpr 0.4\textheight\relax][c]{\dimexpr 0.495\textwidth\relax}%
-		${3}
-	\end{minipage}
-	\hfill
-	\begin{minipage}[r][\dimexpr 0.4\textheight\relax][c]{\dimexpr 0.495\textwidth\relax}%
-		${4}
-	\end{minipage}
