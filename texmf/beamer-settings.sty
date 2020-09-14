@@ -1,0 +1,120 @@
+% ----------------------------------------------------------------------
+%  $Id$
+%
+%  Custom defs for LaTeX - Beamer specific settings
+% ----------------------------------------------------------------------
+
+\ProvidesPackage{beamer-settings}
+
+% Variable-size block environment
+\newenvironment<>{varblock}[2][.99]{
+	\begin{center}
+		\vspace{-3mm}
+    \begin{minipage}{#1\textwidth}
+    	% \setlength{\textwidth}{#1\textwidth}
+      \begin{actionenv}#3
+      	\def\insertblocktitle{#2}
+        \par
+        \usebeamertemplate{block begin}}
+      {\par
+      	\usebeamertemplate{block end}
+      \end{actionenv}
+    \end{minipage}
+  \end{center}}
+
+% Date format for presentations
+\newdateformat{monthyeardate}{\monthname[\THEMONTH] \THEYEAR}
+
+% Default theme
+\usetheme{STM}
+
+% Do not add roman numbers after title of frames with continuation
+\setbeamertemplate{frametitle continuation}{}
+
+% Back/find/forward navigation symbols
+% \setbeamertemplate{navigation symbols}{\insertbackfindforwardnavigationsymbol}
+% ...or, no navigation symbols at all!
+\beamertemplatenavigationsymbolsempty
+
+% Numbered entries in bibliography
+\setbeamertemplate{bibliography item}{\insertbiblabel}
+
+% No "Figure:"/"Table:"/etc. in caption
+\setbeamertemplate{caption}{\raggedright\insertcaption\par}
+
+% Reduce caption spacing
+\setlength{\abovecaptionskip}{0pt}
+
+% Reduce spacing between ToC items in Beamer
+\makeatletter
+\patchcmd{\beamer@sectionintoc}
+  {\vfill}
+	{\vspace{10pt}}
+	{}
+	{}
+\makeatother
+
+% Always use bullets for itemize items
+\setbeamertemplate{itemize item}[circle]
+\setbeamertemplate{itemize subitem}[circle]
+\setbeamertemplate{itemize subsubitem}[circle]
+
+% Add a label close to the equation (doesn't work in align environments)
+\newcommand\Clabel[1]{%
+	\qquad\refstepcounter{equation}(\theequation)\label{#1}
+}
+
+% TOC settings
+% \setbeamertemplate{section in toc}[sections numbered]
+% \setbeamertemplate{subsection in toc}[subsections numbered]
+\setbeamertemplate{section in toc}[ball unnumbered]
+\setbeamertemplate{subsection in toc}[ball unnumbered]
+
+
+% Precise frame content dimensions
+\newif\ifsidebartheme
+\sidebarthemefalse
+
+\newdimen\framecontentheight
+\newdimen\framecontentwidth
+\newdimen\framecontentleft
+\newdimen\framecontentbottom
+
+\makeatletter
+\newcommand*{\calcframecontentdim}{%
+\framecontentheight=\paperheight%
+\ifx\beamer@frametitle\@empty%
+    \setbox\@tempboxa=\box\voidb@x%
+  \else%
+    \setbox\@tempboxa=\vbox{%
+      \vbox{}%
+      {\parskip0pt\usebeamertemplate***{frametitle}}%
+    }%
+    \ifsidebartheme%
+      \advance\framecontentheight by-1em%
+    \fi%
+  \fi%
+\advance\framecontentheight by-\ht\@tempboxa%
+\advance\framecontentheight by-\dp\@tempboxa%
+\advance\framecontentheight by-\beamer@frametopskip%
+\ifbeamer@plainframe%
+	\framecontentbottom=0pt%
+\else%
+	\advance\framecontentheight by-\headheight%
+	\advance\framecontentheight by\headdp%
+	\advance\framecontentheight by-\footheight%
+	\advance\framecontentheight by4pt%
+	\framecontentbottom=\footheight%
+	\advance\framecontentbottom by-4pt%
+\fi%
+\framecontentwidth=\paperwidth%
+\ifbeamer@plainframe%
+	\framecontentleft=0pt%
+\else%
+	\advance\framecontentwidth by-\beamer@rightsidebar%
+	\advance\framecontentwidth by-\beamer@leftsidebar\relax%
+	\framecontentleft=\beamer@leftsidebar%
+\fi%
+}
+\makeatother
+

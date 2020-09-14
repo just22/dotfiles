@@ -1,0 +1,420 @@
+% ----------------------------------------------------------------------
+%  $Id$
+%
+%  Custom defs for LaTeX - TikZ add-ons
+% ----------------------------------------------------------------------
+
+\ProvidesPackage{tikz-addons}
+
+% To install non-standard TikZ libraries:
+% mkdir -p ~/texmf/tex/generic/pgf
+% cd ~/texmf/tex/generic/pgf
+% git clone ... (or whatever)
+%
+\RequirePackage{pgf, tikz}
+	\usetikzlibrary{shapes}
+	\usetikzlibrary{calc}
+	\usetikzlibrary{intersections}
+	\usetikzlibrary{positioning}
+
+\RequirePackage{pgfplots}
+	\pgfplotsset{compat=newest}
+
+\RequirePackage[american, oldvoltagedirection]{circuitikz}
+	\ctikzset{bipoles/length=1cm}
+	% https://github.com/gsarkis/tikz-mux.git
+	\usetikzlibrary{circuits.logic.mux}
+	\tikzset{set mux graphic={
+		circuit symbol open,
+		circuit symbol size=width 2 height 5,
+		shape=mux, thick, inner sep=.5ex}}
+
+\RequirePackage{tikz-timing}
+	\usetikztiminglibrary[arrow tip=latex]{clockarrows}
+
+
+% ------------------------------
+% Shortcuts for CircuiTikZ
+% ------------------------------
+\newcommand {\refgrid}[2] {
+	\draw[help lines] ({#1}) grid ({#2});
+}
+
+\newcommand {\clnode}[3] {
+	\node[cloud, draw, cloud puffs=10, cloud puff arc=120,
+		aspect=2, font=\small, inner ysep=0.5em]
+		({#1}) at ({#2}) {{#3}}
+}
+
+\newcommand {\regnode}[3] {
+	\node[dff, align=center, text width=1.8cm] ({#1}) at ({#2}) {{#3}};
+	\coordinate (cDFFUL1) at ([shift={(-0.55,1)}]{#2});
+	\coordinate (cDFFUL2) at ([shift={(-0.35,1.2)}]{#2});
+	\draw[thick]
+		(cDFFUL1) -- ++(0,0.2) -- ++(1.5, 0) -- ++(0,-2) -- ++(-0.2,0)
+		(cDFFUL2) -- ++(0,0.2) -- ++(1.5, 0) -- ++(0,-2) -- ++(-0.2,0)
+		;
+}
+
+\tikzset {
+	dly/.pic = {
+		\coordinate (cBF0) at (-0.5,0);
+		\coordinate (cBF1) at (0,0);
+		\coordinate (cBF2) at (0.5,0);
+		\node[buffer, scale=0.5] (BF0) at (cBF0) {};
+		\node[buffer, scale=0.5] (BF1) at (cBF1) {};
+		\node[buffer, scale=0.5] (BF2) at (cBF2) {};
+		\node (-in)  at (BF0.in) {};
+		\node (-out) at (BF2.out) {};
+	},
+	bftree/.pic = {
+		\coordinate (cBF01) at (-0.5,0);
+		\coordinate (cBF11) at (0,0.25);
+		\coordinate (cBF12) at (0,-0.25);
+		\coordinate (cBF21) at (0.5,0.5);
+		\coordinate (cBF22) at (0.5,0);
+		\coordinate (cBF23) at (0.5,-0.5);
+		\node[buffer, scale=0.5] (BF01) at (cBF01) {};
+		\node[buffer, scale=0.5] at (cBF11) {};
+		\node[buffer, scale=0.5] at (cBF12) {};
+		\node[buffer, scale=0.5] at (cBF21) {};
+		\node[buffer, scale=0.5] (BF22) at (cBF22) {};
+		\node[buffer, scale=0.5] at (cBF23) {};
+		\node (-in)  at (BF01.in) {};
+		\node (-out) at (BF22.out) {};
+		\draw[dashed]
+			(-1.25,0) -- ([shift={(0,0.5)}]cBF21)
+			(-1.25,0) -- ([shift={(0,-0.5)}]cBF23)
+			;
+	},
+	combl/.pic = {
+		\node[
+			draw,
+			cloud,
+			cloud puffs=10,
+			cloud puff arc=120,
+			aspect=2, font=\small, inner ysep=0.5em]
+				() at (0,0) {};
+	},
+	reg/.pic = {
+		\node[dff, align=center, text width=1.8cm] (-FF) at (0,0) {};
+		\draw[thick]
+			(-0.55,1) -- ++(0,0.2) -- ++(1.5, 0) -- ++(0,-2) -- ++(-0.2,0)
+			(-0.35,1.2) -- ++(0,0.2) -- ++(1.5, 0) -- ++(0,-2) -- ++(-0.2,0)
+			;
+	}
+}
+
+
+% ------------------------------
+% Arrows for voltage labels
+% Author: Martin Scharrer
+% ------------------------------
+\makeatletter
+\pgfarrowsdeclare{varrow}{varrow}{
+\pgfarrowsleftextend{-5\pgflinewidth}
+\pgfarrowsrightextend{5\pgflinewidth}
+}
+{
+            \newlength\pgf@my@length
+            \pgf@my@length = 1cm
+            \divide \pgf@my@length by 16
+            \pgfpathmoveto{\pgfpoint{-.7\pgf@my@length}{0pt}}
+            \pgfpathlineto{\pgfpoint{-.7\pgf@my@length}{-.8\pgf@my@length}}
+            \pgfpathlineto{\pgfpoint{1\pgf@my@length}{0pt}}
+            \pgfpathlineto{\pgfpoint{-.7\pgf@my@length}{.8\pgf@my@length}}
+            \pgfpathlineto{\pgfpoint{-.7\pgf@my@length}{0pt}}           
+            \pgfusepathqfillstroke
+}
+\makeatother
+
+
+% ------------------------------
+% D flip-flops (DFFs) node shape
+% Author: Martin Scharrer
+% ------------------------------
+\makeatletter
+
+\pgfdeclareshape{dff}{
+  % The 'minimum width' and 'minimum height' keys, not the content, determine
+  % the size
+  \savedanchor\northeast{%
+    \pgfmathsetlength\pgf@x{\pgfshapeminwidth}%
+    \pgfmathsetlength\pgf@y{\pgfshapeminheight}%
+    \pgf@x=0.5\pgf@x
+    \pgf@y=0.5\pgf@y
+  }
+  % This is redundant, but makes some things easier:
+  \savedanchor\southwest{%
+    \pgfmathsetlength\pgf@x{\pgfshapeminwidth}%
+    \pgfmathsetlength\pgf@y{\pgfshapeminheight}%
+    \pgf@x=-0.5\pgf@x
+    \pgf@y=-0.5\pgf@y
+  }
+
+  % Inherit from rectangle
+  \inheritanchorborder[from=rectangle]
+
+  % Define same anchor a normal rectangle has
+  \anchor{center}{\pgfpointorigin}
+  \anchor{north}{\northeast \pgf@x=0pt}
+  \anchor{east}{\northeast \pgf@y=0pt}
+  \anchor{south}{\southwest \pgf@x=0pt}
+  \anchor{west}{\southwest \pgf@y=0pt}
+  \anchor{north east}{\northeast}
+  \anchor{north west}{\northeast \pgf@x=-\pgf@x}
+  \anchor{south west}{\southwest}
+  \anchor{south east}{\southwest \pgf@x=-\pgf@x}
+  \anchor{text}{
+    \pgfpointorigin
+    \advance\pgf@x by -.5\wd\pgfnodeparttextbox%
+    \advance\pgf@y by -.5\ht\pgfnodeparttextbox%
+    \advance\pgf@y by +.5\dp\pgfnodeparttextbox%
+  }
+
+  % Define anchors for signal ports
+  \anchor{D}{
+    \pgf@process{\northeast}%
+    \pgf@x=-1\pgf@x%
+    \pgf@y=.5\pgf@y%
+  }
+  \anchor{pD}{
+    \pgf@process{\northeast}%
+    \pgf@x=-2\pgf@x%
+    \pgf@y=.5\pgf@y%
+  }
+  \anchor{CP}{
+    \pgf@process{\northeast}%
+    \pgf@x=-1\pgf@x%
+    \pgf@y=-.5\pgf@y%
+  }
+  \anchor{pCP}{
+    \pgf@process{\northeast}%
+    \pgf@x=-2\pgf@x%
+    \pgf@y=-.5\pgf@y%
+  }
+  \anchor{Q}{
+    \pgf@process{\northeast}%
+    \pgf@y=.5\pgf@y%
+  }
+  \anchor{pQ}{
+    \pgf@process{\northeast}%
+    \pgf@x=2\pgf@x%
+    \pgf@y=.5\pgf@y%
+  }
+  \anchor{Qn}{
+    \pgf@process{\northeast}%
+    \pgf@y=-.5\pgf@y%
+  }
+  \anchor{pQn}{
+    \pgf@process{\northeast}%
+    \pgf@x=2\pgf@x%
+    \pgf@y=-.5\pgf@y%
+  }
+  \anchor{CD}{
+    \pgf@process{\northeast}%
+    \pgf@x=0pt%
+  }
+  \anchor{pCD}{
+    \pgf@process{\northeast}%
+    \pgf@x=0pt%
+    \pgf@y=2\pgf@y%
+  }
+  \anchor{SD}{
+    \pgf@process{\northeast}%
+    \pgf@x=0pt%
+    \pgf@y=-\pgf@y%
+  }
+  \anchor{pSD}{
+    \pgf@process{\northeast}%
+    \pgf@x=0pt%
+    \pgf@y=-2\pgf@y%
+  }
+
+  % Draw the rectangle box and the port labels
+  \backgroundpath{
+    % Rectangle box
+    \pgfpathrectanglecorners{\southwest}{\northeast}
+    % Angle (>) for clock input
+    \pgf@anchor@dff@CP
+    \pgf@xa=\pgf@x \pgf@ya=\pgf@y
+    \pgf@xb=\pgf@x \pgf@yb=\pgf@y
+    \pgf@xc=\pgf@x \pgf@yc=\pgf@y
+    \pgfmathsetlength\pgf@x{1.6ex} % size depends on font size
+    \advance\pgf@ya by \pgf@x
+    \advance\pgf@xb by \pgf@x
+    \advance\pgf@yc by -\pgf@x
+    \pgfpathmoveto{\pgfpoint{\pgf@xa}{\pgf@ya}}
+    \pgfpathlineto{\pgfpoint{\pgf@xb}{\pgf@yb}}
+    \pgfpathlineto{\pgfpoint{\pgf@xc}{\pgf@yc}}
+    \pgfclosepath
+
+    % Draw port labels
+    \begingroup
+    \tikzset{flip flop/port labels} % Use font from this style
+    \tikz@textfont
+
+    \pgf@anchor@dff@D
+    \pgftext[left,base,at={\pgfpoint{\pgf@x}{\pgf@y}},x=\pgfshapeinnerxsep]{\raisebox{-0.75ex}{D}}
+
+    \pgf@anchor@dff@Q
+    \pgftext[right,base,at={\pgfpoint{\pgf@x}{\pgf@y}},x=-\pgfshapeinnerxsep]{\raisebox{-0.75ex}{Q}}
+
+    \pgf@anchor@dff@Qn
+    \pgftext[right,base,at={\pgfpoint{\pgf@x}{\pgf@y}},x=-\pgfshapeinnerxsep]{\raisebox{-0.75ex}{$\overline{\mbox{Q}}$}}
+
+    \pgf@anchor@dff@CD
+    \pgftext[top,at={\pgfpoint{\pgf@x}{\pgf@y}},y=-\pgfshapeinnerysep]{$\overline{\mbox{CD}}$}
+
+    \pgf@anchor@dff@SD
+    \pgftext[bottom,at={\pgfpoint{\pgf@x}{\pgf@y}},y=\pgfshapeinnerysep]{$\overline{\mbox{SD}}$}
+    \endgroup
+  }
+}
+
+% Key to add font macros to the current font
+\tikzset{add font/.code={\expandafter\def\expandafter\tikz@textfont\expandafter{\tikz@textfont#1}}} 
+
+% Define default style for this node
+\tikzset{flip flop/port labels/.style={font=\sffamily\tiny}}
+\tikzset{every dff node/.style={
+	draw,
+	minimum width=1cm,
+	minimum height=1.5cm,
+	thick,
+	inner sep=1mm,
+	outer sep=0pt,
+	cap=round,
+	add font=\sffamily\small}}
+
+\makeatother
+
+
+% ------------------------------
+% Integrated Clock Gating (ICG)
+% node shape
+% Author: Alessandro De Laurenzis
+%         (adapted from flip-flop
+%					node by Martin Scharrer)
+% ------------------------------
+\makeatletter
+
+\pgfdeclareshape{icg}{
+  % The 'minimum width' and 'minimum height' keys, not the content, determine
+  % the size
+  \savedanchor\northeast{%
+    \pgfmathsetlength\pgf@x{\pgfshapeminwidth}%
+    \pgfmathsetlength\pgf@y{\pgfshapeminheight}%
+    \pgf@x=0.5\pgf@x
+    \pgf@y=0.5\pgf@y
+  }
+  % This is redundant, but makes some things easier:
+  \savedanchor\southwest{%
+    \pgfmathsetlength\pgf@x{\pgfshapeminwidth}%
+    \pgfmathsetlength\pgf@y{\pgfshapeminheight}%
+    \pgf@x=-0.5\pgf@x
+    \pgf@y=-0.5\pgf@y
+  }
+
+  % Inherit from rectangle
+  \inheritanchorborder[from=rectangle]
+
+  % Define same anchor a normal rectangle has
+  \anchor{center}{\pgfpointorigin}
+  \anchor{north}{\northeast \pgf@x=0pt}
+  \anchor{east}{\northeast \pgf@y=0pt}
+  \anchor{south}{\southwest \pgf@x=0pt}
+  \anchor{west}{\southwest \pgf@y=0pt}
+  \anchor{north east}{\northeast}
+  \anchor{north west}{\northeast \pgf@x=-\pgf@x}
+  \anchor{south west}{\southwest}
+  \anchor{south east}{\southwest \pgf@x=-\pgf@x}
+  \anchor{text}{
+    \pgfpointorigin
+    \advance\pgf@x by -.5\wd\pgfnodeparttextbox%
+    \advance\pgf@y by -.5\ht\pgfnodeparttextbox%
+    \advance\pgf@y by +.5\dp\pgfnodeparttextbox%
+  }
+
+  % Define anchors for signal ports
+  \anchor{EN}{
+    \pgf@process{\northeast}%
+    \pgf@x=-1\pgf@x%
+    \pgf@y=.5\pgf@y%
+  }
+  \anchor{pEN}{
+    \pgf@process{\northeast}%
+    \pgf@x=-2\pgf@x%
+    \pgf@y=.5\pgf@y%
+  }
+  \anchor{CP}{
+    \pgf@process{\northeast}%
+    \pgf@x=-1\pgf@x%
+    \pgf@y=-.5\pgf@y%
+  }
+  \anchor{pCP}{
+    \pgf@process{\northeast}%
+    \pgf@x=-2\pgf@x%
+    \pgf@y=-.5\pgf@y%
+  }
+  \anchor{G}{
+    \pgf@process{\northeast}%
+    \pgf@y=.5\pgf@y%
+  }
+  \anchor{pG}{
+    \pgf@process{\northeast}%
+    \pgf@x=2\pgf@x%
+    \pgf@y=.5\pgf@y%
+  }
+
+  % Draw the rectangle box and the port labels
+  \backgroundpath{
+    % Rectangle box
+    \pgfpathrectanglecorners{\southwest}{\northeast}
+    % Angle (>) for clock input
+    \pgf@anchor@icg@CP
+    \pgf@xa=\pgf@x \pgf@ya=\pgf@y
+    \pgf@xb=\pgf@x \pgf@yb=\pgf@y
+    \pgf@xc=\pgf@x \pgf@yc=\pgf@y
+    \pgfmathsetlength\pgf@x{1.6ex} % size depends on font size
+    \advance\pgf@ya by \pgf@x
+    \advance\pgf@xb by \pgf@x
+    \advance\pgf@yc by -\pgf@x
+    \pgfpathmoveto{\pgfpoint{\pgf@xa}{\pgf@ya}}
+    \pgfpathlineto{\pgfpoint{\pgf@xb}{\pgf@yb}}
+    \pgfpathlineto{\pgfpoint{\pgf@xc}{\pgf@yc}}
+    \pgfclosepath
+
+    % Draw port labels
+    \begingroup
+    \tikzset{clock gating/port labels} % Use font from this style
+    \tikz@textfont
+
+    \pgf@anchor@icg@EN
+    \pgftext[left,base,at={\pgfpoint{\pgf@x}{\pgf@y}},x=\pgfshapeinnerxsep]{\raisebox{-0.75ex}{EN}}
+
+    \pgf@anchor@icg@G
+    \pgftext[right,base,at={\pgfpoint{\pgf@x}{\pgf@y}},x=-\pgfshapeinnerxsep]{\raisebox{-.75ex}{G}}
+    \endgroup
+  }
+}
+
+% Key to add font macros to the current font
+\tikzset{add font/.code={\expandafter\def\expandafter\tikz@textfont\expandafter{\tikz@textfont#1}}} 
+
+% Define default style for this node
+\tikzset{clock gating/port labels/.style={font=\sffamily\footnotesize}}
+\tikzset{every icg node/.style={
+	draw,
+	minimum width=1.5cm,
+	minimum height=1cm,
+	thick,
+	inner sep=1mm,
+	outer sep=0pt,
+	cap=round,
+	add font=\sffamily\footnotesize}}
+
+\makeatother
+
+
+
