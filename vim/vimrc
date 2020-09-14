@@ -412,6 +412,10 @@ let g:Tex_MultipleCompileFormats = 'pdf,bibtex,pdf'
 let g:vimtex_quickfix_autoclose_after_keystrokes = 1
 let g:vimtex_view_method = 'mupdf'
 
+" calendar-vim
+let g:calendar_monday = 1
+let g:calendar_weeknm = 1
+
 
 " ----------------------------------------------------------------------------
 " Syntax highlighting
