@@ -328,6 +328,13 @@
 % ------------------------------
 % Code readability
 % ------------------------------
+
+% Save the following lengths for future usage
+\newlength{\fboxseporig}
+\setlength{\fboxseporig}{\fboxsep}
+\newlength{\fboxruleorig}
+\setlength{\fboxruleorig}{\fboxrule}
+
 \newcommand {\cover}[2][] {
 	\title[#1]{#2}
 	
@@ -379,9 +386,12 @@
 	+m
 }{%
 	\IfBooleanF{#1}
-		{\setlength\fboxsep{\dimexpr\fboxsep+\fboxrule}%
-		 \setlength\fboxrule{0pt}}%
+		{\setlength{\fboxsep}{\dimexpr\fboxsep+\fboxrule}%
+		 \setlength{\fboxrule}{0pt}}%
 	\fbox{\mpage[#2][#3]{#4}}%
+	\IfBooleanF{#1}
+		{\setlength{\fboxsep}{\fboxseporig}%
+		 \setlength{\fboxrule}{\fboxruleorig}}%
 }
 
 \NewDocumentCommand{\vhalfbox}{
@@ -391,9 +401,12 @@
 	+m
 }{%
 	\IfBooleanF{#1}
-		{\setlength\fboxsep{\dimexpr\fboxsep+\fboxrule}%
-		 \setlength\fboxrule{0pt}}%
+		{\setlength{\fboxsep}{\dimexpr\fboxsep+\fboxrule}%
+		 \setlength{\fboxrule}{0pt}}%
 	\fbox{\mpage[#2][#3]{#4}}%
+	\IfBooleanF{#1}
+		{\setlength{\fboxsep}{\fboxseporig}%
+		 \setlength{\fboxrule}{\fboxruleorig}}%
 }
 
 \NewDocumentCommand{\hhalfbox}{
@@ -403,18 +416,24 @@
 	+m
 }{%
 	\IfBooleanF{#1}
-		{\setlength\fboxsep{\dimexpr\fboxsep+\fboxrule}%
-		 \setlength\fboxrule{0pt}}%
+		{\setlength{\fboxsep}{\dimexpr\fboxsep+\fboxrule}%
+		 \setlength{\fboxrule}{0pt}}%
 	\fbox{\mpage[#2][#3]{#4}}%
+	\IfBooleanF{#1}
+		{\setlength{\fboxsep}{\fboxseporig}%
+		 \setlength{\fboxrule}{\fboxruleorig}}%
 }
 
 \NewDocumentCommand{\pagebox}{s +m} {%
 	\calcframecontentdim%
 	\offinterlineskip%
 	\IfBooleanF{#1}
-		{\setlength\fboxsep{\dimexpr\fboxsep+\fboxrule}%
-		 \setlength\fboxrule{0pt}}%
+		{\setlength{\fboxsep}{\dimexpr\fboxsep+\fboxrule}%
+		 \setlength{\fboxrule}{0pt}}%
 	\fbox{\mpage[\dimexpr\linewidth-6.8pt][\dimexpr\framecontentheight-17.2pt]{#2}}%
+	\IfBooleanF{#1}
+		{\setlength{\fboxsep}{\fboxseporig}%
+		 \setlength{\fboxrule}{\fboxruleorig}}%
 }
 
 
@@ -527,16 +546,16 @@
 	\calcframecontentdim%
 	\offinterlineskip%
 	\mpage[\dimexpr.5\linewidth-2\fboxsep-2\fboxrule][\dimexpr\framecontentheight-13.5pt]{
-		\ifthenelse{\equal{#2}{b}}
+		\ifthenelse{\equal{#1}{b}}
 			{\quadbox*[\dimexpr\linewidth-2pt]{#5}}%
 			{\quadbox[\dimexpr\linewidth-2pt]{#5}}%
 			\vspace*{3pt}
-		\ifthenelse{\equal{#3}{b}}
+		\ifthenelse{\equal{#2}{b}}
 			{\quadbox*[\dimexpr\linewidth-2pt]{#6}}%
 			{\quadbox[\dimexpr\linewidth-2pt]{#6}}%
 	}
 	\hspace{3pt}
-	\ifthenelse{\equal{#1}{b}}
+	\ifthenelse{\equal{#3}{b}}
 		{\vhalfbox*{#4}}%
 		{\vhalfbox{#4}}%
 }
