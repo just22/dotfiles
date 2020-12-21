@@ -6,18 +6,8 @@
 #  fluxbox(1) startup-script
 # ----------------------------------------------------------------------
 
-# Change your keymap
-#
+# Change X keymap
 # xmodmap "/home/just22/.Xmodmap"
-
-# Applications you want to run with fluxbox.
-# MAKE SURE THAT APPS THAT KEEP RUNNING HAVE AN ''&'' AT THE END.
-#
-# unclutter -idle 2 &
-# wmnd &
-# wmsmixer -w &
-# idesk &
-# gkrellm -w &
 
 # Screen locker
 xautolock -time 10 -locker slock &
@@ -43,33 +33,23 @@ xterm -title "System stats" -e systat &
 sleep 1
 xkill -id $(xwininfo -name xconsole |
             egrep -o "Window id: 0x[0-9a-fA-F]+" |
-            cut -d: -f2) && \
+            cut -d: -f2)
 xterm -title "System log" -e "tail -f /var/log/messages" &
 
 # Compositor manager
 xcompmgr &
 
-# Set the root window background & wallpaper
-fbsetroot -gradient Vertical -from rgb:07/36/42 -to rgb:58/6E/75
+# Set wallpaper
 nitrogen --restore || fbsetbg -l
-
-# Desktop management
-#(sleep 1; dbus-launch pcmanfm --desktop) &
 
 # Statusbar
 pkill -x space_dapp; (sleep 1; space_dapp $((($(screen-width) - 1))) 17) &
-dbar -k
 (sleep 3; dbar -- -geometry +0+1 -expand left -dock -xs "${xs:-1}") &
 pkill -x bbpager; (sleep 6; bbpager) &
 
 # Tray apps
-radiotray &
 sleep 1; /usr/local/libexec/tray-app/sound -i &
 sleep 2; cal-tray &
-
-# Restart fluxbox on screen resolution changes
-pkill -x xeventbind; xeventbind resolution "fbrestart" &
-
 
 # And last but not least we start fluxbox.
 # Because it is the last app you have to run it with ''exec'' before it.
@@ -79,4 +59,3 @@ pkill -x xeventbind; xeventbind resolution "fbrestart" &
 # Or, if you want to keep a log:
 mv -f ~/.fluxbox/fluxbox.log{,.old} 2> /dev/null
 exec fluxbox -log ~/.fluxbox/fluxbox.log
-
