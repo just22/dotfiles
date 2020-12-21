@@ -14,7 +14,7 @@
 
 \RequirePackage{appendixnumberbeamer}
 \RequirePackage{babel}
-\RequirePackage[style=alphabetic,sorting=none]{biblatex}
+\RequirePackage[style=alphabetic,sorting=none,backend=bibtex]{biblatex}
 \RequirePackage[font=tiny,skip=0pt]{caption}
 \RequirePackage{datetime}
 \RequirePackage[T1]{fontenc}
@@ -466,7 +466,7 @@
 }
 
 % Slide divided in 2 parts (horizontally)
-\NewDocumentCommand{\hhhh}{o o +m +m} {%
+\NewDocumentCommand{\hh}{o o +m +m} {%
 	\calcframecontentdim%
 	\offinterlineskip%
 	\ifthenelse{\equal{#1}{b}}
@@ -478,7 +478,7 @@
 }
 
 % Slide divided in 2 parts (vertically)
-\NewDocumentCommand{\vhvh}{o o +m +m} {%
+\NewDocumentCommand{\vv}{o o +m +m} {%
 	\calcframecontentdim%
 	\offinterlineskip%
 	\ifthenelse{\equal{#1}{b}}
@@ -491,7 +491,7 @@
 }
 
 % Slide divided in 3 parts (horizontal half + 2 quarters)
-\NewDocumentCommand{\hhqq}{o o o +m +m +m} {%
+\NewDocumentCommand{\hqq}{o o o +m +m +m} {%
 	\calcframecontentdim%
 	\offinterlineskip%
 	\ifthenelse{\equal{#1}{b}}
@@ -507,7 +507,7 @@
 }
 
 % Slide divided in 3 parts (2 quarters + horizontal half)
-\NewDocumentCommand{\qqhh}{o o o +m +m +m} {%
+\NewDocumentCommand{\qqh}{o o o +m +m +m} {%
 	\calcframecontentdim%
 	\offinterlineskip%
 	\ifthenelse{\equal{#1}{b}}
@@ -523,7 +523,7 @@
 }
 
 % Slide divided in 3 parts (Vertical half + 2 quarters)
-\NewDocumentCommand{\vhqq}{o o o +m +m +m} {%
+\NewDocumentCommand{\vqq}{o o o +m +m +m} {%
 	\calcframecontentdim%
 	\offinterlineskip%
 	\ifthenelse{\equal{#1}{b}}
@@ -542,7 +542,7 @@
 }
 
 % Slide divided in 3 parts (2 quarters + vertical half)
-\NewDocumentCommand{\qqvh}{o o o +m +m +m} {%
+\NewDocumentCommand{\qqv}{o o o +m +m +m} {%
 	\calcframecontentdim%
 	\offinterlineskip%
 	\mpage[\dimexpr.5\linewidth-2\fboxsep-2\fboxrule][\dimexpr\framecontentheight-13.5pt]{
@@ -575,18 +575,18 @@
 		\StrChar{#2}{4}[\Dboxed]
 		\ifthenelse{\equal{#1}{qqqq}}
 			{\qqqq[\Aboxed][\Bboxed][\Cboxed][\Dboxed]{#4}{#5}{#6}{#7}}
-			{\ifthenelse{\equal{#1}{hhhh}}
-				{\hhhh[\Aboxed][\Bboxed]{#4}{#5}}
-				{\ifthenelse{\equal{#1}{vhvh}}
-					{\vhvh[\Aboxed][\Bboxed]{#4}{#5}}
-					{\ifthenelse{\equal{#1}{hhqq}}
-						{\hhqq[\Aboxed][\Bboxed][\Cboxed]{#4}{#5}{#6}}
-						{\ifthenelse{\equal{#1}{qqhh}}
-							{\qqhh[\Aboxed][\Bboxed][\Cboxed]{#4}{#5}{#6}}
-							{\ifthenelse{\equal{#1}{vhqq}}
-								{\vhqq[\Aboxed][\Bboxed][\Cboxed]{#4}{#5}{#6}}
-								{\ifthenelse{\equal{#1}{qqvh}}
-									{\qqvh[\Aboxed][\Bboxed][\Cboxed]{#4}{#5}{#6}}
+			{\ifthenelse{\equal{#1}{hh}}
+				{\hh[\Aboxed][\Bboxed]{#4}{#5}}
+				{\ifthenelse{\equal{#1}{vv}}
+					{\vv[\Aboxed][\Bboxed]{#4}{#5}}
+					{\ifthenelse{\equal{#1}{hqq}}
+						{\hqq[\Aboxed][\Bboxed][\Cboxed]{#4}{#5}{#6}}
+						{\ifthenelse{\equal{#1}{qqh}}
+							{\qqh[\Aboxed][\Bboxed][\Cboxed]{#4}{#5}{#6}}
+							{\ifthenelse{\equal{#1}{vqq}}
+								{\vqq[\Aboxed][\Bboxed][\Cboxed]{#4}{#5}{#6}}
+								{\ifthenelse{\equal{#1}{qqv}}
+									{\qqv[\Aboxed][\Bboxed][\Cboxed]{#4}{#5}{#6}}
 									{\ifthenelse{\equal{\Pboxed}{b}}
 										{\pagebox*{#4}}
 										{\pagebox{#4}}}}}}}}}
