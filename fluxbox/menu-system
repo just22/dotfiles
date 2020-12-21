@@ -5,11 +5,25 @@
 # ----------------------------------------------------------------------
 
 [submenu] (Display Settings) </usr/local/share/icons/gnome/16x16/apps/preferences-desktop-display.png>
-        [exec] (Study)          {dmenu-xrandr study-2head; setxkbmap us}
-        [exec] (LVDS Only)      {dmenu-xrandr LVDS}
-        [exec] (VGA Only)       {dmenu-xrandr VGA}
-        [exec] (DP Only)        {dmenu-xrandr DP}
-        [exec] (Custom)         {arandr}
+        [exec] (▧ LVDS)        {dmenu-xrandr LVDS}
+        [exec] (▧ HDMI)        {dmenu-xrandr HDMI}
+        [exec] (▧ VGA)         {dmenu-xrandr VGA}
+        [separator]
+        [exec] (▥ LVDS - HDMI) {dmenu-xrandr LVDS-HDMI}
+        [exec] (▥ HDMI - LVDS) {dmenu-xrandr HDMI-LVDS}
+        [exec] (▥ LVDS - VGA)  {dmenu-xrandr LVDS-VGA}
+        [exec] (▥ VGA - LVDS)  {dmenu-xrandr VGA-LVDS}
+        [exec] (▥ HDMI - VGA)  {dmenu-xrandr HDMI-VGA}
+        [exec] (▥ VGA - HDMI)  {dmenu-xrandr VGA-HDMI}
+        [separator]
+        [exec] (▤ LVDS - HDMI) {dmenu-xrandr LVDS+HDMI}
+        [exec] (▤ HDMI - LVDS) {dmenu-xrandr HDMI+LVDS}
+        [exec] (▤ LVDS - VGA)  {dmenu-xrandr LVDS+VGA}
+        [exec] (▤ VGA - LVDS)  {dmenu-xrandr VGA+LVDS}
+        [exec] (▤ HDMI - VGA)  {dmenu-xrandr HDMI+VGA}
+        [exec] (▤ VGA - HDMI)  {dmenu-xrandr VGA+HDMI}
+        [separator]
+        [exec] (Custom)        {dmenu-xrandr Custom}
 [end]
 [submenu] (Keyboard Layout) </usr/local/share/icons/gnome/16x16/devices/keyboard.png>
         [exec] (Italian) {setxkbmap it} </home/just22/.local/share/icons/cust/16x16/flags/italy.png>
@@ -23,7 +37,7 @@
         [exec] (normal-color) {dmenu-lpr normal-color}
         [exec] (hq-color)     {dmenu-lpr hq-color}
 [end]
-[exec] (Removable Devices) {/usr/bin/doas /usr/local/bin/amount -e sd0} </usr/local/share/icons/gnome/16x16/devices/media-removable.png>
+[exec] (Removable Devices) {xterm -e amount-wrapper} </usr/local/share/icons/gnome/16x16/devices/media-removable.png>
 [submenu] (Samba Shares) </usr/local/share/icons/gnome/16x16/places/gnome-fs-smb.png>
         [exec] (Mount all)    {smb-mount}
         [exec] (Unmount all)  {smb-mount -u}
