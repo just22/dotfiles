@@ -54,6 +54,6 @@
                 [exec] (About) {(fluxbox -v; fluxbox -info | sed 1d) | xmessage -buttons OK:0 -file - -center}
         [end]
         [separator]
-        [exec] (Exit Session) {session-logout} </usr/local/share/icons/gnome/16x16/actions/exit.png>
+        [exec] (Exit Session) {x-session-logout -g} </usr/local/share/icons/gnome/16x16/actions/exit.png>
     [endencoding]
 [end]
