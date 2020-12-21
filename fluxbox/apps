@@ -53,12 +53,6 @@
 [app] (name=xfig) (class=Fig)
   [Maximized] {yes}
 [end]
-[app] (class=Thunderbird)
-  [Workspace] {3}
-[end]
-[app] (class=Chromium-browser) {1}
-  [Workspace] {4}
-[end]
 [app] (name=bbager)
   [Head]  {1}
   [Position] (UpperLeft) {1 -18}
@@ -85,5 +79,8 @@
 [end]
 [app] (class=Claws-mail)
   [Layer]       {8}
+[end]
+[app] (name=xfe) (class=Xfe)
+  [Position]   (Center)  {0 0}
 [end]
 
