@@ -1,32 +1,36 @@
 /* See LICENSE file for copyright and license details. */
 
+/* custom function declarations */
+static void bstack(Monitor *m);
+
 /* appearance */
-static const char *fonts[] = {
-	"DejaVu Sans Mono:size=9"
-};
-static const char dmenufont[]       = "DejaVu Sans Mono:size=9";
-
-/* Solarized light color scheme */
-static const char normbordercolor[] = "#839496"; // base0
-static const char normbgcolor[]     = "#eee8d5"; // base2
-static const char normfgcolor[]     = "#293a1a"; // cyan
-static const char selbordercolor[]  = "#dc322f"; // red
-static const char selbgcolor[]      = "#2aa198"; // base01
-static const char selfgcolor[]      = "#fdf6e3"; // base03
-
-static const unsigned int borderpx       = 2;   /* border pixel of windows */
-static const unsigned int snap           = 5;   /* snap pixel */
-static const unsigned int systraypinning = 0;   /* 0: sloppy systray follows selected monitor
-                                                  >0: pin systray to monitor X */
+static const unsigned int borderpx  = 2;        /* border pixel of windows */
+static const unsigned int snap      = 32;       /* snap pixel */
+static const unsigned int systraypinning = 0;   /* 0: sloppy systray follows selected monitor, >0: pin systray to monitor X */
 static const unsigned int systrayspacing = 2;   /* systray spacing */
-static const int systraypinningfailfirst = 1;   /* 1: if pinning fails, display systray on the first monitor
-                                                   0: displyay systray on the last monitor */
+static const int systraypinningfailfirst = 1;   /* 1: if pinning fails, display systray on the first monitor, False: display systray on the last monitor*/
 static const int showsystray             = 1;   /* 0 means no systray */
 static const int showbar                 = 1;   /* 0 means no bar */
 static const int topbar                  = 1;   /* 0 means bottom bar */
+static const char statussep         = ';';      /* separator between status bar text */
+static const char *fonts[]          = { "DejaVu Sans Mono:size=9" };
+static const char dmenufont[]       = "DejaVu Sans Mono:size=9";
+
+/* Solarized theme */
+static const char col_base0[]       = "#839496";
+static const char col_base2[]       = "#eee8d5";
+static const char col_base01[]      = "#2aa198";
+static const char col_base03[]      = "#fdf6e3";
+static const char col_cyan[]        = "#293a1a";
+static const char col_red[]         = "#dc322f";
+static const char *colors[][3]      = {
+	/*               fg          bg          border   */
+	[SchemeNorm] = { col_cyan,   col_base2,  col_base0 },
+	[SchemeSel]  = { col_base03, col_base01, col_red },
+};
 
 /* tagging */
-static const char *tags[] = { "1", "2", "3", "4", "5", "6", "7", "8", "9", "0" };
+static const char *tags[] = { "1", "2", "3", "4", "5", "6", "7", "8", "9" };
 
 static const Rule rules[] = {
 	/* xprop(1):
@@ -36,35 +40,32 @@ static const Rule rules[] = {
 	/* class		instance		title			tags mask	isfloating	position	monitor */
 	{ "Arandr",             NULL,	        	NULL,			0,		True,		5,		-1 },
 	{ "Clock",		"oclock",		NULL,			0,		True,		5,		-1 },
-	{ "Dialog",	        "__tk__messagebox",	"SimVision Exit",	0,		True,		5,		-1 },
-	{ "Firefox",		"Browser",	        NULL,			1 << 4,		True,		5,		-1 },
-	{ "Firefox",		"Navigator",	        NULL,			1 << 4,		False,		5,		-1 },
-	{ "Firefox",		"Places",	        NULL,			1 << 4,		True,		5,		-1 },
-	{ "Firefox",		"Toplevel",	        NULL,			0,		True,		5,		-1 },
+	{ "Dialog",             NULL,                   NULL,	                0,		True,		5,		-1 },
 	{ "Gimp",		NULL,			NULL,			0,		True,		5,		-1 },
 	{ "Pinentry-gtk-2",	NULL,	        	NULL,			0,		True,		5,		-1 },
-	{ "Sound",	        "sound",		NULL,			0,		True,		3,		-1 },
+	{ "Sound",	        "sound",		NULL,			0,		True,		9,		-1 },
 	{ "Toplevel",		NULL,	        	NULL,			0,		True,		5,		-1 },
-	{ "XBiff",		NULL,			NULL,			0,		True,		5,		-1 },
 	{ "XCalc",		NULL,			NULL,			0,		True,		5,		-1 },
 	{ "XClock",		NULL,			NULL,			0,		True,		5,		-1 },
-	{ "XConsole",		NULL,			NULL,			1 << 8,		False,		5,		-1 },
 	{ "XLoad",		NULL,			NULL,			0,		True,		5,		-1 },
-	{ "XTerm",		NULL,			"Process monitor",	1 << 8,		False,		5,		-1 },
-	{ "XTerm",		NULL,			"Screenshot",		0,		True,		5,		-1 },
-	{ "XTerm",		NULL,			"System log",		1 << 8,		False,		5,		-1 },
-	{ "XTerm",		NULL,			"System stats",		1 << 8,		False,		5,		-1 },
-	{ "XTerm",		NULL,			"Window's properties",	0,		True,		5,		-1 },
-	{ "XTerm",		NULL,			"cmixer",		0,		True,		5,		-1 },
+	{ NULL,			NULL,			"Process monitor",	1 << 8,		False,		5,		-1 },
+	{ NULL,			NULL,			"Screenshot",		0,		True,		5,		-1 },
+	{ NULL,			NULL,			"System log",		1 << 8,		False,		5,		-1 },
+	{ NULL,			NULL,			"System stats",		1 << 8,		False,		5,		-1 },
+	{ NULL,			NULL,			"Window's properties",	0,		True,		5,		-1 },
+	{ NULL,			NULL,			"cmixer",		0,		True,		5,		-1 },
 	{ "Xdialog",		NULL,			NULL,			0,		True,		5,		-1 },
 	{ "Xmessage",		NULL,			NULL,			0,		True,		5,		-1 },
 	{ NULL,		        "Qt-subapplication",	NULL,			0,		True,		5,		-1 },
 	{ NULL,			NULL,			"Event Tester",		0,		True,		5,		-1 },
 	{ "Gsimplecal",		NULL,			NULL,			0,		True,		9,		-1 },
+	{ NULL,			NULL,			"Error",		0,		True,		5,		-1 },
+	{ NULL,			NULL,			"Warning",		0,		True,		5,		-1 },
+	{ NULL,			NULL,			"Removables",		0,		True,		5,		-1 },
 };
 
 /* layout(s) */
-static const float mfact       = 0.5;  /* factor of master area size [0.05..0.95] */
+static const float mfact     = 0.5;    /* factor of master area size [0.05..0.95] */
 static const int   nmaster     = 1;    /* number of clients in master area */
 static const int   resizehints = 0;    /* 1 means respect size hints in tiled resizals */
 
@@ -74,7 +75,6 @@ static const Layout layouts[] = {
 	{ "><>",      NULL },    /* no layout function means floating behavior */
 	{ "[M]",      monocle },
 	{ "TTT",      bstack },
-	{ "===",      bstackhoriz },
 };
 
 /* XF86 Key symbols */
@@ -93,11 +93,10 @@ static const Layout layouts[] = {
 
 /* commands */
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
-static const char *dmenucmd[]		= { "dmenu_run", "-p", "Run:", "-m", dmenumon,
-                                                "-fn", dmenufont, "-nb", normbgcolor,
-                                                "-nf", normfgcolor, "-sb", selbgcolor,
-                                                "-sf", selfgcolor, NULL };
+static const char *dmenucmd[]		= { "dmenu_run", "-p", "Run:", "-m", dmenumon, "-fn", dmenufont, "-nb", col_base2, "-nf", col_cyan, "-sb", col_base01, "-sf", col_base03, NULL };
+static const char *termcmd[]		= { "x-terminal-emulator", NULL };
 static const char *browsercmd[]		= { "x-www-browser", NULL };
+static const char *calcmd[]		= { "gsimplecal", NULL };
 static const char *calccmd[]		= { "dmenu-calc", NULL };
 static const char *execF3cmd[]		= { "exec-F3", NULL };
 static const char *execF4cmd[]		= { "exec-F4", NULL };
@@ -110,11 +109,12 @@ static const char *execF10cmd[]		= { "exec-F10", NULL };
 static const char *execF11cmd[]		= { "exec-F11", NULL };
 static const char *execF12cmd[]		= { "exec-F12", NULL };
 static const char *filebrowsercmd[]	= { "dmenu-filebrowser", NULL };
-static const char *filemanagercmd[]	= { "xterm", "-e", "ranger", NULL };
-static const char *helpcmd[]	        = { "xterm", "-title", "dwm man page", "-e", "man dwm", NULL };
+static const char *filemanagercmd[]	= { "x-filemanager", NULL };
+static const char *helpcmd[]	        = { "x-terminal-emulator", "-T", "dwm man page", "-e", "man dwm", NULL };
 static const char *hibernatecmd[]	= { "ZZZ", NULL };
 static const char *kbdlayoutcmd[]	= { "dmenu-kbd", NULL };
-static const char *launchercmd[]	= { "dmenu-launchers", NULL };
+static const char *mixercmd[]		= { "x-terminal-emulator", "-g", "110x25", "-e", "cmixer", NULL };
+static const char *startcmd[]		= { "dmenu-start", NULL };
 static const char *lockcmd[]		= { "slock", NULL };
 static const char *logoutcmd[]		= { "x-session-logout", NULL };
 static const char *lowervolcmd[]	= { "sndioctl", "-q", "output.level=-0.1", NULL };
@@ -123,16 +123,16 @@ static const char *mailclientcmd[]	= { "x-email-client", NULL };
 static const char *mutecmd[]		= { "sndioctl", "-q", "-t", "outputs.mute", NULL };
 static const char *perfpolicycmd[]	= { "dmenu-perf", NULL };
 static const char *playercmd[]		= { "play-url", "-p", NULL };
-static const char *raisevolcmd[]	= { "sndioctl", "-q", "outputs.level=+0.1", NULL };
+static const char *raisevolcmd[]	= { "sndioctl", "-q", "output.level=+0.1", NULL };
 static const char *setdisplaycmd[]	= { "dmenu-xrandr", NULL };
 static const char *setwinlabelcmd[]	= { "dmenu-setwinlabel", NULL };
+static const char *shadecmd[]	        = { "wmctrl", "-r", ":ACTIVE:", "-b", "add,shaded",  NULL };
 static const char *slstatuscmd[]	= { "slstatus-switch", NULL };
 static const char *suspendcmd[]		= { "zzz", NULL };
-static const char *termcmd[]		= { "xterm", NULL };
 static const char *timercmd[]		= { "dmenu-timer", NULL };
-static const char *tmuxcmd[]		= { "xterm", "-e", "tmux attach-session -d || tmux new-session", NULL };
+static const char *tmuxcmd[]		= { "x-terminal-emulator", "-e", "tmux attach-session -d || tmux new-session", NULL };
 static const char *tmuxpanesearchcmd[]	= { "tmux_pane_search", NULL };
-static const char *winsearchcmd[]	= { "win_search", NULL };
+static const char *winsearchcmd[]	= { "win_search", "-t", NULL };
 static const char *xautolockcmd[]	= { "dmenu-xautolock", NULL };
 static const char *xpropcmd[]		= { "activewin_xprop", NULL };
 
@@ -148,12 +148,12 @@ static Key keys[] = {
 	TAGKEYS(                        XK_7,                                       6)
 	TAGKEYS(                        XK_8,                                       7)
 	TAGKEYS(                        XK_9,                                       8)
-	TAGKEYS(                        XK_0,                                       9)
-	{ MODKEY,                       XK_comma,                   focusmon,       {.i = -1 } },
-	{ MODKEY,                       XK_period,                  focusmon,       {.i = +1 } },
-	{ MODKEY,                       XK_Tab,                     focusstack,     {.i = +1 } },
-	{ MODKEY|ControlMask,           XK_d,                       incnmaster,     {.i = -1 } },
-	{ MODKEY|ControlMask,           XK_i,                       incnmaster,     {.i = +1 } },
+	{ MODKEY,                       XK_minus,                   hide,           {0} },
+	{ MODKEY,                       XK_comma,                   focusmon,       {.i = -1} },
+	{ MODKEY,                       XK_period,                  focusmon,       {.i = +1} },
+	{ MODKEY,                       XK_Tab,                     focusstack,     {.i = +1} },
+	{ MODKEY|ControlMask,           XK_d,                       incnmaster,     {.i = -1} },
+	{ MODKEY|ControlMask,           XK_i,                       incnmaster,     {.i = +1} },
 	{ MODKEY,                       XK_x,                       killclient,     {0} },
 	{ MODKEY,                       XK_Down,                    setmfact,       {.f = +0.05} },
 	{ MODKEY,                       XK_Left,                    setmfact,       {.f = -0.05} },
@@ -161,25 +161,24 @@ static Key keys[] = {
 	{ MODKEY,                       XK_Up,                      setmfact,       {.f = -0.05} },
 	{ MODKEY,                       XK_h,                       setlayout,      {.v = &layouts[3]} },
 	{ MODKEY,                       XK_m,                       setlayout,      {.v = &layouts[2]} },
-	{ MODKEY,                       XK_o,                       setlayout,      {.v = &layouts[4]} },
 	{ MODKEY,                       XK_v,                       setlayout,      {.v = &layouts[0]} },
 	{ MODKEY,                       XK_q,                       quit,           {0} },
-	{ MODKEY,                       XK_minus,                   lowerfloat,     {0} },
-	{ MODKEY|ShiftMask,             XK_agrave,                  tag,            {.ui = ~0 } },
-	{ MODKEY|ShiftMask,             XK_comma,                   tagmon,         {.i = -1 } },
-	{ MODKEY|ShiftMask,             XK_period,                  tagmon,         {.i = +1 } },
+	{ MODKEY|ShiftMask,             XK_agrave,                  tag,            {.ui = ~0} },
+	{ MODKEY|ShiftMask,             XK_comma,                   tagmon,         {.i = -1} },
+	{ MODKEY|ShiftMask,             XK_period,                  tagmon,         {.i = +1} },
 	{ MODKEY,                       XK_a,                       togglebar,      {0} },
 	{ MODKEY,                       XK_space,                   togglefloating, {0} },
-	{ MODKEY,                       XK_agrave,                  view,           {.ui = ~0 } },
+	{ MODKEY,                       XK_agrave,                  view,           {.ui = ~0} },
 	{ MODKEY,                       XK_grave,                   view,           {0} },
 	{ MODKEY,                       XK_backslash,               view,           {0} },
 	{ MODKEY,                       XK_Return,                  zoom,           {0} },
 
         /* Common WM actions */
 	{ MODKEY,                       XK_F1,                      spawn,          {.v = helpcmd } },
-	{ MODKEY,                       XK_F2,                      spawn,          {.v = launchercmd } },
+	{ MODKEY,                       XK_F2,                      spawn,          {.v = startcmd } },
 	{ MODKEY,                       XK_d,                       spawn,          {.v = dmenucmd } },
 	{ MODKEY,                       XK_f,                       spawn,          {.v = filebrowsercmd} },
+	{ MODKEY,                       XK_minus,                   spawn,          {.v = shadecmd} },
 	{ MODKEY,                       XK_p,                       spawn,          {.v = xpropcmd} },
 	{ MODKEY,                       XK_s,                       spawn,          {.v = slstatuscmd} },
 	{ MODKEY,                       XK_t,                       spawn,          {.v = tmuxpanesearchcmd} },
@@ -222,6 +221,7 @@ static Key keys[] = {
 	{ MODKEY|ShiftMask,             XK_s,                       spawn,          {.v = suspendcmd} },
 
         /* Volume control */
+	{ MODKEY|ShiftMask,             XK_v,                       spawn,          {.v = mixercmd} },
 	{ MODKEY,                       XK_KP_0,                    spawn,          {.v = mutecmd} },
 	{ MODKEY,                       XK_KP_Insert,               spawn,          {.v = mutecmd} },
 	{ MODKEY,                       XK_KP_Subtract,             spawn,          {.v = lowervolcmd} },
@@ -234,20 +234,56 @@ static Key keys[] = {
 	{ 0,                            XF86XK_Display,             spawn,          {.v = setdisplaycmd} },
 };
 
-/* Mouse actions */
-/* click can be ClkLtSymbol, ClkStatusText, ClkWinTitle, ClkClientWin, or ClkRootWin */
+/* button definitions */
+/* click can be ClkTagBar, ClkLtSymbol, ClkStatusText, ClkWinTitle, ClkClientWin, or ClkRootWin */
 static Button buttons[] = {
 	/* click                event mask      button          function        argument */
 	{ ClkLtSymbol,          0,              Button1,        setlayout,      {0} },
+	{ ClkLtSymbol,          0,              Button2,        setlayout,      {.v = &layouts[0]} },
+	{ ClkLtSymbol,          ControlMask,    Button2,        setlayout,      {.v = &layouts[3]} },
 	{ ClkLtSymbol,          0,              Button3,        setlayout,      {.v = &layouts[2]} },
-	{ ClkWinTitle,          0,              Button2,        zoom,           {0} },
-	{ ClkStatusText,        0,              Button2,        spawn,          {.v = termcmd } },
+	{ ClkWinTitle,          0,              Button1,        switchstextvis, {0} },
+	{ ClkStatusText,        0,              Button1,        spawn,          {.v = calcmd} },
 	{ ClkClientWin,         MODKEY,         Button1,        movemouse,      {0} },
 	{ ClkClientWin,         MODKEY,         Button2,        togglefloating, {0} },
 	{ ClkClientWin,         MODKEY,         Button3,        resizemouse,    {0} },
 	{ ClkTagBar,            0,              Button1,        view,           {0} },
 	{ ClkTagBar,            0,              Button3,        toggleview,     {0} },
-	{ ClkTagBar,            MODKEY,         Button1,        tag,            {0} },
-	{ ClkTagBar,            MODKEY,         Button3,        toggletag,      {0} },
+	{ ClkTagBar,            ControlMask,    Button1,        tag,            {0} },
+	{ ClkTagBar,            ControlMask,    Button3,        toggletag,      {0} },
 };
 
+
+/* custom function implementations */
+
+void
+bstack(Monitor *m) {
+	int w, h, mh, mx, tx, ty, tw;
+	unsigned int i, n;
+	Client *c;
+
+	for (n = 0, c = nexttiled(m->clients); c; c = nexttiled(c->next), n++);
+	if (n == 0)
+		return;
+	if (n > m->nmaster) {
+		mh = m->nmaster ? m->mfact * m->wh : 0;
+		tw = m->ww / (n - m->nmaster);
+		ty = m->wy + mh;
+	} else {
+		mh = m->wh;
+		tw = m->ww;
+		ty = m->wy;
+	}
+	for (i = mx = 0, tx = m->wx, c = nexttiled(m->clients); c; c = nexttiled(c->next), i++) {
+		if (i < m->nmaster) {
+			w = (m->ww - mx) / (MIN(n, m->nmaster) - i);
+			resize(c, m->wx + mx, m->wy, w - (2 * c->bw), mh - (2 * c->bw), 0);
+			mx += WIDTH(c);
+		} else {
+			h = m->wh - mh;
+			resize(c, tx, ty, tw - (2 * c->bw), h - (2 * c->bw), 0);
+			if (tw != m->ww)
+				tx += WIDTH(c);
+		}
+	}
+}
