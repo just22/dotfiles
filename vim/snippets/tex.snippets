@@ -8,10 +8,15 @@ snippet _preamble
 	% Classification: ${4}
 	%***********************************************************************
 	
-	% \documentclass[8pt,english,t,usenames,dvipsnames,handout]{${5:beamer}}
-	\documentclass[8pt,english,t,usenames,dvipsnames]{${5:beamer}}
+	\documentclass[
+		% handout,
+		8pt,
+		english,
+		t,
+		usenames,
+		dvipsnames,
+		aspectratio=169]{${5:beamer}}
 	\usepackage{customdefs}
-	\setbeamer
 
 	\bibliography{${6:files/references.bib}}
 
@@ -62,14 +67,4 @@ snippet _appendix
 	%-----------------------------------
 		$0
 	\endslide % $1
-
-snippet _ref
-	%***********************************************************************
-	\slide{References}
-	%***********************************************************************
-		\pagebox{
-			\nocite{*}
-			\printbibliography
-		}
-	\endslide % References
 
