@@ -612,3 +612,16 @@ comp()   { curl -s dict://dict.org/define:$1:foldoc         | grep -Ev "^[0-9]+ 
 joke()   { curl -s dict://dict.org/define:$1:devil          | grep -Ev "^[0-9]+ |^\." | less -F; }
 # enit()   { curl -s dict://dict.org/define:$1:fd-eng-ita     | grep -Ev "^[0-9]+ |^\." | less -F; }
 # iten()   { curl -s dict://dict.org/define:$1:fd-ita-eng     | grep -Ev "^[0-9]+ |^\." | less -F; }
+
+# ----------------------------------------------------------------------
+# String substitutions
+#
+sub() { echo "${1%%$2*}$3${1#*$2}"; }
+
+gsub() {
+        s="$1"; p="$2"; v="$3"
+        while [ "${s#*$p}" != "$s" ]; do
+                s="${s%%$p*}$v${s#*$p}"
+        done
+        echo "$s"
+}
