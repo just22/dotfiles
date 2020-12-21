@@ -80,6 +80,7 @@ alias mka='make install clean'
 alias mki='make install'
 alias mkr='make reinstall'
 alias mku='make uninstall'
+alias mklog='make 2>&1 | portslogger ~/portlog'
 mkdebug() {
         make clean=all
         env DEBUG="-ggdb -O0" INSTALL_STRIP= make build repackage
@@ -96,6 +97,7 @@ alias poseidon='ssh poseidon'
 # ------------------------------------------------------------------
 # Various
 #
+alias amount='amount-wrapper'
 blkid() { disklabel ${1-sd0} | egrep "/dev/|duid"; }
 long()  { set-title "[Running: $@]"; $@; }
 alias man='man -Owidth=$(($COLUMNS<80?($COLUMNS-2):78))'
