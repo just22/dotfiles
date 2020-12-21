@@ -14,13 +14,13 @@ fontname "DejaVu Sans Mono:pixelsize=12:bold"
 sticky yes
 
 # Gap at the edges (t, b, l, r) of the screen
-gap 17 1 0 0
+gap 18 1 0 0
 
 # Distance to snap-to adjacent edge (in pixel)
 snapdist 10
 
 # Window border width
-borderwidth 2
+borderwidth 1
 
 # Colorscheme (solarized light)
 color activeborder   "#dc322f" # red
@@ -47,13 +47,13 @@ bind-key 4-Down         window-lower
 bind-key 4-Tab          window-cycle
 bind-key 4-Up           window-raise
 bind-key 4-a            window-fullscreen
-bind-key 4-h            "wmprocs tile h"
+bind-key 4-h            window-htile
 bind-key 4-m            window-maximize
 bind-key 4-minus        window-hide
 bind-key 4-period       window-stick
 bind-key 4-space        window-stick
 bind-key 4-underscore   window-hide
-bind-key 4-v            "wmprocs tile v"
+bind-key 4-v            window-vtile
 bind-key 4-x            window-delete
 
 # Key bindings - Group management
@@ -86,7 +86,7 @@ bind-key 4S-8           window-movetogroup-8
 bind-key 4S-9           window-movetogroup-9
 
 # Key bindings - Common WM actions
-bind-key 4-F1           "xterm -e man cwm"
+bind-key 4-F1           "xterm -e man cwmrc"
 bind-key 4-F2           dmenu-launchers
 bind-key 4-d            "dmenu_run-cust -p Run:"
 bind-key 4-p            activewin_xprop
@@ -118,12 +118,12 @@ bind-key 4S-h           "doas /usr/sbin/ZZZ"
 bind-key 4S-s           "doas /usr/sbin/zzz"
 
 # Multimedia keys
-bind-key 4CS-v                  "mixerctl -q outputs.master=+10"
-bind-key 4C-v                   "mixerctl -q outputs.master=-10"
-bind-key 4C-m                   "mixerctl -q -t outputs.master.mute"
-bind-key XF86AudioRaiseVolume   "mixerctl -q outputs.master=+10"
-bind-key XF86AudioLowerVolume   "mixerctl -q outputs.master=-10"
-bind-key XF86AudioMute          "mixerctl -q -t outputs.master.mute"
+bind-key 4C-v                   "sndioctl output.level=-0.1"
+bind-key 4CS-v                  "sndioctl output.level=+0.1"
+bind-key 4C-m                   "sndioctl output.mute=!"
+bind-key XF86AudioRaiseVolume   "sndioctl output.level=+0.1"
+bind-key XF86AudioLowerVolume   "sndioctl output.level=-0.1"
+bind-key XF86AudioMute          "sndioctl output.mute=!"
 
 # Auto-grouping
 autogroup 0 stalonetray
