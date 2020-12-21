@@ -407,6 +407,9 @@ let g:vimtex_quickfix_ignore_filters = [
     \ 'setting the option has no effect',
     \ 'functionality may be reduced/unavailable',
     \ 'Token not allowed in a PDF string',
+    \ 'references',
+    \ 'Empty bibliography',
+    \ 'Please (re)run BibTeX on the file(s)',
 \]
 let g:Tex_MultipleCompileFormats = 'pdf,bibtex,pdf'
 let g:vimtex_quickfix_autoclose_after_keystrokes = 1
