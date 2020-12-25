@@ -40,8 +40,8 @@ _ps1_git() {
         local IFS=$'\n'
         for line in $st; do
                 case "${line%${line#??}}" in
-                [MARC]?)  c_staged="+" ;;
-                ?[MARC])    c_work="*" ;;
+                [MARCD]?) c_staged="+" ;;
+                ?[MARCD])   c_work="*" ;;
                 \?\?)    c_untrack="?" ;;
                 *)
                         IFS=" " read _discard branch usign udiff <<- EOT
