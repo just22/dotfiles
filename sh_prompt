@@ -33,6 +33,37 @@ _ps1_pwd_trim() {
         unset dn i tpwd
 }
 
+# Minimal Git info
+_ps1_git() {
+        st="$(git status --porcelain -b -u --ahead-behind 2>/dev/null)"
+        [ $? -ne 0 ] && return
+        local IFS=$'\n'
+        for line in $st; do
+                case "${line%${line#??}}" in
+                [MARC]?)  c_staged="+" ;;
+                ?[MARC])    c_work="*" ;;
+                \?\?)    c_untrack="?" ;;
+                *)
+                        IFS=" " read _discard branch usign udiff <<- EOT
+				$(echo $line)
+			EOT
+                        branch="${branch%%...*}"
+                        if [ -z "$usign" ]; then
+                                udiff="="
+                        elif [ ${usign%ahead} != $usign ]; then
+                                udiff="+${udiff%]}"
+                        else
+                                udiff="-${udiff%]}"
+                        fi
+                esac
+                [[ -n "$c_staged" &&
+                   -n "$c_work" &&
+                   -n "$c_untrack" ]] && break
+        done
+        echo -n "git:$branch:$c_staged$c_work$c_untrack:u$udiff "
+        unset st c_staged c_work c_untrack branch udiff _discard
+}
+
 # This is a general purpose function, we just take advantage of its
 # execution each time the prompt is issued
 _ps1_cmd() {
@@ -41,6 +72,8 @@ _ps1_cmd() {
                 echo -n "cvs "
         elif [ -d .SYNC ]; then
                 echo -n "dss "
+        else
+                _ps1_git
         fi
         # .enter/.exit cmd files?
         ppwd=$(cat /tmp/${USER}.ppwd.$$ 2>/dev/null)
@@ -68,17 +101,6 @@ then
         PS1="${PS1}[\${PRJ_REF:+\$PRJ_REF }"                                    # Infobox: prj ref
         PS1="${PS1}${P_HICOL}\$(_ps1_exit_status)${P_NORMCOL}"                  # Infobox: last command exit status
         PS1="${PS1}\$(_ps1_cmd)"                                                # Infobox: VCS tree?; .enter/.exit cmd files?
-        if [ -e ~/.git-prompt.sh ]; then
-                . ~/.git-prompt.sh
-                export GIT_PS1_SHOWDIRTYSTATE=1
-                export GIT_PS1_SHOWSTASHSTATE=1
-                export GIT_PS1_SHOWUNTRACKEDFILES=1
-                export GIT_PS1_STATESEPARATOR=":"
-                export GIT_PS1_COMPRESSSPARSESTATE=1
-                export GIT_PS1_HIDE_IF_PWD_IGNORED=1
-                export GIT_PS1_SHOWUPSTREAM="verbose"
-                PS1="${PS1}\$(__git_ps1 "git:%s") "
-        fi
         PS1="${PS1}\j]-"                                                        # Infobox: no. of managed jobs
         PS1="${PS1}[\$(_ps1_pwd_trim)]"                                         # Current working directory
         #PS1="${PS1}\n${P_NORMCOL}[\A]-\\$ ${RSTCOL}"                            # New line with current time and "prompt char"
