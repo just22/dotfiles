@@ -60,7 +60,8 @@ _ps1_git() {
                    -n "$c_work" &&
                    -n "$c_untrack" ]] && break
         done
-        echo -n "git:$branch:$c_staged$c_work$c_untrack:u$udiff "
+        [[ "$c_staged" || "$c_work" || "$c_untrack" ]] && c_sep=":"
+        echo -n "git:${branch}${c_sep}${c_staged}${c_work}${c_untrack}:u${udiff} "
         unset st c_staged c_work c_untrack branch udiff _discard
 }
 
