@@ -35,26 +35,29 @@ _ps1_pwd_trim() {
 
 # Minimal Git info
 _ps1_git() {
-        while IFS= read line; do
+        while IFS='' read line; do
 
                 # Not in a Git-managed dir?
                 [ -z "$line" ] && break
 
-                code="${line%${line#??}}"
-                IFS=" " read fd1 fd2 fd3 fd4 fd5 fd6 fd7 <<- EOT
-			$(echo ${line#$code })
+                read _d fd1 fd2 fd3 fd4 fd5 fd6 fd7 <<- EOT
+			${line}
 		EOT
 
-                # Note: c_staged and c_work could refer
+                # Note: c_staged and c_work could be referred
                 # to the same file
-                case "$code" in
-                [MARCD]?) c_staged="+"
+                case "$line" in
+                [MARCD]?\ *)
+                        c_staged="+"
                 esac
 
-                case "$code" in
-                ?[MARCD])   c_work="*" ;;
-                \?\?)    c_untrack="?" ;;
-                \#\#)   if [[ "$fd1" == No && "$fd2" == commits ]]; then
+                case "$line" in
+                ?[MARCD]\ *)
+                        c_work="*" ;;
+                \?\?\ *)
+                        c_untrack="?" ;;
+                \#\#\ *)
+                        if [[ "$fd1" == No && "$fd2" == commits ]]; then
                                 branch="${fd5%%...*}"
                                 fd2="$fd6"
                                 fd3="$fd7"
@@ -86,7 +89,7 @@ _ps1_git() {
         fi
 
         unset c_staged c_work c_untrack branch udiff
-        unset fd1 fd2 fd3 fd4 fd5 fd6 fd7
+        unset _d fd1 fd2 fd3 fd4 fd5 fd6 fd7
 }
 
 # This is a general purpose function, we just take advantage of its
