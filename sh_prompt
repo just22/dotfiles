@@ -40,24 +40,25 @@ _ps1_git() {
                 # Not in a Git-managed dir?
                 [ -z "$line" ] && break
 
-                read _d fd1 fd2 fd3 fd4 fd5 fd6 fd7 <<- EOT
-			${line}
+                local code="${line%"${line#??}"}"
+                read fd1 fd2 fd3 fd4 fd5 fd6 fd7 <<- EOT
+			${line#"${code} "}
 		EOT
 
                 # Note: c_staged and c_work could be referred
                 # to the same file
-                case "$line" in
-                [MARCD]?\ *)
-                        c_staged="+"
+                case "$code" in
+                [MARCD]?)
+                        local c_staged="+"
                 esac
 
-                case "$line" in
-                ?[MARCD]\ *)
-                        c_work="*" ;;
-                \?\?\ *)
-                        c_untrack="?" ;;
-                \#\#\ *)
-                        if [[ "$fd1" == No && "$fd2" == commits ]]; then
+                case "$code" in
+                ?[MARCD])
+                        local c_work="*" ;;
+                "??")
+                        local c_untrack="?" ;;
+                "##")
+                        if [ "$fd1 $fd2" == "No commits" ]; then
                                 branch="${fd5%%...*}"
                                 fd2="$fd6"
                                 fd3="$fd7"
@@ -88,8 +89,7 @@ _ps1_git() {
                 echo -n "git:${branch}${c_sep}${c_staged}${c_work}${c_untrack}:u${udiff} "
         fi
 
-        unset c_staged c_work c_untrack branch udiff
-        unset _d fd1 fd2 fd3 fd4 fd5 fd6 fd7
+        unset branch udiff fd1 fd2 fd3 fd4 fd5 fd6 fd7
 }
 
 # This is a general purpose function, we just take advantage of its
