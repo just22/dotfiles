@@ -35,34 +35,58 @@ _ps1_pwd_trim() {
 
 # Minimal Git info
 _ps1_git() {
-        st="$(git status --porcelain -b -u --ahead-behind 2>/dev/null)"
-        [ $? -ne 0 ] && return
-        local IFS=$'\n'
-        for line in $st; do
-                case "${line%${line#??}}" in
-                [MARCD]?) c_staged="+" ;;
+        while IFS= read line; do
+
+                # Not in a Git-managed dir?
+                [ -z "$line" ] && break
+
+                code="${line%${line#??}}"
+                IFS=" " read fd1 fd2 fd3 fd4 fd5 fd6 fd7 <<- EOT
+			$(echo ${line#$code })
+		EOT
+
+                # Note: c_staged and c_work could refer
+                # to the same file
+                case "$code" in
+                [MARCD]?) c_staged="+"
+                esac
+
+                case "$code" in
                 ?[MARCD])   c_work="*" ;;
                 \?\?)    c_untrack="?" ;;
-                *)
-                        IFS=" " read _discard branch usign udiff <<- EOT
-				$(echo $line)
-			EOT
-                        branch="${branch%%...*}"
-                        if [ -z "$usign" ]; then
-                                udiff="="
-                        elif [ ${usign%ahead} != $usign ]; then
-                                udiff="+${udiff%]}"
+                \#\#)   if [[ "$fd1" == No && "$fd2" == commits ]]; then
+                                branch="${fd5%%...*}"
+                                fd2="$fd6"
+                                fd3="$fd7"
                         else
-                                udiff="-${udiff%]}"
+                                branch="${fd1%%...*}"
                         fi
+                        if [ -z "$fd2" ]; then
+                                udiff="="
+                        elif [ ${fd2%ahead} != $fd2 ]; then
+                                udiff="+${fd3%]}"
+                        elif [ ${fd2%behind} != $fd2 ]; then
+                                udiff="-${fd3%]}"
+                        else
+                                udiff="?"
+                        fi
+                        ;;
                 esac
+
                 [[ -n "$c_staged" &&
                    -n "$c_work" &&
                    -n "$c_untrack" ]] && break
-        done
-        [[ "$c_staged" || "$c_work" || "$c_untrack" ]] && c_sep=":"
-        echo -n "git:${branch}${c_sep}${c_staged}${c_work}${c_untrack}:u${udiff} "
-        unset st c_staged c_work c_untrack branch udiff _discard
+        done <<- EOT
+		$(git status --porcelain -b -u --ahead-behind 2>/dev/null)
+	EOT
+
+        if [ -n "$branch" ]; then
+                [[ -n "$c_staged" || -n "$c_work" || -n "$c_untrack" ]] && c_sep=":"
+                echo -n "git:${branch}${c_sep}${c_staged}${c_work}${c_untrack}:u${udiff} "
+        fi
+
+        unset c_staged c_work c_untrack branch udiff
+        unset fd1 fd2 fd3 fd4 fd5 fd6 fd7
 }
 
 # This is a general purpose function, we just take advantage of its
@@ -94,7 +118,7 @@ _ps1_cmd() {
 }
 
 # If this isn't a strictly POSIX shell, use an informative multi-line prompt
-if [[ -n "$KSH_VERSION" || "$SH_VERSION" == *KSH* || -n "$BASH_VERSION" ]]
+if [[ -n "$KSH_VERSION" || -n "$BASH_VERSION" ]]
 then
         PS1="\[\033[?7l\]"                                                      # Do not wrap prompt line
         PS1="${PS1}${P_NORMCOL}\n"                                              # Empty line
