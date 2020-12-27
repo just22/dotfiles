@@ -318,7 +318,7 @@ fi
 if cal -3 > /dev/null 2>&1; then
         alias cal='cal -m3'
 else
-        cal() {
+        function cal {
                 pm="$(($(date +%m) - 1))"
                 [ "$pm" -lt 1 ]  && pm=12 && py="$(($(date +%Y) - 1))"
                 nm="$(($(date +%m) + 1))"
