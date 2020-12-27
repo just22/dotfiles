@@ -45,12 +45,14 @@ rmf             - Recursively remove directory entries, no confirmation
 #
 h               - History (most recent 25 entries)
 hgrep           - History grep
-v               - Edit lst command in $EDITOR
+v               - Edit last command in $EDITOR
 
 # ----------------------------------------------------------------------
 # Calendar
 #
+cal             - Show 3-month calendar
 now             - Current date/time in proper format
+year            - Show all-year calendar
 
 # ----------------------------------------------------------------------
 # File/dir statistics
