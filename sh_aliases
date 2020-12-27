@@ -127,6 +127,7 @@ set_title       - Set xterm (or tmux pane) title
 pid             - Process IDs matching argument
 r               - Re-execute most recent command, [-g] [old=new] [prefix]
 rs              - rsync with most common options
+run             - Pass command string to ./.runpp (or ~/.runpp), then exec command
 runl            - Execute line \$1 from file \$2
 showpath        - Show \$PATH (or the variable provided as argument) in a readable form
 touchall        - Change file access and modification times to all files in current dir
@@ -492,6 +493,7 @@ findlic()   { find ${1-.} -name "*LICENSE*" -o -name "*icense*" -o -name "*copy*
 flast()     { ls -dt "$@" | head -1; }
 grepo()     { grep -l "$@" | xargs sh -c '</dev/tty vim "$@"' ignoreme; }
 nowrap()    { printf '\033[?7l'; $@; printf '\033[?7h'; }
+run()       { [ -x ./.runpp ] && ./.runpp "$@" || ([ -x ~/.runpp ] && ~/.runpp "$@"); "$@"; }
 runl()      { $(head -n "+$1" "$2" | tail -n 1); }
 showpath()  { echo ${1-$PATH} | tr ":" "\n"; }
 vimall()    { find ${1-.} -maxdepth 1 -type f -print | xargs sh -c '</dev/tty vim "$@"' ignoreme; }
