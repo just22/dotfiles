@@ -41,7 +41,6 @@ static const Rule rules[] = {
 	{ "Arandr",             NULL,	        	NULL,			0,		True,		5,		-1 },
 	{ "Clock",		"oclock",		NULL,			0,		True,		5,		-1 },
 	{ "Dialog",             NULL,                   NULL,	                0,		True,		5,		-1 },
-	{ "Gimp",		NULL,			NULL,			0,		True,		5,		-1 },
 	{ "Pinentry-gtk-2",	NULL,	        	NULL,			0,		True,		5,		-1 },
 	{ "Sound",	        "sound",		NULL,			0,		True,		9,		-1 },
 	{ "Toplevel",		NULL,	        	NULL,			0,		True,		5,		-1 },
