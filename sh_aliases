@@ -151,6 +151,21 @@ cvs_up          - Update
 cvs_diff        - Unified diff
 
 # ----------------------------------------------------------------------
+# git
+#
+gadd            - Add file contents to the index
+gci             - Record changes to the repository
+gclone          - Clone a repository into a new directory
+gco             - Switch branches or restore working tree files
+gdf             - Show changes using diff tool
+glog            - Show commit logs
+gpull           - Fetch from another repository or local branch
+gpush           - Update remote refs along with associated objects
+gremote         - Show remote origin URL
+gst             - Show the working tree and index status
+glst            - Show the working tree and index status (long format)
+
+# ----------------------------------------------------------------------
 # Change XTerm colorscheme on-the-fly
 #
 dark            - Switch current xterm colors to solarized-dark
@@ -558,23 +573,17 @@ todo() { vim -c ":Note todo"; }
 # ----------------------------------------------------------------------
 # git
 #
-git_remote_repo() {
-        if GIT_DIR="$(git rev-parse --git-dir 2>/dev/null)"; then
-                [ "$GIT_DIR" == .git ] &&
-                        REPO_NAME="${PWD##*/}" ||
-                        REPO_NAME="$(basename "$(dirname "$GIT_DIR")")"
-                git "$1"
-        else
-                echo "Not in a git tree"
-        fi
-}
-gclone() { git clone https://just22@atlantide.mooo.com/git/$1; }
-alias gpush='git_remote_repo push'
-alias gpull='git_remote_repo pull'
-alias gfetch='git_remote_repo fetch'
-alias gstatus='git status'
-alias gdiff='git diff'
+alias gadd='git add'
+alias gci='git commit'
+alias gclone='git clone'
+alias gco='git checkout'
+alias gdf='git difftool -y'
 alias glog='git log'
+alias glst='git status'
+alias gpull='git pull'
+alias gpush='git push'
+alias gremote='git config --get remote.origin.url'
+alias gst='git status -sb'
 
 # ----------------------------------------------------------------------
 # cvs
