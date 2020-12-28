@@ -102,9 +102,8 @@ pcp             - cp with progress monitor
 # ----------------------------------------------------------------------
 # News
 #
-bbc-news        - News from BBC
-hacker-news     - All in the name!
-tech-news       - News from Ars Technica
+news            - News from getnews.tech, powered by the News API
+news-it         - News from getnews.tech, in Italian
 weather         - Weather forecast
 
 # ----------------------------------------------------------------------
@@ -469,11 +468,16 @@ alias :0='clear'
 alias pcp='rsync -avzhHp --info=progress2,name0'
 
 # ----------------------------------------------------------------------
-# News & weather
+# News
 #
-alias bbc-news='curl -s getnews.tech/bbc-news | less'
-alias hacker-news='curl -s getnews.tech/hacker-news | less'
-alias tech-news='curl -s getnews.tech/ars-technica | less'
+news() {
+        [ "$1" == -h ] &&
+            curl -s getnews.tech/:help ||
+            curl -s getnews.tech/"$@" | less -F
+}
+news-it() {
+            curl -s it.getnews.tech/"$@" | less -F
+}
 alias weather='curl -s wttr.in/Milan'
 
 # ----------------------------------------------------------------------
