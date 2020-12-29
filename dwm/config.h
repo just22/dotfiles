@@ -174,7 +174,7 @@ static Key keys[] = {
 
         /* Common WM actions */
 	{ MODKEY,                       XK_F1,                      spawn,          {.v = helpcmd } },
-	{ MODKEY,                       XK_F2,                      spawn,          {.v = startcmd } },
+	{ 0,                            XK_Menu,                    spawn,          {.v = startcmd } },
 	{ MODKEY,                       XK_d,                       spawn,          {.v = dmenucmd } },
 	{ MODKEY,                       XK_f,                       spawn,          {.v = filebrowsercmd} },
 	{ MODKEY,                       XK_minus,                   spawn,          {.v = shadecmd} },
