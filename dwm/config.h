@@ -61,6 +61,7 @@ static const Rule rules[] = {
 	{ NULL,			NULL,			"Error",		0,		True,		5,		-1 },
 	{ NULL,			NULL,			"Warning",		0,		True,		5,		-1 },
 	{ NULL,			NULL,			"Removables",		0,		True,		5,		-1 },
+	{ NULL,			NULL,			"Calculator",		0,		True,		5,		-1 },
 };
 
 /* layout(s) */
