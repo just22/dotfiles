@@ -12,9 +12,9 @@ if ! colman set solarized-dark; then
         xrdb -load -I${HOME} ~/.Xresources
 fi
 
-# Set keyboard layout (Shift+CapsLock to toggle), CapsLock as an
-# additional menu key (see xkeyboard-config(7))
-setxkbmap -layout it,us -option grp:shift_caps_toggle -option caps:menu
+# Set keyboard layout, CapsLock as an additional menu key
+# (see xkeyboard-config(7))
+setxkbmap -layout it -option caps:menu
 
 # Enable h/v scrolling for touchpad
 #synclient VertEdgeScroll=1
