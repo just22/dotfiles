@@ -1,0 +1,73 @@
+--- ./dwm.c.orig	Sat Feb  8 12:23:52 2020
++++ ./dwm.c	Sun Feb  9 15:39:15 2020
+@@ -110,7 +110,7 @@
+ 	int basew, baseh, incw, inch, maxw, maxh, minw, minh;
+ 	int bw, oldbw;
+ 	unsigned int tags;
+-	int isfixed, isfloating, isurgent, neverfocus, oldstate, isfullscreen;
++	int isfixed, isfloating, position, isurgent, neverfocus, oldstate, isfullscreen;
+ 	Client *next;
+ 	Client *snext;
+ 	Monitor *mon;
+@@ -156,6 +156,7 @@
+ 	const char *title;
+ 	unsigned int tags;
+ 	int isfloating;
++	int position;
+ 	int monitor;
+ } Rule;
+ 
+@@ -338,6 +339,7 @@
+ 		&& (!r->instance || strstr(instance, r->instance)))
+ 		{
+ 			c->isfloating = r->isfloating;
++			c->position = r->position;
+ 			c->tags |= r->tags;
+ 			for (m = mons; m && m->num != r->monitor; m = m->next);
+ 			if (m)
+@@ -1177,6 +1179,45 @@
+ 	c->y = MAX(c->y, ((c->mon->by == c->mon->my) && (c->x + (c->w / 2) >= c->mon->wx)
+ 	           && (c->x + (c->w / 2) < c->mon->wx + c->mon->ww)) ? bh : c->mon->my);
+ 	c->bw = borderpx;
++
++	switch(c->position) {
++	case 1:
++		c->x = c->mon->wx;
++		c->y = c->mon->wh - HEIGHT(c);
++		break;
++	case 2:
++		c->x = c->mon->wx + (c->mon->ww - WIDTH(c)) / 2;
++		c->y = c->mon->wh - HEIGHT(c);
++		break;
++	case 3:
++		c->x = c->mon->wx + c->mon->ww - WIDTH(c);
++		c->y = c->mon->wh - HEIGHT(c);
++		break;
++	case 4:
++		c->x = c->mon->wx;
++		c->y = c->mon->wy + (c->mon->wh - HEIGHT(c)) / 2;
++		break;
++	case 5:
++		c->x = c->mon->wx + (c->mon->ww - WIDTH(c)) / 2;
++		c->y = c->mon->wy + (c->mon->wh - HEIGHT(c)) / 2;
++		break;
++	case 6:
++		c->x = c->mon->wx + c->mon->ww - WIDTH(c);
++		c->y = c->mon->wy + (c->mon->wh - HEIGHT(c)) / 2;
++		break;
++	case 7:
++		c->x = c->mon->wx;
++		c->y = c->mon->wy;
++		break;
++	case 8:
++		c->x = c->mon->wx + (c->mon->ww - WIDTH(c)) / 2;
++		c->y = c->mon->wy;
++		break;
++	case 9:
++		c->x = c->mon->wx + c->mon->ww - WIDTH(c);
++		c->y = c->mon->wy;
++		break;
++	}
+ 
+ 	wc.border_width = c->bw;
+ 	XConfigureWindow(dpy, w, CWBorderWidth, &wc);
