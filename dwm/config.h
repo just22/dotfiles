@@ -127,7 +127,6 @@ static const char *raisevolcmd[]	= { "sndioctl", "-q", "output.level=+0.1", NULL
 static const char *setdisplaycmd[]	= { "dmenu-xrandr", NULL };
 static const char *setwinlabelcmd[]	= { "dmenu-setwinlabel", NULL };
 static const char *shadecmd[]	        = { "wmctrl", "-r", ":ACTIVE:", "-b", "add,shaded",  NULL };
-static const char *slstatuscmd[]	= { "slstatus-switch", NULL };
 static const char *suspendcmd[]		= { "zzz", NULL };
 static const char *timercmd[]		= { "dmenu-timer", NULL };
 static const char *tmuxcmd[]		= { "x-terminal-emulator", "-e", "tmux attach-session -d || tmux new-session", NULL };
@@ -180,7 +179,6 @@ static Key keys[] = {
 	{ MODKEY,                       XK_f,                       spawn,          {.v = filebrowsercmd} },
 	{ MODKEY,                       XK_minus,                   spawn,          {.v = shadecmd} },
 	{ MODKEY,                       XK_p,                       spawn,          {.v = xpropcmd} },
-	{ MODKEY,                       XK_s,                       spawn,          {.v = slstatuscmd} },
 	{ MODKEY,                       XK_t,                       spawn,          {.v = tmuxpanesearchcmd} },
 	{ MODKEY,                       XK_w,                       spawn,          {.v = winsearchcmd} },
 	{ MODKEY|ShiftMask,             XK_w,                       spawn,          {.v = setwinlabelcmd} },
