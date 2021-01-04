@@ -1,5 +1,5 @@
---- dwm.c.orig	Sun Dec 20 16:57:20 2020
-+++ dwm.c	Sun Dec 20 18:22:58 2020
+--- ./dwm.c.orig	2021-01-04 11:28:22.799990000 +0100
++++ dwm.c	2021-01-04 11:31:50.752667000 +0100
 @@ -49,12 +49,13 @@
  #define CLEANMASK(mask)         (mask & ~(numlockmask|LockMask) & (ShiftMask|ControlMask|Mod1Mask|Mod2Mask|Mod3Mask|Mod4Mask|Mod5Mask))
  #define INTERSECT(x,y,w,h,m)    (MAX(0, MIN((x)+(w),(m)->wx+(m)->ww) - MAX((x),(m)->wx)) \
@@ -15,15 +15,15 @@
  #define TEXTW(X)                (drw_fontset_getwidth(drw, (X)) + lrpad)
  
  #define SYSTEM_TRAY_REQUEST_DOCK    0
-@@ -271,6 +272,7 @@
- static void bstack(Monitor *m);
- static void switchstextvis(const Arg *arg);
+@@ -270,6 +271,7 @@
+ static void zoom(const Arg *arg);
+ static void switchstext(const Arg *arg);
  static void updatewmdesktop(Client *c);
 +static void hide(const Arg *arg);
  
- 
  /* variables */
-@@ -621,6 +623,11 @@
+ static Systray *systray =  NULL;
+@@ -618,6 +620,11 @@
  			setfullscreen(c, (cme->data.l[0] == 1 /* _NET_WM_STATE_ADD    */
  				|| (cme->data.l[0] == 2 /* _NET_WM_STATE_TOGGLE */ && !c->isfullscreen)));
  	} else if (cme->message_type == netatom[NetActiveWindow]) {
@@ -35,12 +35,10 @@
  		for (i = 0; i < LENGTH(tags) && !((1 << i) & c->tags); i++);
  		if (i < LENGTH(tags)) {
  			selmon = c->mon;
-@@ -2585,6 +2592,15 @@
- 	unsigned int data[] = { c->tags };
- 	XChangeProperty(dpy, c->win, netatom[NetWMDesktop], XA_CARDINAL, 32,
+@@ -2552,6 +2559,15 @@
  		PropModeReplace, (unsigned char*)data, 1);
-+}
-+
+ }
+ 
 +void
 +hide(const Arg *arg)
 +{
@@ -48,6 +46,8 @@
 +	setclientstate(selmon->sel, IconicState);
 +	focus(NULL);
 +	arrange(selmon);
- }
- 
++}
++
  int
+ main(int argc, char *argv[])
+ {

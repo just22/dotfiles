@@ -1,5 +1,5 @@
---- dwm.c.orig	Sat Dec 12 13:53:31 2020
-+++ dwm.c	Sun Dec 13 09:22:21 2020
+--- ./dwm.c.orig	2021-01-04 11:23:08.203057000 +0100
++++ dwm.c	2021-01-04 11:27:35.651934000 +0100
 @@ -79,7 +79,7 @@
  enum { NetSupported, NetWMName, NetWMState, NetWMCheck,
         NetSystemTray, NetSystemTrayOP, NetSystemTrayOrientation, NetSystemTrayOrientationHorz,
@@ -9,15 +9,15 @@
  enum { Manager, Xembed, XembedInfo, XLast }; /* Xembed atoms */
  enum { WMProtocols, WMDelete, WMState, WMTakeFocus, WMLast }; /* default atoms */
  enum { ClkTagBar, ClkLtSymbol, ClkStatusText, ClkWinTitle,
-@@ -270,6 +270,7 @@
+@@ -269,6 +269,7 @@
+ static int xerrorstart(Display *dpy, XErrorEvent *ee);
  static void zoom(const Arg *arg);
- static void bstack(Monitor *m);
- static void switchstextvis(const Arg *arg);
+ static void switchstext(const Arg *arg);
 +static void updatewmdesktop(Client *c);
  
- 
  /* variables */
-@@ -1170,6 +1171,7 @@
+ static Systray *systray =  NULL;
+@@ -1169,6 +1170,7 @@
  		c->mon = selmon;
  		applyrules(c);
  	}
@@ -25,7 +25,7 @@
  
  	if (c->x + WIDTH(c) > c->mon->mx + c->mon->mw)
  		c->x = c->mon->mx + c->mon->mw - WIDTH(c);
-@@ -1639,6 +1641,7 @@
+@@ -1638,6 +1640,7 @@
  	detachstack(c);
  	c->mon = m;
  	c->tags = m->tagset[m->seltags]; /* assign tags of target monitor */
@@ -33,7 +33,7 @@
  	attach(c);
  	attachstack(c);
  	focus(NULL);
-@@ -1797,6 +1800,7 @@
+@@ -1796,6 +1799,7 @@
  	netatom[NetWMFullscreen] = XInternAtom(dpy, "_NET_WM_STATE_FULLSCREEN", False);
  	netatom[NetWMWindowType] = XInternAtom(dpy, "_NET_WM_WINDOW_TYPE", False);
  	netatom[NetWMWindowTypeDialog] = XInternAtom(dpy, "_NET_WM_WINDOW_TYPE_DIALOG", False);
@@ -41,7 +41,7 @@
  	netatom[NetClientList] = XInternAtom(dpy, "_NET_CLIENT_LIST", False);
  	xatom[Manager] = XInternAtom(dpy, "MANAGER", False);
  	xatom[Xembed] = XInternAtom(dpy, "_XEMBED", False);
-@@ -1898,6 +1902,7 @@
+@@ -1897,6 +1901,7 @@
  {
  	if (selmon->sel && arg->ui & TAGMASK) {
  		selmon->sel->tags = arg->ui & TAGMASK;
@@ -49,7 +49,7 @@
  		focus(NULL);
  		arrange(selmon);
  	}
-@@ -1981,6 +1986,7 @@
+@@ -1980,6 +1985,7 @@
  	newtags = selmon->sel->tags ^ (arg->ui & TAGMASK);
  	if (newtags) {
  		selmon->sel->tags = newtags;
@@ -57,18 +57,18 @@
  		focus(NULL);
  		arrange(selmon);
  	}
-@@ -2569,6 +2575,14 @@
- 				tx += WIDTH(c);
- 		}
- 	}
-+}
-+
+@@ -2538,6 +2544,14 @@
+ 	pop(c);
+ }
+ 
 +void
 +updatewmdesktop(Client *c)
 +{
 +	unsigned int data[] = { c->tags };
 +	XChangeProperty(dpy, c->win, netatom[NetWMDesktop], XA_CARDINAL, 32,
 +		PropModeReplace, (unsigned char*)data, 1);
- }
- 
++}
++
  int
+ main(int argc, char *argv[])
+ {

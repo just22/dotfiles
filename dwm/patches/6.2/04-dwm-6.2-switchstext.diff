@@ -1,55 +1,44 @@
---- config.def.h.orig	Sat Dec 12 12:39:35 2020
-+++ config.def.h	Sat Dec 12 13:42:28 2020
-@@ -106,6 +110,7 @@
- 	/* click                event mask      button          function        argument */
- 	{ ClkLtSymbol,          0,              Button1,        setlayout,      {0} },
- 	{ ClkLtSymbol,          0,              Button3,        setlayout,      {.v = &layouts[2]} },
-+	{ ClkWinTitle,          0,              Button1,        switchstext,    {0} },
- 	{ ClkWinTitle,          0,              Button2,        zoom,           {0} },
- 	{ ClkStatusText,        0,              Button2,        spawn,          {.v = termcmd } },
- 	{ ClkClientWin,         MODKEY,         Button1,        movemouse,      {0} },
---- dwm.c.orig	Sat Dec 12 12:39:44 2020
-+++ dwm.c	Sat Dec 12 13:39:51 2020
-@@ -270,7 +270,9 @@
+--- ./dwm.c.orig	2021-01-04 11:16:05.649734000 +0100
++++ dwm.c	2021-01-04 11:21:39.903724000 +0100
+@@ -268,6 +268,7 @@
+ static int xerrordummy(Display *dpy, XErrorEvent *ee);
  static int xerrorstart(Display *dpy, XErrorEvent *ee);
  static void zoom(const Arg *arg);
- static void bstack(Monitor *m);
 +static void switchstext(const Arg *arg);
  
-+
  /* variables */
  static Systray *systray =  NULL;
- static const char broken[] = "broken";
-@@ -306,7 +308,9 @@
+@@ -304,6 +305,7 @@
  static Drw *drw;
  static Monitor *mons, *selmon;
  static Window root, wmcheckwin;
 +static int stexton = 1;
  
-+
  /* configuration, allows nested code to access above variables */
  #include "config.h"
- 
-@@ -2248,10 +2252,20 @@
+@@ -2248,13 +2250,23 @@
  void
  updatestatus(void)
  {
 -	if (!gettextprop(root, XA_WM_NAME, stext, sizeof(stext)))
 -		strcpy(stext, "dwm-"VERSION);
-+        if (stexton) {
++	if (stexton) {
 +		if (!gettextprop(root, XA_WM_NAME, stext, sizeof(stext)))
 +			strcpy(stext, "dwm-"VERSION);
 +	} else
 +		strcpy(stext, "");
  	drawbar(selmon);
  	updatesystray();
-+}
-+
-+void
+ }
+ 
+ void
 +switchstext(const Arg *arg)
 +{
 +	stexton ^= 1;
 +	updatestatus();
- }
- 
- void
++}
++
++void
+ updatesystrayicongeom(Client *i, int w, int h)
+ {
+ 	if (i) {

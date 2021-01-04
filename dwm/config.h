@@ -244,7 +244,7 @@ static Button buttons[] = {
 	{ ClkLtSymbol,          0,              Button2,        setlayout,      {.v = &layouts[0]} },
 	{ ClkLtSymbol,          ControlMask,    Button2,        setlayout,      {.v = &layouts[3]} },
 	{ ClkLtSymbol,          0,              Button3,        setlayout,      {.v = &layouts[2]} },
-	{ ClkWinTitle,          0,              Button1,        switchstextvis, {0} },
+	{ ClkWinTitle,          0,              Button1,        switchstext,    {0} },
 	{ ClkWinTitle,          0,              Button3,        spawn,          {.v = startcmd} },
 	{ ClkStatusText,        0,              Button1,        spawn,          {.v = calcmd} },
 	{ ClkClientWin,         MODKEY,         Button1,        movemouse,      {0} },
