@@ -6,6 +6,8 @@
 
 background      "#eee8d5"
 window_type     dock
-geometry        1x1+0+1
+geometry        5x1-0+0
+icon_gravity    NE
 icon_size       15
 slot_size       17
+kludges         force_icons_size
