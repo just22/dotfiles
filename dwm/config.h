@@ -54,6 +54,7 @@ static const Rule rules[] = {
 	{ NULL,			NULL,			"Window's properties",	0,		True,		5,		-1 },
 	{ NULL,			NULL,			"cmixer",		0,		True,		5,		-1 },
 	{ "Xdialog",		NULL,			NULL,			0,		True,		5,		-1 },
+	{ "dialog",		NULL,			NULL,			0,		True,		5,		-1 },
 	{ "Xmessage",		NULL,			NULL,			0,		True,		5,		-1 },
 	{ NULL,		        "Qt-subapplication",	NULL,			0,		True,		5,		-1 },
 	{ NULL,			NULL,			"Event Tester",		0,		True,		5,		-1 },
