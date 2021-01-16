@@ -1,0 +1,16 @@
+# ----------------------------------------------------------------------
+#  $Id$
+#
+#  XSCHEM initialization file
+# ----------------------------------------------------------------------
+
+# Abort, redraw, unselect
+set replace_key(Control-d) Escape
+
+# Zoom in/out
+set replace_key(Shift-Z) Control-z
+set replace_key(z) Shift-Z
+set replace_key(Control-z) Nop
+
+# Insert object
+set replace_key(i) Insert
