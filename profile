@@ -14,16 +14,12 @@
 PATH="/usr/local/bin:/usr/local/sbin"
 PATH="$PATH:/bin:/sbin:/usr/X11R6/bin:/usr/bin:/usr/sbin:/usr/games"
 
-# Set PATH so it includes user's private bin if it exists
-if [ -d "$HOME/.local/bin" ] ; then
-    PATH="$HOME/.local/bin:$PATH"
-fi
-if [ -d "$HOME/bin" ] ; then
-    PATH="$HOME/bin:$PATH"
-fi
-if [ "${USER}" != root ]; then
-    PATH="${PATH}:."
-fi
+# Include user's bin dir in PATH
+[ -d "$HOME/.local/bin" ] && PATH="$HOME/.local/bin:$PATH"
+[ -d "$HOME/bin" ] && PATH="$HOME/bin:$PATH"
+[ -d "$HOME/bin.override" ] && PATH="$HOME/bin.override:$PATH"
+
+[ "${USER}" != root ] && PATH="${PATH}:."
 
 export PATH
 
