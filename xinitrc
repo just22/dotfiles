@@ -14,7 +14,7 @@ fi
 
 # Set keyboard layout, CapsLock as an additional menu key
 # (see xkeyboard-config(7))
-setxkbmap -layout it -option caps:menu
+setxkbmap -layout us -option caps:menu
 
 # Enable h/v scrolling for touchpad
 #synclient VertEdgeScroll=1
