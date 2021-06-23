@@ -1,15 +1,56 @@
-<!--
-   $Id$
+<!-- *************************************************************** -->
+<!--  $Id$                                                           -->
+<!--                                                                 -->
+<!--  JVM configuration file                                         -->
+<!-- *************************************************************** -->
 
-   jwm configuration file
--->
-
-<?xml version="1.0"?>
 <JWM>
 
-    <!-- The root menu. -->
+    <!-- *************************** -->
+    <!--  General settings           -->
+    <!-- *************************** -->
+
+    <!-- Init commands -->
+    <StartupCommand> jwm-init </StartupCommand>
+    <RestartCommand> jwm-init </RestartCommand>
+
+    <!-- Virtual Desktops -->
+    <Desktops width="7" height="1"> </Desktops>
+
+    <!-- Double click speed (in milliseconds) -->
+    <DoubleClickSpeed> 400 </DoubleClickSpeed>
+
+    <!-- Double click delta (in pixels) -->
+    <DoubleClickDelta> 2 </DoubleClickDelta>
+
+    <!-- Focus model -->
+    <FocusModel> sloppytitle </FocusModel>
+
+    <!-- Snap mode (none, screen, or border) -->
+    <SnapMode distance="5"> border </SnapMode>
+
+    <!-- Move/resize modes (outline or opaque) -->
+    <MoveMode coordinates="off" delay="0" mask="4"> outline </MoveMode>
+    <ResizeMode coordinates="off"> outline </ResizeMode>
+
+    <!-- Paths where icons can be found -->
+    <IconPath> /usr/local/share/icons/Tango/scalable/actions    </IconPath>
+    <IconPath> /usr/local/share/icons/Tango/scalable/apps       </IconPath>
+    <IconPath> /usr/local/share/icons/Tango/scalable/categories </IconPath>
+    <IconPath> /usr/local/share/icons/Tango/scalable/devices    </IconPath>
+    <IconPath> /usr/local/share/icons/Tango/scalable/emblems    </IconPath>
+    <IconPath> /usr/local/share/icons/Tango/scalable/emotes     </IconPath>
+    <IconPath> /usr/local/share/icons/Tango/scalable/mimetypes  </IconPath>
+    <IconPath> /usr/local/share/icons/Tango/scalable/places     </IconPath>
+    <IconPath> /usr/local/share/icons/Tango/scalable/status     </IconPath>
+    <IconPath> /usr/local/share/jwm                             </IconPath>
+
+
+    <!-- *************************** -->
+    <!--  The root menu              -->
+    <!-- *************************** -->
     <RootMenu onroot="13">
-        <Program icon="terminal.png" label="Terminal">xterm</Program>
+        <Program icon="terminal" label="Terminal"> x-terminal-emulator </Program>
         <Menu icon="folder.png" label="Applications">
             <Program icon="music.png" label="Audacious">audacious</Program>
             <Program icon="calculator.png" label="Calculator">xcalc</Program>
@@ -29,45 +70,64 @@
         </Menu>
         <Separator/>
         <Program icon="lock.png" label="Lock">
-            xlock -mode blank
+            xautolock -locknow
         </Program>
         <Separator/>
         <Restart label="Restart" icon="restart.png"/>
         <Exit label="Exit" confirm="true" icon="quit.png"/>
     </RootMenu>
 
-    <!-- Options for program groups. -->
-    <Group>
-        <Class>Pidgin</Class>
-        <Option>sticky</Option>
-    </Group>
-    <Group>
-        <Name>xclock</Name>
-        <Option>drag</Option>
-        <Option>notitle</Option>
-    </Group>
 
-    <!-- Tray at the bottom. -->
-    <Tray x="0" y="-1" height="22" autohide="off">
+    <!-- *************************** -->
+    <!--  Application groups         -->
+    <!-- *************************** -->
 
-        <TrayButton icon="/usr/share/void-artwork/void-logo.png">root:1</TrayButton>
+    <!--  For all apps, enable tiled initial lacement and aerosnap -->
+    <Group> <Option>tiled</Option> <Option>aerosnap</Option> </Group>
+
+    <!--  Fully maximize terminal windows -->
+    <Group> <Class>XTerm</Class> <Option>iignore</Option> </Group>
+
+    <!-- Do not show statusbar in tasklist -->
+    <Group> <Class>dzen</Class> <Option>nolist</Option> </Group>
+
+
+    <!-- *************************** -->
+    <!--  Bottom panel               -->
+    <!-- *************************** -->
+
+    <Tray x="0" y="-1" height="18" screen="0" autohide="off">
+        <TrayButton label="Menu" popup=""> root:1 </TrayButton>
         <Spacer width="5"/>
-        <Pager labeled="true"/>
-        <Spacer width="15"/>
+
         <TaskList maxwidth="256"/>
         <Spacer width="5"/>
+
         <Dock/>
         <Spacer width="5"/>
-        <!-- <Clock><Button mask="123">exec:xclock</Button></Clock> -->
-        <Clock format="%a %d %b (%V) - %R"/>
+
+        <Clock format="%a %e %b, %R">
+            <Button>exec:gsimplecal</Button>
+        </Clock>
     </Tray>
 
-    <!-- Tray at the top -->
-    <Tray x="0" y="0" height="16" autohide="off">
-	<Spacer/>
+
+    <!-- *************************** -->
+    <!--  Top panel                  -->
+    <!-- *************************** -->
+
+    <Tray x="0" y="0" height="18" screen="0" autohide="off">
+        <Pager labeled="true"/>
+        <Spacer/>
+
+        <!-- Statusbar is launched during session init -->
     </Tray>
 
-    <!-- Visual Styles -->
+
+    <!-- *************************** -->
+    <!--  Theme                      -->
+    <!-- *************************** -->
+
     <WindowStyle>
         <Font>DejaVuSans-8</Font>
         <Width>1</Width>
@@ -84,6 +144,7 @@
             <Opacity>1.0</Opacity>
         </Active>
     </WindowStyle>
+
     <TrayStyle group="false" list="desktop">
         <Font>DejaVuSans-8</Font>
         <Foreground>#073642</Foreground>
@@ -95,6 +156,7 @@
             <Background>#657b83</Background>
         </Active>
     </TrayStyle>
+
     <PagerStyle>
         <Outline>#002b36</Outline>
         <Foreground>#839496</Foreground>
@@ -105,6 +167,7 @@
             <Background>#073642</Background>
         </Active>
     </PagerStyle>
+
     <MenuStyle>
         <Font>DejaVuSans-8</Font>
         <Foreground>#073642</Foreground>
@@ -116,6 +179,7 @@
         </Active>
         <Opacity>1</Opacity>
     </MenuStyle>
+
     <PopupStyle enabled="button,menu,task">
         <Font>DejaVuSans-8</Font>
         <Foreground>#073642</Foreground>
@@ -123,90 +187,95 @@
         <Outline>#073642</Outline>
     </PopupStyle>
 
-    <!-- Path where icons can be found -->
-    <IconPath>
-        /usr/share/icons/gnome/22x22/actions
-    </IconPath>
-    <IconPath>
-        /usr/share/icons/gnome/22x22/animations
-    </IconPath>
-    <IconPath>
-        /usr/share/icons/gnome/22x22/apps
-    </IconPath>
-    <IconPath>
-        /usr/share/icons/gnome/22x22/categories
-    </IconPath>
-    <IconPath>
-        /usr/share/icons/gnome/22x22/devices
-    </IconPath>
-    <IconPath>
-        /usr/share/icons/gnome/22x22/emblems
-    </IconPath>
-    <IconPath>
-        /usr/share/icons/gnome/22x22/emotes
-    </IconPath>
-    <IconPath>
-        /usr/share/icons/gnome/22x22/mimetypes
-    </IconPath>
-    <IconPath>
-        /usr/share/icons/gnome/22x22/places
-    </IconPath>
-    <IconPath>
-        /usr/share/icons/gnome/22x22/status
-    </IconPath>
-    <IconPath>
-        /usr/share/icons/hicolor/22x22/apps
-    </IconPath>
 
-    <!-- Virtual Desktops -->
-    <!-- Desktop tags can be contained within Desktops for desktop names. -->
-    <Desktops width="6" height="1">
-        <!-- Default background. Note that a Background tag can be
-              contained within a Desktop tag to give a specific background
-              for that desktop.
-         -->
-        <Background type="gradient">#073642:#586e75</Background>
-    </Desktops>
+    <!-- *************************** -->
+    <!--  Key bindings               -->
+    <!-- *************************** -->
 
-    <!-- Double click speed (in milliseconds) -->
-    <DoubleClickSpeed>400</DoubleClickSpeed>
+    <!--  See /usr/X11R6/include/X11/keysymdef.h or /usr/include/X11/keysymdef.h -->
 
-    <!-- Double click delta (in pixels) -->
-    <DoubleClickDelta>2</DoubleClickDelta>
+    <!-- Cycle through windows in the current workspace -->
+    <Key mask="4" key="Tab"> nextstacked </Key>
 
-    <!-- The focus model -->
-    <FocusModel>sloppytitle</FocusModel>
+    <!-- Commands on active window -->
+    <Key mask="4" key="Down"> maxbottom </Key>
+    <Key mask="4" key="Left"> maxleft </Key>
+    <Key mask="4" key="Right"> maxright </Key>
+    <Key mask="4" key="Up"> maxtop </Key>
+    <Key mask="4" key="underscore"> minimize </Key>
+    <Key mask="4" key="a"> fullscreen </Key>
+    <Key mask="4" key="m"> maximize </Key>
+    <Key mask="4" key="p"> exec:activewin_xprop </Key>
+    <Key mask="4" key="s"> stick </Key>
+    <Key mask="4" key="x"> close </Key>
 
-    <!-- The snap mode (none, screen, or border) -->
-    <SnapMode distance="5">border</SnapMode>
+    <!-- Switch to a specific workspace -->
+    <Key mask="4" key="#"> desktop# </Key>
 
-    <!-- The move mode (outline or opaque) -->
-    <MoveMode>outline</MoveMode>
+    <!-- Send the current window to a specific workspace -->
+    <Key mask="4C" key="1"> exec:wmctrl -r :ACTIVE: -t 0 </Key>
+    <Key mask="4C" key="2"> exec:wmctrl -r :ACTIVE: -t 1 </Key>
+    <Key mask="4C" key="3"> exec:wmctrl -r :ACTIVE: -t 2 </Key>
+    <Key mask="4C" key="4"> exec:wmctrl -r :ACTIVE: -t 3 </Key>
+    <Key mask="4C" key="5"> exec:wmctrl -r :ACTIVE: -t 4 </Key>
+    <Key mask="4C" key="6"> exec:wmctrl -r :ACTIVE: -t 5 </Key>
+    <Key mask="4C" key="7"> exec:wmctrl -r :ACTIVE: -t 6 </Key>
+    <Key mask="4SC" key="#"> send# </Key>
 
-    <!-- The resize mode (outline or opaque) -->
-    <ResizeMode>outline</ResizeMode>
+    <!-- Tiling a-la-dwm -->
+    <Key mask="4" key="h"> exec:awt -b </Key>
+    <Key mask="4" key="v"> exec:awt </Key>
 
-    <!-- Key bindings -->
-    <Key key="Up">up</Key>
-    <Key key="Down">down</Key>
-    <Key key="Right">right</Key>
-    <Key key="Left">left</Key>
-    <Key key="h">left</Key>
-    <Key key="j">down</Key>
-    <Key key="k">up</Key>
-    <Key key="l">right</Key>
-    <Key key="Return">select</Key>
-    <Key key="Escape">escape</Key>
+    <!-- Common WM actions -->
+    <Key mask="4"  key="space"> root:1 </Key>
+    <Key mask="4C" key="space"> window </Key>
+    <Key mask="4"  key="F1"> exec:x-terminal-emulator -T JWM -e "man jwm" </Key>
+    <Key mask="4"  key="F2"> exec:dmenu-launchers </Key>
+    <Key mask="4"  key="d"> exec:dmenu_run -p Run: </Key>
+    <Key mask="4"  key="f"> exec:dmenu-filebrowser </Key>
+    <Key mask="4"  key="q"> restart </Key>
+    <Key mask="4"  key="t"> exec:tmux_pane_search </Key>
+    <Key mask="4C" key="w"> exec:dmenu-setwinlabel </Key>
+    <Key mask="4"  key="w"> exec:win_search </Key>
 
-    <Key mask="A" key="Tab">nextstacked</Key>
-    <Key mask="A" key="F4">close</Key>
-    <Key mask="A" key="#">desktop#</Key>
-    <Key mask="A" key="F1">root:1</Key>
-    <Key mask="A" key="F2">window</Key>
-    <Key mask="A" key="F10">maximize</Key>
-    <Key mask="A" key="Right">rdesktop</Key>
-    <Key mask="A" key="Left">ldesktop</Key>
-    <Key mask="A" key="Up">udesktop</Key>
-    <Key mask="A" key="Down">ddesktop</Key>
+    <!-- Application launchers -->
+    <Key mask="4C" key="Return"> exec:x-terminal-emulator </Key>
+    <Key mask="4C" key="b"> exec:x-www-browser </Key>
+    <Key mask="4C" key="c"> exec:dmenu-calc </Key>
+    <Key mask="4C" key="d"> exec:dmenu-xrandr </Key>
+    <Key mask="4C" key="f"> exec:x-filemanager </Key>
+    <Key mask="4C" key="m"> exec:x-email-client </Key>
+    <Key mask="4C" key="p"> exec:play-url -p </Key>
+    <Key mask="4C" key="q"> exec:x-session-logout </Key>
+    <Key mask="4C" key="r"> exec:dmenu-timer </Key>
+    <Key mask="4C" key="t"> exec:x-terminal-emulator -e "tmux attach-session -d || tmux new-session" </Key>
+    <Key mask="4C" key="x"> exec:dmenu-xautolock </Key>
+
+    <!-- Configurable keys (site dependent) -->
+    <Key mask="4" key="F3">  exec:exec-F3 </Key>
+    <Key mask="4" key="F4">  exec:exec-F4 </Key>
+    <Key mask="4" key="F5">  exec:exec-F5 </Key>
+    <Key mask="4" key="F6">  exec:exec-F6 </Key>
+    <Key mask="4" key="F7">  exec:exec-F7 </Key>
+    <Key mask="4" key="F8">  exec:exec-F8 </Key>
+    <Key mask="4" key="F9">  exec:exec-F9 </Key>
+    <Key mask="4" key="F10"> exec:exec-F10 </Key>
+    <Key mask="4" key="F11"> exec:exec-F11 </Key>
+    <Key mask="4" key="F12"> exec:exec-F12 </Key>
+
+    <!-- Heritages... -->
+    <Key mask="AC" key="Delete"> exec:xautolock -locknow </Key>
+
+    <!-- System specific -->
+    <Key mask="4"  key="c"> exec:dmenu-perf </Key>
+    <Key mask="4C" key="h"> exec:ZZZ </Key>
+    <Key mask="4C" key="k"> exec:dmenu-kbd </Key>
+    <Key mask="4C" key="l"> exec:dmenu-lpr </Key>
+    <Key mask="4C" key="s"> exec:zzz </Key>
+
+    <!-- Multimedia -->
+    <Key mask="4" key="KP_Subtract"> exec:sndioctl output.level=-0.1
+    <Key mask="4" key="KP_Add">      exec:sndioctl output.level=+0.1
+    <Key mask="4" key="KP_0">        exec:sndioctl output.mute=!
 
 </JWM>

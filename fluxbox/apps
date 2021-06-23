@@ -6,81 +6,109 @@
 
 [app] (name=fbrun)
   [Position] (Center) {0 0}
-  [Layer]    {2}
+  [Layer] {2}
 [end]
+
 [app] (class=Xmessage)
-  [Position]    (Center) {0 0}
-  [Deco]        {Border}
+  [Position] (Center) {0 0}
+  [Deco] {Border}
   [FocusHidden] {yes}
-  [Sticky]      {yes}
-  [Layer]       {2}
+  [Sticky] {yes}
+  [Layer] {2}
 [end]
+
 [app] (class=XConsole)
-  [Workspace]  {6}
+  [Workspace] {6}
   [Dimensions] {100% 50%}
-  [Position]   (UpperLeft) {0% 0%}
+  [Position] (UpperLeft) {0% 0%}
 [end]
+
 [app] (class=XTerm) (title=System log) {1}
-  [Workspace]  {6}
+  [Workspace] {6}
   [Dimensions] {100% 50%}
-  [Position]   (UpperLeft) {0% 0%}
+  [Position] (UpperLeft) {0% 0%}
 [end]
+
 [app] (class=XTerm) (title=Process monitor) {1}
-  [Workspace]  {6}
+  [Workspace] {6}
   [Dimensions] {50% 50%}
-  [Position]   (UpperLeft) {0% 50%}
+  [Position] (UpperLeft) {0% 50%}
 [end]
+
 [app] (class=XTerm) (title=System stats) {1}
-  [Workspace]  {6}
+  [Workspace] {6}
   [Dimensions] {50% 50%}
-  [Position]   (UpperLeft) {50% 50%}
+  [Position] (UpperLeft) {50% 50%}
 [end]
+
 [app] (class=XTerm) (title=Screenshot)
-  [Position]    (Center) {0 0}
-  [Deco]        {Border}
+  [Position] (Center) {0 0}
+  [Deco] {Border}
   [FocusHidden] {yes}
-  [Sticky]      {yes}
+  [Sticky] {yes}
 [end]
+
 [app] (class=XTerm) (title=cmixer)
-  [Head]     {1}
+  [Head] {1}
   [Position] (BottomRight) {0 0}
-  [Deco]     {Border}
+  [Deco] {Border}
 [end]
+
 [app] (name=win) (class=Xpdf)
   [Dimensions] {70% 70%}
-  [Position]   (Center)  {0 0}
+  [Position] (Center)  {0 0}
 [end]
+
 [app] (name=xfig) (class=Fig)
   [Maximized] {yes}
 [end]
+
 [app] (name=bbager)
-  [Head]  {1}
+  [Head] {1}
+  [Layer] 10
   [Position] (UpperLeft) {1 -18}
 [end]
+
 [app] (name=sound) (class=Sound)
-  [Sticky]   {yes}
+  [Sticky] {yes}
   [Position] (BottomRight) {150 1}
 [end]
+
 [app] (title=volctrl)
   [Sticky] {yes}
-  [Deco]   {Border}
+  [Deco] {Border}
 [end]
+
 [app] (class=Gsimplecal)
-  [Head]     {1}
+  [Head] {1}
   [Position] (BottomRight) {0 0}
 [end]
+
 [app] (class=dzen) (name=dzen2)
-  [Head]     {1}
+  [Head] {1}
   [Position] (UpperLeft) {0 0}
-  [Layer]    10
+  [Layer] 10
 [end]
+
 [app] (name=Qt-subapplication)
   [Position] (Center) {0 0}
 [end]
+
 [app] (class=Claws-mail)
-  [Layer]       {8}
+  [Layer] {8}
 [end]
+
 [app] (name=xfe) (class=Xfe)
-  [Position]   (Center)  {0 0}
+  [Position] (Center)  {0 0}
+[end]
+
+[app] (class=ROX-Filer) (title=~/Desktop .*)
+  [Position] (BottomLeft) {0 0}
+  [Dimensions] {50% 50%}
+[end]
+
+[app] (class=Tkremind)
+  [Position] (Center) {0 0}
+  [Dimensions] {75% 75%}
 [end]
 

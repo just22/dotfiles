@@ -9,16 +9,16 @@
 # Screen locker
 xautolock -detectsleep -time 10 -locker lock-screen &
 
-# Start a session bus instance of dbus-daemon
-if [ -x /usr/local/bin/dbus-launch -a -z "${DBUS_SESSION_BUS_ADDRESS}" ]; then
-        eval `dbus-launch --sh-syntax --exit-with-x11`
-fi
-
 # dunst notification system
 mkdir -p "${XDG_DATA_HOME:-$HOME/.local/share}/dbus-1/services"
 ln -sf \
     "/usr/local/share/dbus-1/services/org.knopwob.dunst.service" \
     "${XDG_DATA_HOME:-$HOME/.local/share}/dbus-1/services/org.freedesktop.Notifications.service"
+
+# Start a session bus instance of dbus-daemon
+if [ -x /usr/local/bin/dbus-launch -a -z "${DBUS_SESSION_BUS_ADDRESS}" ]; then
+        eval `dbus-launch --sh-syntax --exit-with-x11`
+fi
 
 # Process monitor
 xterm -title "Process monitor" -e top &
@@ -40,12 +40,13 @@ xcompmgr &
 nitrogen --restore || fbsetbg -l
 
 # Statusbar
-pkill -x space_dapp; (sleep 1; space_dapp $((($(screen-width) - 1))) 17) &
-
 (sleep 3; dbar |
     dzen2 -title-name dbar \
           -bg "#eee8d5" -fg "#073642" -fn "DejaVu Sans Mono:size=9" \
-          -p -e "" -geometry +0+1 -expand left -dock -xs "${xs:-1}") &
+          -p -e "" -geometry $(($(screen-width) - 1))x17+0+1 \
+          -expand left -dock -xs "${xs:-1}") &
+
+pkill -x space_dapp; (sleep 1; space_dapp $((($(screen-width) - 1))) 17) &
 
 # This is a bad hack!!! Fluxbox doesn't manage dock apps properly
 # Note: xprop is unable to set multiple fields for a property...
@@ -57,7 +58,6 @@ pkill -x bbpager; (sleep 6; bbpager) &
 
 # Tray apps
 sleep 1; /usr/local/libexec/tray-app/sound -i &
-sleep 2; cal-tray &
 
 # And last but not least we start fluxbox.
 # Because it is the last app you have to run it with ''exec'' before it.

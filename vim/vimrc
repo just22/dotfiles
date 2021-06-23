@@ -542,6 +542,12 @@ augroup vimrcAutoCmd
             \          shiftwidth=2
             \          softtabstop=0
 
+        " Different indentation for XML files
+        autocmd FileType xml
+            \ setlocal tabstop=4
+            \          shiftwidth=4
+            \          softtabstop=4
+
         " Spell check when writing commit logs
         autocmd filetype svn,*commit* setlocal spell spelllang=en
 
@@ -581,7 +587,7 @@ augroup vimrcAutoCmd
         " If quickfix is the last window, quit
         autocmd BufEnter * call QuitIfOnlyQuickfix()
 
-        " Treat .lib files are text (and not as Cobol libraries)
+        " Treat .lib files as text (and not as Cobol libraries)
         autocmd BufNewFile,BufRead *.lib set filetype=txt
 
         " When editing a file, always jump to the last known cursor position.
@@ -592,6 +598,9 @@ augroup vimrcAutoCmd
             \  if line("'\"") >= 1 && line("'\"") <= line("$") && &ft !~# 'commit'
             \|     exe "normal! g`\""
             \| endif
+
+        " Setting appropriate type for files with odd names/extensions
+        autocmd BufNewFile,BufRead *.jwmrc set filetype=xml
 
 augroup END
 
