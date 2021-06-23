@@ -15,6 +15,7 @@
 \RequirePackage{appendixnumberbeamer}
 \RequirePackage{babel}
 \RequirePackage[style=alphabetic,sorting=none,backend=bibtex]{biblatex}
+\RequirePackage{booktabs}
 \RequirePackage[font=tiny,skip=0pt]{caption}
 \RequirePackage{datetime}
 \RequirePackage[T1]{fontenc}
@@ -22,6 +23,7 @@
 \RequirePackage[utf8]{inputenc}
 \RequirePackage{csquotes}
 \RequirePackage{multirow}
+\RequirePackage{siunitx}
 \RequirePackage[super]{nth}
 \RequirePackage{stackrel}
 \RequirePackage{sverb}
@@ -117,6 +119,41 @@
 
 
 % ------------------------------
+% Units
+% ------------------------------
+\newcommand{\mm} {
+	\SI{}{\milli\meter}
+}
+\newcommand{\um} {
+	\SI{}{\micro\meter}
+}
+\newcommand{\pF} {
+	\SI{}{\pico\farad}
+}
+\newcommand{\fF} {
+	\SI{}{\femto\farad}
+}
+\newcommand{\GHz} {
+	\SI{}{\giga\hertz}
+}
+\newcommand{\MHz} {
+	\SI{}{\mega\hertz}
+}
+\newcommand{\kHz} {
+	\SI{}{\kilo\hertz}
+}
+\newcommand{\us} {
+	\SI{}{\micro\second}
+}
+\newcommand{\ns} {
+	\SI{}{\nano\second}
+}
+\newcommand{\ps} {
+	\SI{}{\pico\second}
+}
+
+
+% ------------------------------
 % Less verbose descr/item env
 % (starred = enumerate)
 % ------------------------------
@@ -128,7 +165,7 @@
 	\begin{enumerate}
 		\item
 }
-\newcommand {\num} {\item}
+\renewcommand {\num} {\item}
 
 \newcommand {\numstarred} {\item}
 
@@ -611,6 +648,14 @@
 \newcommand{\tocslide}[1][] {
 	\slide{Outline}{
 			\tableofcontents[#1]
+	}
+}
+
+% Q&A Slide
+\newcommand{\qasession} {
+	\section{Q\&A Session}
+	\slide{Q\&A Session}{
+		\fig{figures/QnA.jpg}
 	}
 }
 
