@@ -547,17 +547,17 @@
 	\offinterlineskip%
 	\mpage[\dimexpr.5\linewidth-2\fboxsep-2\fboxrule][\dimexpr\framecontentheight-13.5pt]{
 		\ifthenelse{\equal{#1}{b}}
-			{\quadbox*[\dimexpr\linewidth-2pt]{#5}}%
-			{\quadbox[\dimexpr\linewidth-2pt]{#5}}%
+			{\quadbox*[\dimexpr\linewidth-2pt]{#4}}%
+			{\quadbox[\dimexpr\linewidth-2pt]{#4}}%
 			\vspace*{3pt}
 		\ifthenelse{\equal{#2}{b}}
-			{\quadbox*[\dimexpr\linewidth-2pt]{#6}}%
-			{\quadbox[\dimexpr\linewidth-2pt]{#6}}%
+			{\quadbox*[\dimexpr\linewidth-2pt]{#5}}%
+			{\quadbox[\dimexpr\linewidth-2pt]{#5}}%
 	}
 	\hspace{3pt}
 	\ifthenelse{\equal{#3}{b}}
-		{\vhalfbox*{#4}}%
-		{\vhalfbox{#4}}%
+		{\vhalfbox*{#6}}%
+		{\vhalfbox{#6}}%
 }
 
 
