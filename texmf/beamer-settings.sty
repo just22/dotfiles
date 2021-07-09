@@ -6,6 +6,18 @@
 
 \ProvidesPackage{beamer-settings}
 
+% Preserve short title color, while allowing hiperlinks have their own
+\makeatletter
+\renewcommand\insertshorttitle[1][]{%
+  \beamer@setupshort{#1}%
+  \let\thanks=\@gobble%
+  \ifnum\c@page=1%
+  \hyperlinkpresentationend{\beamer@insertshort{\usebeamercolor*[fg]{title in head/foot}\beamer@shorttitle}}%
+  \else%
+  \hyperlinkpresentationstart{\beamer@insertshort{\usebeamercolor*[fg]{title in head/foot}\beamer@shorttitle}}%
+  \fi}
+\makeatother
+
 % Variable-size block environment
 \newenvironment<>{varblock}[2][.99]{
 	\begin{center}
