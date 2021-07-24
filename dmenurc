@@ -11,8 +11,15 @@ P=""
 M=""
 W=""
 FN="DejaVu Sans Mono:size=9"
-NB="#EEE8D5"
-NF="#293A1A"
-SB="#2AA198"
-SF="#FDF6E3"
+NB="#eee8d5"
+NF="#293a1a"
+
+if pgrep xfce4 >/dev/null; then
+        SB="#10699c"
+        SF="#fdf6e3"
+else
+        SB="#2aa198"
+        SF="#fdf6e3"
+fi
+
 OPT="-i"
