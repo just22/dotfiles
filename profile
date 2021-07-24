@@ -79,9 +79,6 @@ export PRINTER=HP_Deskjet_1510
 [ "${SHELL%/ksh}" != "$SHELL" ] || [ -n "$KSH_VERSION" ] &&
         export ENV="$HOME/.kshrc"
 
-# CPAN local modules config
-eval "$(perl -I$HOME/perl5/lib/perl5 -Mlocal::lib)"
-
 # par(1) settings
 export PARINIT="rTbgqR B=.,?_A_a Q=_s>|"
 
