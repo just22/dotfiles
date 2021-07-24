@@ -508,11 +508,10 @@ vlast()     { vim $(ls -dt "$@" | head -1); }
 set_title() {
         ESC="\033"
         BEL="\007"
-        title_esc_seq="${ESC}]0;$@${BEL}"
 
         # Internal echo command cannot be used here because
         # of its different behavior in ksh and bash...
-        printf "${title_esc_seq}"
+        printf "${ESC}]0;%s$BEL" "$@"
 }
 
 # ----------------------------------------------------------------------
