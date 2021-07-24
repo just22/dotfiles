@@ -7,7 +7,7 @@
 # Switch off visual bell
 set bell-style none
 
-# In bash, list immediately autocompletion matches instead of ringing the bell
+# List immediately autocompletion matches instead of ringing the bell
 set show-all-if-unmodified on
 
 # No query about viewing the number of possible completions
@@ -16,6 +16,9 @@ set completion-query-items 0
 # Vi mode
 set editing-mode vi
 set keymap vi-command
+
+# When pasting, treat each character as if it had been read from the keyboard
+set enable-bracketed-paste off
 
 # Editing mode indication
 # set show-mode-in-prompt on
