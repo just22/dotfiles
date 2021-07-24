@@ -4,6 +4,12 @@
 #  openbox-session(1) startup script
 # ----------------------------------------------------------------------
 
+# xidle daemon (corner locking virtually disabled, no timeout,
+# activated by SIGUSR1)
+if ! pgrep -u $UID -x xidle >/dev/null 2>&1; then
+        xidle -delay 86400 -program ${HOME}/bin/xsession-lock &
+fi
+
 # Screen locker
 xautolock -detectsleep -time 10 -locker lock-screen &
 
@@ -40,9 +46,12 @@ nitrogen --restore
 #(sleep 1; dbus-launch pcmanfm --desktop) &
 
 # Statusbar
-dbar -k
-dbar -m cpu_mem -m load -m sd0 -m trunk0 -m mixer -m batt -m time \
-     -- -ta r -xs 1 -dock
+pkill dzen2
+dbar -m cpu_mem -m load -m sd0 -m trunk0 -m mixer -m batt -m time |
+    dzen2 -title-name dbar \
+          -bg "#eee8d5" -fg "#073642" -fn "DejaVu Sans Mono:size=9" \
+          -p -e "" -geometry $(($(screen-width) - 1))x17+0+1 \
+          -expand left -dock -xs "${xs:-1}") &
 pkill netwmpager; (sleep 3; netwmpager) &
 # pkill stalonetray; (sleep 3; stalonetray) & --geometry 1x1+190+0 &
 
