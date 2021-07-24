@@ -52,7 +52,7 @@ session.screen0.strftimeDetailFormat:
 session.screen0.focusSameHead:	false
 session.screen0.rowPlacementDirection:	LeftToRight
 session.screen0.focusNewWindows:	true
-session.screen0.workspaceNames:	1 (A1) , 2 (A2) , 3 (A3) , 4 (B1) , 5 (B2) , 6 (B3) , 7 (Mon) ,
+session.screen0.workspaceNames:	, 1 (A1) , 2 (A2) , 3 (A3) , 4 (B1) , 5 (B2) , 6 (B3) , 7 (Mon) ,
 session.screen0.workspacewarpingvertical:	true
 session.screen0.edgeSnapThreshold:	10
 session.screen0.maxIgnoreIncrement:	true
