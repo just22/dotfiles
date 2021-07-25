@@ -11,17 +11,18 @@
 #  definitions.
 # ----------------------------------------------------------------------
 
-PATH="/usr/local/bin:/usr/local/sbin"
-PATH="$PATH:/bin:/sbin:/usr/X11R6/bin:/usr/bin:/usr/sbin:/usr/games"
+PATH=/usr/local/bin:/usr/local/sbin
+PATH=$PATH:/bin:/sbin:/usr/bin:/usr/sbin:/usr/X11R6/bin:/usr/games
+MANPATH=~/share/man:/usr/local/man:/usr/share/man:/usr/X11R6/man
 
 # Include user's bin dir in PATH
-[ -d "$HOME/.local/bin" ] && PATH="$HOME/.local/bin:$PATH"
 [ -d "$HOME/bin" ] && PATH="$HOME/bin:$PATH"
 [ -d "$HOME/bin.override" ] && PATH="$HOME/bin.override:$PATH"
 
+# Include current dir in PATH (except for root user)
 [ "${USER}" != root ] && PATH="${PATH}:."
 
-export PATH
+export PATH MANPATH
 
 # Maximum number of processes that make may have running
 export MAKEFLAGS=-j3
@@ -88,13 +89,6 @@ export AUTOCONF_VERSION=2.69
 
 # Custom libraries
 export PKG_CONFIG_PATH=${HOME}/lib/pkgconfig
-
-# Append custom man paths to the standard ones
-export MANPATH=~/share/man:/usr/local/man:~/perl5/man:
-
-# Proxy settings
-#export http_proxy="http://argo.atlantide.priv:8118"
-#export no_proxy="http://argo.atlantide.priv:8118"
 
 # ----------------------------------------------------------------------
 # Addenda to ~/.profile specific for machine/site
