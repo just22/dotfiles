@@ -13,7 +13,7 @@
 
 PATH=/usr/local/bin:/usr/local/sbin
 PATH=$PATH:/bin:/sbin:/usr/bin:/usr/sbin:/usr/X11R6/bin:/usr/games
-MANPATH=~/share/man:/usr/local/man:/usr/share/man:/usr/X11R6/man
+MANPATH=~/share/man:/usr/local/man:
 
 # Include user's bin dir in PATH
 [ -d "$HOME/bin" ] && PATH="$HOME/bin:$PATH"
@@ -29,7 +29,7 @@ export MAKEFLAGS=-j3
 
 # In console, colors and auto-logout
 if [ "${TERM}" == "vt220" ]; then
-    export TERM=wsvt25
+    export TERM=pccon0
     console-logout &
 fi
 
