@@ -6,5 +6,7 @@
 # ----------------------------------------------------------------------
 
 # Fuzzy finder integration
-source /usr/local/share/fzf/bash/key-bindings.bash
-source /usr/local/share/fzf/bash/completion.bash
+[ -f /usr/local/share/fzf/bash/key-bindings.bash ] &&
+        source /usr/local/share/fzf/bash/key-bindings.bash
+[ -f /usr/local/share/fzf/bash/completion.bash ] &&
+        source /usr/local/share/fzf/bash/completion.bash
