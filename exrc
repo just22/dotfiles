@@ -17,6 +17,9 @@ set cedit=\
 " Use extended regular expressions (EREs)
 set extended
 "
+" Use spaces instead of tab chars
+set expandtab
+"
 " Use TAB to perform file path completion on the colon command-line
 set filec=\	
 "
