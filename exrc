@@ -157,6 +157,16 @@ map 	k :w! /tmp/$USER.vi.killed:%dZZ
 " Copy from clipboard
 map 	p :r! xclip -o
 "
+" Switch to previous current file
+map 	g :e#
+"
+" Show the argument list
+map 	l :args
+"
+" Switch to next/previous file in argument list
+map 	f :next
+map 	b :prev
+"
 "
 " ----------------------------------------------------------------------
 "  ABBREVIATIONS
