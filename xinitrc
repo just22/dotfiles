@@ -68,6 +68,9 @@ remind-today &
 # Reload the gpg-agent (reset cached GnuPG credentials)
 gpg-connect-agent reloadagent /bye
 
+# Addenda to ~/.bashrc specific for machine/site
+[ -f ~/.xinitrc_local ] && . ~/.xinitrc_local
+
 # ...and finally start the X-Session!
 [ -x ~/.start-xsession ] && exec ~/.start-xsession || exec twm
 

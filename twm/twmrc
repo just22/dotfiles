@@ -9,7 +9,7 @@
 #
 
 AutoRelativeResize               # Don't require resize to cross the borders to start
-BorderWidth 1                    # Width in pixels of the windows' borders
+BorderWidth 2                    # Width in pixels of the windows' borders
 ButtonIndent 0                   # Same dimensions for window text and buttons
 DecorateTransients               # Put titlebar and borders on transient windows
 DefaultFunction "f.nop"            # Ignore event for which no binding is provided
