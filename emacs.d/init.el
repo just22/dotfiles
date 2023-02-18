@@ -35,7 +35,6 @@
 (unless (file-exists-p backup-dir)
   (make-directory backup-dir))
 
-
 ;; Minimal user interface
 (setq inhibit-startup-message t)
 (scroll-bar-mode -1)
@@ -45,7 +44,6 @@
 (unless (eq system-type 'darwin)
   (menu-bar-mode -1)
   (setq visual-bell t))
-
 
 ;; Show column number in mode line
 (setq column-number-mode t)
@@ -63,13 +61,28 @@
 ;; Shortening for yes/no
 (fset 'yes-or-no-p 'y-or-n-p)
 
-;; By default, do not (visually) truncate long lines
+;; By default, (visually) truncate long lines (i.e., do not wrap them)
 (set-default 'truncate-lines t)
 
-;; Right AltGr/Option key used for special characters (e.g. []@#{}...)
-(setq ns-right-alternate-modifier nil)
+;; Copy/paste from/to system clipboard
+(global-set-key (kbd "C-c C-x") 'clipboard-kill-region)
+(global-set-key (kbd "C-c C-c") 'clipboard-kill-ring-save)
+(global-set-key (kbd "C-c C-v") 'clipboard-yank)
 
-;; Use ESC to abort commands and quit prompts
+;; Keybinds/shortcuts for MacOS
+(if (eq system-type 'darwin)
+    (progn
+      (setq mac-option-key-is-meta nil)
+      (setq mac-option-modifier 'super)
+      (setq mac-right-option-modifier 'none)
+      (setq mac-command-key-is-meta t)
+      (setq mac-command-modifier 'meta)
+      (global-set-key (kbd "M-s-m") 'toggle-frame-maximized)
+      (global-set-key (kbd "M-s-f") 'toggle-frame-fullscreen)
+      (global-set-key (kbd "M-s--") 'suspend-frame)))
+
+
+;; Use Esc to abort commands and quit prompts
 (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
 
 
@@ -203,5 +216,3 @@ If no FILE is specified, reload the current buffer from disk."
 ;;; --------------------------------------------------------------------
 ;;; Custom functions
 ;;; --------------------------------------------------------------------
-
-
