@@ -7,12 +7,18 @@
 
 
 
-;;; --------------------------------------------------------------------
-;;; general settings
-;;; --------------------------------------------------------------------
+;;; ---------------------------------------------------------------------
+;;; General settings
+;;; ---------------------------------------------------------------------
 
 ;; User's directory
 (setq user-emacs-directory (expand-file-name "~/.emacs.d/"))
+
+;; Local pre-init file (optional)
+(setq init-local-pre
+      (expand-file-name "init-local-pre.el" user-emacs-directory))
+(if (file-exists-p init-local-pre)
+    (load init-local-pre))
 
 ;; Options saved from menu bar
 (setq custom-file
@@ -86,63 +92,50 @@
 (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
 
 
-;;; --------------------------------------------------------------------
+;;; ---------------------------------------------------------------------
 ;;; Package management
-;;; --------------------------------------------------------------------
-
-;; (Optional) proxy settings
-(when (not (require 'init-proxy nil t))
-  (message "Info: no proxy config file found, skipping."))
+;;; ---------------------------------------------------------------------
 
 ;; Initialize package sources
 (require 'package)
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
-(add-to-list 'package-archives '("melpa-stable" . "https://stable.melpa.org/packages/"))
 (add-to-list 'package-archives '("org"   . "https://orgmode.org/elpa/"))
 (add-to-list 'package-archives '("elpa"  . "https://elpa.gnu.org/packages/"))
 
 (setq package-enable-at-startup nil)
 (package-initialize)
 
-(unless package-archive-contents
-  (package-refresh-contents))
-
 ;; Install and initialize package manager (use-package)
 (unless (package-installed-p 'use-package)
+  (package-refresh-contents)
   (package-install 'use-package))
 
 (require 'use-package)
 (setq use-package-always-ensure t)
-	
 
-;;; --------------------------------------------------------------------
+
+;;; ---------------------------------------------------------------------
 ;;; Themes
-;;; --------------------------------------------------------------------
+;;; ---------------------------------------------------------------------
 (use-package solarized-theme
-  :ensure t
   :init
   (load-theme 'solarized-dark t))
 
 
-;;; --------------------------------------------------------------------
+;;; ---------------------------------------------------------------------
 ;;; Packages
-;;; --------------------------------------------------------------------
+;;; ---------------------------------------------------------------------
 
 ;; undo-fu - Simple, stable linear undo with redo
-(use-package undo-fu
-  :ensure t)
-
+(use-package undo-fu)
 
 ;; undo-fu-session - Save & recover undo steps between sessions
-(use-package undo-fu-session
-  :ensure t)
+(use-package undo-fu-session)
 (undo-fu-session-global-mode)
 
 
 ;; Evil - Extensible Vi Layer
 (use-package evil
-  :ensure t
-
   :init
   (setq evil-undo-system 'undo-fu)
 
@@ -176,9 +169,9 @@ If no FILE is specified, reload the current buffer from disk."
 
 ;; helm - Framework for incremental completions and narrowing selections
 (use-package helm
-  :ensure t
   :config
   (helm-autoresize-mode 1)
+  
   :bind (("M-x" . helm-M-x)
 	 ("C-x C-b" . helm-mini)
 	 ("C-x C-f" . helm-find-files)))
@@ -187,32 +180,34 @@ If no FILE is specified, reload the current buffer from disk."
  '(helm-selection ((t (:underline nil)))))
 
 
-;; multi-term - Manage multiple terminal buffers
-(use-package multi-term
-  :ensure t
-  :config
-  (setq multi-term-program (getenv "SHELL")))
-
-
 ;; nlinum - Display line numbers
 (use-package nlinum
-    :ensure t
     :config
     (add-hook 'prog-mode-hook 'linum-mode))
 
 
-;;; --------------------------------------------------------------------
+;;; ---------------------------------------------------------------------
 ;;; Modes
-;;; --------------------------------------------------------------------
+;;; ---------------------------------------------------------------------
 
 
 
-;;; --------------------------------------------------------------------
+;;; ---------------------------------------------------------------------
 ;;; Keybinds
-;;; --------------------------------------------------------------------
+;;; ---------------------------------------------------------------------
 
 
 
-;;; --------------------------------------------------------------------
+;;; ---------------------------------------------------------------------
 ;;; Custom functions
-;;; --------------------------------------------------------------------
+;;; ---------------------------------------------------------------------
+
+
+
+;;; ---------------------------------------------------------------------
+;;; Local post-init file (optional)
+;;; ---------------------------------------------------------------------
+(setq init-local-post
+      (expand-file-name "init-local-post.el" user-emacs-directory))
+(if (file-exists-p init-local-post)
+    (load init-local-post))
