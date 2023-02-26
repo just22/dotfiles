@@ -1,6 +1,4 @@
 " ----------------------------------------------------------------------------
-"  $Id$
-"
 "  Vim configuration file
 " ----------------------------------------------------------------------------
 
@@ -18,8 +16,8 @@ endif
 if &compatible
         set nocompatible
 endif
-" When the +eval feature is missing, the set command above will be skipped.
-" Use a trick to reset compatible only when the +eval feature is missing.
+" When the +eval feature is missing, the set command above will be skipped,
+" so use this trick to reset compatible mode
 silent! while 0
         set nocompatible
 silent! endwhile
@@ -262,242 +260,18 @@ set statusline+=%P                              " Percent through file
 
 
 " ----------------------------------------------------------------------------
-"  Plugins config section (using Vundle)
-" ----------------------------------------------------------------------------
-
-if isdirectory("~/.vim/bundles/vundle")
-
-        " Vundle set-up:
-        " git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundles/vundle
-        "
-        filetype off
-        set rtp+=~/.vim/bundles/vundle/
-        call vundle#rc("~/.vim/bundles")
-        
-        call vundle#begin()
-        
-        " Required {
-                Plugin 'gmarik/vundle'
-        " }
-        
-        Plugin 'https://github.com/wincent/terminus'
-        
-        Plugin 'https://github.com/jpalardy/vim-slime'
-        
-        Plugin 'https://github.com/sk1418/QFGrep'
-        
-        Plugin 'https://github.com/AndrewRadev/linediff.vim'
-        
-        Plugin 'https://github.com/chrisbra/csv.vim'
-        
-        " { vimwiki
-        Plugin 'https://github.com/mattn/calendar-vim'
-        Plugin 'https://github.com/vimwiki/vimwiki'
-        " }
-        
-        Plugin 'https://github.com/godlygeek/tabular'
-        
-        Plugin 'VisIncr'
-        
-        Plugin 'https://github.com/ervandew/supertab'
-        
-        Plugin 'https://github.com/christoomey/vim-tmux-navigator'
-        
-        Plugin 'https://github.com/mbbill/undotree'
-        
-        Plugin 'https://github.com/tpope/vim-commentary'
-        
-        Plugin 'https://github.com/hrj/vim-drawit'
-        
-        Plugin 'https://github.com/lervag/vimtex'
-        
-        Plugin 'https://github.com/junegunn/fzf.vim'
-        
-        " { vim-snipmate
-        Plugin 'https://github.com/tomtom/tlib_vim'
-        Plugin 'https://github.com/MarcWeber/vim-addon-mw-utils'
-        Plugin 'https://github.com/garbas/vim-snipmate'
-        Plugin 'https://github.com/honza/vim-snippets'
-        " }
-        
-        " { Useful for gvim (and when colman cannot be used)
-        Plugin 'https://github.com/chriskempson/base16-vim'
-        " }
-        
-        call vundle#end()
-        
-        " Enable extended % matching
-        runtime macros/matchit.vim
-        
-        " Enable file type detection and load indent files, to automatically do
-        " language-dependent indenting
-        "filetype plugin indent on
-        filetype plugin on
-        
-        " terminus
-        let g:TerminusMouse = 0
-        let g:TerminusCursorShape=0
-        
-        " vim-slime
-        if exists("$TMUX")
-                let g:slime_target = "tmux"
-                let g:slime_paste_file = "/tmp/$USER.vim-slime.paste"
-                let g:slime_default_config = {"socket_name": split($TMUX, ",")[0], "target_pane": ":.right"}
-                let g:slime_dont_ask_default = 1
-                let g:slime_no_mappings = 1
-        endif
-        
-        " vim-notes
-        let g:notes_directories = ['$HOME/notes']
-        let g:notes_suffix = ".txt"
-        let g:notes_unicode_enabled = 0
-        
-        " supertab (+ completion popup menu adjustment)
-        let g:SuperTabDefaultCompletionType = "context"
-        let g:SuperTabLongestHighlight = 1
-        let g:SuperTabMappingForward = "<F1>"
-        let g:SuperTabMappingBackward = "<S-F1>"
-        set completeopt=longest,menuone
-        inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
-        
-        " vim-tmux-navigator
-        let g:tmux_navigator_no_mappings = 1
-        nmap <silent> <Esc>[1;5A :TmuxNavigateUp<CR>
-        nmap <silent> <Esc>[1;5B :TmuxNavigateDown<CR>
-        nmap <silent> <Esc>[1;5C :TmuxNavigateRight<CR>
-        nmap <silent> <Esc>[1;5D :TmuxNavigateLeft<CR>
-        nmap <silent> <Esc>[A    :TmuxNavigateUp<CR>
-        nmap <silent> <Esc>[B    :TmuxNavigateDown<CR>
-        nmap <silent> <Esc>[C    :TmuxNavigateRight<CR>
-        nmap <silent> <Esc>[D    :TmuxNavigateLeft<CR>
-        nmap <silent> <C-\>      :TmuxNavigatePrevious<CR>
-        
-        " netrw (see http://ivanbrennan.nyc/blog/2014/01/16/rigging-vims-netrw)
-        let g:netrw_liststyle = 3         " 0: thin view; 3: tree view
-        let g:netrw_banner = 0            " No banner
-        
-        " vimwiki
-        " let g:vimwiki_list = [{'path': '~/notes/',
-        "                      \ 'syntax': 'markdown', 'ext': '.md'}]
-        " let g:vimwiki_global_ext = 0
-        
-        let g:vimwiki_list = [{'path': '~/notes/'}]
-        
-        let g:vimwiki_listsyms = ' .X'
-        
-        function! VimwikiLinkHandler(link)
-                " Use Vim to open external files with the 'file:' scheme.  E.g.:
-                let link = a:link
-                if link =~# '^file:'
-                        let link_infos = vimwiki#base#resolve_link(link)
-                        if link_infos.filename == ''
-                                echomsg 'Vimwiki Error: Unable to resolve link!'
-                                return 0
-                        else
-                                exe 'edit ' . fnameescape(link_infos.filename)
-                                return 1
-                        endif
-                else
-                        return 0
-                endif
-        endfunction
-        
-        let g:tex_flavor = 'latex'
-        let g:vimtex_quickfix_ignore_filters = [
-            \ 'Overfull',
-            \ 'Underfull',
-            \ 'setting the option has no effect',
-            \ 'functionality may be reduced/unavailable',
-            \ 'Token not allowed in a PDF string',
-            \ 'references',
-            \ 'Empty bibliography',
-            \ 'Please (re)run BibTeX on the file(s)',
-        \]
-        let g:Tex_MultipleCompileFormats = 'pdf,bibtex,pdf'
-        let g:vimtex_quickfix_autoclose_after_keystrokes = 1
-        let g:vimtex_view_method = 'mupdf'
-        
-        " calendar-vim
-        let g:calendar_monday = 1
-        let g:calendar_weeknm = 1
-
-endif
-
-" vim-snipmate
-let g:snipMate = { 'snippet_version' : 1 }
-
-
-" ----------------------------------------------------------------------------
-" Syntax highlighting
+" Syntax highlighting & colorscheme
 " ----------------------------------------------------------------------------
 
 " Switch syntax highlighting on, when the terminal has colors
 if &t_Co > 2 || has("gui_running")
         syntax on
+        set background=dark
+        colorscheme sterm
+
 endif
 
-function! MinimalSyntaxToggle()
-        if ! exists("b:minSyntax") || b:minSyntax == 0
-                let b:minSyntax = 1
-                hi Boolean term=NONE cterm=NONE ctermfg=NONE ctermbg=NONE gui=NONE guifg=NONE guibg=NONE
-                hi Character term=NONE cterm=NONE ctermfg=NONE ctermbg=NONE gui=NONE guifg=NONE guibg=NONE
-                hi Conceal term=NONE cterm=NONE ctermfg=NONE ctermbg=NONE gui=NONE guifg=NONE guibg=NONE
-                hi Conditional term=NONE cterm=NONE ctermfg=NONE ctermbg=NONE gui=NONE guifg=NONE guibg=NONE
-                hi Constant term=NONE cterm=NONE ctermfg=NONE ctermbg=NONE gui=NONE guifg=NONE guibg=NONE
-                hi Debug term=NONE cterm=NONE ctermfg=NONE ctermbg=NONE gui=NONE guifg=NONE guibg=NONE
-                hi Define term=NONE cterm=NONE ctermfg=NONE ctermbg=NONE gui=NONE guifg=NONE guibg=NONE
-                hi Delimiter term=NONE cterm=NONE ctermfg=NONE ctermbg=NONE gui=NONE guifg=NONE guibg=NONE
-                hi Directive term=NONE cterm=NONE ctermfg=NONE ctermbg=NONE gui=NONE guifg=NONE guibg=NONE
-                hi Exception term=NONE cterm=NONE ctermfg=NONE ctermbg=NONE gui=NONE guifg=NONE guibg=NONE
-                hi Float term=NONE cterm=NONE ctermfg=NONE ctermbg=NONE gui=NONE guifg=NONE guibg=NONE
-                hi Format term=NONE cterm=NONE ctermfg=NONE ctermbg=NONE gui=NONE guifg=NONE guibg=NONE
-                hi Function term=NONE cterm=NONE ctermfg=NONE ctermbg=NONE gui=NONE guifg=NONE guibg=NONE
-                hi Identifier term=NONE cterm=NONE ctermfg=NONE ctermbg=NONE gui=NONE guifg=NONE guibg=NONE
-                hi Ignore term=NONE cterm=NONE ctermfg=NONE ctermbg=NONE gui=NONE guifg=NONE guibg=NONE
-                hi Include term=NONE cterm=NONE ctermfg=NONE ctermbg=NONE gui=NONE guifg=NONE guibg=NONE
-                hi Keyword term=NONE cterm=NONE ctermfg=NONE ctermbg=NONE gui=NONE guifg=NONE guibg=NONE
-                hi Label term=NONE cterm=NONE ctermfg=NONE ctermbg=NONE gui=NONE guifg=NONE guibg=NONE
-                hi Macro term=NONE cterm=NONE ctermfg=NONE ctermbg=NONE gui=NONE guifg=NONE guibg=NONE
-                hi Number term=NONE cterm=NONE ctermfg=NONE ctermbg=NONE gui=NONE guifg=NONE guibg=NONE
-                hi Operator term=NONE cterm=NONE ctermfg=NONE ctermbg=NONE gui=NONE guifg=NONE guibg=NONE
-                hi PreCondit term=NONE cterm=NONE ctermfg=NONE ctermbg=NONE gui=NONE guifg=NONE guibg=NONE
-                hi PreProc term=NONE cterm=NONE ctermfg=NONE ctermbg=NONE gui=NONE guifg=NONE guibg=NONE
-                hi Repeat term=NONE cterm=NONE ctermfg=NONE ctermbg=NONE gui=NONE guifg=NONE guibg=NONE
-                hi SpecialChar term=NONE cterm=NONE ctermfg=NONE ctermbg=NONE gui=NONE guifg=NONE guibg=NONE
-                hi SpecialComment term=NONE cterm=NONE ctermfg=NONE ctermbg=NONE gui=NONE guifg=NONE guibg=NONE
-                hi Special term=NONE cterm=NONE ctermfg=NONE ctermbg=NONE gui=NONE guifg=NONE guibg=NONE
-                hi Statement term=NONE cterm=NONE ctermfg=NONE ctermbg=NONE gui=NONE guifg=NONE guibg=NONE
-                hi StorageClass term=NONE cterm=NONE ctermfg=NONE ctermbg=NONE gui=NONE guifg=NONE guibg=NONE
-                hi String term=NONE cterm=NONE ctermfg=NONE ctermbg=NONE gui=NONE guifg=NONE guibg=NONE
-                hi Structure term=NONE cterm=NONE ctermfg=NONE ctermbg=NONE gui=NONE guifg=NONE guibg=NONE
-                hi Tag term=NONE cterm=NONE ctermfg=NONE ctermbg=NONE gui=NONE guifg=NONE guibg=NONE
-                hi Title term=NONE cterm=NONE ctermfg=NONE ctermbg=NONE gui=NONE guifg=NONE guibg=NONE
-                hi Typedef term=NONE cterm=NONE ctermfg=NONE ctermbg=NONE gui=NONE guifg=NONE guibg=NONE
-                hi Type term=NONE cterm=NONE ctermfg=NONE ctermbg=NONE gui=NONE guifg=NONE guibg=NONE
-                hi Underlined term=NONE cterm=NONE ctermfg=NONE ctermbg=NONE gui=NONE guifg=NONE guibg=NONE
-        else
-                let b:minSyntax = 0
-                if exists("$DISPLAY")
-                        set t_Co=256
-                        if filereadable(expand("$HOME/.vim/colors/base16.vim")) &&
-                         \ filereadable(expand("$HOME/.vim/colors/base16_gui.def"))
-                                colorscheme base16
-                        else
-                                colorscheme default
-                        endif
-                else
-                        colorscheme default
-                endif
-        endif
-endfunction
-
-if exists("$DISPLAY")
-        let b:minSyntax = 0
-else
-        call MinimalSyntaxToggle()
-endif
-
-" Add custom equation delimiters to syntax highlighting.
+" Add custom equation delimiters to syntax highlighting
 autocmd FileType tex syn region texMathZoneZ matchgroup=texStatement
     \ start="\\eqn{"
     \ start="\\eqn\*{"
@@ -653,22 +427,6 @@ augroup Vimwiki
             \  "0r !~/bin/vw-diary-tmpl" . " " . expand('%:t:r')
             \| normal G
 augroup END
-
-" ----------------------------------------------------------------------------
-" Colorscheme
-" ----------------------------------------------------------------------------
-if exists("$DISPLAY")
-        set t_Co=256
-        if filereadable(expand("$HOME/.vim/colors/base16.vim")) &&
-         \ filereadable(expand("$HOME/.vim/colors/base16_gui.def"))
-                colorscheme base16
-        else
-                colorscheme default
-        endif
-else
-        colorscheme default
-endif
-
 
 " ----------------------------------------------------------------------------
 " Custom functions and commands
@@ -1073,9 +831,6 @@ nmap <leader>u yypVr=
 "         (from last edit session); see also VCSmaps
 nmap <silent> <leader>v :loadview<CR>
 
-" ** X ** Minimal syntax toggling
-nmap <silent> <leader>x :call MinimalSyntaxToggle()<CR>
-
 " ** Y ** Copy the current buffer filename (with full path)
 nmap <silent> <leader>yy :let @* = expand("%:p")<CR>
 
@@ -1102,6 +857,16 @@ cabbrev _p r /tmp/$USER.vi.yank
 
 
 " ----------------------------------------------------------------------
+" Plugins
+" ----------------------------------------------------------------------------
+try
+        source ~/.vim/plugins.vim
+catch
+        " Do not output any error msg in case no local vimrc exists
+endtry
+
+
+" ----------------------------------------------------------------------
 " Source local vimrc file
 " ----------------------------------------------------------------------------
 try
@@ -1109,3 +874,5 @@ try
 catch
         " Do not output any error msg in case no local vimrc exists
 endtry
+
+
