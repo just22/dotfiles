@@ -42,8 +42,8 @@ _ps1_git() {
 
                 local code="${line%"${line#??}"}"
                 read fd1 fd2 fd3 fd4 fd5 fd6 fd7 <<- EOT
-                        ${line#"${code} "}
-                EOT
+			${line#"${code} "}
+		EOT
 
                 # Note: c_staged and c_work could be referred
                 # to the same file
@@ -81,8 +81,8 @@ _ps1_git() {
                    -n "$c_work" &&
                    -n "$c_untrack" ]] && break
         done <<- EOT
-                $(git status --porcelain -b -u --ahead-behind 2>/dev/null)
-        EOT
+		$(git status --porcelain -b -u --ahead-behind 2>/dev/null)
+	EOT
 
         if [ -n "$branch" ]; then
                 [[ -n "$c_staged" || -n "$c_work" || -n "$c_untrack" ]] && c_sep=":"
@@ -111,15 +111,15 @@ _ps1_cmd() {
                 [ -f .enter ] && >&2 . .enter
         fi
         # Set the xterm's (or tmux pane's) title
-        if [ -z "$INSIDE_EMACS" ]; then 
-            case "$TERM" in
-            xterm*|screen*)
-                    set_title "[$0] [$PWD] [Last cmd:  $(tail -1 "$HISTFILE")]"
-                    ;;
-            *)
-                    ;;
-            esac
-        fi
+	if [ -z "$INSIDE_EMACS" ]; then 
+	    case "$TERM" in
+	    xterm*|screen*)
+		    set_title "[$0] [$PWD] [Last cmd:  $(tail -1 "$HISTFILE")]"
+		    ;;
+	    *)
+		    ;;
+	    esac
+	fi
 }
 
 # If this isn't a strictly POSIX shell, use an informative multi-line prompt
