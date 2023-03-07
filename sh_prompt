@@ -111,13 +111,15 @@ _ps1_cmd() {
                 [ -f .enter ] && >&2 . .enter
         fi
         # Set the xterm's (or tmux pane's) title
-        case "$TERM" in
-        xterm*|screen*)
-                set_title "[$0] [$PWD] [Last cmd:  $(tail -1 "$HISTFILE")]"
-                ;;
-        *)
-                ;;
-        esac
+	if [ -z "$INSIDE_EMACS" ]; then 
+	    case "$TERM" in
+	    xterm*|screen*)
+		    set_title "[$0] [$PWD] [Last cmd:  $(tail -1 "$HISTFILE")]"
+		    ;;
+	    *)
+		    ;;
+	    esac
+	fi
 }
 
 # If this isn't a strictly POSIX shell, use an informative multi-line prompt

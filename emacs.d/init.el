@@ -54,15 +54,23 @@
 ;; Show column number in mode line
 (setq column-number-mode t)
 
+;; Show line numbers
+(global-display-line-numbers-mode t)
+(dolist (mode '(term-mode-hook
+		org-mode-hook))
+  (add-hook mode (lambda () (display-line-numbers-mode 0))))
+
 ;; Highlight cursor line
-(global-hl-line-mode 1)
+(global-hl-line-mode t)
+(dolist (mode '(term-mode-hook))
+  (add-hook mode (lambda () (setq-local global-hl-line-mode nil))))
 
 ;; Smooth scrolling (with offset)
 (setq redisplay-dont-pause t)
 (setq scroll-margin 3)
 (setq scroll-step 1)
 (setq scroll-conservatively 10000)
-(setq scroll-preserve-screen-position 1)
+(setq scroll-preserve-screen-position t)
 
 ;; Shortening for yes/no
 (fset 'yes-or-no-p 'y-or-n-p)
@@ -70,26 +78,8 @@
 ;; By default, (visually) truncate long lines (i.e., do not wrap them)
 (set-default 'truncate-lines t)
 
-;; Copy/paste from/to system clipboard
-(global-set-key (kbd "C-c C-x") 'clipboard-kill-region)
-(global-set-key (kbd "C-c C-c") 'clipboard-kill-ring-save)
-(global-set-key (kbd "C-c C-v") 'clipboard-yank)
-
-;; Keybinds/shortcuts for MacOS
-(if (eq system-type 'darwin)
-    (progn
-      (setq mac-option-key-is-meta nil)
-      (setq mac-option-modifier 'super)
-      (setq mac-right-option-modifier 'none)
-      (setq mac-command-key-is-meta t)
-      (setq mac-command-modifier 'meta)
-      (global-set-key (kbd "M-s-m") 'toggle-frame-maximized)
-      (global-set-key (kbd "M-s-f") 'toggle-frame-fullscreen)
-      (global-set-key (kbd "M-s--") 'suspend-frame)))
-
-
-;; Use Esc to abort commands and quit prompts
-(global-set-key (kbd "<escape>") 'keyboard-escape-quit)
+;; Always follow symbolic links to files under version control
+(setq vc-follow-symlinks t)
 
 
 ;;; ---------------------------------------------------------------------
@@ -138,6 +128,9 @@
 (use-package evil
   :init
   (setq evil-undo-system 'undo-fu)
+  (setq evil-split-window-below t)
+  (setq evil-vsplit-window-right t)
+  (setq evil-auto-balance-windows t)
 
   :config
   (evil-mode t)
@@ -164,7 +157,14 @@ If no FILE is specified, reload the current buffer from disk."
       (progn
         (revert-buffer bang (or bang (not (buffer-modified-p))) t)
         (read-only-mode))))
+
   (evil-ex-define-cmd "v[iew]" 'evil-cust-view))
+
+(with-eval-after-load 'evil
+  (define-key evil-normal-state-map (kbd "C-w h")   'evil-window-vsplit)
+  (define-key evil-normal-state-map (kbd "C-w C-h") 'evil-window-vsplit)
+  (define-key evil-normal-state-map (kbd "C-w v")   'evil-window-split)
+  (define-key evil-normal-state-map (kbd "C-w C-v") 'evil-window-split))
 
 
 ;; helm - Framework for incremental completions and narrowing selections
@@ -180,28 +180,60 @@ If no FILE is specified, reload the current buffer from disk."
  '(helm-selection ((t (:underline nil)))))
 
 
-;; nlinum - Display line numbers
-(use-package nlinum
-    :config
-    (add-hook 'prog-mode-hook 'linum-mode))
-
-
 ;;; ---------------------------------------------------------------------
 ;;; Modes
 ;;; ---------------------------------------------------------------------
 
-
+;; In terminal, use same prefix (C-x) as other modes
+(add-hook 'term-mode-hook
+   (lambda ()
+     (term-set-escape-char ?\C-x)
+     (define-key term-raw-map "\M-y" 'yank-pop)
+     (define-key term-raw-map "\M-w" 'kill-ring-save)))
 
 ;;; ---------------------------------------------------------------------
 ;;; Keybinds
 ;;; ---------------------------------------------------------------------
 
+;; Keybinds/shortcuts specific for MacOS
+(if (eq system-type 'darwin)
+    (progn
+      (setq mac-option-key-is-meta nil)
+      (setq mac-option-modifier 'super)
+      (setq mac-right-option-modifier 'none)
+      (setq mac-command-key-is-meta t)
+      (setq mac-command-modifier 'meta)
+      (global-set-key (kbd "M-s-m") 'toggle-frame-maximized)
+      (global-set-key (kbd "M-s-f") 'toggle-frame-fullscreen)
+      (global-set-key (kbd "M-s--") 'suspend-frame)))
+
+;; Copy/paste from/to system clipboard
+(global-set-key (kbd "C-c C-x") 'clipboard-kill-region)
+(global-set-key (kbd "C-c C-c") 'clipboard-kill-ring-save)
+(global-set-key (kbd "C-c C-v") 'clipboard-yank)
+
+;; Use Esc to abort commands and quit prompts
+(global-set-key (kbd "<escape>") 'keyboard-escape-quit)
 
 
 ;;; ---------------------------------------------------------------------
 ;;; Custom functions
 ;;; ---------------------------------------------------------------------
 
+;; Change the frame font size
+(defun change-font-size (delta)
+  (set-face-attribute 'default
+		      (selected-frame)
+		      :height (+ (face-attribute 'default :height) delta)))
+(global-set-key (kbd "C-+")
+		'(lambda () (interactive) (change-font-size +10)))
+(global-set-key (kbd "C--")
+		'(lambda () (interactive) (change-font-size -10)))
+
+;; Launch ansi-term with tmux
+(defun tmux ()
+  (interactive)
+  (term "tmux"))
 
 
 ;;; ---------------------------------------------------------------------
