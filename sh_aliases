@@ -112,6 +112,7 @@ weather         - Weather forecast
 bln             - List broken links (-l for long format)
 c               - Clear screen
 catn            - cat -n
+common          - common lines
 cutf            - Select nth field of line
 d               - Current working dir
 exev            - xev with more effective output
@@ -223,7 +224,7 @@ lltm() { llt "$@" | ${PAGER-less}; }
 alias lltc='llt -c'
 lltcm() { lltc "$@" | ${PAGER-less}; }
 
-alias lla='la -l'
+alias lla='la -lh'
 llam() { lla "$@" | ${PAGER-less}; }
 alias llat='lla -tr'
 llatm() { llat "$@" | ${PAGER-less}; }
@@ -485,6 +486,7 @@ alias weather='curl -s wttr.in/Milan'
 #
 alias c='clear'
 alias catn='cat -n'
+alias common='grep -Fxf'
 alias cutf='tr -s "\t" " " | sed "s/^ //" | cut -d" " -f'
 alias d='echo $PWD'
 alias fpath='readlink -f'
