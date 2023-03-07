@@ -46,7 +46,10 @@ Plugin 'https://github.com/hrj/vim-drawit'
 
 Plugin 'https://github.com/lervag/vimtex'
 
+" { fzf
+Plugin 'https://github.com/junegunn/fzf'
 Plugin 'https://github.com/junegunn/fzf.vim'
+" }
 
 " { vim-snipmate
 Plugin 'https://github.com/tomtom/tlib_vim'
@@ -151,6 +154,11 @@ let g:vimtex_view_method = 'mupdf'
 " calendar-vim
 let g:calendar_monday = 1
 let g:calendar_weeknm = 1
+
+" vim-fzf
+let g:fzf_layout = { 'down': '40%' }
+let g:fzf_buffers_jump = 1
+let g:fzf_preview_window = ['right:hidden', 'tab']
 
 " vim-snipmate
 let g:snipMate = { 'snippet_version' : 1 }

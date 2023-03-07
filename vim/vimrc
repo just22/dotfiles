@@ -298,7 +298,7 @@ augroup vimrcAutoCmd
         \  let b:CursorLineNrBG = synIDattr(synIDtrans(hlID('CursorLineNr')), 'bg')
         \| let b:CursorLineNrFG = synIDattr(synIDtrans(hlID('CursorLineNr')), 'fg')
         \| hi CursorLineNr ctermbg=1
-        \| hi CursorLineNr ctermfg=0
+        \| hi CursorLineNr ctermfg=13
         autocmd InsertLeave *
         \  exe 'hi CursorLineNr ctermbg=' . b:CursorLineNrBG . ' ctermfg=' . b:CursorLineNrFG
 
@@ -536,7 +536,7 @@ function! QuitIfOnlyQuickfix()
 endfunction
 
 " Show the changes to the current buffer since the last save
-command DiffOrig
+command! DiffOrig
     \  leftabove vert new | set bt=nofile | r ++edit # | 0d_ | diffthis
     \| wincmd p | diffthis
 
@@ -683,7 +683,12 @@ vmap <leader>+ :II 1 ''<CR>
 vmap <leader>- :II -1 ''<CR>
 
 " ** - ** Ruler
-nmap <leader>- o<Esc>72i-<Esc>gcc73\|D
+nmap <leader>-- o<Esc>72i-<Esc>gcc73\|D
+
+" ** ., ** fzf
+nnoremap <silent> <leader>. :Files .<CR>
+nnoremap <silent> <leader>, :Files <C-r>=expand("%:h")<CR>/<CR>
+
 " ----------------------------------------------------------------------
 
 " ** <Up>/<Down> ** Move current line up/down
