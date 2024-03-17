@@ -1,4 +1,4 @@
-# Configuration files for Unix-like environments
+# Configuration files for Unix-like systems
 
 This is a collection of configuration files I use on a daily basis.
 
