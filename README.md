@@ -1,10 +1,9 @@
-# just22's dotfiles
+# Configuration files for Unix-like environments
 
-This is my dotfiles repository, a collection of configuration files I use on a
-daily basis.
+This is a collection of configuration files I use on a daily basis.
 
-My main concern here is portability; I use different Unix-like OSs: RedHat
-Enterprise Linux at work, mostly OpenBSD and some Linux flavors at home;
+My main intent here is _portability_; I use different Unix-like OSs: RedHat
+Enterprise Linux at work, MacOS, OpenBSD and some Linux flavors at home;
 of course, I like my apps behaving coherently wherever I run them.
 
 
