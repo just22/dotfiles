@@ -1,78 +1,26 @@
 " ----------------------------------------------------------------------------
-"  Plugins config section (using Vundle)
+"  Plugins config section (using vim-plug)
 " ----------------------------------------------------------------------------
 
-" Vundle set-up:
-" git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundles/vundle
-"
-filetype off
-set rtp+=~/.vim/bundles/vundle/
-call vundle#rc("~/.vim/bundles")
+" vim-plug set-up
+let data_dir = has('nvim') ? stdpath('data') . '/site' : '~/.vim'
+if empty(glob(data_dir . '/autoload/plug.vim'))
+        silent execute '!curl -fLo '.data_dir.'/autoload/plug.vim
+        \       --create-dirs
+        \       https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
+        autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+endif
 
-call vundle#begin()
+call plug#begin('~/.vim/plug_dir')
 
-" Required {
-Plugin 'gmarik/vundle'
+" Colorschemes {
+Plug 'https://github.com/alligator/accent.vim'
+Plug 'https://github.com/tinted-theming/base16-vim'
 " }
 
-Plugin 'https://github.com/wincent/terminus'
+Plug 'https://github.com/chrisbra/csv.vim'
 
-Plugin 'https://github.com/jpalardy/vim-slime'
-
-Plugin 'https://github.com/sk1418/QFGrep'
-
-Plugin 'https://github.com/AndrewRadev/linediff.vim'
-
-Plugin 'https://github.com/chrisbra/csv.vim'
-
-" { vimwiki
-Plugin 'https://github.com/mattn/calendar-vim'
-Plugin 'https://github.com/vimwiki/vimwiki'
-" }
-
-Plugin 'https://github.com/godlygeek/tabular'
-
-Plugin 'VisIncr'
-
-Plugin 'https://github.com/ervandew/supertab'
-
-Plugin 'https://github.com/christoomey/vim-tmux-navigator'
-
-Plugin 'https://github.com/mbbill/undotree'
-
-Plugin 'https://github.com/tpope/vim-commentary'
-
-Plugin 'https://github.com/hrj/vim-drawit'
-
-Plugin 'https://github.com/lervag/vimtex'
-
-" { fzf
-Plugin 'https://github.com/junegunn/fzf'
-Plugin 'https://github.com/junegunn/fzf.vim'
-" }
-
-" { vim-snipmate
-Plugin 'https://github.com/tomtom/tlib_vim'
-Plugin 'https://github.com/MarcWeber/vim-addon-mw-utils'
-Plugin 'https://github.com/garbas/vim-snipmate'
-Plugin 'https://github.com/honza/vim-snippets'
-" }
-
-call vundle#end()
-
-" Enable extended % matching
-runtime macros/matchit.vim
-
-" Enable file type detection and load indent files, to automatically do
-" language-dependent indenting
-"filetype plugin indent on
-filetype plugin on
-
-" terminus
-let g:TerminusMouse = 0
-let g:TerminusCursorShape=0
-
-" vim-slime
+Plug 'https://github.com/jpalardy/vim-slime'
 if exists("$TMUX")
 let g:slime_target = "tmux"
 let g:slime_paste_file = "/tmp/$USER.vim-slime.paste"
@@ -81,20 +29,39 @@ let g:slime_dont_ask_default = 1
 let g:slime_no_mappings = 1
 endif
 
-" vim-notes
-let g:notes_directories = ['$HOME/notes']
-let g:notes_suffix = ".txt"
-let g:notes_unicode_enabled = 0
 
-" supertab (+ completion popup menu adjustment)
-let g:SuperTabDefaultCompletionType = "context"
-let g:SuperTabLongestHighlight = 1
-let g:SuperTabMappingForward = "<F1>"
-let g:SuperTabMappingBackward = "<S-F1>"
-set completeopt=longest,menuone
-inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+Plug 'https://github.com/lervag/vimtex'
+let g:tex_flavor = 'latex'
+let g:vimtex_quickfix_ignore_filters = [
+        \ 'Overfull',
+        \ 'Underfull',
+        \ 'setting the option has no effect',
+        \ 'functionality may be reduced/unavailable',
+        \ 'Token not allowed in a PDF string',
+        \ 'references',
+        \ 'Empty bibliography',
+        \ 'Please (re)run BibTeX on the file(s)',
+\]
+let g:Tex_MultipleCompileFormats = 'pdf,bibtex,pdf'
+let g:vimtex_quickfix_autoclose_after_keystrokes = 1
+let g:vimtex_view_method = 'general'
 
-" vim-tmux-navigator
+Plug 'https://github.com/mbbill/undotree'
+
+Plug 'https://github.com/sk1418/QFGrep'
+
+Plug 'https://github.com/tpope/vim-commentary'
+
+Plug 'https://github.com/vim-scripts/VisIncr'
+
+" { fzf
+Plug 'https://github.com/junegunn/fzf'
+Plug 'https://github.com/junegunn/fzf.vim'
+" }
+
+" tmux integration {
+Plug 'https://github.com/wincent/terminus'
+Plug 'https://github.com/christoomey/vim-tmux-navigator'
 let g:tmux_navigator_no_mappings = 1
 nmap <silent> <Esc>[1;5A :TmuxNavigateUp<CR>
 nmap <silent> <Esc>[1;5B :TmuxNavigateDown<CR>
@@ -105,61 +72,31 @@ nmap <silent> <Esc>[B    :TmuxNavigateDown<CR>
 nmap <silent> <Esc>[C    :TmuxNavigateRight<CR>
 nmap <silent> <Esc>[D    :TmuxNavigateLeft<CR>
 nmap <silent> <C-\>      :TmuxNavigatePrevious<CR>
+" }
 
-" netrw (see http://ivanbrennan.nyc/blog/2014/01/16/rigging-vims-netrw)
-let g:netrw_liststyle = 3         " 0: thin view; 3: tree view
-let g:netrw_banner = 0            " No banner
-
-" vimwiki
-" let g:vimwiki_list = [{'path': '~/notes/',
-"                      \ 'syntax': 'markdown', 'ext': '.md'}]
-" let g:vimwiki_global_ext = 0
-
-let g:vimwiki_list = [{'path': '~/notes/'}]
-
-let g:vimwiki_listsyms = ' .X'
-
-function! VimwikiLinkHandler(link)
-" Use Vim to open external files with the 'file:' scheme.  E.g.:
-let link = a:link
-if link =~# '^file:'
-        let link_infos = vimwiki#base#resolve_link(link)
-        if link_infos.filename == ''
-                echomsg 'Vimwiki Error: Unable to resolve link!'
-                return 0
-        else
-                exe 'edit ' . fnameescape(link_infos.filename)
-                return 1
-        endif
-else
-        return 0
-endif
-endfunction
-
-let g:tex_flavor = 'latex'
-let g:vimtex_quickfix_ignore_filters = [
-\ 'Overfull',
-\ 'Underfull',
-\ 'setting the option has no effect',
-\ 'functionality may be reduced/unavailable',
-\ 'Token not allowed in a PDF string',
-\ 'references',
-\ 'Empty bibliography',
-\ 'Please (re)run BibTeX on the file(s)',
-\]
-let g:Tex_MultipleCompileFormats = 'pdf,bibtex,pdf'
-let g:vimtex_quickfix_autoclose_after_keystrokes = 1
-let g:vimtex_view_method = 'mupdf'
-
-" calendar-vim
-let g:calendar_monday = 1
-let g:calendar_weeknm = 1
-
-" vim-fzf
-let g:fzf_layout = { 'down': '40%' }
-let g:fzf_buffers_jump = 1
-let g:fzf_preview_window = ['right:hidden', 'tab']
-
-" vim-snipmate
+" vim-snipmate {
+Plug 'https://github.com/tomtom/tlib_vim'
+Plug 'https://github.com/MarcWeber/vim-addon-mw-utils'
+Plug 'https://github.com/garbas/vim-snipmate'
 let g:snipMate = { 'snippet_version' : 1 }
+Plug 'https://github.com/honza/vim-snippets'
+" }
+
+" Initialize plugin system
+" (Automatically executes `filetype plugin indent on` and `syntax enable`)
+call plug#end()
+
+" vim-commentary: no psace. please!
+autocmd FileType * :let b:commentary_format = &commentstring
+
+
+" The following plugins are part of the default Vim installation:
+" ****************************************************************************
+
+" Enable extended % matching
+runtime macros/matchit.vim
+
+" netrw
+let g:netrw_liststyle = 3         " Tree view
+let g:netrw_banner = 1            " Enable banner
 
