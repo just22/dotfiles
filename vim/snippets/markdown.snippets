@@ -1,0 +1,27 @@
+snippet _sec
+	[SECTION]: # ===========================================================
+	# ${1:Title}
+	
+
+snippet _slide
+	[SLIDE]:   # -------------------------------------
+	## ${1:Title}
+
+snippet _blk
+	::: block
+	### ${1}
+	:::
+
+snippet _cols
+	::: {.columns align=${1}}
+	
+	::: {.column width="${2}%"}
+	${3}
+	:::
+	
+	:::
+
+snippet _col
+	::: {.column width="${1}%"}
+	${2}
+	:::
