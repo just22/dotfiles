@@ -511,7 +511,7 @@ command! DiffOrig
 " Read a file and insert its content at cursor position
 command! -complete=file -nargs=1 R .-1r <args>
 
-" A very basic calculator using bc
+" A very basic calculator using perl
 function! PerlCalc()
         let line=getline(".")
         execute 'silent r !perl -e "print ' . line . '"'
@@ -689,7 +689,7 @@ nmap <silent> <leader>7  :7b<CR>
 nmap <silent> <leader>8  :8b<CR>
 nmap <silent> <leader>9  :9b<CR>
 
-" ** = ** BC Calculator
+" ** = ** Perl Calculator
 nmap <silent> <leader>= :call PerlCalc()<CR>
 
 " ** A ** Tabular plugin
@@ -870,38 +870,6 @@ if &t_Co > 2 || has("gui_running")
                 colorscheme accent
         endif
 endif
-
-
-" Amend syntax highlighting and colors (preserving theme)
-" highlight Boolean       NONE
-" highlight Character     ctermfg=11 guifg=Yellow
-" highlight Comment       ctermfg=08 guifg=DarkGrey
-" highlight Conditional   ctermfg=13 guifg=Magenta
-" highlight Constant      NONE
-" highlight Define        ctermfg=13 guifg=Magenta
-" highlight Delimiter     NONE
-" highlight Float         NONE
-" highlight Function      NONE
-" highlight Identifier    NONE
-" highlight Include       ctermfg=13 guifg=Magenta
-" highlight Keyword       ctermfg=13 guifg=Magenta
-" highlight Label         ctermfg=13 guifg=Magenta
-" highlight Number        NONE
-" highlight Operator      NONE
-" highlight PreProc       ctermfg=13 guifg=Magenta
-" highlight Repeat        ctermfg=13 guifg=Magenta
-" highlight Special       NONE
-" highlight SpecialChar   NONE
-" highlight Statement     ctermfg=13 guifg=Magenta
-" highlight StorageClass  ctermfg=13 guifg=Magenta
-" highlight String        ctermfg=11 guifg=Yellow
-" highlight Structure     ctermfg=13 guifg=Magenta
-" highlight Tag           NONE
-" highlight Todo          ctermfg=11 guifg=Yellow
-" highlight Type          ctermfg=14 guifg=Cyan
-" highlight Typedef       ctermfg=13 guifg=Magenta
-" highlight MatchParen    ctermfg=00 guifg=Black
-" highlight Cursor        ctermfg=10 guifg=Black
 
 
 " ----------------------------------------------------------------------
