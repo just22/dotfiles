@@ -33,6 +33,10 @@ set autoread
 " Allow backspacing over everything in INSERT mode
 set backspace=indent,eol,start
 
+" Insert mode completion: insert the longest common text of the match and
+" always show a pop-up menu
+set completeopt=longest,menuone
+
 " Number of screen lines to use for the command-line window
 set cmdwinheight=5
 
@@ -91,9 +95,6 @@ set shell=/bin/sh
 
 " The time in milliseconds that is waited for a mapped key
 set timeoutlen=500
-
-" Do not set xterm title
-"set notitle
 
 " The time in milliseconds that is waited for a key code
 set ttimeout
@@ -154,7 +155,8 @@ if has('reltime')
         set incsearch
 endif
 
-" If a pattern contains an uppercase letter, it is case sensitive, otherwise, it is not
+" If a pattern contains an uppercase letter, it is case sensitive,
+" otherwise, it is not
 set smartcase
 
 
@@ -166,9 +168,7 @@ set smartcase
 set number
 
 " Show the line number relative to the line with the cursor
-if exists("+relativenumber")
-        set norelativenumber
-endif
+set norelativenumber
 
 " Do not show the cursor position all the time
 set noruler
@@ -195,12 +195,12 @@ set showtabline=0
 " ----------------------------------------------------------------------------
 " Undo
 " ----------------------------------------------------------------------------
-if exists("+undofile")
-        " Store undo info so you can undo previous actions even after you close and reopen a file (only in 7.3)
-        set undofile
-        " Store undo files in a fixed location, not current directory
-        set undodir=~/.vim/undo
-endif
+" Store undo info so you can undo previous actions even after you close and
+" reopen a file (starting from 7.3)
+set undofile
+
+" Store undo files in a fixed location, not current directory
+set undodir=~/.vim/undo
 
 
 " ----------------------------------------------------------------------------
@@ -259,184 +259,6 @@ set statusline+=[%l/%L\ %c]\                    " Cursor line / total lines
 set statusline+=%P                              " Percent through file
 
 
-" ----------------------------------------------------------------------------
-"  Plugins config section (using Vundle)
-" ----------------------------------------------------------------------------
-
-if isdirectory($HOME . "/.vim/bundles/vundle")
-
-        " Vundle set-up:
-        " git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundles/vundle
-        "
-        filetype off
-        set rtp+=~/.vim/bundles/vundle/
-        call vundle#rc("~/.vim/bundles")
-
-        call vundle#begin()
-
-        " Required {
-                Plugin 'gmarik/vundle'
-        " }
-
-        Plugin 'https://github.com/wincent/terminus'
-
-        Plugin 'https://github.com/jpalardy/vim-slime'
-
-        Plugin 'https://github.com/sk1418/QFGrep'
-
-        Plugin 'https://github.com/AndrewRadev/linediff.vim'
-
-        Plugin 'https://github.com/chrisbra/csv.vim'
-
-        " { vimwiki
-        Plugin 'https://github.com/mattn/calendar-vim'
-        Plugin 'https://github.com/vimwiki/vimwiki'
-        " }
-
-        Plugin 'https://github.com/godlygeek/tabular'
-
-        Plugin 'VisIncr'
-
-        Plugin 'https://github.com/ervandew/supertab'
-
-        Plugin 'https://github.com/christoomey/vim-tmux-navigator'
-
-        Plugin 'https://github.com/mbbill/undotree'
-
-        Plugin 'https://github.com/tpope/vim-commentary'
-
-        Plugin 'https://github.com/hrj/vim-drawit'
-
-        Plugin 'https://github.com/lervag/vimtex'
-
-        Plugin 'https://github.com/junegunn/fzf.vim'
-
-        " { vim-snipmate
-        Plugin 'https://github.com/tomtom/tlib_vim'
-        Plugin 'https://github.com/MarcWeber/vim-addon-mw-utils'
-        Plugin 'https://github.com/garbas/vim-snipmate'
-        Plugin 'https://github.com/honza/vim-snippets'
-        " }
-
-        " { Useful for gvim (and when colman cannot be used)
-        Plugin 'https://github.com/chriskempson/base16-vim'
-        " }
-
-        call vundle#end()
-
-        " Enable extended % matching
-        runtime macros/matchit.vim
-
-        " Enable file type detection and load indent files, to automatically do
-        " language-dependent indenting
-        "filetype plugin indent on
-        filetype plugin on
-
-        " terminus
-        let g:TerminusMouse = 0
-        let g:TerminusCursorShape=0
-
-        " vim-slime
-        if exists("$TMUX")
-                let g:slime_target = "tmux"
-                let g:slime_paste_file = "/tmp/$USER.vim-slime.paste"
-                let g:slime_default_config = {"socket_name": split($TMUX, ",")[0], "target_pane": ":.right"}
-                let g:slime_dont_ask_default = 1
-                let g:slime_no_mappings = 1
-        endif
-
-        " vim-notes
-        let g:notes_directories = ['$HOME/notes']
-        let g:notes_suffix = ".txt"
-        let g:notes_unicode_enabled = 0
-
-        " supertab (+ completion popup menu adjustment)
-        let g:SuperTabDefaultCompletionType = "context"
-        let g:SuperTabLongestHighlight = 1
-        let g:SuperTabMappingForward = "<F1>"
-        let g:SuperTabMappingBackward = "<S-F1>"
-        set completeopt=longest,menuone
-        inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
-
-        " vim-tmux-navigator
-        let g:tmux_navigator_no_mappings = 1
-        nmap <silent> <Esc>[1;5A :TmuxNavigateUp<CR>
-        nmap <silent> <Esc>[1;5B :TmuxNavigateDown<CR>
-        nmap <silent> <Esc>[1;5C :TmuxNavigateRight<CR>
-        nmap <silent> <Esc>[1;5D :TmuxNavigateLeft<CR>
-        nmap <silent> <Esc>[A    :TmuxNavigateUp<CR>
-        nmap <silent> <Esc>[B    :TmuxNavigateDown<CR>
-        nmap <silent> <Esc>[C    :TmuxNavigateRight<CR>
-        nmap <silent> <Esc>[D    :TmuxNavigateLeft<CR>
-        nmap <silent> <C-\>      :TmuxNavigatePrevious<CR>
-
-        " netrw (see http://ivanbrennan.nyc/blog/2014/01/16/rigging-vims-netrw)
-        let g:netrw_liststyle = 3         " 0: thin view; 3: tree view
-        let g:netrw_banner = 0            " No banner
-
-        " vimwiki
-        " let g:vimwiki_list = [{'path': '~/notes/',
-        "                      \ 'syntax': 'markdown', 'ext': '.md'}]
-        " let g:vimwiki_global_ext = 0
-
-        let g:vimwiki_list = [{'path': '~/notes/'}]
-
-        let g:vimwiki_listsyms = ' .X'
-
-        function! VimwikiLinkHandler(link)
-                " Use Vim to open external files with the 'file:' scheme.  E.g.:
-                let link = a:link
-                if link =~# '^file:'
-                        let link_infos = vimwiki#base#resolve_link(link)
-                        if link_infos.filename == ''
-                                echomsg 'Vimwiki Error: Unable to resolve link!'
-                                return 0
-                        else
-                                exe 'edit ' . fnameescape(link_infos.filename)
-                                return 1
-                        endif
-                else
-                        return 0
-                endif
-        endfunction
-
-        let g:tex_flavor = 'latex'
-        let g:vimtex_quickfix_ignore_filters = [
-            \ 'Overfull',
-            \ 'Underfull',
-            \ 'setting the option has no effect',
-            \ 'functionality may be reduced/unavailable',
-            \ 'Token not allowed in a PDF string',
-            \ 'references',
-            \ 'Empty bibliography',
-            \ 'Please (re)run BibTeX on the file(s)',
-        \]
-        let g:Tex_MultipleCompileFormats = 'pdf,bibtex,pdf'
-        let g:vimtex_quickfix_autoclose_after_keystrokes = 1
-        let g:vimtex_view_method = 'mupdf'
-
-        " calendar-vim
-        let g:calendar_monday = 1
-        let g:calendar_weeknm = 1
-
-endif
-
-" vim-snipmate
-let g:snipMate = { 'snippet_version' : 1 }
-
-
-" ----------------------------------------------------------------------------
-" Syntax highlighting & colorscheme
-" ----------------------------------------------------------------------------
-
-" Switch syntax highlighting on, when the terminal has colors
-if &t_Co > 2 || has("gui_running")
-        syntax on
-        set background=dark
-        colorscheme sterm
-
-endif
-
 " Add custom equation delimiters to syntax highlighting
 autocmd FileType tex syn region texMathZoneZ matchgroup=texStatement
     \ start="\\eqn{"
@@ -454,29 +276,11 @@ autocmd FileType tex syn region texMathZoneZ matchgroup=texStatement
 " Autocommands
 " ----------------------------------------------------------------------------
 
-" Put all autocmds in this group, so that they can be deleted easily
-augroup vimrcAutoCmd
-
+augroup vimAutoCmd
         autocmd!
 
-        " Highlight cursor line number in INSERT/REPLACE mode
-        autocmd InsertEnter *
-        \  let b:CursorLineNrBG = synIDattr(synIDtrans(hlID('CursorLineNr')), 'bg')
-        \| let b:CursorLineNrFG = synIDattr(synIDtrans(hlID('CursorLineNr')), 'fg')
-        \| hi CursorLineNr ctermbg=1
-        \| hi CursorLineNr ctermfg=13
-        autocmd InsertLeave *
-        \  exe 'hi CursorLineNr ctermbg=' . b:CursorLineNrBG . ' ctermfg=' . b:CursorLineNrFG
-
-        " " Change cursor shape in insert/replace/normal mode
-        " if &term =~ "^xterm" || &term =~ "^screen"
-        "         let &t_SI = "\<Esc>[6 q"
-        "         let &t_SR = "\<Esc>[4 q"
-        "         let &t_EI = "\<Esc>[2 q"
-        " endif
-
-        " For all text files set 'textwidth' to 78 characters
-        autocmd FileType text setlocal textwidth=78
+        " For all text files set 'textwidth' to 72 characters
+        autocmd FileType markdown,text,tex setlocal textwidth=72
 
         " Remove expandtab for Makefile and Python
         autocmd BufEnter [mM]akefile*,GNUmakefile,*.mk,*.mak,*.py
@@ -562,16 +366,17 @@ augroup END
 let g:LargeFile = 1024 * 1024 * 100
 augroup LargeFile
         autocmd!
-        autocmd BufReadPre *  let f = expand("<afile>")
-                           \| if getfsize(f) > g:LargeFile
-                           \|     set eventignore+=FileType
-                           \|     setlocal noswapfile
-                           \               bufhidden=unload
-                           \               buftype=nowrite
-                           \               undolevels=-1
-                           \| else
-                           \|     set eventignore-=FileType
-                           \| endif
+        autocmd BufReadPre *
+        \       let f = expand("<afile>")
+        \|      if getfsize(f) > g:LargeFile
+        \|          set eventignore+=FileType
+        \|          setlocal noswapfile
+        \                    bufhidden=unload
+        \                    buftype=nowrite
+        \                    undolevels=-1
+        \|      else
+        \|          set eventignore-=FileType
+        \|      endif
 augroup END
 
 " Open help in vertical split
@@ -580,19 +385,16 @@ augroup VimHelp
         autocmd BufEnter *.txt if &buftype == 'help' | wincmd L | endif
 augroup END
 
-" Vimwiki specific mappings
-augroup Vimwiki
+augroup AfterPluginsLoading
         autocmd!
-        autocmd FileType vimwiki
-            \  nmap <buffer> <Esc>[1;3C <Plug>VimwikiIncreaseLvlSingleItem
-            \| inoremap <buffer> <Esc>[1;3C <C-t>
-            \| nmap <buffer> <Esc>[1;3D <Plug>VimwikiDecreaseLvlSingleItem
-            \| inoremap <buffer> <Esc>[1;3D <C-d>
-        autocmd BufNewFile ~/notes/diary/*
-            \  silent execute
-            \  "0r !~/bin/vw-diary-tmpl" . " " . expand('%:t:r')
-            \| normal G
+        autocmd VimEnter *
+            \  if match(&runtimepath, 'fzf.vim') != -1
+            \|      nmap <silent> <leader>l  :Buffers<CR>
+            \| else
+            \|      nmap <leader>l  :ls<CR>:buffer<Space>
+            \| endif
 augroup END
+
 
 " ----------------------------------------------------------------------------
 " Custom functions and commands
@@ -709,6 +511,13 @@ command! DiffOrig
 " Read a file and insert its content at cursor position
 command! -complete=file -nargs=1 R .-1r <args>
 
+" A very basic calculator using bc
+function! PerlCalc()
+        let line=getline(".")
+        execute 'silent r !perl -e "print ' . line . '"'
+endfunction
+
+
 " ----------------------------------------------------------------------------
 " Normal mappings
 " ----------------------------------------------------------------------------
@@ -812,9 +621,9 @@ vmap gsp y
         \p
         \:unlet headLine<CR>
 
-" diff mode
-nnoremap <expr> <C-p> &diff ? '[cz.' : '<Nop>'
-nnoremap <expr> <C-n> &diff ? ']cz.' : '<Nop>'
+" diff mode / Current directory exploring/searching
+nnoremap <expr> <C-p> &diff ? '[cz.' : ':Files<CR>'
+nnoremap <expr> <C-n> &diff ? ']cz.' : ':Lexplore!<CR>'
 
 
 " ----------------------------------------------------------------------------
@@ -879,6 +688,9 @@ nmap <silent> <leader>6  :6b<CR>
 nmap <silent> <leader>7  :7b<CR>
 nmap <silent> <leader>8  :8b<CR>
 nmap <silent> <leader>9  :9b<CR>
+
+" ** = ** BC Calculator
+nmap <silent> <leader>= :call PerlCalc()<CR>
 
 " ** A ** Tabular plugin
 nmap <silent> <leader>a= :Tabularize /=<CR>
@@ -965,15 +777,20 @@ nmap <silent> <leader>iS o[................... snip ...................]<Esc>j0
 
 " ** K ** See killall keybind in autocmd section
 
-" ** L ** Buffer list
-nmap <leader>l  :ls<CR>:buffer<Space>
+" ** L ** See buffer list in autocmd section
 
 " ** M ** Move cursor line
 nmap <silent> <leader>m :call MoveCursorLine()<CR>:redraw!<CR>
 
+" ** N ** Current file's directory exploring
+nmap <silent> <leader>n :Lexplore! %:h<CR>
+
 " ** O ** Insert empty lines
 nnoremap <leader>o o<Esc>
 nnoremap <leader>O O<Esc>
+
+" ** N ** Current file's directory searching
+nmap <silent> <leader>p :Files %:h<CR>
 
 " ** Q ** Quickly close current buffer
 nmap <silent> <leader>q :bdelete<CR>
@@ -990,10 +807,6 @@ nmap <silent> <leader>sn :set number!<CR>
 nmap <silent> <leader>sr :set relativenumber!<CR>
 nmap <silent> <leader>st :set expandtab!<CR>:retab!<CR>:set expandtab?<CR>
 nmap <silent> <leader>sw :set wrap!<CR>:set wrap?<CR>
-
-" ** T ** Explore directory of current file
-nmap <silent> <leader>t :Explore<CR>
-nmap <silent> <leader>T :Vexplore!<CR>
 
 " ** U ** Underline
 nmap <leader>u yypVr=
@@ -1033,8 +846,62 @@ cabbrev _p r /tmp/$USER.vi.yank
 try
         source ~/.vim/plugins.vim
 catch
-        " Do not output any error msg in case no local vimrc exists
+        " Do not output an error msg in case no plugins' config file exists
 endtry
+
+
+" ----------------------------------------------------------------------------
+" Syntax highlighting & colorscheme
+" ----------------------------------------------------------------------------
+if &t_Co > 2 || has("gui_running")
+        syntax on
+        if filereadable(expand("$HOME/.config/tinted-theming/set_theme.vim"))
+                set background&         " Just a hack to force reloading the
+                                        " default colors; this way, light
+                                        " themes work, too (not clear why...)
+                let base16colorspace=256
+                source $HOME/.config/tinted-theming/set_theme.vim
+        else
+                let g:accent_colour = 'cyan'
+                let g:accent_darken = 0
+                let g:accent_invert_status = 0
+                let g:accent_auto_cwd_colour = 0
+                let g:accent_no_bg = 1
+                colorscheme accent
+        endif
+endif
+
+
+" Amend syntax highlighting and colors (preserving theme)
+" highlight Boolean       NONE
+" highlight Character     ctermfg=11 guifg=Yellow
+" highlight Comment       ctermfg=08 guifg=DarkGrey
+" highlight Conditional   ctermfg=13 guifg=Magenta
+" highlight Constant      NONE
+" highlight Define        ctermfg=13 guifg=Magenta
+" highlight Delimiter     NONE
+" highlight Float         NONE
+" highlight Function      NONE
+" highlight Identifier    NONE
+" highlight Include       ctermfg=13 guifg=Magenta
+" highlight Keyword       ctermfg=13 guifg=Magenta
+" highlight Label         ctermfg=13 guifg=Magenta
+" highlight Number        NONE
+" highlight Operator      NONE
+" highlight PreProc       ctermfg=13 guifg=Magenta
+" highlight Repeat        ctermfg=13 guifg=Magenta
+" highlight Special       NONE
+" highlight SpecialChar   NONE
+" highlight Statement     ctermfg=13 guifg=Magenta
+" highlight StorageClass  ctermfg=13 guifg=Magenta
+" highlight String        ctermfg=11 guifg=Yellow
+" highlight Structure     ctermfg=13 guifg=Magenta
+" highlight Tag           NONE
+" highlight Todo          ctermfg=11 guifg=Yellow
+" highlight Type          ctermfg=14 guifg=Cyan
+" highlight Typedef       ctermfg=13 guifg=Magenta
+" highlight MatchParen    ctermfg=00 guifg=Black
+" highlight Cursor        ctermfg=10 guifg=Black
 
 
 " ----------------------------------------------------------------------
@@ -1045,5 +912,4 @@ try
 catch
         " Do not output any error msg in case no local vimrc exists
 endtry
-
 
