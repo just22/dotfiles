@@ -112,7 +112,6 @@ weather         - Weather forecast
 bln             - List broken links (-l for long format)
 c               - Clear screen
 catn            - cat -n
-common          - common lines
 cutf            - Select nth field of line
 d               - Current working dir
 exev            - xev with more effective output
@@ -169,10 +168,12 @@ gst             - Show the working tree and index status
 glst            - Show the working tree and index status (long format)
 
 # ----------------------------------------------------------------------
-# Change XTerm colorscheme on-the-fly
+# Change terminal colorscheme on-the-fly
 #
-dark            - Switch current xterm colors to solarized-dark
-light           - Switch current xterm colors to solarized-light
+dark            - solarized-dark theme
+light           - solarized-light theme
+ocean           - ocean theme
+nord            - nord theme
 
 # ----------------------------------------------------------------------
 # dict.org searches
@@ -188,7 +189,7 @@ joke            - Definition from The Devil's Dictionary (1881-1906)
 
 __MYALIAS__
 }
-myalias() { _myalias | grep ${1-.\*} | less -cF; }
+myalias() { _myalias | grep ${1-.\*} | less -F; }
 
 
 # ----------------------------------------------------------------------
@@ -486,7 +487,6 @@ alias weather='curl -s wttr.in/Milan'
 #
 alias c='clear'
 alias catn='cat -n'
-alias common='grep -Fxf'
 alias cutf='tr -s "\t" " " | sed "s/^ //" | cut -d" " -f'
 alias d='echo $PWD'
 alias fpath='readlink -f'
@@ -610,12 +610,10 @@ cvs_adddir() {
 # ----------------------------------------------------------------------
 # Change XTerm colorscheme on-the-fly
 #
-alias dark='colman set solarized-dark'
-alias dark-ocean='colman set ocean'
-alias dark-lakeside='colman set atelier-lakeside'
-alias dark-green='colman set green-screen'
-alias light='colman set solarized-light'
-alias light-cave='colman set atelier-cave-light'
+alias dark='base16_solarized-dark'
+alias light='base16_solarized-light'
+alias ocean='base16_ocean'
+alias nord='base16_nord'
 
 # ----------------------------------------------------------------------
 # dict.org lookups
