@@ -20,6 +20,8 @@ Plug 'https://github.com/tinted-theming/base16-vim'
 
 Plug 'https://github.com/chrisbra/csv.vim'
 
+Plug 'https://github.com/junegunn/vim-slash'
+
 Plug 'https://github.com/jpalardy/vim-slime'
 if exists("$TMUX")
 let g:slime_target = "tmux"
@@ -86,7 +88,7 @@ Plug 'https://github.com/honza/vim-snippets'
 " (Automatically executes `filetype plugin indent on` and `syntax enable`)
 call plug#end()
 
-" vim-commentary: no psace. please!
+" vim-commentary: no space. please!
 autocmd FileType * :let b:commentary_format = &commentstring
 
 
