@@ -33,9 +33,8 @@ set autoread
 " Allow backspacing over everything in INSERT mode
 set backspace=indent,eol,start
 
-" Insert mode completion: insert the longest common text of the match and
-" always show a pop-up menu
-set completeopt=longest,menuone
+" Insert mode completion: always show a pop-up menu
+set completeopt=menuone
 
 " Number of screen lines to use for the command-line window
 set cmdwinheight=5
