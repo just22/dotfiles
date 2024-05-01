@@ -1,6 +1,14 @@
 " ----------------------------------------------------------------------------
-"  Vim configuration file
+"  $Id$
+"
+"  _    __ _               ______               ____ _           ______ _  __
+" | |  / /(_)____ ___     / ____/____   ____   / __/(_)____ _   / ____/(_)/ /___
+" | | / // // __ `__ \   / /    / __ \ / __ \ / /_ / // __ `/  / /_   / // // _ \
+" | |/ // // / / / / /  / /___ / /_/ // / / // __// // /_/ /  / __/  / // //  __/
+" |___//_//_/ /_/ /_/   \____/ \____//_/ /_//_/  /_/ \__, /  /_/    /_//_/ \___/
+"                                                   /____/
 " ----------------------------------------------------------------------------
+
 
 " ----------------------------------------------------------------------------
 " Preliminary settings
@@ -189,6 +197,54 @@ set splitright
 
 " Never show tab page labels
 set showtabline=0
+
+
+" ----------------------------------------------------------------------------
+" The following settings are from vim-sensible
+" ----------------------------------------------------------------------------
+
+" Disable completing keywords in included files (e.g., #include in C), that
+" can result in the slow, recursive scanning of hundreds of files of dubious
+" relevance
+set complete-=i
+
+" Bases Vim will consider for numbers when using CTRL-A and CTRL-X
+set nrformats=alpha,bin,hex
+
+" Horizontal scrolling
+set sidescroll=1
+set sidescrolloff=5
+
+" Display as much as possible of the last line in a window,"@@@" at the
+" beginning
+set display=truncate
+
+" Replace the check for a tags file in the parent directory of the current
+" file with a check in every ancestor directory
+if has('path_extra') && (',' . &g:tags . ',') =~# ',\./tags,'
+        setglobal tags-=./tags tags-=./tags; tags^=./tags;
+endif
+
+" Persist g:UPPERCASE variables, used by some plugins, in .viminfo
+if !empty(&viminfo)
+        set viminfo^=!
+endif
+
+" Saving options in session and view files causes more problems than it
+" solves, so disable it
+set sessionoptions-=options
+set viewoptions-=options
+
+" Disable a legacy behavior that can break plugin maps
+if has('langmap') && exists('+langremap') && &langremap
+        set nolangremap
+endif
+
+" Correctly highlight $() and other modern affordances in filetype=sh
+if !exists('g:is_posix') &&
+\  !exists('g:is_bash') && !exists('g:is_kornshell') && !exists('g:is_dash')
+        let g:is_posix = 1
+endif
 
 
 " ----------------------------------------------------------------------------
