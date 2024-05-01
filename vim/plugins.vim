@@ -106,3 +106,6 @@ runtime macros/matchit.vim
 let g:netrw_liststyle = 3         " Tree view
 let g:netrw_banner = 1            " Enable banner
 
+" Enable the :Man command
+runtime ftplugin/man.vim
+
