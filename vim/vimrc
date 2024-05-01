@@ -839,7 +839,17 @@ cabbrev _y w! /tmp/$USER.vi.yank
 cabbrev _p r /tmp/$USER.vi.yank
 
 
-" ----------------------------------------------------------------------
+" ----------------------------------------------------------------------------
+" Source local vimrc file
+" ----------------------------------------------------------------------------
+try
+        source ~/.vim/vimrc.local
+catch
+        " Do not output any error msg in case no local vimrc exists
+endtry
+
+
+" ----------------------------------------------------------------------------
 " Plugins
 " ----------------------------------------------------------------------------
 try
@@ -855,6 +865,30 @@ endtry
 if &t_Co > 2 || has("gui_running")
         syntax on
         if filereadable(expand("$HOME/.config/tinted-theming/set_theme.vim"))
+
+                function! s:base16_customize() abort
+                        " Disable italic (on demand)
+                        if exists("g:base16_disable_italic")
+                                let l:colorscheme = getcompletion('', 'highlight')
+                                for hi in l:colorscheme
+                                        if synIDattr(synIDtrans(hlID(hi)), 'italic')
+                                                exec 'highlight ' . hi . ' cterm=none gui=none'
+                                        endif
+                                endfor
+                        endif
+
+                        call Base16hi("Visual",     g:base16_gui06, g:base16_gui02, g:base16_cterm06, g:base16_cterm02, "", "")
+                        call Base16hi("Character",  g:base16_gui0D, "", g:base16_cterm0D, "", "", "")
+                        call Base16hi("Statement",  g:base16_gui0D, "", g:base16_cterm0D, "", "", "")
+                        call Base16hi("MatchParen", g:base16_gui06, g:base16_gui02, g:base16_cterm06, g:base16_cterm02,  "", "")
+                        call Base16hi("DiffText",   g:base16_gui0D, "", g:base16_cterm0D, "", "inverse", "")
+                endfunction
+
+                augroup colorscheme_change
+                        autocmd!
+                        autocmd ColorScheme * call s:base16_customize()
+                augroup END
+
                 set background&         " Just a hack to force reloading the
                                         " default colors; this way, light
                                         " themes work, too (not clear why...)
@@ -866,17 +900,12 @@ if &t_Co > 2 || has("gui_running")
                 let g:accent_invert_status = 0
                 let g:accent_auto_cwd_colour = 0
                 let g:accent_no_bg = 1
-                colorscheme accent
+                try
+                        colorscheme accent
+                catch
+                        " Do not output an error msg in case no colorscheme exists
+                endtry
         endif
 endif
 
-
-" ----------------------------------------------------------------------
-" Source local vimrc file
-" ----------------------------------------------------------------------------
-try
-        source ~/.vim/vimrc.local
-catch
-        " Do not output any error msg in case no local vimrc exists
-endtry
 
