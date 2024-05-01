@@ -11,6 +11,10 @@ if empty(glob(data_dir . '/autoload/plug.vim'))
         autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
 endif
 
+" Note: Putting customizations in between plug#begin and plug#end means setting
+"       them *before* activating the plugins, which is the right thing to do in
+"       most of the cases
+
 call plug#begin('~/.vim/plug_dir')
 
 " Colorschemes {
