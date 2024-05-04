@@ -113,7 +113,7 @@ _ps1_cmd() {
         # Set the xterm's (or tmux pane's) title
 	if [ -z "$INSIDE_EMACS" ]; then 
 	    case "$TERM" in
-	    xterm*|screen*)
+	    xterm*|screen*|tmux*)
 		    set_title "[$0] [$PWD] [Last cmd:  $(tail -1 "$HISTFILE")]"
 		    ;;
 	    *)
