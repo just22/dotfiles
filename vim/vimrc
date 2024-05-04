@@ -677,7 +677,7 @@ vmap <leader>+ :II 1 ''<CR>
 vmap <leader>- :II -1 ''<CR>
 
 " ** - ** Ruler
-nmap <leader>-- o<Esc>72i-<Esc>gcc73\|D
+nmap <leader>- o<Esc>72i-<Esc>gcc73\|D
 
 " ** ., ** fzf
 nnoremap <silent> <leader>. :Files .<CR>
