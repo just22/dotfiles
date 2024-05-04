@@ -362,7 +362,7 @@ augroup vimAutoCmd
         autocmd BufWinLeave * if expand("%") != "" | mkview | endif
 
         " Return to NORMAL mode when leaving a buffer
-        autocmd BufLeave,WinLeave * stopinsert
+        autocmd BufLeave,WinLeave,FocusLost * stopinsert
 
         " Autosave scratchpad buffer
         autocmd BufLeave ${HOME}/.scratchpad write
