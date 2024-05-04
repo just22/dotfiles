@@ -22,10 +22,6 @@ Plug 'https://github.com/alligator/accent.vim'
 Plug 'https://github.com/tinted-theming/base16-vim'
 " }
 
-Plug 'https://github.com/chrisbra/csv.vim'
-
-Plug 'https://github.com/junegunn/vim-slash'
-
 Plug 'https://github.com/jpalardy/vim-slime'
 if exists("$TMUX")
 let g:slime_target = "tmux"
