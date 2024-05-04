@@ -72,20 +72,6 @@ set history=200
 " been typed
 set lazyredraw
 
-" Enable mouse support
-" In many terminal emulators the mouse works just fine. By enabling it
-" you can position the cursor, visually select and scroll with the mouse.
-" Only xterm can grab the mouse events when using the shift key, for other
-" terminals use ":", select text and press Esc.
-if has('mouse')
-        if &term =~ 'xterm'
-                set mouse=a
-                set ttymouse=sgr
-        else
-                set mouse=nvi
-        endif
-endif
-
 " Disable beeping (aka bell) and window flashing
 set noerrorbells visualbell t_vb=
 
@@ -102,6 +88,10 @@ set shell=/bin/sh
 
 " The time in milliseconds that is waited for a mapped key
 set timeoutlen=500
+
+" Set terminal title (and restore the previous one on exit)
+set title
+set titleold=
 
 " The time in milliseconds that is waited for a key code
 set ttimeout
@@ -134,12 +124,6 @@ set expandtab
 " Number of spaces that a <Tab> in the file counts for
 set tabstop=8
 
-" In a TMUX session, set the pane (instead of xterm's) title
-if exists("$TMUX")
-        set t_ts=]2;
-        set t_fs=\\
-endif
-
 " Number of spaces to use for each step of (auto)indent
 set shiftwidth=8
 
@@ -158,9 +142,7 @@ set hlsearch
 set ignorecase
 
 " While typing a search command, show where the pattern matches
-if has('reltime')
-        set incsearch
-endif
+set incsearch
 
 " If a pattern contains an uppercase letter, it is case sensitive,
 " otherwise, it is not
@@ -379,9 +361,6 @@ augroup vimAutoCmd
         " Save the contents of the current window
         autocmd BufWinLeave * if expand("%") != "" | mkview | endif
 
-        " VCS helpers
-        autocmd BufRead * call VCSmaps()
-
         " Return to NORMAL mode when leaving a buffer
         autocmd BufLeave,WinLeave * stopinsert
 
@@ -447,6 +426,15 @@ augroup AfterPluginsLoading
             \|      nmap <silent> <leader>l  :Buffers<CR>
             \| else
             \|      nmap <leader>l  :ls<CR>:buffer<Space>
+            \| endif
+augroup END
+
+" Automatically copy all yanks to system clipboard
+augroup clipboard
+        autocmd!
+        autocmd TextYankPost *
+            \  if v:event.regname==''&&v:event.operator=='y'
+            \|   let @+=join(v:event.regcontents, "\n")
             \| endif
 augroup END
 
@@ -520,41 +508,10 @@ function! MoveCursorLine(...)
         execute "normal " . l:cmd
 endfunction
 
-" VCS helpers
-function! VCScmd(...)
-        let vcscmd  = a:1
-        let vcsfile = a:2
-        let dodiff  = (a:0 >= 3) ? a:3 : 0
-        tab split
-        leftabove vertical new
-        setlocal nobuflisted buftype=nofile bufhidden=wipe noswapfile
-        execute 'silent r !' . vcscmd . ' ' . vcsfile
-        silent 1d
-        setlocal nomodifiable
-        if (dodiff == 1)
-                windo diffthis
-        endif
-        normal <C-w>w
-endfunction
-
-function! VCSmaps()
-        if isdirectory(expand('%:.:h') . '/' . 'CVS')
-                nmap <buffer> <silent> <leader>vd :call VCScmd('cvs -q update -p', expand('%'), 1)<CR>
-                nmap <buffer> <silent> <leader>vD :call VCScmd('cvs diff', expand('%'))<CR>
-                nmap <buffer> <silent> <leader>vh :call VCScmd('cvs log', expand('%'))<CR>
-        elseif isdirectory(expand('%:.:h') . '/' . '.SYNC')
-                nmap <buffer> <silent> <leader>vd :call VCScmd('~/bin/dss-cat', expand('%'), 1)<CR>
-                nmap <buffer> <silent> <leader>vD :call VCScmd('dssc diff -kk -unified -version Latest', expand('%'))<CR>
-                nmap <buffer> <silent> <leader>vh :call VCScmd('dssc vhist', expand('%'))<CR>
-        endif
-endfunction
-
 " If quickfix is the last window, quit
 function! QuitIfOnlyQuickfix()
-        if &buftype=="quickfix"
-                if winnr('$') < 2
-                        quit
-                endif
+        if (&buftype=="quickfix") && (winnr('$') < 2)
+                quit
         endif
 endfunction
 
@@ -572,38 +529,38 @@ function! PerlCalc()
         execute 'silent r !perl -e "print ' . line . '"'
 endfunction
 
+" Return selected text
+function! s:GetSelectedText()
+        let l:origUnnamedReg = getreg('"')
+        let l:origUnnamedRegtype = getregtype('"')
+        norm gvy
+        let l:ret = getreg('"')
+        call setreg('"', l:origUnnamedReg, l:origUnnamedRegtype)
+        exe "norm \<Esc>"
+        return l:ret
+endfunction
+
 
 " ----------------------------------------------------------------------------
-" Normal mappings
+" Normal/insert/visual mode mappings (without <leader> key)
 " ----------------------------------------------------------------------------
+
+" Use <ESC> to clear hlsearch, too
+nnoremap <silent> <ESC> :noh<CR><ESC>
 
 " Make jumping to a marked line more intuitive
 nnoremap ' `
-
-" Search for visual selection
-vnoremap * <Esc>/<C-R>*<CR>
-vnoremap # <Esc>?<C-R>*<CR>
 
 " Undo tree
 nmap <F4> :UndotreeToggle<CR>
 
 " Output the current syntax group
 nmap <F10> :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans<'
-           \ . synIDattr(synID(line("."),col("."),0),"name") . "> lo<"
-           \ . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">"<CR>
+    \ . synIDattr(synID(line("."),col("."),0),"name") . "> lo<"
+    \ . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">"<CR>
 
 " Always go to the beginning of a line before doing a 'gF' operation
 nnoremap gF 0gF
-
-" Fix default regex handling
-"nnoremap / /\v
-"vnoremap / /\v
-"nnoremap <leader>/ /\V
-"vnoremap <leader>/ /\V
-"nnoremap ? ?\v
-"vnoremap ? ?\v
-"nnoremap <leader>? ?\V
-"vnoremap <leader>? ?\V
 
 " Use right movement keys!
 nnoremap j  gj
@@ -677,8 +634,15 @@ vmap gsp y
         \:unlet headLine<CR>
 
 " diff mode / Current directory exploring/searching
-nnoremap <expr> <C-p> &diff ? '[cz.' : ':Files<CR>'
-nnoremap <expr> <C-n> &diff ? ']cz.' : ':Lexplore!<CR>'
+nnoremap <silent> <expr> <C-p> &diff ? '[cz.' : ':Files<CR>'
+nnoremap <silent> <expr> <C-n> &diff ? ']cz.' : ':silent Lexplore!<CR>'
+
+" Search for selected text
+xnoremap <silent> * :call setreg("/",
+    \ substitute(<SID>GetSelectedText(), '\_s\+', '\\_s\\+', 'g'))<CR>n
+
+xnoremap <silent> # :call setreg("?",
+    \ substitute(<SID>GetSelectedText(), '\_s\+', '\\_s\\+', 'g'))<CR>n
 
 
 " ----------------------------------------------------------------------------
@@ -838,13 +802,13 @@ nmap <silent> <leader>iS o[................... snip ...................]<Esc>j0
 nmap <silent> <leader>m :call MoveCursorLine()<CR>:redraw!<CR>
 
 " ** N ** Current file's directory exploring
-nmap <silent> <leader>n :Lexplore! %:h<CR>
+nmap <silent> <leader>n :silent Lexplore! %:h<CR>
 
 " ** O ** Insert empty lines
 nnoremap <leader>o o<Esc>
 nnoremap <leader>O O<Esc>
 
-" ** N ** Current file's directory searching
+" ** P ** Current file's directory searching
 nmap <silent> <leader>p :Files %:h<CR>
 
 " ** Q ** Quickly close current buffer
@@ -866,8 +830,7 @@ nmap <silent> <leader>sw :set wrap!<CR>:set wrap?<CR>
 " ** U ** Underline
 nmap <leader>u yypVr=
 
-" ** V ** Restore the cursor position in the current window
-"         (from last edit session); see also VCSmaps
+" ** V ** Restore the cursor position in the current window (from last edit session)
 nmap <silent> <leader>v :loadview<CR>
 
 " ** Y ** Copy the current buffer filename (with full path)
