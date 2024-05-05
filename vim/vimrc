@@ -65,7 +65,7 @@ set formatoptions+=j
 " Make a buffer hidden when it is |abandon|ed (instead of unloading it)
 set hidden
 
-" Keep 200 lines of command line history
+" Keep 200 lines of command-line history
 set history=200
 
 " Do not redraw the screen while executing commands that have not
@@ -85,6 +85,9 @@ nmap <silent> <F12> :set paste!<CR>
 
 " Command for starting a shell
 set shell=/bin/sh
+
+" Jump to the window containing the specified buffer, if it exists
+set switchbuf=useopen
 
 " The time in milliseconds that is waited for a mapped key
 set timeoutlen=500
@@ -316,10 +319,10 @@ autocmd FileType tex syn region texMathZoneZ matchgroup=texStatement
 augroup vimAutoCmd
         autocmd!
 
-        " For all text files set 'textwidth' to 72 characters
-        autocmd FileType markdown,text,tex setlocal textwidth=72
+        " For all text files set 'textwidth' to 78 characters
+        autocmd FileType markdown,text,tex setlocal textwidth=78
 
-        " Remove expandtab for Makefile and Python
+        " Remove expandtab for Makefile and Python files
         autocmd BufEnter [mM]akefile*,GNUmakefile,*.mk,*.mak,*.py
             \ setlocal noexpandtab nolist
 
@@ -350,7 +353,7 @@ augroup vimAutoCmd
         endif
 
         " In mutt/claws-mail/thunderbird (external editor):
-        " 72-char per line max, set en spell checker
+        " 78-char per line max, set en spell checker
         autocmd BufRead ~/.mutt/tmp/mutt-* :source ~/.vim/mutt.vim
         autocmd BufRead ~/.claws-mail/tmp/tmpmsg.* :source ~/.vim/claws-mail.vimrc
         autocmd BufRead /tmp/*.eml :source ~/.vim/mutt.vim
@@ -385,9 +388,11 @@ augroup vimAutoCmd
         " (happens when dropping a file on gvim) and for a commit message (it's
         " likely a different one than last time).
         autocmd BufReadPost *
-            \  if line("'\"") >= 1 && line("'\"") <= line("$") && &ft !~# 'commit'
-            \|     exe "normal! g`\""
+            \  if line("'\"") >= 1 && line("'\"") <= line("$")
+            \|     execute "normal! g`\""
             \| endif
+        autocmd BufReadPost *COMMIT*,*commit*
+            \  execute "normal gg"
 
         " Setting appropriate type for files with odd names/extensions
         autocmd BufNewFile,BufRead *.jwmrc set filetype=xml
@@ -537,48 +542,11 @@ endfunction
 function! s:GetSelectedText()
         let l:origUnnamedReg = getreg('"')
         let l:origUnnamedRegtype = getregtype('"')
-        norm gvy
+        normal gvy
         let l:ret = getreg('"')
         call setreg('"', l:origUnnamedReg, l:origUnnamedRegtype)
-        exe "norm \<Esc>"
+        execute "normal \<Esc>"
         return l:ret
-endfunction
-
-" Journals
-function! DailyJournal()
-        let l:jrnl_dir = $HOME . "/.journal"
-        if !isdirectory(l:jrnl_dir)
-                call mkdir(l:jrnl_dir)
-        endif
-
-        let l:jrnl_file = l:jrnl_dir . "/" . strftime('%Y-%m-%d') . ".md"
-        if !filereadable(l:jrnl_file)
-                let l:date = "# " . strftime('%a, %d %b %Y')
-                call writefile([l:date], l:jrnl_file)
-        endif
-        call writefile([""], l:jrnl_file, "a")
-        call writefile(["## " . strftime('%H:%M')], l:jrnl_file, "a")
-        execute "vsplit" l:jrnl_file
-        normal Go
-endfunction
-
-function! ProjectJournal()
-        if !exists("$G_WORKSPACE")
-                echo "No project configured"
-                return
-        endif
-
-        let l:jnrl_file = $G_WORKSPACE . "/journal.md"
-        if !filereadable(l:jnrl_file)
-                call writefile(["# Journal file for:"], l:jnrl_file)
-                call writefile(["# Project: " . $PROJECT], l:jnrl_file, "a")
-                call writefile(["# Config:  " . $CONFIG],  l:jnrl_file, "a")
-                call writefile(["# Design:  " . $DESIGN_NAME], l:jnrl_file, "a")
-        endif
-        call writefile([""], l:jnrl_file, "a")
-        call writefile(["## " . strftime('%a, %d %b %Y - %H:%M')], l:jnrl_file, "a")
-        execute "vsplit" l:jnrl_file
-        normal Go
 endfunction
 
 
@@ -639,8 +607,8 @@ cnoremap QA qa
 " Number incr/decr
 nnoremap + <C-a>
 nnoremap - <C-x>
-vnoremap <silent> + :norm <CR>
-vnoremap <silent> - :norm <CR>
+vnoremap <silent> + :normal <CR>
+vnoremap <silent> - :normal <CR>
 
 " Window zooming
 nnoremap <C-w><C-u> <C-w>o
@@ -657,26 +625,6 @@ vnoremap > >gv
 " Map <C-Tab> to <Tab> to allow inserting a tab character not at the beginning
 " of the line (when g:SuperTabMappingForward is set to '<tab>')
 inoremap <Esc>[27;5;9~ <Tab>
-
-" Scratchpad
-nmap gso :vsplit ${HOME}/.scratchpad<CR>G
-nmap gsc :vsplit ${HOME}/.scratchpad<CR>
-        \:1,$d<CR>
-        \72i-<Esc>
-        \o This is the scratchpad buffer!!!<CR><Esc>
-        \72i-<Esc>
-        \o<Esc>
-vmap gsp y
-        \:let headLine = "[... From: " . expand("%:p") . " ...]"<CR>
-        \:vsplit ${HOME}/.scratchpad<CR>
-        \Go<Esc>
-        \:put =headLine<CR>
-        \p
-        \:unlet headLine<CR>
-
-" Journals
-nmap <silent> gjd :call DailyJournal()<CR>
-nmap <silent> gjp :call ProjectJournal()<CR>
 
 " diff mode / Current directory exploring/searching
 nnoremap <silent> <expr> <C-p> &diff ? '[cz.' : ':Files<CR>'
@@ -723,7 +671,7 @@ vmap <leader>+ :II 1 ''<CR>
 vmap <leader>- :II -1 ''<CR>
 
 " ** - ** Ruler
-nmap <leader>- o<Esc>72i-<Esc>gcc2\|r 73\|D
+nmap <leader>- o<Esc>78i-<Esc>gcc2\|r 79\|D
 
 " ** ., ** fzf
 nnoremap <silent> <leader>. :Files .<CR>
@@ -886,22 +834,82 @@ nmap <silent> <leader>yy :let @* = expand("%:p")<CR>
 
 
 " ----------------------------------------------------------------------------
-" Abbreviations
+" Scratchpad
 " ----------------------------------------------------------------------------
+command! ScratchpadOpen
+    \  execute "vert sbuffer" . $HOME . "/.scratchpad"
+    \| normal G
+nnoremap <silent> gso :ScratchpadOpen<CR>
 
-" cabbrev f    find
-" cabbrev sf   sfind
-" cabbrev vsf  vertical sfind
+command! ScratchpadClear
+    \  execute "vert sbuffer " . $HOME . "/.scratchpad"
+    \| 1,$d
+    \| normal 78i-<Esc>o This is the scratchpad buffer<CR><Esc>78i-<Esc>o
+noremap <silent> gsc :ScratchpadClear<CR>
 
-" " Mail
-" iabbrev     _h   Hello
-" iabbrev     _br  Best regards
-" iabbrev     _all All the best
-" iabbrev     _t   Thanks in advance
+command! -range ScratchpadPaste
+    \  execute <line1> . "," . <line2> . "y"
+    \| execute "vert sbuffer" $HOME . "/.scratchpad"
+    \| execute "normal o<Esc>o[... from file: " . expand("%:p") . " ...]"
+    \| normal pG
+noremap <silent> gsp :ScratchpadPaste<CR>
 
-" Copy/paste between sessions
-cabbrev _y w! /tmp/$USER.vi.yank
-cabbrev _p r /tmp/$USER.vi.yank
+
+" ----------------------------------------------------------------------------
+" Journals
+" ----------------------------------------------------------------------------
+function! DailyJournal()
+        let l:jrnl_dir = $HOME . "/.journal"
+        if !isdirectory(l:jrnl_dir)
+                call mkdir(l:jrnl_dir)
+        endif
+
+        let l:jrnl_file = l:jrnl_dir . "/" . strftime('%Y-%m-%d') . ".md"
+        execute "vert sbuffer " . l:jrnl_file
+        if !filereadable(l:jrnl_file)
+                let l:date = "# " . strftime('%a, %d %b %Y')
+                call writefile([l:date], l:jrnl_file)
+        endif
+        call writefile([""], l:jrnl_file, "a")
+        call writefile(["## " . strftime('%H:%M')], l:jrnl_file, "a")
+        execute "e!"
+        normal Go
+endfunction
+command! Journal :call DailyJournal()
+nmap <silent> gjd :Journal<CR>
+
+function! ProjectJournal()
+        if !exists("$G_WORKSPACE")
+                echo "No project configured"
+                return
+        endif
+
+        let l:jnrl_file = $G_WORKSPACE . "/journal.md"
+        execute "vert sbuffer " . l:jnrl_file
+        if !filereadable(l:jnrl_file)
+                call writefile(["# Journal file for:"], l:jnrl_file)
+                call writefile(["# Project: " . $PROJECT], l:jnrl_file, "a")
+                call writefile(["# Config:  " . $CONFIG],  l:jnrl_file, "a")
+                call writefile(["# Design:  " . $DESIGN_NAME], l:jnrl_file, "a")
+        endif
+        call writefile([""], l:jnrl_file, "a")
+        call writefile(["## " . strftime('%a, %d %b %Y - %H:%M')], l:jnrl_file, "a")
+        execute "e!"
+        normal Go
+endfunction
+command! JournalPrj :call ProjectJournal()
+nmap <silent> gjp :JournalPrj<CR>
+
+
+" ----------------------------------------------------------------------------
+" Yank/paste to/from external file
+" ----------------------------------------------------------------------------
+command! -range YankExt
+    \ execute <line1> . "," . <line2> . "w! /tmp/" . $USER . ".vi.yank"
+noremap <silent> _y :YankExt<CR>
+
+command! PasteExt execute "r /tmp/" . $USER . ".vi.yank"
+noremap <silent> _p :PasteExt<CR>
 
 
 " ----------------------------------------------------------------------------
