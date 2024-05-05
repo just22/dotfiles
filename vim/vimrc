@@ -365,7 +365,11 @@ augroup vimAutoCmd
         autocmd BufLeave,WinLeave,FocusLost * stopinsert
 
         " Autosave scratchpad buffer
-        autocmd BufLeave ${HOME}/.scratchpad write
+        autocmd BufLeave $HOME/.scratchpad write
+
+        " Autosave journal files
+        autocmd BufLeave $HOME/.journal/*.md write
+        autocmd BufLeave $G_WORKSPACE/journal.md write
 
         " In quickfix window, <CR> will just locate the match, without jumping
         autocmd FileType qf nnoremap <buffer> <CR> <CR><C-W>p
@@ -540,13 +544,50 @@ function! s:GetSelectedText()
         return l:ret
 endfunction
 
+" Journals
+function! DailyJournal()
+        let l:jrnl_dir = $HOME . "/.journal"
+        if !isdirectory(l:jrnl_dir)
+                call mkdir(l:jrnl_dir)
+        endif
+
+        let l:jrnl_file = l:jrnl_dir . "/" . strftime('%Y-%m-%d') . ".md"
+        if !filereadable(l:jrnl_file)
+                let l:date = "# " . strftime('%a, %d %b %Y')
+                call writefile([l:date], l:jrnl_file)
+        endif
+        call writefile([""], l:jrnl_file, "a")
+        call writefile(["## " . strftime('%H:%M')], l:jrnl_file, "a")
+        execute "vsplit" l:jrnl_file
+        normal Go
+endfunction
+
+function! ProjectJournal()
+        if !exists("$G_WORKSPACE")
+                echo "No project configured"
+                return
+        endif
+
+        let l:jnrl_file = $G_WORKSPACE . "/journal.md"
+        if !filereadable(l:jnrl_file)
+                call writefile(["# Journal file for:"], l:jnrl_file)
+                call writefile(["# Project: " . $PROJECT], l:jnrl_file, "a")
+                call writefile(["# Config:  " . $CONFIG],  l:jnrl_file, "a")
+                call writefile(["# Design:  " . $DESIGN_NAME], l:jnrl_file, "a")
+        endif
+        call writefile([""], l:jnrl_file, "a")
+        call writefile(["## " . strftime('%a, %d %b %Y - %H:%M')], l:jnrl_file, "a")
+        execute "vsplit" l:jnrl_file
+        normal Go
+endfunction
+
 
 " ----------------------------------------------------------------------------
 " Normal/insert/visual mode mappings (without <leader> key)
 " ----------------------------------------------------------------------------
 
-" Use <ESC> to clear hlsearch, too
-nnoremap <silent> <ESC> :noh<CR><ESC>
+" Use <Esc> to clear hlsearch, too
+nnoremap <silent> <Esc> :noh<CR><Esc>
 
 " Make jumping to a marked line more intuitive
 nnoremap ' `
@@ -633,16 +674,13 @@ vmap gsp y
         \p
         \:unlet headLine<CR>
 
+" Journals
+nmap <silent> gjd :call DailyJournal()<CR>
+nmap <silent> gjp :call ProjectJournal()<CR>
+
 " diff mode / Current directory exploring/searching
 nnoremap <silent> <expr> <C-p> &diff ? '[cz.' : ':Files<CR>'
 nnoremap <silent> <expr> <C-n> &diff ? ']cz.' : ':silent Lexplore!<CR>'
-
-" Search for selected text
-xnoremap <silent> * :call setreg("/",
-    \ substitute(<SID>GetSelectedText(), '\_s\+', '\\_s\\+', 'g'))<CR>n
-
-xnoremap <silent> # :call setreg("?",
-    \ substitute(<SID>GetSelectedText(), '\_s\+', '\\_s\\+', 'g'))<CR>n
 
 
 " ----------------------------------------------------------------------------
@@ -666,18 +704,26 @@ nmap <silent> <leader><leader> :nohlsearch<CR>
 nmap <silent> <leader><CR> <Plug>SlimeLineSend
 xmap <silent> <leader><CR> <Plug>SlimeRegionSend
 
-" ** * ** Highlight all occurrences of the word under the cursor (without moving)
+" ** */# **
+" Normal mode: Highlight all occurrences of the word under the cursor (without moving)
+" Visual mode: Search for selected text
 nnoremap <silent> <leader>* :let @/ = '\<<C-R>=expand("<cword>")<CR>\>'<CR>:set hls<CR>
 
+xnoremap <silent> <leader>* :call setreg("/",
+    \ substitute(<SID>GetSelectedText(), '\_s\+', '\\_s\\+', 'g'))<CR>n
+
+xnoremap <silent> <leader># :call setreg("?",
+    \ substitute(<SID>GetSelectedText(), '\_s\+', '\\_s\\+', 'g'))<CR>n
+
 " ** ** ** Show all occurrences of the word under the cursor
-nmap <silent> <leader>** :Occur /<C-r><C-w>/ %<CR>
+nnoremap <silent> <leader>** :Occur /<C-r><C-w>/ %<CR>
 
 " ** +- ** VISUAL mode inc/dec
 vmap <leader>+ :II 1 ''<CR>
 vmap <leader>- :II -1 ''<CR>
 
 " ** - ** Ruler
-nmap <leader>- o<Esc>72i-<Esc>gcc73\|D
+nmap <leader>- o<Esc>72i-<Esc>gcc2\|r 73\|D
 
 " ** ., ** fzf
 nnoremap <silent> <leader>. :Files .<CR>
