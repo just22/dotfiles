@@ -59,6 +59,9 @@ Plug 'https://github.com/vim-scripts/VisIncr'
 " { fzf
 Plug 'https://github.com/junegunn/fzf'
 Plug 'https://github.com/junegunn/fzf.vim'
+let g:fzf_preview_window = ['hidden,right,50%,<70(up,40%)', 'ctrl-/']
+let g:fzf_layout =
+    \ {'window': {'width': 1.0, 'height': 0.25, 'xoffset': -1.0, 'yoffset': 1.0}}
 " }
 
 " tmux integration {
