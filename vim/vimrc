@@ -367,12 +367,9 @@ augroup vimAutoCmd
         " Return to NORMAL mode when leaving a buffer
         autocmd BufLeave,WinLeave,FocusLost * stopinsert
 
-        " Autosave scratchpad buffer
-        autocmd BufLeave $HOME/.scratchpad write
-
-        " Autosave journal files
-        autocmd BufLeave $HOME/.journal/*.md write
-        autocmd BufLeave $G_WORKSPACE/journal.md write
+        " Autosave journal files (and then delete buffer)
+        autocmd BufLeave $HOME/.journal/*.md write | bdelete
+        autocmd BufLeave $G_WORKSPACE/journal.md write | bdelete
 
         " In quickfix window, <CR> will just locate the match, without jumping
         autocmd FileType qf nnoremap <buffer> <CR> <CR><C-W>p
@@ -549,6 +546,13 @@ function! s:GetSelectedText()
         return l:ret
 endfunction
 
+" Yank line(s) adding origin and timestamp
+function! YankInfo() range
+        let @" = (a:firstline == a:lastline) ?  "\n" : ""
+        let @" .= "[ Yanked from: " . expand("%:p") .
+        \    strftime(" on %Y-%m-%d at %H:%M") . " ]\n"
+        let @" .= getline(a:firstline, a:lastline)->join("\n")
+endfunction
 
 " ----------------------------------------------------------------------------
 " Normal/insert/visual mode mappings (without <leader> key)
@@ -827,7 +831,10 @@ nmap <leader>u yypVr=
 " ** V ** Restore the cursor position in the current window (from last edit session)
 nmap <silent> <leader>v :loadview<CR>
 
-" ** Y ** Copy the current buffer filename (with full path)
+" ** Y ** Yank line(s) adding origin and timestamp
+map <silent> <leader>y :call YankInfo()<CR>
+
+" ** YY ** Yank current buffer filename (with full path)
 nmap <silent> <leader>yy :let @* = expand("%:p")<CR>
 
 " ** W ** Reserved for VimWiki
@@ -836,23 +843,30 @@ nmap <silent> <leader>yy :let @* = expand("%:p")<CR>
 " ----------------------------------------------------------------------------
 " Scratchpad
 " ----------------------------------------------------------------------------
-command! ScratchpadOpen
-    \  execute "vert sbuffer" . $HOME . "/.scratchpad"
-    \| normal G
-nnoremap <silent> gso :ScratchpadOpen<CR>
+command! Scratchbuf
+    \  try
+    \|     vert sbuffer scratch
+    \| catch
+    \|     vnew
+    \|     setlocal buftype=nofile bufhidden=hide noswapfile nobuflisted ft=text
+    \|     file scratch
+    \|     execute "normal 78i-\<Esc>o This is the scratchpad buffer\<CR>"
+    \|     execute "normal i Mind that content won\'t be saved on VIM exit\<CR>"
+    \|     execute "normal 78i-\<Esc>o"
+    \| endtry
+nnoremap <silent> gs :Scratchbuf<CR>
 
-command! ScratchpadClear
-    \  execute "vert sbuffer " . $HOME . "/.scratchpad"
-    \| 1,$d
-    \| normal 78i-<Esc>o This is the scratchpad buffer<CR><Esc>78i-<Esc>o
-noremap <silent> gsc :ScratchpadClear<CR>
-
-command! -range ScratchpadPaste
-    \  execute <line1> . "," . <line2> . "y"
-    \| execute "vert sbuffer" $HOME . "/.scratchpad"
-    \| execute "normal o<Esc>o[... from file: " . expand("%:p") . " ...]"
-    \| normal pG
-noremap <silent> gsp :ScratchpadPaste<CR>
+command! ScratchbufSave
+    \  if bufexists("scratch")
+    \|     vert sbuffer scratch
+    \|     let scratch_dir = $HOME . "/.scratchpad/"
+    \|     call mkdir(scratch_dir)
+    \|     execute "w! " . scratch_dir . strftime("%Y-%m-%d_%H:%M") . ".txt"
+    \|     unlet scratch_dir
+    \| else
+    \|     echo "Scratch buffer not found"
+    \| endif
+nnoremap <silent> gss :ScratchbufSave<CR>
 
 
 " ----------------------------------------------------------------------------
@@ -865,7 +879,13 @@ function! DailyJournal()
         endif
 
         let l:jrnl_file = l:jrnl_dir . "/" . strftime('%Y-%m-%d') . ".md"
-        execute "vert sbuffer " . l:jrnl_file
+
+        try
+                execute "vert sbuffer " . l:jrnl_file
+        catch
+                execute "vsplit " . l:jrnl_file
+        endtry
+
         if !filereadable(l:jrnl_file)
                 let l:date = "# " . strftime('%a, %d %b %Y')
                 call writefile([l:date], l:jrnl_file)
@@ -876,7 +896,7 @@ function! DailyJournal()
         normal Go
 endfunction
 command! Journal :call DailyJournal()
-nmap <silent> gjd :Journal<CR>
+nmap <silent> gj :Journal<CR>
 
 function! ProjectJournal()
         if !exists("$G_WORKSPACE")
@@ -885,8 +905,15 @@ function! ProjectJournal()
         endif
 
         let l:jnrl_file = $G_WORKSPACE . "/journal.md"
-        execute "vert sbuffer " . l:jnrl_file
+
+        try
+                execute "vert sbuffer " . l:jnrl_file
+        catch
+                execute "vsplit " . l:jnrl_file
+        endtry
+
         if !filereadable(l:jnrl_file)
+                execute "e " . l:jnrl_file
                 call writefile(["# Journal file for:"], l:jnrl_file)
                 call writefile(["# Project: " . $PROJECT], l:jnrl_file, "a")
                 call writefile(["# Config:  " . $CONFIG],  l:jnrl_file, "a")
@@ -898,7 +925,7 @@ function! ProjectJournal()
         normal Go
 endfunction
 command! JournalPrj :call ProjectJournal()
-nmap <silent> gjp :JournalPrj<CR>
+nmap <silent> gp :JournalPrj<CR>
 
 
 " ----------------------------------------------------------------------------
