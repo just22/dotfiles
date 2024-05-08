@@ -101,10 +101,20 @@ autocmd FileType * :let b:commentary_format = &commentstring
 " Enable extended % matching
 runtime macros/matchit.vim
 
+" Enable the :Man command
+runtime ftplugin/man.vim
+
 " netrw
 let g:netrw_liststyle = 3         " Tree view
 let g:netrw_banner = 1            " Enable banner
+let g:netrw_fastbrowse = 0        " Never re-uses directory listings
 
-" Enable the :Man command
-runtime ftplugin/man.vim
+augroup netrwAutoCmd
+    autocmd!
+    autocmd FileType netrw setlocal bufhidden=wipe
+    autocmd BufLeave,WinLeave *
+        \  if getbufvar(winbufnr(winnr()), "&filetype") == "netrw"
+        \|     bwipeout!
+        \| endif
+augroup END
 
