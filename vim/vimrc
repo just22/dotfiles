@@ -746,51 +746,12 @@ nmap <leader>gf :e <cfile><CR>
 
 " ** I ** Insert specific elements
 "
-" Attribution line: author, date [: <note>]
-nmap <silent> <leader>ia :set paste<CR>oAdL, <Esc>
-                        \:set nopaste<CR>:r !date +\%Y-\%m-\%d:\ <CR>kJgccA
-"
-" Copyright line
-nmap <silent> <leader>ic o(C) <Esc>
-    \:r !date +\%Y<CR>kJA Alessandro De Laurenzis <just22@atlantide.mooo.com><Esc>gcc
-"
 " File header
 nmap <silent> <leader>ih 1GO#!/bin/sh<CR><CR>
                            \# <Esc>70a-<Esc>o
                            \#  $$<CR>
                            \#  <CR>
                            \# <Esc>70a-<Esc>kA
-"
-" 2-clause BSD license
-map <silent> <leader>il :set paste<CR>o
-                        \(C) <Esc>mw:r !date +\%Y<CR>kJA Alessandro DE LAURENZIS <just22.adl@gmail.com><CR>
-                        \All Rights Reserved<CR><CR>
-                        \Redistribution and use in source and binary forms, with or without<CR>
-                        \modification, are permitted provided that the following conditions<CR>
-                        \are met:<CR>
-                        \<CR>
-                        \1. Redistributions of source code must retain the above copyright<CR>
-                        \   notice, this list of conditions and the following disclaimer.<CR><CR>
-                        \2. Redistributions in binary form must reproduce the above copyright<CR>
-                        \   notice, this list of conditions and the following disclaimer in the<CR>
-                        \   documentation and/or other materials provided with the distribution.<CR>
-                        \<CR>
-                        \THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS<CR>
-                        \"AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT<CR>
-                        \LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR<CR>
-                        \A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT<CR>
-                        \HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,<CR>
-                        \SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT<CR>
-                        \LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,<CR>
-                        \DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY<CR>
-                        \THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT<CR>
-                        \(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE<CR>
-                        \OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.<CR><Esc>
-                        \mz:set nopaste<CR>V`wgc`z
-"
-" Snip lines
-nmap <silent> <leader>is o[...]<Esc>j0
-nmap <silent> <leader>iS o[................... snip ...................]<Esc>j0
 
 " ** K ** See killall keybind in autocmd section
 
@@ -920,7 +881,7 @@ function! ProjectJournal()
                 call writefile(["# Design:  " . $DESIGN_NAME], l:jnrl_file, "a")
         endif
         call writefile([""], l:jnrl_file, "a")
-        call writefile(["## " . strftime('%a, %d %b %Y - %H:%M')], l:jnrl_file, "a")
+        call writefile([strftime('## WK%V-%Y - %a, %d %b - %H:%M')], l:jnrl_file, "a")
         execute "e!"
         normal Go
 endfunction
@@ -938,6 +899,45 @@ noremap <silent> _y :YankExt<CR>
 command! PasteExt execute "r /tmp/" . $USER . ".vi.yank"
 noremap <silent> _p :PasteExt<CR>
 
+
+" ----------------------------------------------------------------------------
+" Abbreviations
+" ----------------------------------------------------------------------------
+iabbrev <expr> _adl   strftime("AdL, %Y-%m-%d")
+iabbrev <expr> _today strftime("%Y-%m-%d")
+iabbrev <expr> _now   strftime("%Y-%m-%d at %H:%M")
+iabbrev <expr> _copr  strftime("(C) %Y Alessandro DE LAURENZIS <sandro.delaurenzis@gmail.com>")
+
+iabbrev <expr> _lic   strftime("(C) %Y ") . "Alessandro DE LAURENZIS <sandro.delaurenzis@gmail.com><CR>
+                        \All Rights Reserved<CR><CR>
+                        \Redistribution and use in source and binary forms, with or without<CR>
+                        \modification, are permitted provided that the following conditions<CR>
+                        \are met:<CR>
+                        \<CR>
+                        \= 1 =<CR>
+                        \Redistributions of source code must retain the above copyright<CR>
+                        \notice, this list of conditions and the following disclaimer.<CR>
+                        \<CR>
+                        \= 2 =<CR>
+                        \Redistributions in binary form must reproduce the above copyright<CR>
+                        \notice, this list of conditions and the following disclaimer in the<CR>
+                        \documentation and/or other materials provided with the distribution.<CR>
+                        \<CR>
+                        \THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS<CR>
+                        \\"AS IS\" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT<CR>
+                        \LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR<CR>
+                        \A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT<CR>
+                        \HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,<CR>
+                        \SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT<CR>
+                        \LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,<CR>
+                        \DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY<CR>
+                        \THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT<CR>
+                        \(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE<CR>
+                        \OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE."
+
+iabbrev _todo  [ ]
+iabbrev _snip  [...]
+iabbrev __snip [................... snip ...................]
 
 " ----------------------------------------------------------------------------
 " Source local vimrc file
