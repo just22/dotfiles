@@ -554,6 +554,15 @@ function! YankInfo() range
         let @" .= getline(a:firstline, a:lastline)->join("\n")
 endfunction
 
+" PWD exploring/searching
+command! Pwd  Lexplore!
+command! Pwds Files
+
+" Current file's directory exploring/searching
+command! Dir  Lexplore! %:h
+command! Dirs Files %:h
+
+
 " ----------------------------------------------------------------------------
 " Normal/insert/visual mode mappings (without <leader> key)
 " ----------------------------------------------------------------------------
@@ -630,9 +639,9 @@ vnoremap > >gv
 " of the line (when g:SuperTabMappingForward is set to '<tab>')
 inoremap <Esc>[27;5;9~ <Tab>
 
-" diff mode / Current directory exploring/searching
-nnoremap <silent> <expr> <C-p> &diff ? '[cz.' : ':Files<CR>'
-nnoremap <silent> <expr> <C-n> &diff ? ']cz.' : ':silent Lexplore!<CR>'
+" diff mode
+nnoremap <silent> <expr> <C-p> [cz.
+nnoremap <silent> <expr> <C-n> ]cz.
 
 
 " ----------------------------------------------------------------------------
@@ -677,11 +686,6 @@ vmap <leader>- :II -1 ''<CR>
 " ** - ** Ruler
 nmap <leader>- o<Esc>78i-<Esc>gcc2\|r 79\|D
 
-" ** ., ** fzf
-nnoremap <silent> <leader>. :Files .<CR>
-nnoremap <silent> <leader>, :Files <C-r>=expand("%:h")<CR>/<CR>
-
-" ----------------------------------------------------------------------
 
 " ** <Up>/<Down> ** Move current line up/down
 nnoremap <leader><Up>   :m -2<CR>
@@ -693,7 +697,6 @@ nmap <silent> <leader><Space> :silent! call RemoveTrailingSpaces()<CR>
 " ** <C-l> ** Recenter cursor line and redraw
 cmap <silent> <C-l> :redraw!<CR>
 nmap <silent> <C-l> :call MoveCursorLine("scroll")<CR>:redraw!<CR>
-
 
 " ** 1-9 ** Switch to buffer #
 nmap <silent> <leader>1  :1b<CR>
@@ -760,15 +763,9 @@ nmap <silent> <leader>ih 1GO#!/bin/sh<CR><CR>
 " ** M ** Move cursor line
 nmap <silent> <leader>m :call MoveCursorLine()<CR>:redraw!<CR>
 
-" ** N ** Current file's directory exploring
-nmap <silent> <leader>n :silent Lexplore! %:h<CR>
-
 " ** O ** Insert empty lines
 nnoremap <leader>o o<Esc>
 nnoremap <leader>O O<Esc>
-
-" ** P ** Current file's directory searching
-nmap <silent> <leader>p :Files %:h<CR>
 
 " ** Q ** Quickly close current buffer
 nmap <silent> <leader>q :bdelete<CR>
@@ -858,6 +855,7 @@ function! DailyJournal()
 endfunction
 command! Journal :call DailyJournal()
 nmap <silent> gj :Journal<CR>
+nmap <silent> gjo :silent Lexplore! ~/.journal<CR>
 
 function! ProjectJournal()
         if !exists("$G_WORKSPACE")
@@ -938,6 +936,7 @@ iabbrev <expr> _lic   strftime("(C) %Y ") . "Alessandro DE LAURENZIS <sandro.del
 iabbrev _todo  [ ]
 iabbrev _snip  [...]
 iabbrev __snip [................... snip ...................]
+
 
 " ----------------------------------------------------------------------------
 " Source local vimrc file
