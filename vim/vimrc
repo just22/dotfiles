@@ -559,7 +559,7 @@ command! Pwd  Lexplore!
 command! Pwds Files
 
 " Current file's directory exploring/searching
-command! Dir  Lexplore! %:h
+command! Dir  silent Lexplore! %:h
 command! Dirs Files %:h
 
 
