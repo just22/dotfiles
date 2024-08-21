@@ -640,8 +640,8 @@ vnoremap > >gv
 inoremap <Esc>[27;5;9~ <Tab>
 
 " diff mode
-nnoremap <silent> <expr> <C-p> [cz.
-nnoremap <silent> <expr> <C-n> ]cz.
+nnoremap <silent> <expr> <C-p> '[cz.'
+nnoremap <silent> <expr> <C-n> ']cz.'
 
 
 " ----------------------------------------------------------------------------
