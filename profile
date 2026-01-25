@@ -11,10 +11,6 @@
 #  definitions.
 # ----------------------------------------------------------------------
 
-PATH=/usr/local/bin:/usr/local/sbin
-PATH=$PATH:/bin:/sbin:/usr/bin:/usr/sbin:/usr/X11R6/bin:/usr/games
-MANPATH=~/share/man:/usr/local/man:
-
 # Include user's bin dir in PATH
 [ -d "$HOME/bin" ] && PATH="$HOME/bin:$PATH"
 [ -d "$HOME/bin.override" ] && PATH="$HOME/bin.override:$PATH"
@@ -22,33 +18,25 @@ MANPATH=~/share/man:/usr/local/man:
 # Include current dir in PATH (except for root user)
 [ "${USER}" != root ] && PATH="${PATH}:."
 
+# Include user's man dir in MANPATH
+MANPATH=~/share/man:
+
 export PATH MANPATH
 
-# Maximum number of processes that make may have running
-export MAKEFLAGS=-j3
-
-# In console, colors and auto-logout
-if [ "${TERM}" == "vt220" ]; then
-    export TERM=pccon0
-    console-logout &
-fi
-
-# Localization (in X, always enable UTF-8 encoding)
-if [ -n "$DISPLAY" ]; then
-        export LC_CTYPE="en_US.UTF-8"
-        export LC_NUMERIC="en_GB.UTF-8"
-        export LC_TIME="en_GB.UTF-8"
-        export LC_COLLATE="en_GB.UTF-8"
-        export LC_MONETARY="en_GB.UTF-8"
-        export LC_MESSAGES="en_GB.UTF-8"
-        export LC_PAPER="en_GB.UTF-8"
-        export LC_NAME="en_GB.UTF-8"
-        export LC_ADDRESS="en_GB.UTF-8"
-        export LC_TELEPHONE="en_GB.UTF-8"
-        export LC_MEASUREMENT="en_GB.UTF-8"
-        export LC_IDENTIFICATION="en_GB.UTF-8"
-        export LC_ALL=
-fi
+# Localization
+export LC_CTYPE="en_US.UTF-8"
+export LC_MESSAGES="en_US.UTF-8"
+export LC_NUMERIC="C"
+export LC_TIME="C"
+export LC_COLLATE="C"
+export LC_MONETARY="C"
+export LC_PAPER="en_GB.UTF-8"
+export LC_NAME="en_GB.UTF-8"
+export LC_ADDRESS="en_GB.UTF-8"
+export LC_TELEPHONE="en_GB.UTF-8"
+export LC_MEASUREMENT="en_GB.UTF-8"
+export LC_IDENTIFICATION="en_GB.UTF-8"
+export LC_ALL=
 
 # Note: Default pager/editor/browser definitions moved here because
 #       there are applications launched from X using them
@@ -83,12 +71,8 @@ export PRINTER=HP_Deskjet_1510
 # par(1) settings
 export PARINIT="rTbgqR B=.,?_A_a Q=_s>|"
 
-# Autotools version env variables
-export AUTOMAKE_VERSION=1.14
-export AUTOCONF_VERSION=2.69
-
-# Custom libraries
-export PKG_CONFIG_PATH=${HOME}/lib/pkgconfig
+# Show local time in RCS timestamps
+export RCSINIT="-zCET"
 
 # ----------------------------------------------------------------------
 # Addenda to ~/.profile specific for machine/site
