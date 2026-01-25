@@ -18,7 +18,7 @@ set cedit=\
 set extended
 "
 " Use spaces instead of tab chars
-set expandtab
+"set expandtab
 "
 " Use TAB to perform file path completion on the colon command-line
 set filec=\	
@@ -175,8 +175,9 @@ map 	b :prev
 "  ABBREVIATIONS
 "
 " Signatures
-abbr _AdL Alessandro DE LAURENZIS <just22.adl@gmail.com>
-abbr _mail [mailto://just22.adl@gmail.com">just22.adl@gmail.com]
+abbr _AdL Alessandro DE LAURENZIS
+abbr _mail [mailto:sandro.delaurenzis@gmail.com]
+abbr _sign --Alessandro DE LAURENZIS[mailto:sandro.delaurenzis@gmil.com]
 "
 " Multi-line comment/uncomment
 abbr _c s/^/\#/
