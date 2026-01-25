@@ -103,6 +103,10 @@ _ps1_cmd() {
         else
                 _ps1_git
         fi
+        # Python venv?
+        if [ -n "$VIRTUAL_ENV" ]; then
+                echo -n "py:${VIRTUAL_ENV##*/} "
+        fi
         # .enter/.exit cmd files?
         ppwd=$(cat /tmp/${USER}.ppwd.$$ 2>/dev/null)
         if [ "$PWD" != "$ppwd" ]; then
@@ -111,15 +115,15 @@ _ps1_cmd() {
                 [ -f .enter ] && >&2 . .enter
         fi
         # Set the xterm's (or tmux pane's) title
-	if [ -z "$INSIDE_EMACS" ]; then 
-	    case "$TERM" in
-	    xterm*|screen*|tmux*)
-		    set_title "[$0] [$PWD] [Last cmd:  $(tail -1 "$HISTFILE")]"
-		    ;;
-	    *)
-		    ;;
-	    esac
-	fi
+        if [ -z "$INSIDE_EMACS" ]; then
+                case "$TERM" in
+                xterm*|screen*|tmux*)
+                        set_title "[$0] [$PWD] [Last cmd:  $(tail -1 "$HISTFILE")]"
+                        ;;
+                *)
+                        ;;
+                esac
+        fi
 }
 
 # If this isn't a strictly POSIX shell, use an informative multi-line prompt
@@ -133,7 +137,7 @@ then
         PS1="${PS1}\$(_ps1_cmd)"                                                # Infobox: VCS tree?; .enter/.exit cmd files?
         PS1="${PS1}\j]-"                                                        # Infobox: no. of managed jobs
         PS1="${PS1}[\$(_ps1_pwd_trim)]"                                         # Current working directory
-        PS1="${PS1}\n${P_NORMCOL}\\$ ${RSTCOL}"                                 # New line with "prompt char"
+        PS1="${PS1}\n${P_NORMCOL}\\$ ${RSTCOL}"                                 # New line with "prompt char" & py venv
         PS1="${PS1}\[\033[?7h\]"                                                # Restore line wrapping
         PS2=">> "                                                               # Secondary prompt string (more input needed)
 fi
