@@ -1,0 +1,23 @@
+# Adjust PATH and MANPATH variables
+PATH=/usr/local/bin:/usr/local/sbin
+PATH=$PATH:/bin:/sbin:/usr/bin:/usr/sbin:/usr/X11R6/bin:/usr/games
+MANPATH=/usr/local/man:
+
+export PATH MANPATH
+
+# Maximum number of processes that make may have running
+export MAKEFLAGS=-j3
+
+# In console, colors and auto-logout
+if [ "${TERM}" == "vt220" ]; then
+    export TERM=pccon0
+    console-logout &
+fi
+
+# Autotools version env variables
+export AUTOMAKE_VERSION=1.14
+export AUTOCONF_VERSION=2.69
+
+# Custom libraries
+export PKG_CONFIG_PATH=${HOME}/lib/pkgconfig
+
