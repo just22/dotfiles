@@ -168,14 +168,6 @@ gst             - Show the working tree and index status
 glst            - Show the working tree and index status (long format)
 
 # ----------------------------------------------------------------------
-# Change terminal colorscheme on-the-fly
-#
-dark            - solarized-dark theme
-light           - solarized-light theme
-ocean           - ocean theme
-nord            - nord theme
-
-# ----------------------------------------------------------------------
 # dict.org searches
 #
 en              - English definitions (WordNet)
@@ -606,14 +598,6 @@ cvs_adddir() {
         find ${1-.} -type d -name CVS -prune -o -type f -exec cvs add "{}" \;
         find ${1-.} -type d -name CVS -prune -o -type f -exec cvs commit -m ${2-Initial commit} "{}" \;
 }
-
-# ----------------------------------------------------------------------
-# Change XTerm colorscheme on-the-fly
-#
-alias dark='base16_solarized-dark'
-alias light='base16_solarized-light'
-alias ocean='base16_ocean'
-alias nord='base16_nord'
 
 # ----------------------------------------------------------------------
 # dict.org lookups
