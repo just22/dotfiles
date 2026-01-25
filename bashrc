@@ -21,6 +21,11 @@ if [[ $- != *i* ]]; then
 fi
 
 # ----------------------------------------------------------------------
+# Settings specific for machine/site that need to be sourced as early as
+# possible.
+[ f ~/.bashrc_local_pre ] && source ~/.bashrc_local_pre
+
+# ----------------------------------------------------------------------
 # Immediate notification when jobs change state
 #
 set -o notify
@@ -140,3 +145,4 @@ fi
 # Debug
 #
 #echo "~/.bashrc sourced"
+
