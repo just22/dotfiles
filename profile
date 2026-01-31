@@ -72,7 +72,7 @@ export PRINTER=HP_Deskjet_1510
 export PARINIT="rTbgqR B=.,?_A_a Q=_s>|"
 
 # Show local time in RCS timestamps
-export RCSINIT="-zCET"
+export RCSINIT="-zLT"
 
 # ----------------------------------------------------------------------
 # Addenda to ~/.profile specific for machine/site
