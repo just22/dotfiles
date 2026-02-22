@@ -18,85 +18,69 @@ endif
 call plug#begin('~/.vim/plug_dir')
 
 " Colorschemes {
-Plug 'https://github.com/alligator/accent.vim'
-Plug 'https://github.com/tinted-theming/base16-vim'
-" }
-
-Plug 'https://github.com/jpalardy/vim-slime'
-if exists("$TMUX")
-let g:slime_target = "tmux"
-let g:slime_paste_file = "/tmp/$USER.vim-slime.paste"
-let g:slime_default_config = {"socket_name": split($TMUX, ",")[0], "target_pane": ":.right"}
-let g:slime_dont_ask_default = 1
-let g:slime_no_mappings = 1
-endif
-
-
-Plug 'https://github.com/lervag/vimtex'
-let g:tex_flavor = 'latex'
-let g:vimtex_quickfix_ignore_filters = [
-        \ 'Overfull',
-        \ 'Underfull',
-        \ 'setting the option has no effect',
-        \ 'functionality may be reduced/unavailable',
-        \ 'Token not allowed in a PDF string',
-        \ 'references',
-        \ 'Empty bibliography',
-        \ 'Please (re)run BibTeX on the file(s)',
-\]
-let g:Tex_MultipleCompileFormats = 'pdf,bibtex,pdf'
-let g:vimtex_quickfix_autoclose_after_keystrokes = 1
-let g:vimtex_view_method = 'general'
-
-Plug 'https://github.com/mbbill/undotree'
-
-Plug 'https://github.com/sk1418/QFGrep'
-
-Plug 'https://github.com/tpope/vim-commentary'
-
-Plug 'https://github.com/vim-scripts/VisIncr'
-
-" { fzf
-Plug 'https://github.com/junegunn/fzf'
-Plug 'https://github.com/junegunn/fzf.vim'
-let g:fzf_preview_window = ['hidden,right,50%,<70(up,40%)', 'ctrl-/']
-let g:fzf_layout =
-    \ {'window': {'width': 1.0, 'height': 0.25, 'xoffset': -1.0, 'yoffset': 1.0}}
+    Plug 'https://github.com/alligator/accent.vim'
 " }
 
 " tmux integration {
-Plug 'https://github.com/wincent/terminus'
-Plug 'https://github.com/christoomey/vim-tmux-navigator'
-let g:tmux_navigator_no_mappings = 1
-nmap <silent> <Esc>[1;5A :TmuxNavigateUp<CR>
-nmap <silent> <Esc>[1;5B :TmuxNavigateDown<CR>
-nmap <silent> <Esc>[1;5C :TmuxNavigateRight<CR>
-nmap <silent> <Esc>[1;5D :TmuxNavigateLeft<CR>
-nmap <silent> <Esc>[A    :TmuxNavigateUp<CR>
-nmap <silent> <Esc>[B    :TmuxNavigateDown<CR>
-nmap <silent> <Esc>[C    :TmuxNavigateRight<CR>
-nmap <silent> <Esc>[D    :TmuxNavigateLeft<CR>
-nmap <silent> <C-\>      :TmuxNavigatePrevious<CR>
+    Plug 'https://github.com/christoomey/vim-tmux-navigator'
+    let g:tmux_navigator_no_mappings = 1
+    nmap <silent> <Esc>[1;5A :TmuxNavigateUp<CR>
+    nmap <silent> <Esc>[1;5B :TmuxNavigateDown<CR>
+    nmap <silent> <Esc>[1;5C :TmuxNavigateRight<CR>
+    nmap <silent> <Esc>[1;5D :TmuxNavigateLeft<CR>
+    nmap <silent> <C-\>      :TmuxNavigatePrevious<CR>
+
+    Plug 'https://github.com/jpalardy/vim-slime'
+    if exists("$TMUX")
+    let g:slime_target = "tmux"
+    let g:slime_paste_file = "/tmp/$USER.vim-slime.paste"
+    let g:slime_default_config = {"socket_name": split($TMUX, ",")[0], "target_pane": ":.right"}
+    let g:slime_dont_ask_default = 1
+    let g:slime_no_mappings = 1
+    endif
+" }
+
+" Filter entries in quickfix window
+Plug 'https://github.com/sk1418/QFGrep'
+
+" Comment stuff out
+Plug 'https://github.com/tpope/vim-commentary'
+
+" Make columns of increasing or decreasing numbers, dates, or daynames
+Plug 'https://github.com/vim-scripts/VisIncr'
+
+" fzf {
+    Plug 'https://github.com/junegunn/fzf'
+    Plug 'https://github.com/junegunn/fzf.vim'
+    let g:fzf_preview_window = ['hidden,right,50%,<70(up,40%)', 'ctrl-/']
+    let g:fzf_layout =
+        \ {'window': {'width': 1.0, 'height': 0.25, 'xoffset': -1.0, 'yoffset': 1.0}}
 " }
 
 " vim-snipmate {
 Plug 'https://github.com/tomtom/tlib_vim'
 Plug 'https://github.com/MarcWeber/vim-addon-mw-utils'
-Plug 'https://github.com/garbas/vim-snipmate'
-let g:snipMate = { 'snippet_version' : 1 }
-Plug 'https://github.com/honza/vim-snippets'
-" }
+
+Plug '~/.vim/unmanaged_plugins/rcsvers'
+let g:rvSaveDirectoryType = 1
+let g:rvSaveDirectoryName = '~/.vim/RCSfiles/'
+let g:rvRlogOptions = '-zLT'
+nmap <silent> <leader>t  <leader>rlog
+nmap <silent> <leader>tp <leader>older
+nmap <silent> <leader>tn <leader>newer
 
 " Initialize plugin system
 " (Automatically executes `filetype plugin indent on` and `syntax enable`)
 call plug#end()
 
 " vim-commentary: no space. please!
-autocmd FileType * :let b:commentary_format = &commentstring
+autocmd VimEnter *
+    \ :let b:commentary_format = substitute(&commentstring, ' ', '', '')
 
 
+" ----------------------------------------------------------------------------
 " The following plugins are part of the default Vim installation:
-" ****************************************************************************
+"
 
 " Enable extended % matching
 runtime macros/matchit.vim
