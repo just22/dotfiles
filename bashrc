@@ -23,7 +23,7 @@ fi
 # ----------------------------------------------------------------------
 # Settings specific for machine/site that need to be sourced as early as
 # possible.
-[ f ~/.bashrc_local_pre ] && source ~/.bashrc_local_pre
+[ -f ~/.bashrc_local_pre ] && source ~/.bashrc_local_pre
 
 # ----------------------------------------------------------------------
 # Immediate notification when jobs change state
