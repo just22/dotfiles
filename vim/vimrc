@@ -50,11 +50,14 @@ set cmdwinheight=5
 " Highlight cursor line
 set cursorline
 
-" Ignore white spaces in diff mode
-set diffopt+=iwhite
+" In diff mode: ignore white spaces, disable folding
+set diffopt+=iwhite,context:9999
 
 " Store swap files in fixed location, not in current directory
-set dir=~/.vim/swap//,/var/tmp//,/tmp//,.
+if !isdirectory($HOME . "/.vim/swap")
+        silent call mkdir($HOME . "/.vim/swap", "p")
+endif
+set dir=$HOME/.vim/swap//
 
 " Character encoding
 set encoding=utf-8
@@ -70,7 +73,10 @@ set history=200
 
 " Do not redraw the screen while executing commands that have not
 " been typed
-set lazyredraw
+"set lazyredraw
+
+" Enable mouse usage in all modes
+set mouse=a
 
 " Disable beeping (aka bell) and window flashing
 set noerrorbells visualbell t_vb=
@@ -125,13 +131,13 @@ set smartindent
 set expandtab
 
 " Number of spaces that a <Tab> in the file counts for
-set tabstop=8
+set tabstop=4
 
 " Number of spaces to use for each step of (auto)indent
-set shiftwidth=8
+set shiftwidth=4
 
 " Number of spaces that a <Tab> counts for while performing editing operations
-set softtabstop=8
+set softtabstop=4
 
 
 " ----------------------------------------------------------------------------
@@ -141,15 +147,13 @@ set softtabstop=8
 " Highlight the last used search pattern
 set hlsearch
 
-" Searching is not case sensitive
+" If a pattern contains an uppercase letter, it is case sensitive,
+" otherwise, it is not
 set ignorecase
+set smartcase
 
 " While typing a search command, show where the pattern matches
 set incsearch
-
-" If a pattern contains an uppercase letter, it is case sensitive,
-" otherwise, it is not
-set smartcase
 
 
 " ----------------------------------------------------------------------------
@@ -159,16 +163,13 @@ set smartcase
 " Precede each line with its line number
 set number
 
-" Show the line number relative to the line with the cursor
-set norelativenumber
-
 " Do not show the cursor position all the time
 set noruler
 
 " Minimal number of screen lines to keep above and below the cursor
 set scrolloff=2
 
-" Wrap long lines
+" Don't wrap long lines
 set nowrap
 
 
@@ -210,6 +211,9 @@ if has('path_extra') && (',' . &g:tags . ',') =~# ',\./tags,'
         setglobal tags-=./tags tags-=./tags; tags^=./tags;
 endif
 
+" Viminfo file name
+set viminfofile=$HOME/.vim/viminfo
+
 " Persist g:UPPERCASE variables, used by some plugins, in .viminfo
 if !empty(&viminfo)
         set viminfo^=!
@@ -239,8 +243,11 @@ endif
 " reopen a file (starting from 7.3)
 set undofile
 
-" Store undo files in a fixed location, not current directory
-set undodir=~/.vim/undo
+" Store undo files in a fixed location, not in current directory
+if !isdirectory($HOME . "/.vim/undo")
+        call mkdir($HOME . "/.vim/undo", "p")
+endif
+set undodir=$HOME/.vim/undo
 
 
 " ----------------------------------------------------------------------------
@@ -310,6 +317,27 @@ autocmd FileType tex syn region texMathZoneZ matchgroup=texStatement
     \ matchgroup=texStatement
     \ end="}"
     \ contains=@texMathZoneGroup
+
+
+" ----------------------------------------------------------------------------
+" Cursor shape
+" ----------------------------------------------------------------------------
+" <Esc>[0 Blinking block
+" <Esc>[1 Blinking block (default)
+" <Esc>[2 Steady block
+" <Esc>[3 Blinking underline
+" <Esc>[4 Steady underline
+" <Esc>[5 Blinking bar, xterm
+" <Esc>[6 Solid bar, xterm
+if exists('$TMUX')
+        let &t_SI = "\033Ptmux;\033\e[5 q\033\\"
+        let &t_SR = "\033Ptmux;\033\e[3 q\033\\"
+        let &t_EI = "\033Ptmux;\033\e[1 q\033\\"
+else
+        let &t_SI = "\033[5 q"
+        let &t_SR = "\033[3 q"
+        let &t_EI = "\033[1 q"
+endif
 
 
 " ----------------------------------------------------------------------------
@@ -394,6 +422,18 @@ augroup vimAutoCmd
         " Setting appropriate type for files with odd names/extensions
         autocmd BufNewFile,BufRead *.jwmrc set filetype=xml
 
+        " Disable cursorline in diffmode
+        autocmd OptionSet diff let &cursorline=!v:option_new
+        autocmd BufEnter * if &diff | let &cursorline=0 | endif
+
+        " Sync colors when terminal theme changes
+        autocmd SigUSR1 * colorscheme catppuccin
+            \| highlight Search    term=bold ctermbg=14  guifg=#303446 guibg=#8CAAEE
+            \| highlight CurSearch term=bold ctermbg=5   guifg=#303446 guibg=#E5C890
+            \| highlight IncSearch term=bold ctermbg=5   guifg=#303446 guibg=#E5C890
+            \| highlight qfLineNr  term=bold ctermfg=159 guifg=#8CAAEE
+            \| redraw
+
 augroup END
 
 " Remove overheads for large files
@@ -439,7 +479,7 @@ augroup END
 augroup clipboard
         autocmd!
         autocmd TextYankPost *
-            \  if v:event.regname==''&&v:event.operator=='y'
+            \  if v:event.regname == '' && v:event.operator == 'y'
             \|   let @+=join(v:event.regcontents, "\n")
             \| endif
 augroup END
@@ -516,7 +556,7 @@ endfunction
 
 " If quickfix is the last window, quit
 function! QuitIfOnlyQuickfix()
-        if (&buftype=="quickfix") && (winnr('$') < 2)
+        if (&buftype == "quickfix") && (winnr('$') < 2)
                 quit
         endif
 endfunction
@@ -562,13 +602,25 @@ command! Pwds Files
 command! Dir  silent Lexplore! %:h
 command! Dirs Files %:h
 
+" Change colorscheme on-the-fly
+command! Dark  call system('dark')  | colorscheme catppuccin
+command! Light call system('light') | colorscheme catppuccin
+
+" Show hi group under the cursor
+function! SynStack()
+    if !exists("*synstack")
+        return
+    endif
+    echo map(synstack(line('.'), col('.')), 'synIDattr(v:val, "name")')
+endfunc
+
 
 " ----------------------------------------------------------------------------
 " Normal/insert/visual mode mappings (without <leader> key)
 " ----------------------------------------------------------------------------
 
 " Use <Esc> to clear hlsearch, too
-nnoremap <silent> <Esc> :noh<CR><Esc>
+nnoremap <silent> <Esc> :nohl<CR><Esc>
 
 " Make jumping to a marked line more intuitive
 nnoremap ' `
@@ -736,7 +788,7 @@ nnoremap <silent> <leader>dw
         \ :let cl = line(".")<CR>:g/<C-R><C-A>/d<CR>:call cursor(cl, 1)<CR>
 
 " ** E ** Edit Vim's config file
-nmap <leader>e :e ${HOME}/.vimrc<CR>
+nmap <leader>e :e $HOME/.vimrc<CR>
 
 " ** F ** Switch to next buffer in list
 nmap <leader>f  :bn<CR>
@@ -944,9 +996,8 @@ iabbrev __snip [................... snip ...................]
 try
         source ~/.vim/vimrc.local
 catch
-        " Do not output any error msg in case no local vimrc exists
+        " Do not output any error msg if no local vimrc exists
 endtry
-
 
 " ----------------------------------------------------------------------------
 " Plugins
@@ -954,7 +1005,7 @@ endtry
 try
         source ~/.vim/plugins.vim
 catch
-        " Do not output an error msg in case no plugins' config file exists
+        " Do not output an error msg if no plugins' config file exists
 endtry
 
 
@@ -963,48 +1014,73 @@ endtry
 " ----------------------------------------------------------------------------
 if &t_Co > 2 || has("gui_running")
         syntax on
-        if filereadable(expand("$HOME/.config/tinted-theming/set_theme.vim"))
 
-                function! s:base16_customize() abort
-                        " Disable italic (on demand)
-                        if exists("g:base16_disable_italic")
-                                let l:colorscheme = getcompletion('', 'highlight')
-                                for hi in l:colorscheme
-                                        if synIDattr(synIDtrans(hlID(hi)), 'italic')
-                                                exec 'highlight ' . hi . ' cterm=none gui=none'
-                                        endif
-                                endfor
-                        endif
+        if ((($COLORTERM == "truecolor") && has("termguicolors")) || has("gui_running"))
+                set termguicolors
+                colorscheme catppuccin
+                highlight Search    term=bold ctermbg=14 guifg=#303446 guibg=#8CAAEE
+                highlight CurSearch term=bold ctermbg=5  guifg=#303446 guibg=#E5C890
+                highlight IncSearch term=bold ctermbg=5  guifg=#303446 guibg=#E5C890
+                highlight qfLineNr  term=bold ctermfg=159 guifg=#8CAAEE
 
-                        call Base16hi("Visual",     g:base16_gui06, g:base16_gui02, g:base16_cterm06, g:base16_cterm02, "", "")
-                        call Base16hi("Character",  g:base16_gui0D, "", g:base16_cterm0D, "", "", "")
-                        call Base16hi("Statement",  g:base16_gui0D, "", g:base16_cterm0D, "", "", "")
-                        call Base16hi("MatchParen", g:base16_gui06, g:base16_gui02, g:base16_cterm06, g:base16_cterm02,  "", "")
-                        call Base16hi("DiffText",   g:base16_gui0D, "", g:base16_cterm0D, "", "inverse", "")
+        else
+                function! FileExists(file_path)
+                        return filereadable(a:file_path) == 1
                 endfunction
 
-                augroup colorscheme_change
-                        autocmd!
-                        autocmd ColorScheme * call s:base16_customize()
-                augroup END
+                let g:theme_script_path = expand("$HOME/.local/share/tinted-theming/tinty/base16-vim-colors-file.vim")
 
-                set background&         " Just a hack to force reloading the
-                                        " default colors; this way, light
-                                        " themes work, too (not clear why...)
-                let base16colorspace=256
-                source $HOME/.config/tinted-theming/set_theme.vim
-        else
-                let g:accent_colour = 'cyan'
-                let g:accent_darken = 0
-                let g:accent_invert_status = 0
-                let g:accent_auto_cwd_colour = 0
-                let g:accent_no_bg = 1
-                try
-                        colorscheme accent
-                catch
-                        " Do not output an error msg in case no colorscheme exists
-                endtry
+                if FileExists(g:theme_script_path)
+
+                        function! s:tinted_customize() abort
+                                " Disable italic (on demand)
+                                if exists("g:tinted_disable_italic")
+                                        let l:colorscheme = getcompletion('', 'highlight')
+                                        for hi in l:colorscheme
+                                                if synIDattr(synIDtrans(hlID(hi)), 'italic')
+                                                        exec 'highlight ' . hi . ' cterm=none gui=none'
+                                                endif
+                                        endfor
+                                endif
+
+                                "call Tinted_Hi("Visual",     "", g:tinted_gui01, "", g:tinted_cterm01, "", "")
+                                "call Tinted_Hi("Character",  g:tinted_gui0D, "", g:tinted_cterm0D, "", "", "")
+                                "call Tinted_Hi("Statement",  g:tinted_gui0D, "", g:tinted_cterm0D, "", "", "")
+                                "call Tinted_Hi("MatchParen", g:tinted_gui06, g:tinted_gui02, g:tinted_cterm06, g:tinted_cterm02,  "", "")
+                                "call Tinted_Hi("DiffText",   g:tinted_gui0D, "", g:tinted_cterm0D, "", "inverse", "")
+                                "call Tinted_Hi("Comment",    g:tinted_gui04, "", g:tinted_cterm04, "", "", "")
+                        endfunction
+
+                        function! HandleFocusGained()
+                                if FileExists(g:theme_script_path)
+                                        execute 'source ' . g:theme_script_path
+                                        call s:tinted_customize()
+                                endif
+                        endfunction
+
+                        autocmd FocusGained * call HandleFocusGained()
+
+                        if ((&t_Co > 256 || $COLORTERM == "truecolor") && has("termguicolors"))
+                                set termguicolors
+                                let g:tinted_colorspace = 256
+                        elseif (&t_Co == 256)
+                                let g:tinted_colorspace = 256
+                        endif
+
+                        set background&         " Setting background to the default value is an hack
+                                                " to correctly force colorscheme setting/reload
+
+                        execute 'source ' . g:theme_script_path
+                        call s:tinted_customize()
+                else
+                        try
+                                colorscheme accent
+                        catch
+                                " Do not output an error msg if no colorscheme is available
+                        endtry
+                endif
+
         endif
-endif
 
+endif
 
