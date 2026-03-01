@@ -188,11 +188,11 @@ myalias() { _myalias | grep ${1-.\*} | less -F; }
 # ----------------------------------------------------------------------
 # Enable color support for ls
 #
-if [ "${COLOR_SUPPORT}" = 1 ]; then
-        if ls --color > /dev/null 2>&1; then
-                alias l='ls --color=always'
-        elif colorls > /dev/null 2>&1; then
-                LSCOLORS="exfxcxdxbxgxDxBxGxCbCx"; export LSCOLORS
+if [ "${COLOR_SUPPORT}" == 1 ]; then
+        command -v dircolors &> /dev/null && eval "$(dircolors --sh)"
+        if ls --color &> /dev/null; then
+                alias l='ls --color'
+        elif colorls &> /dev/null; then
                 alias l='colorls -G'
         else
                 alias l='ls -F'
@@ -652,3 +652,4 @@ gsub() {
         done
         echo "$s"
 }
+

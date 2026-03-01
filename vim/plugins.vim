@@ -5,7 +5,7 @@
 " vim-plug set-up
 let data_dir = has('nvim') ? stdpath('data') . '/site' : '~/.vim'
 if empty(glob(data_dir . '/autoload/plug.vim'))
-        silent execute '!curl -fLo '.data_dir.'/autoload/plug.vim
+        silent execute '!curl -fLo ' . data_dir . '/autoload/plug.vim
         \       --create-dirs
         \       https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
         autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
@@ -52,7 +52,7 @@ Plug 'https://github.com/vim-scripts/VisIncr'
 " fzf {
     Plug 'https://github.com/junegunn/fzf'
     Plug 'https://github.com/junegunn/fzf.vim'
-    let g:fzf_preview_window = ['hidden,right,50%,<70(up,40%)', 'ctrl-/']
+    let g:fzf_preview_window = ['hidden,right,50%,<70(hidden,up,40%)', 'ctrl-/']
     let g:fzf_layout =
         \ {'window': {'width': 1.0, 'height': 0.25, 'xoffset': -1.0, 'yoffset': 1.0}}
 " }
