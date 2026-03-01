@@ -1,0 +1,31 @@
+# ----------------------------------------------------------------------
+#  $Id$
+#
+#  fzf aliases for Bourne-type shells
+# ----------------------------------------------------------------------
+
+llo() {
+    r=$(find ${1-.} -maxdepth 1 -name .DS_Store -prune -o -print | fzf)
+    if [ -n "$r" ]; then
+        mtype="$(file -b --mime-type $r)"
+        case $mtype in
+            inode/directory)
+                cd "$r"
+                ;;
+            text/*|application/octet-stream)
+                vim "$r"
+                ;;
+            *)
+                case $(uname -s) in
+                    Darvin)
+                        open "$r"
+                        ;;
+                    Linux|OpenBSD)
+                        xdg-open "$r"
+                        ;;
+                esac
+                ;;
+        esac
+    fi
+}
+

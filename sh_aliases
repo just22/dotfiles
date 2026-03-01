@@ -27,7 +27,6 @@ llat            - All files, long list, sorted by time modified
 llatm           - All files, long list, sorted by time modified | $PAGER
 llatc           - All files, long list, sorted by file status time change
 llatcm          - All files, long list, sorted by file status time change | $PAGER
-llo             - All files, listed through fzf, selection is open in the default app
 llink           - List links
 lfile           - List files only
 lmod            - List of files modified in the last 24hrs
@@ -224,32 +223,6 @@ alias llat='lla -tr'
 llatm() { llat "$@" | ${PAGER-less}; }
 alias llatc='llat -c'
 llatcm() { llatc "$@" | ${PAGER-less}; }
-
-fzf --version &>/dev/null &&
-llo() {
-    r=$(find ${1-.} -maxdepth 1 -name .DS_Store -prune -o -print | fzf)
-    if [ -n "$r" ]; then
-        mtype="$(file -b --mime-type $r)"
-        case $mtype in
-            inode/directory)
-                cd "$r"
-                ;;
-            text/*|application/octet-stream)
-                vim "$r"
-                ;;
-            *)
-                case $(uname -s) in
-                    Darvin)
-                        open "$r"
-                        ;;
-                    Linux|OpenBSD)
-                        xdg-open "$r"
-                        ;;
-                esac
-                ;;
-        esac
-    fi
-}
 
 llink() { find ${1-.} -maxdepth 1 -type l -ls; }
 lfile() { find ${1-.} -maxdepth 1 -type f -print; }
