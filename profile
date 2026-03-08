@@ -11,6 +11,11 @@
 #  definitions.
 # ----------------------------------------------------------------------
 
+# ----------------------------------------------------------------------
+# Settings specific for machine/site that need to be sourced as early
+# as possible
+[ -f ~/.profile_local_pre ] && source ~/.profile_local_pre
+
 # Include user's bin dir in PATH
 [ -d "$HOME/bin" ] && PATH="$HOME/bin:$PATH"
 [ -d "$HOME/bin.override" ] && PATH="$HOME/bin.override:$PATH"
