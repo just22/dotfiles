@@ -21,8 +21,8 @@ if [[ $- != *i* ]]; then
 fi
 
 # ----------------------------------------------------------------------
-# Settings specific for machine/site that need to be sourced as early as
-# possible.
+# Settings specific for machine/site that need to be sourced as early
+# as possible
 [ -f ~/.bashrc_local_pre ] && source ~/.bashrc_local_pre
 
 # ----------------------------------------------------------------------
@@ -123,6 +123,11 @@ PROMPT_COMMAND="history -a"
 #
 [ -f ~/.sh_aliases ]   && source ~/.sh_aliases
 [ -f ~/.bash_aliases ] && source ~/.bash_aliases
+
+# ----------------------------------------------------------------------
+# fzf config
+#
+[ -f ~/.bashrc_fzf ] && source ~/.bashrc_fzf
 
 # ----------------------------------------------------------------------
 # Addenda to ~/.bashrc specific for machine/site
