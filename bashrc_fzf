@@ -1,8 +1,20 @@
 # ----------------------------------------------------------------------
 #  $Id$
 #
-#  fzf aliases for Bourne-type shells
+#  fzf configuration for Bourne-type shells
 # ----------------------------------------------------------------------
+
+if ! fzf --version >/dev/null 2>&1; then
+    git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
+    ~/.fzf/install --no-update-rc --no-completion --no-key-bindings \
+        --no-bash --no-zsh --no-fish
+    [ -e ~/bin ] && ln -s ~/.fzf/bin/* ~/bin
+fi
+
+# Set up fzf key bindings and fuzzy completion
+eval "$(fzf --bash)"
+[ -e ~/.catppuccin/catppuccin_fzf.sh ] &&
+    PROMPT_COMMAND=("$PROMPT_COMMAND" 'source ~/.catppuccin/catppuccin_fzf.sh')
 
 llo() {
     r=$(find ${1-.} -maxdepth 1 -name .DS_Store -prune -o -print | fzf)
