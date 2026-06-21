@@ -1,0 +1,37 @@
+new_tab Main
+layout tall
+launch sh -c 'exec st-setgroups -e "$CMD" "$GRPS"'
+launch sh -c 'exec st-setgroups -e "$CMD" "$GRPS"'
+
+new_tab F2B
+layout tall
+launch sh -c 'exec st-setgroups -e "$CMD" "$GRPS"'
+launch sh -c 'exec st-setgroups -e "$CMD" "$GRPS"'
+
+new_tab PnR
+layout tall
+launch sh -c 'exec st-setgroups -e "$CMD" "$GRPS"'
+launch sh -c 'exec st-setgroups -e "$CMD" "$GRPS"'
+
+new_tab SIGNOFF
+layout tall
+launch sh -c 'exec st-setgroups -e "$CMD" "$GRPS"'
+launch sh -c 'exec st-setgroups -e "$CMD" "$GRPS"'
+
+new_tab ATPG
+layout tall
+launch sh -c 'exec st-setgroups -e "$CMD" "$GRPS"'
+launch sh -c 'exec st-setgroups -e "$CMD" "$GRPS"'
+
+new_tab ATPG_SIM
+layout grid
+launch sh -c 'exec st-setgroups -e "$CMD" "$GRPS"'
+launch sh -c 'exec st-setgroups -e "$CMD" "$GRPS"'
+launch sh -c 'exec st-setgroups -e "$CMD" "$GRPS"'
+launch sh -c 'exec st-setgroups -e "$CMD" "$GRPS"'
+
+new_tab ANALOG
+layout splits
+launch sh -c 'exec st-setgroups -e "$CMD -a" "$GRPS"'
+launch sh -c 'exec st-setgroups -e "$CMD -a" "$GRPS"'
+
